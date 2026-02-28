@@ -1,0 +1,22 @@
+{
+    "name": "x-823178-commission-m",
+    "version": "1.0.0",
+    "description": "[BUILD AGENT GENERATED]:  A comprehensive commission management system that integrates with Zoho Bigin for deals and Zoho Books for invoices/payments. Handles quota tracking, commission calculations, monthly statements, and role-based access controls with full audit trail.",
+    "license": "UNLICENSED",
+    "scripts": {
+        "build": "now-sdk build",
+        "deploy": "now-sdk install",
+        "transform": "now-sdk transform",
+        "types": "now-sdk dependencies"
+    },
+    "devDependencies": {
+        "@servicenow/sdk": "4.3.0",
+        "@servicenow/glide": "26.0.1",
+        "eslint": "8.50.0",
+        "@servicenow/eslint-plugin-sdk-app-plugin": "4.3.0"
+    },
+    "dependencies": {
+        "react": "18.2.0",
+        "react-dom": "18.2.0"
+    }
+}

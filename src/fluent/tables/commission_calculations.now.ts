@@ -1,0 +1,141 @@
+import '@servicenow/sdk/global'
+import { Table, StringColumn, DateColumn, DecimalColumn, DateTimeColumn, ReferenceColumn, BooleanColumn } from '@servicenow/sdk/core'
+
+// Enhanced Commission Calculations table with web service access
+export const x_823178_commissio_commission_calculations = Table({
+    name: 'x_823178_commissio_commission_calculations',
+    label: 'Commission Calculations',
+    schema: {
+        payment: ReferenceColumn({ 
+            label: 'Payment',
+            referenceTable: 'x_823178_commissio_payments',
+            mandatory: true
+        }),
+        deal: ReferenceColumn({ 
+            label: 'Deal',
+            referenceTable: 'x_823178_commissio_deals'
+        }),
+        invoice: ReferenceColumn({ 
+            label: 'Invoice',
+            referenceTable: 'x_823178_commissio_invoices'
+        }),
+        sales_rep: ReferenceColumn({ 
+            label: 'Sales Rep (Commission Owner)',
+            referenceTable: 'sys_user',
+            mandatory: true
+        }),
+        commission_plan: ReferenceColumn({ 
+            label: 'Commission Plan Used',
+            referenceTable: 'x_823178_commissio_commission_plans'
+        }),
+        commission_base_amount: DecimalColumn({ 
+            label: 'Commission Base Amount'
+        }),
+        commission_rate: DecimalColumn({ 
+            label: 'Commission Rate (%)'
+        }),
+        commission_amount: DecimalColumn({ 
+            label: 'Commission Amount'
+        }),
+        payment_date: DateColumn({ 
+            label: 'Payment Date (Cash Received)'
+        }),
+        deal_close_date: DateColumn({ 
+            label: 'Deal Close Date (Snapshot)'
+        }),
+        calculation_date: DateTimeColumn({ 
+            label: 'Calculation Date'
+        }),
+        deal_type: StringColumn({ 
+            label: 'Deal Type',
+            choices: {
+                new_business: { label: 'New Business', sequence: 0 },
+                renewal: { label: 'Renewal', sequence: 1 },
+                expansion: { label: 'Expansion', sequence: 2 },
+                upsell: { label: 'Upsell', sequence: 3 }
+            }
+        }),
+        is_negative: BooleanColumn({ 
+            label: 'Is Refund/Negative Entry'
+        }),
+        statement: ReferenceColumn({ 
+            label: 'Commission Statement',
+            referenceTable: 'x_823178_commissio_commission_statements'
+        }),
+        status: StringColumn({ 
+            label: 'Status',
+            choices: {
+                draft: { label: 'Draft', sequence: 0 },
+                locked: { label: 'Locked', sequence: 1 },
+                paid: { label: 'Paid', sequence: 2 },
+                disputed: { label: 'Disputed', sequence: 3 },
+                error: { label: 'Error', sequence: 4 }
+            },
+            default: 'draft'
+        }),
+        calculation_inputs: StringColumn({ 
+            label: 'Calculation Inputs (JSON)',
+            maxLength: 4000,
+            read_only: true
+        }),
+        calculation_hash: StringColumn({ 
+            label: 'Calculation Hash',
+            maxLength: 64,
+            read_only: true
+        }),
+        recalculated_count: StringColumn({ 
+            label: 'Recalculation Count',
+            default: '0',
+            read_only: true
+        }),
+        last_recalculated: DateTimeColumn({ 
+            label: 'Last Recalculated'
+        }),
+        original_calculation_date: DateTimeColumn({ 
+            label: 'Original Calculation Date',
+            read_only: true
+        }),
+        requires_approval: BooleanColumn({ 
+            label: 'Requires Approval',
+            default: false
+        }),
+        approved: BooleanColumn({ 
+            label: 'Approved',
+            default: false
+        }),
+        approved_by: ReferenceColumn({ 
+            label: 'Approved By',
+            referenceTable: 'sys_user'
+        }),
+        approval_date: DateTimeColumn({ 
+            label: 'Approval Date'
+        }),
+        dispute_reason: StringColumn({ 
+            label: 'Dispute Reason',
+            maxLength: 1000
+        }),
+        dispute_opened_by: ReferenceColumn({ 
+            label: 'Dispute Opened By',
+            referenceTable: 'sys_user'
+        }),
+        dispute_opened_date: DateTimeColumn({ 
+            label: 'Dispute Opened Date'
+        }),
+        dispute_resolved_by: ReferenceColumn({ 
+            label: 'Dispute Resolved By',
+            referenceTable: 'sys_user'
+        }),
+        dispute_resolved_date: DateTimeColumn({ 
+            label: 'Dispute Resolved Date'
+        }),
+        notes: StringColumn({ 
+            label: 'Notes',
+            maxLength: 1000
+        })
+    },
+    audit: true,
+    accessible_from: 'public',
+    caller_access: 'tracking',
+    actions: ['create', 'read', 'update', 'delete'],
+    allow_web_service_access: true
+})

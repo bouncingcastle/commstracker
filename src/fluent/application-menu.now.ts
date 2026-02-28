@@ -1,0 +1,199 @@
+import '@servicenow/sdk/global'
+import { ApplicationMenu, Record } from '@servicenow/sdk/core'
+
+// Create the main Commission Management application menu
+const commissionApp = ApplicationMenu({
+    $id: Now.ID['commission_app'],
+    title: 'Commission Management',
+    hint: 'Comprehensive commission tracking and management system',
+    order: 100
+})
+
+// Dashboard Module - Main Landing Page
+Record({
+    $id: Now.ID['dashboard_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Dashboard',
+        application: commissionApp.$id,
+        link_type: 'DIRECT',
+        query: 'x_823178_commissio_dashboard.do',
+        hint: 'Commission management dashboard and overview',
+        order: 5,
+        active: true
+    }
+})
+
+// Data Management Separator
+Record({
+    $id: Now.ID['data_separator'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Data Management',
+        application: commissionApp.$id,
+        link_type: 'SEPARATOR',
+        order: 20,
+        active: true
+    }
+})
+
+// Deals Module
+Record({
+    $id: Now.ID['deals_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Deals',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_deals',
+        hint: 'View and manage deals from Zoho Bigin',
+        order: 21,
+        active: true
+    }
+})
+
+// Invoices Module  
+Record({
+    $id: Now.ID['invoices_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Invoices',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_invoices',
+        hint: 'View invoices from Zoho Books',
+        order: 22,
+        active: true
+    }
+})
+
+// Payments Module
+Record({
+    $id: Now.ID['payments_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Payments',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_payments',
+        hint: 'View payments from Zoho Books',
+        order: 23,
+        active: true
+    }
+})
+
+// Commission Management Separator
+Record({
+    $id: Now.ID['commission_separator'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Commission Management',
+        application: commissionApp.$id,
+        link_type: 'SEPARATOR',
+        order: 30,
+        active: true
+    }
+})
+
+// Commission Calculations Module
+Record({
+    $id: Now.ID['calculations_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Commission Calculations',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_commission_calculations',
+        hint: 'View commission calculations and earnings',
+        order: 31,
+        active: true
+    }
+})
+
+// Commission Plans Module
+Record({
+    $id: Now.ID['plans_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Commission Plans',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_commission_plans',
+        hint: 'Manage commission plans and rates',
+        order: 32,
+        active: true
+    }
+})
+
+// Commission Statements Module
+Record({
+    $id: Now.ID['statements_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Commission Statements',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_commission_statements',
+        hint: 'View monthly commission statements',
+        order: 33,
+        active: true
+    }
+})
+
+// Administration Separator
+Record({
+    $id: Now.ID['admin_separator'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Administration',
+        application: commissionApp.$id,
+        link_type: 'SEPARATOR',
+        order: 40,
+        active: true
+    }
+})
+
+// Exception Approvals Module
+Record({
+    $id: Now.ID['exceptions_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Exception Approvals',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_exception_approvals',
+        hint: 'Review and approve exception requests',
+        order: 41,
+        active: true
+    }
+})
+
+// System Alerts Module
+Record({
+    $id: Now.ID['alerts_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'System Alerts',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_system_alerts',
+        hint: 'View system alerts and notifications',
+        order: 42,
+        active: true
+    }
+})
+
+// Reconciliation Log Module
+Record({
+    $id: Now.ID['reconciliation_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Reconciliation Log',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_reconciliation_log',
+        hint: 'View daily reconciliation and audit logs',
+        order: 43,
+        active: true
+    }
+})
