@@ -525,6 +525,10 @@ declare global {
                         table: 'sys_properties'
                         id: '04793ae0e12c4d708e6e0fe2099e352d'
                     }
+                    e74a0f1a83d33210a0365dc6feaad3fb: {
+                        table: 'sys_scope_privilege'
+                        id: 'e74a0f1a83d33210a0365dc6feaad3fb'
+                    }
                     emergency_statement_override_prop: {
                         table: 'sys_properties'
                         id: 'd79d9b987ad5498799d1a886cf7b458f'
