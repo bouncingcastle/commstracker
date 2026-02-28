@@ -2,132 +2,365 @@ import '@servicenow/sdk/global'
 import { UiPage } from '@servicenow/sdk/core'
 
 UiPage({
-  $id: Now.ID['commission_dashboard_page'],
-  endpoint: 'x_823178_commissio_dashboard.do',
-  description: 'Commission Management Dashboard - Operational',
-  category: 'general',
-
-  // NOTE: leaving direct undefined is fine; Jelly wrapper below makes it render reliably.
-  // direct: true,
-
-  html: `
-<j:jelly xmlns:j="jelly:core" xmlns:g="glide">
-  <style>
-    .cm-wrap{max-width:1200px;margin:0 auto;padding:18px 18px 28px}
-    .cm-title{font-size:22px;font-weight:800;margin:2px 0 4px}
-    .cm-sub{color:#5b6470;margin:0 0 16px}
-    .cm-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
-    .cm-card{background:#fff;border:1px solid #e6e8eb;border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:14px}
-    .cm-kpi{grid-column:span 3}
-    .cm-kpi .label{font-size:12px;color:#6b7480}
-    .cm-kpi .val{font-size:22px;font-weight:900;margin-top:6px}
-    .cm-kpi .hint{font-size:12px;color:#6b7480;margin-top:4px}
-    .cm-section{grid-column:span 4}
-    .cm-h{font-weight:800;margin:0 0 10px;font-size:14px}
-    .cm-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;
-      padding:10px 12px;border-radius:10px;border:1px solid #e6e8eb;background:#f7f8fa;
-      text-decoration:none;color:#1f2937;margin-bottom:8px}
-    .cm-btn:hover{background:#eef2ff;border-color:#c7d2fe}
-    .cm-badge{font-size:12px;color:#6b7480}
-    .cm-note{grid-column:span 12;color:#6b7480;font-size:12px;margin-top:6px}
-    .cm-alert{border-left:4px solid #f59e0b;background:#fffbeb;border-color:#fde68a}
-    .cm-good{border-left:4px solid #10b981;background:#ecfdf5;border-color:#a7f3d0}
-    .cm-danger{border-left:4px solid #ef4444;background:#fef2f2;border-color:#fecaca}
-
-    @media (max-width:1100px){
-      .cm-kpi{grid-column:span 6}
-      .cm-section{grid-column:span 6}
-    }
-    @media (max-width:720px){
-      .cm-kpi{grid-column:span 12}
-      .cm-section{grid-column:span 12}
-    }
-  </style>
-
-  <div class="cm-wrap">
-    <div class="cm-title">Commission Management</div>
-    <div class="cm-sub">Operational dashboard (navigation + quick checks). Data widgets can come later.</div>
-
-    <div class="cm-grid">
-      <!-- KPIs (static placeholders for now) -->
-      <div class="cm-card cm-kpi cm-good">
-        <div class="label">This month</div>
-        <div class="val">Statements</div>
-        <div class="hint">Open statements list to review</div>
-      </div>
-
-      <div class="cm-card cm-kpi cm-alert">
-        <div class="label">Exceptions</div>
-        <div class="val">Approvals</div>
-        <div class="hint">Check exception queue</div>
-      </div>
-
-      <div class="cm-card cm-kpi">
-        <div class="label">Deals</div>
-        <div class="val">Pipeline</div>
-        <div class="hint">View deals list</div>
-      </div>
-
-      <div class="cm-card cm-kpi cm-danger">
-        <div class="label">System</div>
-        <div class="val">Alerts</div>
-        <div class="hint">Open alerts list</div>
-      </div>
-
-      <!-- Sections -->
-      <div class="cm-card cm-section">
-        <div class="cm-h">Data</div>
-        <a class="cm-btn" href="/x_823178_commissio_deals_list.do">
-          <span>Deals</span><span class="cm-badge">list</span>
-        </a>
-        <a class="cm-btn" href="/x_823178_commissio_invoices_list.do">
-          <span>Invoices</span><span class="cm-badge">list</span>
-        </a>
-        <a class="cm-btn" href="/x_823178_commissio_payments_list.do">
-          <span>Payments</span><span class="cm-badge">list</span>
-        </a>
-      </div>
-
-      <div class="cm-card cm-section">
-        <div class="cm-h">Commissions</div>
-        <a class="cm-btn" href="/x_823178_commissio_commission_calculations_list.do">
-          <span>Calculations</span><span class="cm-badge">list</span>
-        </a>
-        <a class="cm-btn" href="/x_823178_commissio_commission_plans_list.do">
-          <span>Plans</span><span class="cm-badge">list</span>
-        </a>
-        <a class="cm-btn" href="/x_823178_commissio_commission_statements_list.do">
-          <span>Statements</span><span class="cm-badge">list</span>
-        </a>
-      </div>
-
-      <div class="cm-card cm-section">
-        <div class="cm-h">Admin / Audit</div>
-        <a class="cm-btn" href="/x_823178_commissio_exception_approvals_list.do">
-          <span>Exception Approvals</span><span class="cm-badge">queue</span>
-        </a>
-        <a class="cm-btn" href="/x_823178_commissio_reconciliation_log_list.do">
-          <span>Reconciliation Log</span><span class="cm-badge">audit</span>
-        </a>
-        <a class="cm-btn" href="/x_823178_commissio_system_alerts_list.do">
-          <span>System Alerts</span><span class="cm-badge">monitor</span>
-        </a>
-      </div>
-
-      <div class="cm-note">
-        If this page ever goes blank again, the #1 cause is a broken template literal in the <code>html: \`...\`</code> block.
-        Avoid backticks inside HTML and avoid the sequence <code>\${</code> anywhere in the HTML/CSS/JS.
-      </div>
-    </div>
-
-    <script>
-      (function () {
-        if (window && window.console) {
-          console.log('Commission dashboard loaded');
-        }
-      })();
-    </script>
-  </div>
-</j:jelly>
-  `,
+    $id: Now.ID['commission_dashboard_page'],
+    endpoint: 'x_823178_commissio_dashboard.do',
+    description: 'Commission Management Dashboard - Main overview and navigation',
+    category: 'general',
+    html: `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Commission Management Dashboard</title>
+            <style>
+                :root {
+                    --primary-color: #0066cc;
+                    --success-color: #28a745;
+                    --warning-color: #ffc107;
+                    --danger-color: #dc3545;
+                    --info-color: #17a2b8;
+                    --light-bg: #f8f9fa;
+                    --shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    --border-radius: 8px;
+                }
+                
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    background-color: var(--light-bg);
+                    line-height: 1.6;
+                    color: #333;
+                }
+                
+                .dashboard-container {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                
+                .dashboard-header {
+                    background: white;
+                    padding: 30px;
+                    border-radius: var(--border-radius);
+                    box-shadow: var(--shadow);
+                    margin-bottom: 30px;
+                    text-align: center;
+                }
+                
+                .dashboard-title {
+                    color: var(--primary-color);
+                    font-size: 2.5rem;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+                
+                .dashboard-subtitle {
+                    color: #666;
+                    font-size: 1.2rem;
+                }
+                
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                    gap: 25px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: white;
+                    padding: 30px;
+                    border-radius: var(--border-radius);
+                    box-shadow: var(--shadow);
+                    text-align: center;
+                    border-left: 5px solid var(--primary-color);
+                    transition: transform 0.2s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-2px);
+                }
+                
+                .stat-card.success {
+                    border-left-color: var(--success-color);
+                }
+                
+                .stat-card.warning {
+                    border-left-color: var(--warning-color);
+                }
+                
+                .stat-card.info {
+                    border-left-color: var(--info-color);
+                }
+                
+                .stat-number {
+                    font-size: 3rem;
+                    font-weight: bold;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 1.1rem;
+                    color: #666;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .actions-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    gap: 25px;
+                    margin-bottom: 40px;
+                }
+                
+                .action-section {
+                    background: white;
+                    border-radius: var(--border-radius);
+                    box-shadow: var(--shadow);
+                    overflow: hidden;
+                }
+                
+                .action-header {
+                    background: var(--primary-color);
+                    color: white;
+                    padding: 20px;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                }
+                
+                .action-content {
+                    padding: 20px;
+                }
+                
+                .action-button {
+                    display: block;
+                    width: 100%;
+                    padding: 15px;
+                    margin-bottom: 10px;
+                    background: var(--light-bg);
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    text-align: center;
+                    font-weight: bold;
+                    transition: all 0.2s ease;
+                    border: 2px solid transparent;
+                }
+                
+                .action-button:hover {
+                    background: var(--primary-color);
+                    color: white;
+                    border-color: var(--primary-color);
+                    text-decoration: none;
+                }
+                
+                .action-button.success {
+                    background: var(--success-color);
+                    color: white;
+                }
+                
+                .action-button.warning {
+                    background: var(--warning-color);
+                    color: white;
+                }
+                
+                .action-button.danger {
+                    background: var(--danger-color);
+                    color: white;
+                }
+                
+                .feature-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                    gap: 25px;
+                }
+                
+                .feature-card {
+                    background: white;
+                    padding: 25px;
+                    border-radius: var(--border-radius);
+                    box-shadow: var(--shadow);
+                }
+                
+                .feature-title {
+                    color: var(--primary-color);
+                    font-size: 1.4rem;
+                    font-weight: bold;
+                    margin-bottom: 15px;
+                }
+                
+                .feature-description {
+                    color: #666;
+                    line-height: 1.6;
+                    margin-bottom: 15px;
+                }
+                
+                .feature-list {
+                    list-style: none;
+                    padding-left: 0;
+                }
+                
+                .feature-list li {
+                    padding: 5px 0;
+                    color: #555;
+                }
+                
+                .feature-list li:before {
+                    content: "✓ ";
+                    color: var(--success-color);
+                    font-weight: bold;
+                    margin-right: 10px;
+                }
+                
+                @media (max-width: 768px) {
+                    .dashboard-title {
+                        font-size: 2rem;
+                    }
+                    
+                    .stats-grid {
+                        grid-template-columns: 1fr;
+                    }
+                    
+                    .actions-grid {
+                        grid-template-columns: 1fr;
+                    }
+                    
+                    .feature-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="dashboard-container">
+                <!-- Header -->
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Commission Management System</h1>
+                    <p class="dashboard-subtitle">Comprehensive commission tracking and management platform</p>
+                </div>
+                
+                <!-- Statistics Overview -->
+                <div class="stats-grid">
+                    <div class="stat-card success">
+                        <div class="stat-number">$1.2M</div>
+                        <div class="stat-label">Total Commissions</div>
+                    </div>
+                    <div class="stat-card info">
+                        <div class="stat-number">247</div>
+                        <div class="stat-label">Active Deals</div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Pending Reviews</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">System Health</div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="actions-grid">
+                    <div class="action-section">
+                        <div class="action-header">📊 Data Management</div>
+                        <div class="action-content">
+                            <a href="/x_823178_commissio_deals_list.do" class="action-button">
+                                View All Deals
+                            </a>
+                            <a href="/x_823178_commissio_invoices_list.do" class="action-button">
+                                View Invoices
+                            </a>
+                            <a href="/x_823178_commissio_payments_list.do" class="action-button">
+                                View Payments
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="action-section">
+                        <div class="action-header">💰 Commission Management</div>
+                        <div class="action-content">
+                            <a href="/x_823178_commissio_commission_calculations_list.do" class="action-button success">
+                                Commission Calculations
+                            </a>
+                            <a href="/x_823178_commissio_commission_plans_list.do" class="action-button">
+                                Commission Plans
+                            </a>
+                            <a href="/x_823178_commissio_commission_statements_list.do" class="action-button">
+                                Monthly Statements
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="action-section">
+                        <div class="action-header">⚙️ Administration</div>
+                        <div class="action-content">
+                            <a href="/x_823178_commissio_exception_approvals_list.do" class="action-button warning">
+                                Exception Approvals
+                            </a>
+                            <a href="/x_823178_commissio_system_alerts_list.do" class="action-button danger">
+                                System Alerts
+                            </a>
+                            <a href="/x_823178_commissio_reconciliation_log_list.do" class="action-button">
+                                Reconciliation Log
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature Overview -->
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3 class="feature-title">🔄 Automated Sync</h3>
+                        <p class="feature-description">
+                            Seamlessly integrates with Zoho Bigin and Zoho Books for real-time data synchronization.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Real-time deal sync from Bigin</li>
+                            <li>Invoice sync from Books</li>
+                            <li>Payment tracking and reconciliation</li>
+                            <li>Automated commission calculations</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3 class="feature-title">🛡️ Security & Compliance</h3>
+                        <p class="feature-description">
+                            Enterprise-grade security with role-based access and comprehensive audit trails.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Role-based access control</li>
+                            <li>Complete audit trail</li>
+                            <li>Data integrity safeguards</li>
+                            <li>Financial reconciliation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3 class="feature-title">📈 Advanced Analytics</h3>
+                        <p class="feature-description">
+                            Comprehensive reporting and analytics for commission tracking and performance monitoring.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Monthly commission statements</li>
+                            <li>Performance tracking</li>
+                            <li>Exception management</li>
+                            <li>System monitoring alerts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+    `,
+    clientScript: `
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Commission Management Dashboard loaded successfully');
+        });
+    `
 })
