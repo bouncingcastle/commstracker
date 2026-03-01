@@ -447,7 +447,6 @@ Record({
         deal_name: 'InnovateTech Implementation',
         account_name: 'InnovateTech Corp',
         current_owner: '62826bf03710200044e0bfc8bcbe5df1', // Abel Tuter
-        owner_at_close: null,
         amount: 120000,
         close_date: '2026-04-30',
         stage: 'proposal',
@@ -470,7 +469,6 @@ Record({
         deal_name: 'TechGlobal Expansion Package',
         account_name: 'TechGlobal Corporation',
         current_owner: '0a826bf03710200044e0bfc8bcbe5d7a', // Adela Cervantsz
-        owner_at_close: null,
         amount: 250000,
         close_date: '2026-05-15',
         stage: 'negotiation',
