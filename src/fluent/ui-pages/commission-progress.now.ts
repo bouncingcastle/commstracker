@@ -175,6 +175,19 @@ UiPage({
     .selector-field{
       display:flex;gap:8px;
     }
+    .selector-stack{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .selector-sub{
+      font-size:11px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.3px;
+      font-weight:600;
+    }
     .selector-field input{
       flex:1;padding:8px 12px;background:rgba(255,255,255,.08);
       border:1px solid var(--border);border-radius:6px;color:var(--text);
@@ -338,20 +351,21 @@ UiPage({
     <div class="header">
       <h1 class="title">Commission Performance</h1>
       <p class="subtitle">Track earned commissions, pending exposure, targets, and pipeline performance.</p>
-      <div class="userInfo">
-        <span id="userName">Loading user context...</span>
-        <span id="periodInfo" style="margin-left:16px;"></span>
-      </div>
-      <div class="chips" id="roleChips"></div>
 
       <!-- User Selector -->
       <div class="user-selector" id="userSelector">
         <div class="selector-label">View As</div>
         <div class="selector-field">
-          <select id="userSelect">
-            <option value="">Select representative...</option>
-          </select>
-          <select id="yearSelect"></select>
+          <div class="selector-stack">
+            <div class="selector-sub">Representative</div>
+            <select id="userSelect">
+              <option value="">Select representative...</option>
+            </select>
+          </div>
+          <div class="selector-stack">
+            <div class="selector-sub">Plan Year</div>
+            <select id="yearSelect"></select>
+          </div>
         </div>
       </div>
     </div>
