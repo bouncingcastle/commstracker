@@ -15,9 +15,14 @@ Record({
     
     getRepProgress: function() {
         var userId = this.getParameter('sysparm_user_id') || this.getParameter('user_id');
+        var includeAllUsers = String(userId) === 'all';
         
         if (!userId) {
             return this.getErrorJSON('No user ID provided');
+        }
+
+        if (includeAllUsers && !this.isAdminViewer()) {
+            return this.getErrorJSON('Only admins can view all users');
         }
 
         try {
@@ -48,46 +53,76 @@ Record({
             var yearEnd = selectedYear + '-12-31';
             result.data.report_year = selectedYear;
 
-            var planId = '';
-            var planGr = new GlideRecord('x_823178_commissio_commission_plans');
-            planGr.addQuery('sales_rep', userId);
-            planGr.addQuery('is_active', true);
-            planGr.addQuery('effective_start_date', '<=', yearEnd);
-            planGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
-            planGr.orderByDesc('effective_start_date');
-            planGr.query();
+            var selectedUserIds = [];
+            if (includeAllUsers) {
+                var userSet = {};
+                var planUsersAgg = new GlideAggregate('x_823178_commissio_commission_plans');
+                planUsersAgg.addQuery('is_active', true);
+                planUsersAgg.addQuery('effective_start_date', '<=', yearEnd);
+                planUsersAgg.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
+                planUsersAgg.groupBy('sales_rep');
+                planUsersAgg.query();
+                while (planUsersAgg.next()) {
+                    var repId = planUsersAgg.getValue('sales_rep');
+                    if (repId && !userSet[repId]) {
+                        userSet[repId] = true;
+                        selectedUserIds.push(repId);
+                    }
+                }
+                result.data.view_mode = 'all_users';
+                result.data.selected_user_count = selectedUserIds.length;
+            }
 
-            if (planGr.next()) {
-                var planYearStr = planGr.getValue('effective_start_date');
-                var planYear = planYearStr ? new GlideDateTime(planYearStr).getYearLocalTime() : selectedYear;
-                planId = planGr.getValue('sys_id');
-                
-                var compDetails = this.getCompensationPlanDetails(planId);
-                var baseRate = compDetails.base_rate;
-                var totalQuota = compDetails.total_quota;
-                var oTE100 = totalQuota > 0 ? (totalQuota * baseRate / 100) : 0;
-                var oteWithBonuses = oTE100 + compDetails.total_bonus_potential;
-                
-                result.data.active_plan = {
-                    plan_name: planGr.getValue('plan_name'),
-                    plan_target_amount: planGr.getValue('plan_target_amount'),
-                    plan_year: planYear,
-                    sys_id: planId,
-                    effective_start_date: planGr.getValue('effective_start_date'),
-                    effective_end_date: planGr.getValue('effective_end_date'),
-                    targets: compDetails.targets,
-                    tiers: compDetails.tiers,
-                    bonuses: compDetails.bonuses,
-                    total_quota: compDetails.total_quota,
-                    base_rate: baseRate,
-                    ote_at_100_percent: oTE100,
-                    ote_with_bonuses: oteWithBonuses,
-                    total_bonus_potential: compDetails.total_bonus_potential
-                };
+            var planId = '';
+            if (!includeAllUsers) {
+                var planGr = new GlideRecord('x_823178_commissio_commission_plans');
+                planGr.addQuery('sales_rep', userId);
+                planGr.addQuery('is_active', true);
+                planGr.addQuery('effective_start_date', '<=', yearEnd);
+                planGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
+                planGr.orderByDesc('effective_start_date');
+                planGr.query();
+
+                if (planGr.next()) {
+                    var planYearStr = planGr.getValue('effective_start_date');
+                    var planYear = planYearStr ? new GlideDateTime(planYearStr).getYearLocalTime() : selectedYear;
+                    planId = planGr.getValue('sys_id');
+                    
+                    var compDetails = this.getCompensationPlanDetails(planId);
+                    var baseRate = compDetails.base_rate;
+                    var totalQuota = compDetails.total_quota;
+                    var oTE100 = totalQuota > 0 ? (totalQuota * baseRate / 100) : 0;
+                    var oteWithBonuses = oTE100 + compDetails.total_bonus_potential;
+                    
+                    result.data.active_plan = {
+                        plan_name: planGr.getValue('plan_name'),
+                        plan_target_amount: planGr.getValue('plan_target_amount'),
+                        plan_year: planYear,
+                        sys_id: planId,
+                        effective_start_date: planGr.getValue('effective_start_date'),
+                        effective_end_date: planGr.getValue('effective_end_date'),
+                        targets: compDetails.targets,
+                        tiers: compDetails.tiers,
+                        bonuses: compDetails.bonuses,
+                        total_quota: compDetails.total_quota,
+                        base_rate: baseRate,
+                        ote_at_100_percent: oTE100,
+                        ote_with_bonuses: oteWithBonuses,
+                        total_bonus_potential: compDetails.total_bonus_potential
+                    };
+                }
             }
 
             var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
-            calcGr.addQuery('sales_rep', userId);
+            if (includeAllUsers) {
+                if (selectedUserIds.length === 0) {
+                    calcGr.addQuery('sys_id', '');
+                } else {
+                    calcGr.addQuery('sales_rep', 'IN', selectedUserIds.join(','));
+                }
+            } else {
+                calcGr.addQuery('sales_rep', userId);
+            }
             calcGr.addQuery('calculation_date', '>=', yearStart);
             calcGr.addQuery('calculation_date', '<=', yearEnd);
             calcGr.orderBy('-calculation_date');
@@ -124,8 +159,17 @@ Record({
                 if (recentCalcs.length < 10) {
                     var calcDealGr = new GlideRecord('x_823178_commissio_deals');
                     calcDealGr.get(calcGr.getValue('deal'));
+
+                    var repName = '';
+                    if (includeAllUsers) {
+                        var repGr = new GlideRecord('sys_user');
+                        if (repGr.get(calcGr.getValue('sales_rep'))) {
+                            repName = repGr.getDisplayValue('name') || '';
+                        }
+                    }
                     
                     recentCalcs.push({
+                        sales_rep_name: repName,
                         deal_name: calcDealGr.getDisplayValue('deal_name'),
                         deal_type: calcGr.getValue('deal_type'),
                         commission_base_amount: calcGr.getValue('commission_base_amount'),
@@ -146,7 +190,15 @@ Record({
             result.data.recent_calculations = recentCalcs;
 
             var dealGr = new GlideRecord('x_823178_commissio_deals');
-            dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+            if (includeAllUsers) {
+                if (selectedUserIds.length === 0) {
+                    dealGr.addQuery('sys_id', '');
+                } else {
+                    dealGr.addQuery('current_owner', 'IN', selectedUserIds.join(',')).addOrCondition('owner_at_close', 'IN', selectedUserIds.join(','));
+                }
+            } else {
+                dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+            }
             dealGr.addQuery('is_won', false);
             dealGr.addQuery('stage', '!=', 'closed_lost');
             dealGr.orderBy('close_date');
@@ -279,17 +331,16 @@ Record({
     getViewerAccess: function() {
         try {
             var user = gs.getUser();
-            var isScopedAdmin = user.hasRole('x_823178_commissio.admin');
-            var isSystemAdmin = user.hasRole('admin');
+            var isAdmin = this.isAdminViewer();
             var isFinance = user.hasRole('x_823178_commissio.finance');
             var isRep = user.hasRole('x_823178_commissio.rep');
 
             return JSON.stringify({
                 status: 'success',
                 data: {
-                    can_select_users: !!(isScopedAdmin || isSystemAdmin),
+                    can_select_users: !!isAdmin,
                     roles: {
-                        admin: !!(isScopedAdmin || isSystemAdmin),
+                        admin: !!isAdmin,
                         finance: !!isFinance,
                         rep: !!isRep
                     }
@@ -420,7 +471,7 @@ Record({
             planAgg.addQuery('is_active', true);
             if (selectedYear) {
                 planAgg.addQuery('effective_start_date', '<=', yearEnd);
-                planAgg.addQuery('effective_end_date', '>=', yearStart).addOrCondition('effective_end_date', '');
+                planAgg.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
             }
             planAgg.groupBy('sales_rep');
             planAgg.query();
@@ -950,6 +1001,11 @@ Record({
             return parsed;
         }
         return currentYear;
+    },
+
+    isAdminViewer: function() {
+        var user = gs.getUser();
+        return !!(user.hasRole('x_823178_commissio.admin') || user.hasRole('admin'));
     },
 
     normalizeMultiplier: function(value) {

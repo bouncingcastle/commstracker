@@ -941,15 +941,22 @@ UiPage({
                 return;
               }
 
-              select.innerHTML = '<option value="">Select representative...</option>';
+              select.innerHTML = '<option value="">Select representative...</option><option value="all">All users</option>';
               payload.data.forEach(function(item) {
                 if (!item || !item.user_id) return;
                 var option = document.createElement('option');
                 option.value = item.user_id;
                 option.textContent = item.user_name || item.user_id;
-                if (currentUserId && currentUserId === item.user_id) option.selected = true;
                 select.appendChild(option);
               });
+
+              var preferredUserId = viewingUserId || currentUserId;
+              if (preferredUserId) {
+                select.value = preferredUserId;
+              }
+              if (!select.value && currentUserId) {
+                select.value = currentUserId;
+              }
             } catch (e) {
               console.log('User options parse error:', e);
               select.innerHTML = '<option value="">No representatives with plans</option>';
@@ -1437,6 +1444,17 @@ UiPage({
         }
 
         function loadForecastAndPriorities(userId, reportYear) {
+          if (userId === 'all') {
+            renderForecastError('Forecast simulation is available for individual representatives only.');
+            renderScenarioOptions([], {
+              active_scenario_id: '',
+              active_scenario_name: '',
+              win_rate_multiplier: 1,
+              pipeline_multiplier: 1
+            });
+            return;
+          }
+
           var winMultiplier = parseFloat((document.getElementById('winRateMultiplier') || {}).value || '1') || 1;
           var pipelineMultiplier = parseFloat((document.getElementById('pipelineMultiplier') || {}).value || '1') || 1;
 
@@ -1563,6 +1581,11 @@ UiPage({
         };
 
         window.saveForecastScenario = function() {
+          if (viewingUserId === 'all') {
+            alert('Save scenario is available for individual representatives only.');
+            return;
+          }
+
           var scenarioName = window.prompt('Scenario name');
           if (!scenarioName) return;
 
@@ -1596,6 +1619,11 @@ UiPage({
         };
 
         window.runCommissionEstimate = function() {
+          if (viewingUserId === 'all') {
+            alert('Commission estimator is available for individual representatives only.');
+            return;
+          }
+
           var amount = parseFloat((document.getElementById('estimateAmount') || {}).value || '0');
           var dealType = (document.getElementById('estimateDealType') || {}).value || 'new_business';
           var stage = (document.getElementById('estimateStage') || {}).value || 'qualified';
