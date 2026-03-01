@@ -225,6 +225,10 @@ UiPage({
             <span>Deal Types</span>
             <span>→</span>
           </a>
+          <a class="nav-item" href="/x_823178_commissio_plan_recognition_policies_list.do">
+            <span>Plan Recognition Policies</span>
+            <span>→</span>
+          </a>
           <a class="nav-item" href="/x_823178_commissio_commission_calculations_list.do">
             <span>Calculations</span>
             <span>→</span>

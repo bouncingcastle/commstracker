@@ -1,7 +1,7 @@
 import '@servicenow/sdk/global'
 
 // Application Menu and Navigation
-import './application-menu.now'
+// import './application-menu.now' // Temporarily disabled to prevent duplicate module creation during iterative deploys
 
 // Security and role model
 import './roles/commission-roles.now'
@@ -32,6 +32,7 @@ import './business-rules/commission-plan-validation.now'
 import './business-rules/plan-tier-validation.now'
 import './business-rules/deal-type-validation.now'
 import './business-rules/deal-type-governance.now'
+import './business-rules/plan-recognition-policy-validation.now'
 import './business-rules/statement-approval-workflow.now'
 
 // Client-callable Script Includes
@@ -46,6 +47,7 @@ import './tables/invoices.now'
 import './tables/payments.now'
 import './tables/commission_plans.now'
 import './tables/deal_types.now'
+import './tables/plan_recognition_policies.now'
 import './tables/commission_calculations.now'
 import './tables/commission_statements.now'
 import './tables/statement_approvals.now'
@@ -64,7 +66,7 @@ import './form-related-lists.now'
 import './deal-types-data.now'
 
 // Demo Data
-import './compensation-demo-data.now'
-import './enhanced-demo-data.now'
-import './sample-data.now'
-import './test-payments.now'
+// import './compensation-demo-data.now' // Temporarily disabled to prevent duplicate demo records
+// import './enhanced-demo-data.now' // Temporarily disabled to prevent duplicate demo records
+// import './sample-data.now' // Temporarily disabled to prevent duplicate demo records
+// import './test-payments.now' // Temporarily disabled to prevent duplicate demo records

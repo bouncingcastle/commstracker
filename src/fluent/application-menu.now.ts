@@ -200,6 +200,21 @@ Record({
     }
 })
 
+// Plan Recognition Policies Module - Versioned recognition basis policy by plan
+Record({
+    $id: 'plan_recognition_policies_module',
+    table: 'sys_app_module',
+    data: {
+        title: 'Plan Recognition Policies',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_plan_recognition_policies',
+        hint: 'Manage versioned recognition basis policies per commission plan',
+        order: 32.4,
+        active: true
+    }
+})
+
 // Commission Statements Module
 Record({
     $id: Now.ID['statements_module'],

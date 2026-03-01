@@ -177,3 +177,26 @@ Acl({
     admin_overrides: true,
     description: 'Only commission admins can create/update/deactivate deal type records'
 })
+
+// Plan Recognition Policies governance - admin only
+Acl({
+    $id: 'plan_recognition_policies_read_acl',
+    type: 'record',
+    table: 'x_823178_commissio_plan_recognition_policies',
+    operation: 'read',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can read plan recognition policy records'
+})
+
+Acl({
+    $id: 'plan_recognition_policies_write_acl',
+    type: 'record',
+    table: 'x_823178_commissio_plan_recognition_policies',
+    operation: 'write',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can create/update recognition basis policies'
+})

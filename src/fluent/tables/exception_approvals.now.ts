@@ -15,7 +15,9 @@ export const x_823178_commissio_exception_approvals = Table({
                 snapshot_correction: { label: 'Snapshot Correction', sequence: 3 },
                 plan_overlap: { label: 'Plan Overlap', sequence: 4 },
                 retroactive_change: { label: 'Retroactive Change', sequence: 5 },
-                deal_type_deprecation: { label: 'Deal Type Deprecation', sequence: 6 }
+                deal_type_deprecation: { label: 'Deal Type Deprecation', sequence: 6 },
+                recognition_policy_overlap: { label: 'Recognition Policy Overlap', sequence: 7 },
+                recognition_policy_change: { label: 'Recognition Policy Change', sequence: 8 }
             },
             mandatory: true
         }),
