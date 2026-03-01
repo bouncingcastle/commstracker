@@ -331,7 +331,8 @@ Record({
                 var target = targets[dealType];
                 var achievedAmount = achieved[dealType] || 0;
                 var attainment = target > 0 ? (achievedAmount / target) * 100 : 0;
-                var activeTier = this.resolveTierByAttainment(tiers, attainment);
+                var scopedTiers = this.filterTiersForDealType(tiers, dealType);
+                var activeTier = this.resolveTierByAttainment(scopedTiers, attainment);
                 progress[dealType] = {
                     target_amount: target,
                     achieved_amount: achievedAmount,
@@ -824,7 +825,8 @@ Record({
                 details.tiers.push({
                     tier_name: tierGr.getValue('tier_name'),
                     floor_percent: floor,
-                    rate_percent: rate
+                    rate_percent: rate,
+                    deal_type: tierGr.getValue('deal_type') || 'all'
                 });
             }
 
@@ -1022,7 +1024,7 @@ Record({
             var currentAttainment = quota > 0 ? (wonRevenueBeforeClose / quota) * 100 : 0;
             var projectedAttainment = quota > 0 ? (projectedRevenue / quota) * 100 : 0;
 
-            var projectedTier = this.resolveTierByAttainment(this.getPlanTiersForProgress(planId), projectedAttainment);
+            var projectedTier = this.resolveTierByAttainment(this.filterTiersForDealType(this.getPlanTiersForProgress(planId), dealType), projectedAttainment);
             var rate = projectedTier ? (parseFloat(projectedTier.rate_percent) || 0) : this.resolveForecastRate(rateCard, dealType);
             var expectedPayout = amount * (rate / 100);
             var projection = this.getForecastRecognitionProjection(planId, closeDateRaw, 'proposal', selectedYear);
@@ -1677,10 +1679,28 @@ Record({
             tiers.push({
                 tier_name: tierGr.getValue('tier_name') || 'Tier',
                 floor_percent: parseFloat(tierGr.getValue('attainment_floor_percent')) || 0,
-                rate_percent: parseFloat(tierGr.getValue('commission_rate_percent')) || 0
+                rate_percent: parseFloat(tierGr.getValue('commission_rate_percent')) || 0,
+                deal_type: tierGr.getValue('deal_type') || 'all'
             });
         }
         return tiers;
+    },
+
+    filterTiersForDealType: function(tiers, dealType) {
+        if (!tiers || tiers.length === 0) return [];
+
+        var normalizedDealType = String(dealType || '').toLowerCase();
+        var scoped = [];
+
+        for (var i = 0; i < tiers.length; i++) {
+            var tier = tiers[i] || {};
+            var tierDealType = String(tier.deal_type || 'all').toLowerCase();
+            if (tierDealType === 'all' || tierDealType === '' || tierDealType === normalizedDealType) {
+                scoped.push(tier);
+            }
+        }
+
+        return scoped.length > 0 ? scoped : tiers;
     },
 
     resolveTierByAttainment: function(tiers, attainmentPercent) {
