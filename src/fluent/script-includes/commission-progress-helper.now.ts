@@ -100,9 +100,8 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
             var paidCount = 0;
             var breakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
             var recentCalcs = [];
-            var calcCount = 0;
 
-            while (calcGr.next() && calcCount < 50) {
+            while (calcGr.next()) {
                 var commAmount = parseFloat(calcGr.getValue('commission_amount')) || 0;
                 var status = calcGr.getValue('status') || 'draft';
                 var dealType = calcGr.getValue('deal_type') || 'other';
@@ -136,7 +135,6 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                         status: status
                     });
                 }
-                calcCount++;
             }
 
             result.data.total_earned = totalEarned;

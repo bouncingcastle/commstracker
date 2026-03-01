@@ -66,6 +66,8 @@ UiPage({
       background:var(--panel2) !important;color:var(--text) !important;border:1px solid var(--border) !important;
       border-radius:6px;padding:6px 10px;font-size:12px;
       appearance:none;-webkit-appearance:none;color-scheme:dark;
+      opacity:1 !important;
+      pointer-events:auto !important;
     }
     .toolbar select option,
     .toolbar select optgroup{
@@ -163,7 +165,7 @@ UiPage({
       <h1 class="title">Commission Operations</h1>
       <p class="subtitle">Operational dashboard for plans, calculations, statements, and source-system synchronization.</p>
       <div class="toolbar">
-        <span class="toolbar-label">Reporting Scope</span>
+        <span class="toolbar-label">Reporting Year</span>
         <select id="kpiYearSelect"></select>
         <span class="toolbar-note" id="kpiYearNote"></span>
       </div>
@@ -307,7 +309,7 @@ UiPage({
         console.log('Commission dashboard loaded');
 
         function invokeHelper(methodName, params, callback) {
-          var helperNames = ['x_823178_commissio.CommissionProgressHelper', 'global.CommissionProgressHelper', 'CommissionProgressHelper'];
+          var helperNames = ['x_823178_commissio.CommissionProgressHelper', 'CommissionProgressHelper'];
 
           function tryIndex(index) {
             if (index >= helperNames.length) {
@@ -379,7 +381,7 @@ UiPage({
           if (el) el.textContent = val;
         };
 
-        var kpiYear = 'all';
+        var kpiYear = String(new Date().getFullYear());
 
         function setMetricSubs(year) {
           var subLabels = document.querySelectorAll('.metric-sub');
@@ -389,7 +391,7 @@ UiPage({
             subLabels[idx].textContent = text.replace(/\s\((\d{4}|All Years)\)$/, '') + ' (' + yearLabel + ')';
           }
           var note = document.getElementById('kpiYearNote');
-          if (note) note.textContent = String(year).toLowerCase() === 'all' ? 'Showing full administrative totals' : 'Showing records for ' + year;
+          if (note) note.textContent = String(year).toLowerCase() === 'all' ? 'Showing records across all years' : 'Showing records for ' + year;
         }
 
         function initKpiYearSelect(years, defaultYear) {
@@ -398,12 +400,12 @@ UiPage({
 
           var currentYear = new Date().getFullYear();
           var options = (years && years.length) ? years : [currentYear + 2, currentYear + 1, currentYear, currentYear - 1, currentYear - 2];
-          kpiYear = kpiYear || (defaultYear ? String(defaultYear) : 'all');
+          kpiYear = (defaultYear ? String(defaultYear) : kpiYear);
           select.innerHTML = '';
 
           var allOption = document.createElement('option');
           allOption.value = 'all';
-          allOption.textContent = 'All Years (Admin)';
+          allOption.textContent = 'All Years';
           if (String(kpiYear).toLowerCase() === 'all') allOption.selected = true;
           select.appendChild(allOption);
 
@@ -419,6 +421,7 @@ UiPage({
 
           select.addEventListener('change', function() {
             kpiYear = select.value || 'all';
+            select.disabled = false;
             loadMetrics(kpiYear);
           });
         }

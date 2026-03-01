@@ -336,9 +336,17 @@ UiPage({
 <body>
   <div class="container">
     <div class="header">
+      <h1 class="title">Commission Performance</h1>
+      <p class="subtitle">Track earned commissions, pending exposure, targets, and pipeline performance.</p>
+      <div class="userInfo">
+        <span id="userName">Loading user context...</span>
+        <span id="periodInfo" style="margin-left:16px;"></span>
+      </div>
+      <div class="chips" id="roleChips"></div>
+
       <!-- User Selector -->
       <div class="user-selector" id="userSelector">
-        <div class="selector-label">Representative Scope</div>
+        <div class="selector-label">View As</div>
         <div class="selector-field">
           <select id="userSelect">
             <option value="">Select representative...</option>
@@ -347,14 +355,6 @@ UiPage({
           <button onclick="loadSelectedUser()">Apply</button>
         </div>
       </div>
-
-      <h1 class="title">Commission Performance</h1>
-      <p class="subtitle">Track earned commissions, pending exposure, targets, and pipeline performance.</p>
-      <div class="userInfo">
-        <span id="userName">Loading user context...</span>
-        <span id="periodInfo" style="margin-left:16px;"></span>
-      </div>
-      <div class="chips" id="roleChips"></div>
     </div>
 
     <!-- Plan Progress Card -->
@@ -573,7 +573,7 @@ UiPage({
         }
 
         function invokeHelper(methodName, params, callback) {
-          var helperNames = ['x_823178_commissio.CommissionProgressHelper', 'global.CommissionProgressHelper', 'CommissionProgressHelper'];
+          var helperNames = ['x_823178_commissio.CommissionProgressHelper', 'CommissionProgressHelper'];
 
           function tryIndex(index) {
             if (index >= helperNames.length) {
@@ -686,6 +686,8 @@ UiPage({
             if (year === viewingYear) option.selected = true;
             yearSelect.appendChild(option);
           }
+
+          yearSelect.disabled = false;
         }
 
         function initializeYearContext(callback) {
@@ -1007,7 +1009,7 @@ UiPage({
               var val = data.breakdown[key];
               var item = document.createElement('div');
               item.className = 'break-item';
-              item.innerHTML = '<span class="break-label">' + key + '</span>' +
+              item.innerHTML = '<span class="break-label">' + formatDealTypeLabel(key) + '</span>' +
                 '<span class="break-value">$' + parseFloat(val).toFixed(2) + '</span>';
               breakdown.appendChild(item);
             });
@@ -1021,7 +1023,7 @@ UiPage({
               var val = data.deal_breakdown[key];
               var item = document.createElement('div');
               item.className = 'break-item';
-              item.innerHTML = '<span class="break-label">' + key + '</span>' +
+              item.innerHTML = '<span class="break-label">' + formatDealTypeLabel(key) + '</span>' +
                 '<span class="break-value">$' + parseFloat(val).toFixed(2) + '</span>';
               dealBd.appendChild(item);
             });
@@ -1229,6 +1231,16 @@ UiPage({
           return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
         }
 
+        function formatDealTypeLabel(raw) {
+          if (!raw) return 'Other';
+          var key = String(raw).toLowerCase();
+          if (key === 'new_business') return 'New Business';
+          if (key === 'renewal') return 'Renewal';
+          if (key === 'expansion') return 'Expansion';
+          if (key === 'upsell') return 'Upsell';
+          return capitalizeFirst(key.replace(/_/g, ' '));
+        }
+
         function updateCalculationsTable(calcs) {
           var tbody = document.getElementById('calcTableBody');
           tbody.innerHTML = '';
@@ -1264,7 +1276,7 @@ UiPage({
               '<td>' + (deal.deal_name || '–') + '</td>' +
               '<td>' + (deal.account_name || '–') + '</td>' +
               '<td>$' + (parseFloat(deal.amount) || 0).toFixed(2) + '</td>' +
-              '<td>' + (deal.deal_type || '–') + '</td>' +
+              '<td>' + formatDealTypeLabel(deal.deal_type || 'other') + '</td>' +
               '<td>' + (deal.stage || '–') + '</td>' +
               '<td>' + (deal.close_date || '–') + '</td>' +
               '<td><span class="status-badge status-draft">' + deal.stage + '</span></td>';
