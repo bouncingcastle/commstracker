@@ -180,8 +180,19 @@ UiPage({
       border:1px solid var(--border);border-radius:6px;color:var(--text);
     }
     .selector-field select{
-      flex:1;padding:8px 12px;background:rgba(255,255,255,.08);
-      border:1px solid var(--border);border-radius:6px;color:var(--text);
+      flex:1;padding:8px 12px;background:var(--panel2) !important;
+      border:1px solid var(--border) !important;border-radius:6px;color:var(--text) !important;
+      appearance:none;-webkit-appearance:none;color-scheme:dark;
+    }
+    .selector-field select option,
+    .selector-field select optgroup{
+      background:var(--panel2) !important;color:var(--text) !important;
+    }
+    .selector-field select:focus,
+    .selector-field input:focus{
+      outline:none;
+      border-color:rgba(110,168,255,.6) !important;
+      box-shadow:0 0 0 2px rgba(110,168,255,.2);
     }
     .selector-field button{
       padding:8px 16px;background:var(--brand);color:var(--bg);

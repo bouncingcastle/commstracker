@@ -63,12 +63,18 @@ UiPage({
       font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;font-weight:600;
     }
     .toolbar select{
-      background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--border);
+      background:var(--panel2) !important;color:var(--text) !important;border:1px solid var(--border) !important;
       border-radius:6px;padding:6px 10px;font-size:12px;
       appearance:none;-webkit-appearance:none;color-scheme:dark;
     }
-    .toolbar select option{
-      background:var(--panel);color:var(--text);
+    .toolbar select option,
+    .toolbar select optgroup{
+      background:var(--panel2) !important;color:var(--text) !important;
+    }
+    .toolbar select:focus{
+      outline:none;
+      border-color:rgba(110,168,255,.6) !important;
+      box-shadow:0 0 0 2px rgba(110,168,255,.2);
     }
     .toolbar-note{
       font-size:12px;color:var(--muted);
@@ -157,7 +163,7 @@ UiPage({
       <h1 class="title">Commission Operations</h1>
       <p class="subtitle">Operational dashboard for plans, calculations, statements, and source-system synchronization.</p>
       <div class="toolbar">
-        <span class="toolbar-label">Metrics Year</span>
+        <span class="toolbar-label">Reporting Scope</span>
         <select id="kpiYearSelect"></select>
         <span class="toolbar-note" id="kpiYearNote"></span>
       </div>
@@ -383,7 +389,7 @@ UiPage({
             subLabels[idx].textContent = text.replace(/\s\((\d{4}|All Years)\)$/, '') + ' (' + yearLabel + ')';
           }
           var note = document.getElementById('kpiYearNote');
-          if (note) note.textContent = String(year).toLowerCase() === 'all' ? 'Metrics across all years' : 'Metrics for year ' + year;
+          if (note) note.textContent = String(year).toLowerCase() === 'all' ? 'Showing full administrative totals' : 'Showing records for ' + year;
         }
 
         function initKpiYearSelect(years, defaultYear) {
@@ -397,7 +403,7 @@ UiPage({
 
           var allOption = document.createElement('option');
           allOption.value = 'all';
-          allOption.textContent = 'All Years';
+          allOption.textContent = 'All Years (Admin)';
           if (String(kpiYear).toLowerCase() === 'all') allOption.selected = true;
           select.appendChild(allOption);
 
