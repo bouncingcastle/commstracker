@@ -1,7 +1,7 @@
 import '@servicenow/sdk/global'
 
 // Application Menu and Navigation
-import './application-menu.now'
+// import './application-menu.now' // Temporarily disabled to prevent duplicate module creation during iterative deploys
 
 // Security and role model
 import './roles/commission-roles.now'
@@ -66,7 +66,7 @@ import './form-related-lists.now'
 import './deal-types-data.now'
 
 // Demo Data
-import './compensation-demo-data.now'
-import './enhanced-demo-data.now'
-import './sample-data.now'
-import './test-payments.now'
+// import './compensation-demo-data.now' // Temporarily disabled to prevent duplicate demo records
+// import './enhanced-demo-data.now' // Temporarily disabled to prevent duplicate demo records
+// import './sample-data.now' // Temporarily disabled to prevent duplicate demo records
+// import './test-payments.now' // Temporarily disabled to prevent duplicate demo records
