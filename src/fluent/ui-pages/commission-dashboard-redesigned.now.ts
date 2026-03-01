@@ -301,7 +301,7 @@ UiPage({
         console.log('Commission dashboard loaded');
 
         function invokeHelper(methodName, params, callback) {
-          var helperNames = ['x_823178_commissio.CommissionProgressHelper', 'CommissionProgressHelper'];
+          var helperNames = ['x_823178_commissio.CommissionProgressHelper', 'global.CommissionProgressHelper', 'CommissionProgressHelper'];
 
           function tryIndex(index) {
             if (index >= helperNames.length) {
@@ -319,11 +319,28 @@ UiPage({
             }
 
             ajax.getXMLAnswer(function(response) {
-              if (!response && index < helperNames.length - 1) {
-                tryIndex(index + 1);
+              if (response) {
+                callback(response);
                 return;
               }
-              callback(response);
+
+              ajax.getXML(function(res) {
+                var xmlAnswer = null;
+                try {
+                  if (res && res.responseXML && res.responseXML.documentElement) {
+                    xmlAnswer = res.responseXML.documentElement.getAttribute('answer');
+                  }
+                } catch (e) {
+                  xmlAnswer = null;
+                }
+
+                if (!xmlAnswer && index < helperNames.length - 1) {
+                  tryIndex(index + 1);
+                  return;
+                }
+
+                callback(xmlAnswer);
+              });
             });
           }
 
@@ -356,16 +373,17 @@ UiPage({
           if (el) el.textContent = val;
         };
 
-        var kpiYear = new Date().getFullYear();
+        var kpiYear = 'all';
 
         function setMetricSubs(year) {
           var subLabels = document.querySelectorAll('.metric-sub');
+          var yearLabel = String(year).toLowerCase() === 'all' ? 'All Years' : String(year);
           for (var idx = 0; idx < subLabels.length; idx++) {
             var text = subLabels[idx].textContent || '';
-            subLabels[idx].textContent = text.replace(/\s\(\d{4}\)$/, '') + ' (' + year + ')';
+            subLabels[idx].textContent = text.replace(/\s\((\d{4}|All Years)\)$/, '') + ' (' + yearLabel + ')';
           }
           var note = document.getElementById('kpiYearNote');
-          if (note) note.textContent = 'Metrics for year ' + year;
+          if (note) note.textContent = String(year).toLowerCase() === 'all' ? 'Metrics across all years' : 'Metrics for year ' + year;
         }
 
         function initKpiYearSelect(years, defaultYear) {
@@ -374,20 +392,27 @@ UiPage({
 
           var currentYear = new Date().getFullYear();
           var options = (years && years.length) ? years : [currentYear + 2, currentYear + 1, currentYear, currentYear - 1, currentYear - 2];
-          kpiYear = parseInt(defaultYear, 10) || kpiYear;
+          kpiYear = kpiYear || (defaultYear ? String(defaultYear) : 'all');
           select.innerHTML = '';
+
+          var allOption = document.createElement('option');
+          allOption.value = 'all';
+          allOption.textContent = 'All Years';
+          if (String(kpiYear).toLowerCase() === 'all') allOption.selected = true;
+          select.appendChild(allOption);
+
           for (var i = 0; i < options.length; i++) {
             var year = parseInt(options[i], 10);
             if (isNaN(year)) continue;
             var option = document.createElement('option');
             option.value = String(year);
             option.textContent = String(year);
-            if (year === kpiYear) option.selected = true;
+            if (String(year) === String(kpiYear)) option.selected = true;
             select.appendChild(option);
           }
 
           select.addEventListener('change', function() {
-            kpiYear = parseInt(select.value, 10) || currentYear;
+            kpiYear = select.value || 'all';
             loadMetrics(kpiYear);
           });
         }
