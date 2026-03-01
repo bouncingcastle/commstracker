@@ -140,6 +140,51 @@ Record({
     }
 })
 
+// Plan Targets Module - Quota targets by deal type
+Record({
+    $id: Now.ID['plan_targets_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Plan Targets',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_plan_targets',
+        hint: 'Configure annual quota targets per deal type',
+        order: 32.1,
+        active: true
+    }
+})
+
+// Plan Tiers Module - Commission acceleration structure
+Record({
+    $id: Now.ID['plan_tiers_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Plan Tiers',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_plan_tiers',
+        hint: 'Configure commission rate acceleration by quota attainment',
+        order: 32.2,
+        active: true
+    }
+})
+
+// Plan Bonuses Module - Performance bonuses
+Record({
+    $id: Now.ID['plan_bonuses_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Plan Bonuses',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_plan_bonuses',
+        hint: 'Configure discretionary and performance bonuses',
+        order: 32.3,
+        active: true
+    }
+})
+
 // Commission Statements Module
 Record({
     $id: Now.ID['statements_module'],

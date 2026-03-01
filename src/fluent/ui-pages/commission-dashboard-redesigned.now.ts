@@ -136,7 +136,7 @@ UiPage({
 <body>
   <div class="container">
     <div class="header">
-      <h1 class="title">Commission Management</h1>
+      <h1 class="title">📋 Commission Management</h1>
       <p class="subtitle">Navigate deals, invoices, payments, calculations, plans, and statements. Real-time operational hub.</p>
       <div class="chips" id="roleChips"></div>
     </div>
@@ -144,27 +144,27 @@ UiPage({
     <!-- Key Metrics -->
     <div class="grid">
       <div class="card metric">
-        <div class="metric-label">Total Statements</div>
+        <div class="metric-label">💰 Total Statements</div>
         <div class="metric-value" id="kpiStatements">—</div>
         <div class="metric-sub">Commission statements issued</div>
       </div>
 
       <div class="card metric">
-        <div class="metric-label">Pending Reviews</div>
+        <div class="metric-label">⏳ Pending Reviews</div>
         <div class="metric-value" id="kpiExceptions">—</div>
         <div class="metric-sub">Exceptions awaiting approval</div>
       </div>
 
       <div class="card metric">
-        <div class="metric-label">Active Deals</div>
+        <div class="metric-label">🎯 Active Deals</div>
         <div class="metric-value" id="kpiDeals">—</div>
         <div class="metric-sub">Deals in-flight</div>
       </div>
 
       <div class="card metric">
-        <div class="metric-label">System Alerts</div>
+        <div class="metric-label">🚨 System Alerts</div>
         <div class="metric-value" id="kpiAlerts">—</div>
-        <div class="metric-sub">Active alerts &amp; issues</div>
+        <div class="metric-sub">Active alerts & issues</div>
       </div>
     </div>
 
@@ -172,7 +172,7 @@ UiPage({
     <div class="big-grid">
       <div class="big-card">
         <div class="card-title">
-          <span class="icon">Customer</span>
+          <span class="icon">👤</span>
           Sales Rep
         </div>
         <div class="nav-group">
@@ -186,7 +186,7 @@ UiPage({
 
       <div class="big-card">
         <div class="card-title">
-          <span class="icon">List</span>
+          <span class="icon">📊</span>
           Data Tables
         </div>
         <div class="nav-group">
@@ -210,7 +210,7 @@ UiPage({
     <div class="big-grid">
       <div class="big-card">
         <div class="card-title">
-          <span class="icon">Tag</span>
+          <span class="icon">💵</span>
           Commission Workflow
         </div>
         <div class="nav-group">
@@ -244,8 +244,8 @@ UiPage({
 
       <div class="big-card">
         <div class="card-title">
-          <span class="icon">Settings</span>
-          Administration &amp; Audit
+          <span class="icon">⚙️</span>
+          Administration & Audit
         </div>
         <div class="nav-group">
           <a class="nav-item" href="/x_823178_commissio_exception_approvals_list.do">
@@ -267,94 +267,7 @@ UiPage({
   </div>
 
   <div class="footer">
-    Commission Management System · Real-time sync with Zoho Bigin and Books
-  </div>
-</body>
-</html>
-  `,
-
-      <div class="card kpi"><div class="cardPad">
-        <div class="kLabel"><span class="dot warn"></span>Pending</div>
-        <div class="kValue" id="kpiPending">—</div>
-        <div class="kHint">Reviews / exceptions (to be wired)</div>
-      </div></div>
-
-      <div class="card kpi"><div class="cardPad">
-        <div class="kLabel"><span class="dot good"></span>Active Deals</div>
-        <div class="kValue" id="kpiDeals">—</div>
-        <div class="kHint">Deals in-flight (to be wired)</div>
-      </div></div>
-
-      <div class="card kpi"><div class="cardPad">
-        <div class="kLabel"><span class="dot bad"></span>System</div>
-        <div class="kValue" id="kpiAlerts">—</div>
-        <div class="kHint">Alerts / failures (to be wired)</div>
-      </div></div>
-
-      <!-- Jump/search bar -->
-      <div class="card wide">
-        <div class="bar">
-          <div class="search">
-            <span style="color:rgba(233,238,252,.70);font-size:13px;">Jump</span>
-            <input id="jumpInput" type="text" placeholder="Type: deals, invoices, payments, calculations, plans, statements, exceptions, alerts…" />
-          </div>
-          <div class="pillRow" aria-label="Quick links">
-            <a class="pill" href="/x_823178_commissio_deals_list.do">Deals</a>
-            <a class="pill" href="/x_823178_commissio_invoices_list.do">Invoices</a>
-            <a class="pill" href="/x_823178_commissio_payments_list.do">Payments</a>
-            <a class="pill" href="/x_823178_commissio_commission_calculations_list.do">Calculations</a>
-            <a class="pill" href="/x_823178_commissio_commission_plans_list.do">Plans</a>
-            <a class="pill" href="/x_823178_commissio_commission_statements_list.do">Statements</a>
-            <a class="pill" href="/x_823178_commissio_exception_approvals_list.do">Exceptions</a>
-            <a class="pill" href="/x_823178_commissio_system_alerts_list.do">Alerts</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Panels -->
-      <div class="card panel">
-        <div class="panelHead">� Sales Rep <span class="chip">personal</span></div>
-        <div class="panelBody">
-          <a class="btn" href="/x_823178_commissio_progress.do"><span>My Progress</span><span class="go">Open →</span></a>
-          <div class="meta" style="color:var(--muted);font-size:12px;">View your earnings, pending amounts, and active deals.</div>
-        </div>
-      </div>
-
-      <div class="card panel">
-        <div class="panelHead">�📊 Data <span class="chip">lists</span></div>
-        <div class="panelBody">
-          <a class="btn" href="/x_823178_commissio_deals_list.do"><span>Deals</span><span class="go">Open →</span></a>
-          <a class="btn" href="/x_823178_commissio_invoices_list.do"><span>Invoices</span><span class="go">Open →</span></a>
-          <a class="btn" href="/x_823178_commissio_payments_list.do"><span>Payments</span><span class="go">Open →</span></a>
-          <div class="meta" style="color:var(--muted);font-size:12px;">Use these to validate sync output first.</div>
-        </div>
-      </div>
-
-      <div class="card panel">
-        <div class="panelHead">💰 Commissions <span class="chip">workflow</span></div>
-        <div class="panelBody">
-          <a class="btn" href="/x_823178_commissio_commission_calculations_list.do"><span>Calculations</span><span class="go">Open →</span></a>
-          <a class="btn" href="/x_823178_commissio_commission_statements_list.do"><span>Statements</span><span class="go">Open →</span></a>
-          <a class="btn" href="/x_823178_commissio_commission_plans_list.do"><span>Plans</span><span class="go">Open →</span></a>
-          <div class="meta" style="color:var(--muted);font-size:12px;">When ready, we’ll add “Create month”, “Lock”, “Pay”.</div>
-        </div>
-      </div>
-
-      <div class="card panel">
-        <div class="panelHead">⚙️ Admin / Audit <span class="chip">ops</span></div>
-        <div class="panelBody">
-          <a class="btn" href="/x_823178_commissio_exception_approvals_list.do"><span>Exception Approvals</span><span class="go">Open →</span></a>
-          <a class="btn" href="/x_823178_commissio_reconciliation_log_list.do"><span>Reconciliation Log</span><span class="go">Open →</span></a>
-          <a class="btn" href="/x_823178_commissio_system_alerts_list.do"><span>System Alerts</span><span class="go">Open →</span></a>
-          <div class="meta" style="color:var(--muted);font-size:12px;">This is where you keep the machine honest.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="foot">
-      Next step: wire KPI values via a simple endpoint (Script Include + GlideAjax) or a lightweight REST call.
-      For now, this dashboard is a fast navigation hub that users can actually use.
-    </div>
+    Commission Management System · Real-time sync with Zoho Bigin & Books
   </div>
 </body>
 </html>
