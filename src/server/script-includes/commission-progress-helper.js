@@ -25,7 +25,8 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
                     breakdown: {},
                     deal_breakdown: {},
                     recent_calculations: [],
-                    active_deals: []
+                    active_deals: [],
+                    active_plan: null
                 }
             };
 
@@ -34,6 +35,26 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
             var yearStart = new GlideDateTime();
             yearStart.setMonthLocalTime(1, 1);
             yearStart.setDateLocalTime(today.getYearLocalTime(), 1, 1);
+
+            // Get active commission plan for this rep
+            var planGr = new GlideRecord('x_823178_commissio_commission_plans');
+            planGr.addQuery('sales_rep', userId);
+            planGr.addQuery('is_active', true);
+            planGr.addQuery('effective_start_date', '<=', today.getDisplayValue());
+            planGr.addQuery('effective_end_date', '>=', today.getDisplayValue());
+            planGr.orderBy('effective_start_date');
+            planGr.query();
+
+            if (planGr.next()) {
+                var planYear = new GlideDateTime(planGr.getValue('effective_start_date')).getYearLocalTime();
+                result.data.active_plan = {
+                    plan_name: planGr.getValue('plan_name'),
+                    plan_target_amount: planGr.getValue('plan_target_amount'),
+                    plan_year: planYear,
+                    effective_start_date: planGr.getValue('effective_start_date'),
+                    effective_end_date: planGr.getValue('effective_end_date')
+                };
+            }
 
             // Fetch commission calculations for this rep
             var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
@@ -146,8 +167,45 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
             return JSON.stringify(result);
 
         } catch (e) {
-            gs.error('CommissionProgressHelper error: ' + e.message);
+            gs.error('CommissionProgressHelper.getRepProgress error: ' + e.message);
             return this.getErrorJSON('Error fetching commission progress: ' + e.message);
+        }
+    },
+
+    searchUsers: function() {
+        var searchTerm = this.getParameter('search_term') || '';
+        
+        if (!searchTerm || searchTerm.length < 2) {
+            return this.getErrorJSON('Search term must be at least 2 characters');
+        }
+
+        try {
+            // Search for user by name or ID
+            var userGr = new GlideRecord('sys_user');
+            userGr.addActiveQuery();
+            userGr.addQuery('name', 'CONTAINS', searchTerm);
+            userGr.orCondition();
+            userGr.addQuery('first_name', 'CONTAINS', searchTerm);
+            userGr.orCondition();
+            userGr.addQuery('last_name', 'CONTAINS', searchTerm);
+            userGr.setLimit(1);
+            userGr.query();
+
+            if (userGr.next()) {
+                return JSON.stringify({
+                    status: 'success',
+                    data: {
+                        user_id: userGr.getUniqueValue(),
+                        user_name: userGr.getDisplayValue('name')
+                    }
+                });
+            }
+
+            return this.getErrorJSON('No user found matching: ' + searchTerm);
+
+        } catch (e) {
+            gs.error('CommissionProgressHelper.searchUsers error: ' + e.message);
+            return this.getErrorJSON('Error searching users: ' + e.message);
         }
     },
 
@@ -160,3 +218,4 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
 
     type: 'CommissionProgressHelper'
 });
+

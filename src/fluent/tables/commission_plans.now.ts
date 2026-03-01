@@ -67,6 +67,12 @@ export const x_823178_commissio_commission_plans = Table({
             scale: 2,
             mandatory: true
         }),
+        plan_target_amount: DecimalColumn({ 
+            label: 'Plan Target Commission Amount',
+            precision: 12,
+            scale: 2,
+            description: 'Total commission target for this plan period'
+        }),
         description: StringColumn({ 
             label: 'Description',
             maxLength: 500

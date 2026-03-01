@@ -154,6 +154,80 @@ UiPage({
       text-align:center;padding:24px;color:var(--muted);
     }
 
+    .user-selector{
+      display:none;margin-bottom:16px;padding:16px;background:rgba(255,255,255,.04);
+      border:1px solid var(--border);border-radius:var(--radius);
+    }
+    .user-selector.visible{
+      display:block;
+    }
+    .selector-label{
+      font-size:12px;font-weight:600;text-transform:uppercase;
+      color:var(--muted);margin-bottom:8px;letter-spacing:.5px;
+    }
+    .selector-field{
+      display:flex;gap:8px;
+    }
+    .selector-field input{
+      flex:1;padding:8px 12px;background:rgba(255,255,255,.08);
+      border:1px solid var(--border);border-radius:6px;color:var(--text);
+    }
+    .selector-field button{
+      padding:8px 16px;background:var(--brand);color:var(--bg);
+      border:0;border-radius:6px;font-weight:600;cursor:pointer;
+      transition:background 200ms ease;
+    }
+    .selector-field button:hover{
+      background:rgba(110,168,255,.8);
+    }
+
+    .plan-card{
+      background:linear-gradient(135deg, rgba(110,168,255,.15), rgba(40,209,124,.08));
+      border:1px solid var(--border);border-radius:var(--radius);
+      padding:24px;margin-bottom:24px;
+    }
+    .plan-header{
+      display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;
+    }
+    .plan-title{
+      font-size:18px;font-weight:700;
+    }
+    .plan-year{
+      font-size:12px;color:var(--muted);background:rgba(255,255,255,.06);
+      padding:4px 8px;border-radius:4px;
+    }
+    .plan-rows{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px;
+    }
+    .plan-item{
+      display:flex;flex-direction:column;
+    }
+    .plan-item-label{
+      font-size:11px;color:var(--muted);text-transform:uppercase;
+      margin-bottom:4px;letter-spacing:.3px;
+    }
+    .plan-item-value{
+      font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;
+    }
+    .plan-progress{
+      background:rgba(255,255,255,.06);padding:16px;border-radius:8px;
+    }
+    .plan-progress-label{
+      font-size:12px;color:var(--muted);margin-bottom:12px;
+      display:flex;justify-content:space-between;
+    }
+    .plan-progress-bar{
+      width:100%;height:12px;background:rgba(255,255,255,.04);
+      border-radius:6px;overflow:hidden;margin-bottom:8px;
+    }
+    .plan-progress-fill{
+      height:100%;background:linear-gradient(90deg, var(--brand), var(--good));
+      border-radius:6px;transition:width 300ms ease;
+    }
+    .plan-progress-percentage{
+      font-size:13px;color:var(--good);font-weight:600;text-align:right;
+    }
+
     .foot{
       padding:16px 24px;text-align:center;color:var(--muted);font-size:12px;
       border-top:1px solid var(--border);background:rgba(0,0,0,.2);
@@ -172,6 +246,16 @@ UiPage({
 <body>
   <div class="container">
     <div class="header">
+      <!-- Admin User Selector -->
+      <div class="user-selector" id="userSelector">
+        <div class="selector-label">👤 View User Progress (Admin Only)</div>
+        <div class="selector-field">
+          <input type="text" id="userSearchInput" placeholder="Enter user name or ID..." />
+          <button onclick="searchAndSelectUser()">Load User</button>
+          <button onclick="resetToCurrentUser()" style="background:var(--warn);color:var(--bg);">Reset to Me</button>
+        </div>
+      </div>
+
       <h1 class="title">My Commission Progress</h1>
       <p class="subtitle">Track your earnings, pending amounts, and deal pipeline</p>
       <div class="userInfo">
@@ -179,6 +263,11 @@ UiPage({
         <span id="periodInfo" style="margin-left:16px;"></span>
       </div>
       <div class="chips" id="roleChips"></div>
+    </div>
+
+    <!-- Plan Progress Card -->
+    <div class="plan-card" id="planCard">
+      <div class="loading">Loading plan data...</div>
     </div>
 
     <!-- KPI Cards -->
@@ -292,11 +381,18 @@ UiPage({
       try {
         console.log('Commission progress page loaded');
 
-        // Role chips
+        var currentUserId = null;
+        var viewingUserId = null;
+
+        // Role chips and admin selector
         var chips = document.getElementById('roleChips');
+        var isAdmin = false;
         if (chips && window.g_user && typeof window.g_user.hasRole === 'function') {
           var roles = [];
-          if (g_user.hasRole('x_823178_commissio.admin')) roles.push('Admin');
+          if (g_user.hasRole('x_823178_commissio.admin')) {
+            roles.push('Admin');
+            isAdmin = true;
+          }
           if (g_user.hasRole('x_823178_commissio.finance')) roles.push('Finance');
           if (g_user.hasRole('x_823178_commissio.rep')) roles.push('Rep');
           if (roles.length === 0) roles.push('User');
@@ -309,8 +405,16 @@ UiPage({
           }
         }
 
+        // Show admin user selector
+        if (isAdmin) {
+          var selector = document.getElementById('userSelector');
+          if (selector) selector.classList.add('visible');
+        }
+
         // Set user name
         if (window.g_user) {
+          currentUserId = window.g_user.getID();
+          viewingUserId = currentUserId;
           var userEl = document.getElementById('userName');
           if (userEl) {
             userEl.textContent = 'Welcome, ' + (window.g_user.getFullName ? window.g_user.getFullName() : 'Sales Rep') + '!';
@@ -324,27 +428,112 @@ UiPage({
           periodEl.textContent = 'Year-to-Date: Jan 1 - ' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear();
         }
 
-        // Load data via AJAX
-        var userId = window.g_user ? window.g_user.getID() : null;
-        if (!userId) {
-          console.error('Cannot load progress: no user context');
-          return;
+        // Admin user search
+        window.searchAndSelectUser = function() {
+          var input = document.getElementById('userSearchInput');
+          var searchTerm = input ? input.value.trim() : '';
+          if (!searchTerm) {
+            alert('Please enter a user name or ID');
+            return;
+          }
+          
+          var ajax = new GlideAjax('CommissionProgressHelper');
+          ajax.addParam('sysparm_name', 'searchUsers');
+          ajax.addParam('search_term', searchTerm);
+          ajax.getXMLAnswer(function(response) {
+            if (response && response.status === 'success' && response.data.user_id) {
+              viewingUserId = response.data.user_id;
+              loadRepProgress(viewingUserId, response.data.user_name);
+            } else {
+              alert('User not found');
+            }
+          });
+        };
+
+        // Reset to current user
+        window.resetToCurrentUser = function() {
+          viewingUserId = currentUserId;
+          if (window.g_user) {
+            loadRepProgress(currentUserId, window.g_user.getFullName ? window.g_user.getFullName() : 'You');
+          }
+        };
+
+        // Load initial data
+        loadRepProgress(viewingUserId, null);
+
+        function loadRepProgress(userId, displayName) {
+          if (!userId) return;
+
+          var ajax = new GlideAjax('CommissionProgressHelper');
+          ajax.addParam('sysparm_name', 'getRepProgress');
+          ajax.addParam('user_id', userId);
+          ajax.getXMLAnswer(function(response) {
+            if (response && response.status === 'success') {
+              var data = response.data;
+              
+              // Update header if viewing different user
+              if (displayName && userId !== currentUserId) {
+                var userEl = document.getElementById('userName');
+                if (userEl) {
+                  userEl.textContent = 'Viewing: ' + displayName;
+                }
+              }
+
+              updatePlanCard(data);
+              updateMetrics(data);
+              updateCalculationsTable(data.recent_calculations || []);
+              updateDealsTable(data.active_deals || []);
+            } else {
+              console.error('Failed to load progress data', response);
+            }
+          });
         }
 
-        // Create GlideAjax request to fetch metrics
-        var ajax = new GlideAjax('CommissionProgressHelper');
-        ajax.addParam('sysparm_name', 'getRepProgress');
-        ajax.addParam('user_id', userId);
-        ajax.getXMLAnswer(function(response) {
-          if (response && response.status === 'success') {
-            var data = response.data;
-            updateMetrics(data);
-            updateCalculationsTable(data.recent_calculations || []);
-            updateDealsTable(data.active_deals || []);
-          } else {
-            console.error('Failed to load progress data', response);
+        function updatePlanCard(data) {
+          var planCard = document.getElementById('planCard');
+          if (!planCard) return;
+
+          if (!data.active_plan) {
+            planCard.innerHTML = '<div class="empty"><div class="empty-icon">📋</div>No active commission plan assigned</div>';
+            return;
           }
-        });
+
+          var plan = data.active_plan;
+          var planYear = plan.plan_year || new Date().getFullYear();
+          var targetAmount = parseFloat(plan.plan_target_amount || 0);
+          var earnedAmount = parseFloat(data.total_earned || 0);
+          var progressPercent = targetAmount > 0 ? Math.min((earnedAmount / targetAmount) * 100, 100) : 0;
+          var remainingAmount = Math.max(targetAmount - earnedAmount, 0);
+
+          planCard.innerHTML = 
+            '<div class="plan-header">' +
+              '<div class="plan-title">📈 ' + (plan.plan_name || 'Active Plan') + '</div>' +
+              '<div class="plan-year">' + planYear + '</div>' +
+            '</div>' +
+            '<div class="plan-rows">' +
+              '<div class="plan-item">' +
+                '<div class="plan-item-label">Plan Target</div>' +
+                '<div class="plan-item-value">$' + targetAmount.toFixed(2) + '</div>' +
+              '</div>' +
+              '<div class="plan-item">' +
+                '<div class="plan-item-label">Earned to Date</div>' +
+                '<div class="plan-item-value good">$' + earnedAmount.toFixed(2) + '</div>' +
+              '</div>' +
+              '<div class="plan-item">' +
+                '<div class="plan-item-label">Remaining</div>' +
+                '<div class="plan-item-value ' + (remainingAmount > 0 ? 'warn' : 'good') + '">$' + remainingAmount.toFixed(2) + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="plan-progress">' +
+              '<div class="plan-progress-label">' +
+                '<span>Progress</span>' +
+                '<span class="plan-progress-percentage">' + progressPercent.toFixed(1) + '%</span>' +
+              '</div>' +
+              '<div class="plan-progress-bar">' +
+                '<div class="plan-progress-fill" style="width:' + progressPercent + '%;"></div>' +
+              '</div>' +
+            '</div>';
+        }
 
         function updateMetrics(data) {
           // Total Earned
