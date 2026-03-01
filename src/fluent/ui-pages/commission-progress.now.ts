@@ -259,6 +259,20 @@ UiPage({
       height:100%;background:linear-gradient(90deg, var(--brand), var(--good));
       border-radius:6px;transition:width 300ms ease;
     }
+    .plan-progress-markers{
+      position:relative;height:16px;margin-top:8px;
+    }
+    .plan-progress-marker{
+      position:absolute;top:0;transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;gap:2px;
+      color:var(--muted);font-size:10px;line-height:1;
+    }
+    .plan-progress-marker-line{
+      width:1px;height:8px;background:rgba(255,255,255,.45);
+    }
+    .plan-progress-tier{
+      margin-top:6px;font-size:12px;color:var(--muted);
+    }
     .plan-progress-percentage{
       font-size:13px;color:var(--good);font-weight:600;text-align:right;
     }
@@ -1196,6 +1210,12 @@ UiPage({
           var progressPercent = targetAmount > 0 ? ((earnedAmount / targetAmount) * 100) : 0;
           var remainingAmount = targetAmount - earnedAmount;
           var progressBarPercent = Math.min(Math.max(progressPercent, 0), 100);
+          var sortedTiers = getSortedTiers(plan.tiers || []);
+          var currentTier = resolveTierByPercent(sortedTiers, progressPercent);
+          var currentTierLabel = currentTier
+            ? (currentTier.tier_name || 'Tier') + ' @ ' + (parseFloat(currentTier.rate_percent || 0)).toFixed(2) + '%'
+            : 'Base rate';
+          var tierMarkers = renderTierMarkers(sortedTiers);
 
           planCard.innerHTML = 
             '<div class="plan-header">' +
@@ -1224,7 +1244,58 @@ UiPage({
               '<div class="plan-progress-bar">' +
                 '<div class="plan-progress-fill" style="width:' + progressBarPercent + '%;"></div>' +
               '</div>' +
+              tierMarkers +
+              '<div class="plan-progress-tier">Current Tier: <strong>' + currentTierLabel + '</strong></div>' +
             '</div>';
+        }
+
+        function getSortedTiers(tiers) {
+          if (!tiers || !tiers.length) return [];
+
+          return tiers
+            .map(function(tier) {
+              return {
+                tier_name: tier.tier_name || 'Tier',
+                floor_percent: parseFloat(tier.floor_percent || 0),
+                rate_percent: parseFloat(tier.rate_percent || 0)
+              };
+            })
+            .filter(function(tier) {
+              return !isNaN(tier.floor_percent) && tier.floor_percent >= 0;
+            })
+            .sort(function(a, b) {
+              return a.floor_percent - b.floor_percent;
+            });
+        }
+
+        function resolveTierByPercent(tiers, attainmentPercent) {
+          if (!tiers || !tiers.length) return null;
+
+          var best = null;
+          for (var i = 0; i < tiers.length; i++) {
+            var floor = parseFloat(tiers[i].floor_percent || 0);
+            if (attainmentPercent >= floor && (!best || floor >= parseFloat(best.floor_percent || 0))) {
+              best = tiers[i];
+            }
+          }
+          return best;
+        }
+
+        function renderTierMarkers(tiers) {
+          if (!tiers || !tiers.length) return '';
+
+          var html = '<div class="plan-progress-markers">';
+          tiers.forEach(function(tier) {
+            var floor = parseFloat(tier.floor_percent || 0);
+            var markerLeft = Math.max(0, Math.min(floor, 100));
+            html +=
+              '<div class="plan-progress-marker" style="left:' + markerLeft + '%;">' +
+                '<div class="plan-progress-marker-line"></div>' +
+                '<div>' + floor.toFixed(0) + '%</div>' +
+              '</div>';
+          });
+          html += '</div>';
+          return html;
         }
 
         function updateMetrics(data) {
@@ -1330,7 +1401,7 @@ UiPage({
 
           // Update quota progress tracker
           if (data.quota_progress && Object.keys(data.quota_progress).length > 0) {
-            updateQuotaProgress(data.quota_progress);
+            updateQuotaProgress(data.quota_progress, data.active_plan && data.active_plan.tiers ? data.active_plan.tiers : []);
           }
 
           // Update timestamp
@@ -1341,7 +1412,7 @@ UiPage({
           }
         }
 
-        function updateQuotaProgress(quotaProgress) {
+        function updateQuotaProgress(quotaProgress, planTiers) {
           var container = document.getElementById('quotaProgress');
           container.innerHTML = '';
 
@@ -1350,12 +1421,21 @@ UiPage({
             return;
           }
 
+          var sortedTiers = getSortedTiers(planTiers || []);
+
           Object.keys(quotaProgress).forEach(function(dealType) {
             var progress = quotaProgress[dealType];
             var target = parseFloat(progress.target_amount || 0);
             var achieved = parseFloat(progress.achieved_amount || 0);
             var attainment = parseFloat(progress.attainment_percent || 0);
             var remaining = parseFloat(progress.remaining_amount || 0);
+            var resolvedTier = progress.applied_tier_name
+              ? {
+                  tier_name: progress.applied_tier_name,
+                  rate_percent: parseFloat(progress.applied_rate_percent || 0)
+                }
+              : resolveTierByPercent(sortedTiers, attainment);
+            var tierMarkers = renderTierMarkers(sortedTiers);
 
             var item = document.createElement('div');
             item.className = 'progress-item';
@@ -1384,10 +1464,11 @@ UiPage({
                   (attainment >= 100 ? 'var(--good)' : 'var(--brand)') + 
                   ',var(--good));width:' + Math.min(Math.max(attainment, 0), 100) + '%;border-radius:4px;transition:width 300ms ease;"></div>' +
               '</div>' +
+              tierMarkers +
               '<div style="margin-top:12px;font-size:12px;color:var(--muted);">' +
                 '<strong>$' + remaining.toFixed(0) + '</strong> remaining' +
                 (progress.accelerator_active ? '<span style="margin-left:8px;color:var(--good);font-weight:600;">Accelerator Active</span>' : '') +
-                (progress.applied_tier_name ? '<span style="margin-left:8px;color:var(--brand);">' + progress.applied_tier_name + ' @ ' + (parseFloat(progress.applied_rate_percent || 0)).toFixed(2) + '%</span>' : '') +
+                (resolvedTier ? '<span style="margin-left:8px;color:var(--brand);">Current Tier: ' + (resolvedTier.tier_name || 'Tier') + ' @ ' + (parseFloat(resolvedTier.rate_percent || 0)).toFixed(2) + '%</span>' : '') +
               '</div>';
             
             container.appendChild(item);
