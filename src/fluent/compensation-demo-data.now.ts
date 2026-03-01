@@ -405,7 +405,7 @@ Record({
         approval_date: '2026-02-09 11:30:00',
         status: 'approved',
         request_type: 'high_value_deal',
-        reference_record: Now.ID['demo_deal_abel_2'],
+        reference_record: Now.ID['demo_deal_abel_2'].id,
         reference_table: 'x_823178_commissio_deals',
         request_date: '2026-02-09 11:00:00',
         business_justification: 'Strategic account',
