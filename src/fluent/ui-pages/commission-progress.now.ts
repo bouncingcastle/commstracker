@@ -126,7 +126,7 @@ UiPage({
     .break-value.bad{color:var(--bad);}
 
     .list-table{
-      width:100%;border-collapse:collapse;font-size:13px;
+      width:100%;border-collapse:collapse;font-size:13px;background:var(--panel2);color:var(--text);
     }
     .list-table th{
       text-align:left;padding:12px;background:rgba(255,255,255,.04);
@@ -135,6 +135,12 @@ UiPage({
     }
     .list-table td{
       padding:10px 12px;border:1px solid var(--border);
+    }
+    .list-table td.empty{
+      color:var(--muted) !important;
+      background:rgba(255,255,255,.03) !important;
+      text-align:center;
+      padding:24px !important;
     }
     .list-table tr:hover{background:rgba(255,255,255,.03);}
 
@@ -693,12 +699,37 @@ UiPage({
           var select = document.getElementById('userSelect');
           if (!select) return;
 
+          function ensureCurrentUserOption() {
+            if (!currentUserId) return;
+            var exists = false;
+            for (var i = 0; i < select.options.length; i++) {
+              if (select.options[i].value === currentUserId) {
+                select.selectedIndex = i;
+                exists = true;
+                break;
+              }
+            }
+            if (!exists) {
+              var option = document.createElement('option');
+              option.value = currentUserId;
+              option.textContent = (userCtx && userCtx.name) ? userCtx.name + ' (You)' : 'Current User';
+              option.selected = true;
+              select.appendChild(option);
+            }
+          }
+
           invokeHelper('listUsersWithData', {}, function(response) {
-            if (!response) return;
+            if (!response) {
+              ensureCurrentUserOption();
+              return;
+            }
 
             try {
               var payload = typeof response === 'string' ? JSON.parse(response) : response;
-              if (!payload || payload.status !== 'success' || !payload.data || !payload.data.length) return;
+              if (!payload || payload.status !== 'success' || !payload.data || !payload.data.length) {
+                ensureCurrentUserOption();
+                return;
+              }
 
               select.innerHTML = '<option value="">Select representative...</option>';
               payload.data.forEach(function(item) {
@@ -709,8 +740,11 @@ UiPage({
                 if (currentUserId && currentUserId === item.user_id) option.selected = true;
                 select.appendChild(option);
               });
+
+              ensureCurrentUserOption();
             } catch (e) {
               console.log('User options parse error:', e);
+              ensureCurrentUserOption();
             }
           });
         }
@@ -856,7 +890,7 @@ UiPage({
               }
             } else {
               console.error('No response from server');
-              showGlobalLoadError('No response from server');
+              showGlobalLoadError('Commission data service did not return a response.');
             }
           });
         }
@@ -866,7 +900,7 @@ UiPage({
 
           var planCard = document.getElementById('planCard');
           if (planCard) {
-            planCard.innerHTML = '<div class="empty"><div class="empty-icon">❌</div>' + msg + '</div>';
+            planCard.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>' + msg + '</div>';
           }
 
           var metricIds = ['totalEarned', 'pendingAmount', 'paidAmount', 'activeDeals'];

@@ -8,9 +8,10 @@ Record({
         name: 'CommissionProgressHelper',
         active: true,
         client_callable: true,
+        access: 'public',
         script: `
 var CommissionProgressHelper = Class.create();
-CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     
     getRepProgress: function() {
         var userId = this.getParameter('sysparm_user_id') || this.getParameter('user_id');
@@ -403,6 +404,33 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
             while (dealAgg.next()) {
                 addUserById(dealAgg.getValue('current_owner'));
             }
+
+            var roleNames = [
+                'x_823178_commissio.rep',
+                'x_823178_commissio.finance',
+                'x_823178_commissio.admin'
+            ];
+            var roleIds = [];
+
+            var roleGr = new GlideRecord('sys_user_role');
+            roleGr.addQuery('name', 'IN', roleNames.join(','));
+            roleGr.query();
+
+            while (roleGr.next()) {
+                roleIds.push(roleGr.getUniqueValue());
+            }
+
+            if (roleIds.length > 0) {
+                var userRoleGr = new GlideRecord('sys_user_has_role');
+                userRoleGr.addQuery('role', 'IN', roleIds.join(','));
+                userRoleGr.query();
+
+                while (userRoleGr.next()) {
+                    addUserById(userRoleGr.getValue('user'));
+                }
+            }
+
+            addUserById(gs.getUserID());
 
             users.sort(function(a, b) {
                 var an = (a.user_name || '').toLowerCase();
