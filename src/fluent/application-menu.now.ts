@@ -208,8 +208,8 @@ Record({
         title: 'Plan & Compensation',
         application: commissionApp.$id,
         link_type: 'DIRECT',
-        query: 'rep_compensation_management.do',
-        hint: 'Configure rep quotas, tiers, bonuses, and OTE',
+        query: 'x_823178_commissio_commission_plans_list.do?sysparm_query=is_active=true',
+        hint: 'Assign and manage representative commission plans',
         order: 34,
         active: true
     }

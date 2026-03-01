@@ -65,6 +65,10 @@ UiPage({
     .toolbar select{
       background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--border);
       border-radius:6px;padding:6px 10px;font-size:12px;
+      appearance:none;-webkit-appearance:none;color-scheme:dark;
+    }
+    .toolbar select option{
+      background:var(--panel);color:var(--text);
     }
     .toolbar-note{
       font-size:12px;color:var(--muted);
