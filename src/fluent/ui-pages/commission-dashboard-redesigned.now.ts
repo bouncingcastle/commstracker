@@ -209,6 +209,14 @@ UiPage({
             <span>Commission Plans</span>
             <span>→</span>
           </a>
+          <a class="nav-item" href="/x_823178_commissio_commission_plans.do?sys_id=-1">
+            <span>Plan Setup Form (New)</span>
+            <span>→</span>
+          </a>
+          <a class="nav-item" href="/x_823178_commissio_commission_plans_list.do?sysparm_query=is_active=true^ORDERBYsales_rep^ORDERBYDESCeffective_start_date">
+            <span>Plan Structure Reference (By Rep)</span>
+            <span>→</span>
+          </a>
           <a class="nav-item" href="/x_823178_commissio_plan_targets_list.do">
             <span>Plan Targets</span>
             <span>→</span>
@@ -241,7 +249,7 @@ UiPage({
             <span>Forecast Scenarios</span>
             <span>→</span>
           </a>
-          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Manage plan design, calculations, and statement lifecycle records.</p>
+          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Use Plan Setup Form for new plans. Use Plan Structure Reference to open an individual rep plan and review full structure via related lists.</p>
         </div>
       </div>
 
