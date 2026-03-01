@@ -155,6 +155,21 @@ Record({
     }
 })
 
+// Rep Compensation Management Module
+Record({
+    $id: Now.ID['compensation_management_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Plan & Compensation',
+        application: commissionApp.$id,
+        link_type: 'DIRECT',
+        query: 'rep_compensation_management.do',
+        hint: 'Configure rep quotas, tiers, bonuses, and OTE',
+        order: 34,
+        active: true
+    }
+})
+
 // Administration Separator
 Record({
     $id: Now.ID['admin_separator'],

@@ -228,6 +228,74 @@ UiPage({
       font-size:13px;color:var(--good);font-weight:600;text-align:right;
     }
 
+    .ote-container{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+    }
+    .ote-box{
+      background:rgba(255,255,255,.04);border:1px solid var(--border);
+      border-radius:8px;padding:16px;
+    }
+    .ote-label{
+      font-size:12px;color:var(--muted);text-transform:uppercase;
+      margin-bottom:8px;letter-spacing:.3px;
+    }
+    .ote-value{
+      font-size:28px;font-weight:900;color:var(--good);
+      font-variant-numeric:tabular-nums;margin:8px 0;
+    }
+    .ote-description{
+      font-size:11px;color:var(--muted);margin-top:12px;
+      padding-top:12px;border-top:1px solid rgba(255,255,255,.05);
+    }
+
+    .quota-item{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    .quota-item:last-child{border-bottom:none;}
+    .quota-label{font-size:13px;color:var(--text);}
+    .quota-amount{font-size:15px;font-weight:700;color:var(--good);font-variant-numeric:tabular-nums;}
+    .quota-total{
+      padding:12px 0;margin-top:12px;
+      border-top:2px solid var(--border);font-weight:700;
+      display:flex;justify-content:space-between;
+    }
+
+    .tier-item{
+      padding:12px;background:rgba(255,255,255,.04);border-radius:6px;
+      margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;
+    }
+    .tier-name{font-size:13px;font-weight:600;color:var(--text);}
+    .tier-range{font-size:11px;color:var(--muted);margin-top:4px;}
+    .tier-rate{
+      font-size:16px;font-weight:700;color:var(--brand);
+      font-variant-numeric:tabular-nums;
+    }
+
+    .bonus-item{
+      padding:12px;background:rgba(255,255,255,.04);border-radius:6px;
+      margin-bottom:8px;
+    }
+    .bonus-header{
+      display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;
+    }
+    .bonus-name{font-size:13px;font-weight:600;color:var(--text);}
+    .bonus-amount{
+      font-size:15px;font-weight:700;color:var(--good);
+      font-variant-numeric:tabular-nums;
+    }
+    .bonus-trigger{
+      font-size:11px;color:var(--muted);line-height:1.5;
+    }
+    .bonus-badge{
+      display:inline-block;font-size:10px;padding:4px 8px;
+      border-radius:4px;background:rgba(255,255,255,.08);
+      color:var(--muted);margin-right:6px;margin-top:6px;
+      text-transform:uppercase;letter-spacing:.2px;
+    }
+    .bonus-badge.discretionary{background:rgba(255,204,102,.15);color:var(--warn);}
+    .bonus-badge.auto{background:rgba(40,209,124,.15);color:var(--good);}
+
     .foot{
       padding:16px 24px;text-align:center;color:var(--muted);font-size:12px;
       border-top:1px solid var(--border);background:rgba(0,0,0,.2);
@@ -317,6 +385,64 @@ UiPage({
         <div class="breakdown" id="dealBreakdown">
           <div class="loading">Loading data...</div>
         </div>
+    </div>
+    </div>
+
+    <!-- Compensation & OTE Section -->
+    <div class="big-grid" id="compensationSection" style="display:none;">
+      <div class="big-card">
+        <div class="card-title">
+          <span class="icon">🎯</span>
+          Quota Targets by Deal Type
+        </div>
+        <div class="breakdown" id="quotaTargets">
+          <div class="loading">Loading data...</div>
+        </div>
+      </div>
+
+      <div class="big-card">
+        <div class="card-title">
+          <span class="icon">💵</span>
+          On-Target Earnings (OTE)
+        </div>
+        <div id="oteDisplay" style="padding:16px;">
+          <div class="loading">Loading data...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Commission Tiers & Bonuses -->
+    <div class="big-grid" id="bonusSection" style="display:none;">
+      <div class="big-card">
+        <div class="card-title">
+          <span class="icon">📈</span>
+          Commission Tier Structure
+        </div>
+        <div class="breakdown" id="tierDisplay">
+          <div class="loading">Loading data...</div>
+        </div>
+      </div>
+
+      <div class="big-card">
+        <div class="card-title">
+          <span class="icon">🎁</span>
+          Active Bonuses
+        </div>
+        <div class="breakdown" id="bonusDisplay">
+          <div class="loading">Loading data...</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Recent Calculations -->
+    <div class="big-card">
+      <div class="card-title">
+        <span class="icon">🎯</span>
+        Quota Progress by Deal Type
+      </div>
+      <div class="breakdown" id="quotaProgress">
+        <div class="loading">No quota data available</div>
       </div>
     </div>
 
@@ -441,11 +567,16 @@ UiPage({
           ajax.addParam('sysparm_name', 'searchUsers');
           ajax.addParam('search_term', searchTerm);
           ajax.getXMLAnswer(function(response) {
-            if (response && response.status === 'success' && response.data.user_id) {
-              viewingUserId = response.data.user_id;
-              loadRepProgress(viewingUserId, response.data.user_name);
+            if (response) {
+              var data = typeof response === 'string' ? JSON.parse(response) : response;
+              if (data && data.status === 'success' && data.data && data.data.user_id) {
+                viewingUserId = data.data.user_id;
+                loadRepProgress(viewingUserId, data.data.user_name);
+              } else {
+                alert('User not found: ' + (data.message || 'Unknown error'));
+              }
             } else {
-              alert('User not found');
+              alert('Error searching for user');
             }
           });
         };
@@ -468,23 +599,33 @@ UiPage({
           ajax.addParam('sysparm_name', 'getRepProgress');
           ajax.addParam('user_id', userId);
           ajax.getXMLAnswer(function(response) {
-            if (response && response.status === 'success') {
-              var data = response.data;
-              
-              // Update header if viewing different user
-              if (displayName && userId !== currentUserId) {
-                var userEl = document.getElementById('userName');
-                if (userEl) {
-                  userEl.textContent = 'Viewing: ' + displayName;
-                }
-              }
+            if (response) {
+              try {
+                var data = typeof response === 'string' ? JSON.parse(response) : response;
+                if (data && data.status === 'success' && data.data) {
+                  // Update header if viewing different user
+                  if (displayName && userId !== currentUserId) {
+                    var userEl = document.getElementById('userName');
+                    if (userEl) {
+                      userEl.textContent = 'Viewing: ' + displayName;
+                    }
+                  }
 
-              updatePlanCard(data);
-              updateMetrics(data);
-              updateCalculationsTable(data.recent_calculations || []);
-              updateDealsTable(data.active_deals || []);
+                  updatePlanCard(data.data);
+                  updateMetrics(data.data);
+                  updateCalculationsTable(data.data.recent_calculations || []);
+                  updateDealsTable(data.data.active_deals || []);
+                } else {
+                  console.error('Invalid response format', data);
+                  document.getElementById('planCard').innerHTML = '<div class="empty"><div class="empty-icon">❌</div>Error loading plan data. Please check the browser console.</div>';
+                }
+              } catch (e) {
+                console.error('Error parsing response:', e);
+                document.getElementById('planCard').innerHTML = '<div class="empty"><div class="empty-icon">❌</div>Error parsing response: ' + e.message + '</div>';
+              }
             } else {
-              console.error('Failed to load progress data', response);
+              console.error('No response from server');
+              document.getElementById('planCard').innerHTML = '<div class="empty"><div class="empty-icon">❌</div>No response from server</div>';
             }
           });
         }
@@ -586,12 +727,206 @@ UiPage({
             });
           }
 
+          // Update compensation sections if data available
+          if (data.active_plan && data.active_plan.targets && Object.keys(data.active_plan.targets).length > 0) {
+            document.getElementById('compensationSection').style.display = '';
+            updateQuotaTargets(data.active_plan);
+            updateOTE(data.active_plan);
+          }
+
+          if (data.active_plan && data.active_plan.tiers && data.active_plan.tiers.length > 0) {
+            document.getElementById('bonusSection').style.display = '';
+            updateTiers(data.active_plan.tiers);
+            updateBonuses(data.active_plan.bonuses || []);
+          }
+
+          // Update quota progress tracker
+          if (data.quota_progress && Object.keys(data.quota_progress).length > 0) {
+            updateQuotaProgress(data.quota_progress);
+          }
+
           // Update timestamp
           var lastUpEl = document.getElementById('lastUpdate');
           if (lastUpEl) {
             var now = new Date();
             lastUpEl.textContent = now.toLocaleTimeString();
           }
+        }
+
+        function updateQuotaProgress(quotaProgress) {
+          var container = document.getElementById('quotaProgress');
+          container.innerHTML = '';
+
+          if (!quotaProgress || Object.keys(quotaProgress).length === 0) {
+            container.innerHTML = '<div class="break-item">No quota progress available</div>';
+            return;
+          }
+
+          Object.keys(quotaProgress).forEach(function(dealType) {
+            var progress = quotaProgress[dealType];
+            var target = parseFloat(progress.target_amount || 0);
+            var achieved = parseFloat(progress.achieved_amount || 0);
+            var attainment = parseFloat(progress.attainment_percent || 0);
+            var remaining = parseFloat(progress.remaining_amount || 0);
+
+            var item = document.createElement('div');
+            item.className = 'progress-item';
+            item.style.cssText = 'padding:16px;border:1px solid rgba(255,255,255,.05);border-radius:8px;margin-bottom:12px;';
+            
+            var statusColor = attainment >= 100 ? 'var(--good)' : attainment >= 80 ? 'var(--brand)' : 'var(--warn)';
+            var statusEmoji = attainment >= 100 ? '✅' : attainment >= 80 ? '📈' : '⏳';
+
+            item.innerHTML = 
+              '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">' +
+                '<div style="font-weight:600;color:var(--text);">' + statusEmoji + ' ' + capitalizeFirst(dealType.replace(/_/g, ' ')) + '</div>' +
+                '<div style="font-size:14px;font-weight:700;color:' + statusColor + ';font-variant-numeric:tabular-nums;">' + attainment.toFixed(1) + '%</div>' +
+              '</div>' +
+              '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;font-size:12px;">' +
+                '<div>' +
+                  '<div style="color:var(--muted);margin-bottom:4px;">Target</div>' +
+                  '<div style="font-size:16px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;">$' + target.toFixed(0) + '</div>' +
+                '</div>' +
+                '<div>' +
+                  '<div style="color:var(--muted);margin-bottom:4px;">Achieved</div>' +
+                  '<div style="font-size:16px;font-weight:700;color:var(--good);font-variant-numeric:tabular-nums;">$' + achieved.toFixed(0) + '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div style="width:100%;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;">' +
+                '<div style="height:100%;background:linear-gradient(90deg,' + 
+                  (attainment >= 100 ? 'var(--good)' : 'var(--brand)') + 
+                  ',var(--good));width:' + Math.min(attainment, 100) + '%;border-radius:4px;transition:width 300ms ease;"></div>' +
+              '</div>' +
+              '<div style="margin-top:12px;font-size:12px;color:var(--muted);">' +
+                '<strong>$' + remaining.toFixed(0) + '</strong> remaining' +
+              '</div>';
+            
+            container.appendChild(item);
+          });
+        }
+
+        function updateQuotaTargets(plan) {
+          var container = document.getElementById('quotaTargets');
+          container.innerHTML = '';
+          
+          if (!plan.targets || Object.keys(plan.targets).length === 0) {
+            container.innerHTML = '<div class="break-item">No quota targets available</div>';
+            return;
+          }
+
+          var total = 0;
+          Object.keys(plan.targets).forEach(function(dealType) {
+            var amount = plan.targets[dealType];
+            total += amount;
+            var item = document.createElement('div');
+            item.className = 'quota-item';
+            item.innerHTML = 
+              '<span class="quota-label">' + capitalizeFirst(dealType.replace(/_/g, ' ')) + '</span>' +
+              '<span class="quota-amount">$' + parseFloat(amount).toFixed(0) + '</span>';
+            container.appendChild(item);
+          });
+
+          // Add total
+          var totalItem = document.createElement('div');
+          totalItem.className = 'quota-total';
+          totalItem.innerHTML = 
+            '<span>Total Quota</span>' +
+            '<span class="quota-amount">$' + parseFloat(total).toFixed(0) + '</span>';
+          container.appendChild(totalItem);
+        }
+
+        function updateOTE(plan) {
+          var container = document.getElementById('oteDisplay');
+          
+          var ote100 = parseFloat(plan.ote_at_100_percent || 0);
+          var oteWithBonus = parseFloat(plan.ote_with_bonuses || 0);
+          var bonusAmount = oteWithBonus - ote100;
+
+          container.innerHTML = 
+            '<div class="ote-container">' +
+              '<div class="ote-box">' +
+                '<div class="ote-label">At 100% Quota</div>' +
+                '<div class="ote-value">$' + ote100.toFixed(0) + '</div>' +
+                '<div class="ote-description">Base commission at full quota attainment</div>' +
+              '</div>' +
+              '<div class="ote-box">' +
+                '<div class="ote-label">With Bonuses</div>' +
+                '<div class="ote-value" style="color:var(--warn);">$' + oteWithBonus.toFixed(0) + '</div>' +
+                '<div class="ote-description">OTE + ' + (bonusAmount > 0 ? '$' + bonusAmount.toFixed(0) : '$0') + ' in potential bonuses</div>' +
+              '</div>' +
+            '</div>';
+        }
+
+        function updateTiers(tiers) {
+          var container = document.getElementById('tierDisplay');
+          container.innerHTML = '';
+
+          if (!tiers || tiers.length === 0) {
+            container.innerHTML = '<div class="break-item">No tier structure available</div>';
+            return;
+          }
+
+          tiers.forEach(function(tier) {
+            var rate = parseFloat(tier.rate_percent || 0);
+            var floor = parseFloat(tier.floor_percent || 0);
+            var ceiling = null;
+            
+            // Find ceiling (next tier's floor)
+            for (var i = 0; i < tiers.length; i++) {
+              var t = tiers[i];
+              var tf = parseFloat(t.floor_percent || 0);
+              if (tf > floor && (ceiling === null || tf < ceiling)) {
+                ceiling = tf;
+              }
+            }
+
+            var rangeStr = floor + '% - ' + (ceiling !== null ? ceiling + '%' : '∞');
+
+            var item = document.createElement('div');
+            item.className = 'tier-item';
+            item.innerHTML = 
+              '<div>' +
+                '<div class="tier-name">' + (tier.tier_name || 'Tier') + '</div>' +
+                '<div class="tier-range">' + rangeStr + ' of quota</div>' +
+              '</div>' +
+              '<div class="tier-rate">' + rate.toFixed(1) + '%</div>';
+            container.appendChild(item);
+          });
+        }
+
+        function updateBonuses(bonuses) {
+          var container = document.getElementById('bonusDisplay');
+          container.innerHTML = '';
+
+          if (!bonuses || bonuses.length === 0) {
+            container.innerHTML = '<div class="break-item">No bonuses available</div>';
+            return;
+          }
+
+          bonuses.forEach(function(bonus) {
+            var amount = parseFloat(bonus.amount || 0);
+            var isDiscretionary = bonus.is_discretionary;
+            var dealType = bonus.deal_type || 'Any deal type';
+
+            var item = document.createElement('div');
+            item.className = 'bonus-item';
+            item.innerHTML = 
+              '<div class="bonus-header">' +
+                '<span class="bonus-name">' + (bonus.name || 'Bonus') + '</span>' +
+                '<span class="bonus-amount">$' + amount.toFixed(0) + '</span>' +
+              '</div>' +
+              '<div class="bonus-trigger">' + (bonus.trigger || 'N/A') + '</div>' +
+              '<div style="margin-top:8px;">' +
+                '<span class="bonus-badge ' + (isDiscretionary ? 'discretionary' : 'auto') + '">' + 
+                  (isDiscretionary ? 'Discretionary' : 'Auto-Earned') + 
+                '</span>' +
+                '<span class="bonus-badge">' + capitalizeFirst(dealType.replace(/_/g, ' ')) + '</span>' +
+              '</div>';
+            container.appendChild(item);
+          });
+        }
+
+        function capitalizeFirst(str) {
+          return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
         }
 
         function updateCalculationsTable(calcs) {
