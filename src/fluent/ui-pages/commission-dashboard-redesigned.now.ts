@@ -47,59 +47,6 @@ UiPage({
     .subtitle{
       color:var(--muted);font-size:15px;max-width:70ch;
     }
-    .userInfo{
-      font-size:13px;color:var(--muted);margin-top:8px;
-    }
-    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
-    .chip{
-      font-size:11px;padding:6px 10px;border-radius:999px;
-      border:1px solid var(--border);background:rgba(255,255,255,.06);
-      color:var(--muted);font-weight:500;
-    }
-    .toolbar{
-      margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--border);
-      border-radius:8px;
-      padding:8px 10px;
-    }
-    .toolbar-label{
-      font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;font-weight:600;
-    }
-    .toolbar select{
-      background:var(--panel2) !important;color:var(--text) !important;border:1px solid var(--border) !important;
-      border-radius:6px;padding:6px 10px;font-size:12px;
-      appearance:none;-webkit-appearance:none;color-scheme:dark;
-      opacity:1 !important;
-      pointer-events:auto !important;
-      width:auto !important;
-      min-width:96px;
-      max-width:140px;
-      flex:0 0 auto;
-      -webkit-text-fill-color:var(--text) !important;
-    }
-    #kpiYearSelect,
-    select#kpiYearSelect,
-    .toolbar #kpiYearSelect{
-      background-color:var(--panel2) !important;
-      color:var(--text) !important;
-      border:1px solid var(--border) !important;
-      -webkit-text-fill-color:var(--text) !important;
-      box-shadow:none !important;
-    }
-    .toolbar select option,
-    .toolbar select optgroup{
-      background:var(--panel2) !important;color:var(--text) !important;
-    }
-    .toolbar select:focus{
-      outline:none;
-      border-color:rgba(110,168,255,.6) !important;
-      box-shadow:0 0 0 2px rgba(110,168,255,.2);
-    }
-    .toolbar-note{
-      font-size:12px;color:var(--text);
-      opacity:.9;
-    }
 
     .grid{
       display:grid;
@@ -116,6 +63,7 @@ UiPage({
       grid-column:span 1;
       cursor:pointer;
       transition:all 150ms ease;
+      padding:16px 20px;
     }
     .card.metric:hover{
       background:rgba(110,168,255,.08);
@@ -123,17 +71,13 @@ UiPage({
       transform:translateY(-1px);
     }
     .metric-value{
-      font-size:36px;font-weight:900;margin:12px 0 4px;
+      font-size:36px;font-weight:900;margin:8px 0 0;
       font-variant-numeric:tabular-nums;
     }
     .metric-label{
       font-size:13px;color:var(--muted);font-weight:500;
       text-transform:uppercase;letter-spacing:.5px;
     }
-    .metric-sub{
-      font-size:12px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);
-    }
-
     .big-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
@@ -190,12 +134,6 @@ UiPage({
     <div class="header">
       <h1 class="title">Commission Operations</h1>
       <p class="subtitle">Operational dashboard for plans, calculations, statements, and source-system synchronization.</p>
-      <div class="toolbar">
-        <span class="toolbar-label">Reporting Year</span>
-        <select id="kpiYearSelect"></select>
-        <span class="toolbar-note" id="kpiYearNote"></span>
-      </div>
-      <div class="chips" id="roleChips"></div>
     </div>
 
     <!-- Key Metrics -->
@@ -203,25 +141,21 @@ UiPage({
       <div class="card metric" data-kpi="statements" title="Open statements list">
         <div class="metric-label">Total Statements</div>
         <div class="metric-value" id="kpiStatements">—</div>
-        <div class="metric-sub">Statements generated</div>
       </div>
 
       <div class="card metric" data-kpi="exceptions" title="Open pending exceptions list">
         <div class="metric-label">Pending Exceptions</div>
         <div class="metric-value" id="kpiExceptions">—</div>
-        <div class="metric-sub">Exceptions awaiting review</div>
       </div>
 
       <div class="card metric" data-kpi="deals" title="Open active deals list">
         <div class="metric-label">Active Deals</div>
         <div class="metric-value" id="kpiDeals">—</div>
-        <div class="metric-sub">Open deals in pipeline</div>
       </div>
 
       <div class="card metric" data-kpi="alerts" title="Open system alerts list">
         <div class="metric-label">Open Alerts</div>
         <div class="metric-value" id="kpiAlerts">—</div>
-        <div class="metric-sub">Monitoring alerts</div>
       </div>
     </div>
 
@@ -391,33 +325,13 @@ UiPage({
           tryIndex(0);
         }
 
-        // Role chips
-        var chips = document.getElementById('roleChips');
-        if (chips) {
-          chips.innerHTML = '';
-          var roles = [];
-          if (window.g_user && typeof window.g_user.hasRole === 'function') {
-            if (g_user.hasRole('x_823178_commissio.admin')) roles.push('Admin');
-            if (g_user.hasRole('x_823178_commissio.finance')) roles.push('Finance');
-            if (g_user.hasRole('x_823178_commissio.rep')) roles.push('Rep');
-          }
-          if (roles.length === 0) roles.push('User');
-
-          for (var i = 0; i < roles.length; i++) {
-            var s = document.createElement('span');
-            s.className = 'chip';
-            s.textContent = roles[i];
-            chips.appendChild(s);
-          }
-        }
-
         // Dashboard KPIs from real tables
         var setText = function (id, val) {
           var el = document.getElementById(id);
           if (el) el.textContent = val;
         };
 
-        var kpiYear = String(new Date().getFullYear());
+        var kpiYear = 'all';
 
         function getYearQueryPrefix(fieldName, yearValue) {
           if (!yearValue || String(yearValue).toLowerCase() === 'all') return '';
@@ -478,78 +392,6 @@ UiPage({
           }
         }
 
-        function setMetricSubs(year) {
-          var subLabels = document.querySelectorAll('.metric-sub');
-          var yearLabel = String(year).toLowerCase() === 'all' ? 'All Years' : String(year);
-          for (var idx = 0; idx < subLabels.length; idx++) {
-            var text = subLabels[idx].textContent || '';
-            subLabels[idx].textContent = text.replace(/\s\((\d{4}|All Years)\)$/, '') + ' (' + yearLabel + ')';
-          }
-          var note = document.getElementById('kpiYearNote');
-          if (note) note.textContent = String(year).toLowerCase() === 'all' ? 'Showing records across all years' : 'Showing records for ' + year;
-        }
-
-        function initKpiYearSelect(years, defaultYear) {
-          var select = document.getElementById('kpiYearSelect');
-          if (!select) return;
-
-          var currentYear = new Date().getFullYear();
-          var options = (years && years.length) ? years : [currentYear + 2, currentYear + 1, currentYear, currentYear - 1, currentYear - 2];
-          kpiYear = (defaultYear ? String(defaultYear) : kpiYear);
-          select.innerHTML = '';
-
-          var allOption = document.createElement('option');
-          allOption.value = 'all';
-          allOption.textContent = 'All Years';
-          if (String(kpiYear).toLowerCase() === 'all') allOption.selected = true;
-          select.appendChild(allOption);
-
-          for (var i = 0; i < options.length; i++) {
-            var year = parseInt(options[i], 10);
-            if (isNaN(year)) continue;
-            var option = document.createElement('option');
-            option.value = String(year);
-            option.textContent = String(year);
-            if (String(year) === String(kpiYear)) option.selected = true;
-            select.appendChild(option);
-          }
-
-          select.addEventListener('change', function() {
-            kpiYear = select.value || 'all';
-            select.disabled = false;
-            loadMetrics(kpiYear);
-          });
-        }
-
-        function initializeYearContext(callback) {
-          var currentYear = new Date().getFullYear();
-          invokeHelper('getYearContext', {
-            sysparm_year: String(kpiYear),
-            sysparm_year_window: '2'
-          }, function(response) {
-            if (!response) {
-              initKpiYearSelect(null, currentYear);
-              setMetricSubs(kpiYear);
-              if (callback) callback();
-              return;
-            }
-
-            try {
-              var payload = typeof response === 'string' ? JSON.parse(response) : response;
-              if (payload && payload.status === 'success' && payload.data) {
-                initKpiYearSelect(payload.data.years, payload.data.default_year);
-              } else {
-                initKpiYearSelect(null, currentYear);
-              }
-            } catch (e) {
-              initKpiYearSelect(null, currentYear);
-            }
-
-            setMetricSubs(kpiYear);
-            if (callback) callback();
-          });
-        }
-
         function loadMetrics(year) {
           setText('kpiStatements', '...');
           setText('kpiExceptions', '...');
@@ -564,7 +406,6 @@ UiPage({
               setText('kpiExceptions', '0');
               setText('kpiDeals', '0');
               setText('kpiAlerts', '0');
-              setMetricSubs(year);
               return;
             }
 
@@ -575,13 +416,11 @@ UiPage({
                 setText('kpiExceptions', String(payload.data.pending_reviews || 0));
                 setText('kpiDeals', String(payload.data.active_deals || 0));
                 setText('kpiAlerts', String(payload.data.open_alerts || 0));
-                setMetricSubs(payload.data.report_year || year);
               } else {
                 setText('kpiStatements', '0');
                 setText('kpiExceptions', '0');
                 setText('kpiDeals', '0');
                 setText('kpiAlerts', '0');
-                setMetricSubs(year);
               }
             } catch (e) {
               console.log('Dashboard metrics parse error:', e);
@@ -589,15 +428,12 @@ UiPage({
               setText('kpiExceptions', '0');
               setText('kpiDeals', '0');
               setText('kpiAlerts', '0');
-              setMetricSubs(year);
             }
           });
         }
 
-        initializeYearContext(function() {
-          initializeKpiDrilldowns();
-          loadMetrics(kpiYear);
-        });
+        initializeKpiDrilldowns();
+        loadMetrics(kpiYear);
 
       } catch (err) {
         console.log('Dashboard error:', err);
