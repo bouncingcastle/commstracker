@@ -31,6 +31,7 @@ import './business-rules/payment-commission.now'
 import './business-rules/commission-plan-validation.now'
 import './business-rules/plan-tier-validation.now'
 import './business-rules/deal-type-validation.now'
+import './business-rules/deal-type-governance.now'
 import './business-rules/statement-approval-workflow.now'
 
 // Client-callable Script Includes

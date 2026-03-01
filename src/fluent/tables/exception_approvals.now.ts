@@ -14,7 +14,8 @@ export const x_823178_commissio_exception_approvals = Table({
                 high_value_commission: { label: 'High Value Commission', sequence: 2 },
                 snapshot_correction: { label: 'Snapshot Correction', sequence: 3 },
                 plan_overlap: { label: 'Plan Overlap', sequence: 4 },
-                retroactive_change: { label: 'Retroactive Change', sequence: 5 }
+                retroactive_change: { label: 'Retroactive Change', sequence: 5 },
+                deal_type_deprecation: { label: 'Deal Type Deprecation', sequence: 6 }
             },
             mandatory: true
         }),

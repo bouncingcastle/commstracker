@@ -185,6 +185,21 @@ Record({
     }
 })
 
+// Deal Types Module - Governed taxonomy for plan/deal configuration
+Record({
+    $id: 'deal_types_module',
+    table: 'sys_app_module',
+    data: {
+        title: 'Deal Types',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_deal_types',
+        hint: 'Manage governed deal type taxonomy, lifecycle, and definitions',
+        order: 32.35,
+        active: true
+    }
+})
+
 // Commission Statements Module
 Record({
     $id: Now.ID['statements_module'],

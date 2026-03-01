@@ -172,11 +172,98 @@ This assessment compares the current application implementation against the requ
 - **Item 4 validated:** `src/server/business-rules/payment-commission.js` now centralizes tier evaluation via `evaluateEffectiveCommissionRate(...)`, selecting the highest active tier floor at or below attainment and applying the resulting effective rate deterministically.
 - **Item 4 validated:** Calculation records now persist tier/rate context snapshots in runtime write path (`effective_tier_name`, `effective_tier_floor_percent`, `attainment_percent_at_calc`, `quota_amount_snapshot`, `attained_amount_snapshot`, `accelerator_applied`).
 - **Item 4 validated:** Schema support exists in `src/fluent/tables/commission_calculations.now.ts` for all persisted tier snapshot fields used by the runtime.
+- **Item 3 validated:** Deal Types governance UX is now exposed in application navigation (`src/fluent/application-menu.now.ts`) and operations dashboard quick links (`src/fluent/ui-pages/commission-dashboard-redesigned.now.ts`).
+- **Item 3 validated:** Lifecycle impact controls now enforce safe deactivation with reference checks and override workflow (`src/server/business-rules/deal-type-governance.js`, `src/fluent/business-rules/deal-type-governance.now.ts`).
+- **Item 3 validated:** Admin-only ACL controls were added for deal type governance records (`src/fluent/acls/commission-security.now.ts`) and a dedicated override request type was added (`src/fluent/tables/exception_approvals.now.ts`).
 
 ## P3 (Enterprise/Compliance Expansion)
 1. Multi-currency model with rate snapshots at calculation time.
 2. Compliance-grade audit event journal and exports.
 3. Advanced analytics layer (trend, cohort, variance analysis).
+
+## Full Gap Re-Assessment (2026-02-28, Post-MVP)
+> This section supersedes older static statements above where implementation has since changed.
+
+### Intent & Operating Model (Professional Services)
+- Sellers carry annual quota and are paid at different rates by governed deal type.
+- Commissions are currently recognized on **cash received** (`payment_date`) and should support configurable alternate recognition methods.
+- Plans must support tiered accelerators, one-time/ad-hoc bonuses (e.g., first time hitting quota), approvals, auditability, and finance-grade controls.
+
+### Capability Coverage (Current Codebase)
+| Area | Status | Evidence | Gap to Fully-Fledged System |
+|---|---|---|---|
+| Plan setup across targets/tiers/bonuses | **Partial-Strong** | `src/fluent/form-related-lists.now.ts`, `src/fluent/tables/plan_targets.now.ts`, `src/fluent/tables/plan_tiers.now.ts`, `src/fluent/tables/plan_bonuses.now.ts` | No composable rule engine for nested conditions/priority/conflict resolution. |
+| Deterministic tiers/accelerators in runtime | **Strong** | `src/server/business-rules/payment-commission.js` (`evaluateEffectiveCommissionRate`, persisted effective tier fields) | No incremental accelerator earnings breakdown stored/rendered for explainability. |
+| Bonus logic execution | **Weak-Partial** | Bonus schema exists in `src/fluent/tables/plan_bonuses.now.ts` | `bonus_trigger` remains free-text; payout qualification is not executed deterministically in runtime. |
+| Forecasting/simulation | **Partial** | `src/fluent/tables/forecast_scenarios.now.ts`, forecast methods in `src/fluent/script-includes/commission-progress-helper.now.ts` | Model is heuristic (stage probabilities), lacks scenario governance/versioning and finance calibration workflow. |
+| Estimator UX for reps | **Partial-Strong** | `estimateCommission` in `src/fluent/script-includes/commission-progress-helper.now.ts`, UI in `src/fluent/ui-pages/commission-progress.now.ts` | Estimate is single-deal oriented; no full payout-timeline forecast across expected cash receipts. |
+| Real-time role visibility | **Partial-Strong** | Access + team/all behavior in progress helper; roles in `src/fluent/roles/commission-roles.now.ts` | Finance/manager dedicated cockpit pages and queue-driven workflows are still limited. |
+| Statement approvals workflow | **Partial-Strong** | `src/fluent/tables/statement_approvals.now.ts`, `src/server/business-rules/statement-approval-workflow.js` | Approval model is present but does not include SLA timers/escalations/delegations in workflow entity. |
+| Dispute management/commentary | **Weak** | Dispute fields exist on calculations (`src/fluent/tables/commission_calculations.now.ts`) | No dispute case table, no threaded comments, no assignment/SLA lifecycle. |
+| Audit/compliance controls | **Partial-Strong** | Broad `audit: true`; reconciliation/alerts in scheduled scripts + monitoring tables | No immutable event journal for full calculation lineage and evidence export. |
+| Deal type governance | **Partial-Strong (new)** | `src/fluent/tables/deal_types.now.ts`, seed data + validation rules | Need UI module/list integration and migration hardening for legacy values/reporting consistency. |
+| Payout basis flexibility | **Partial** | Cash-received calculation + payout schedule mode (`cycle|days`) in `payment-commission.js` and `system-properties.now.ts` | Missing configurable recognition basis abstraction (`cash_received`, `invoice_issued`, `booking`, `milestone`) and per-plan policy. |
+| Multi-currency | **Missing** | No FX table/services/snapshots | Required for enterprise finance parity and cross-geo professional services operations. |
+
+### UI Functionality Assessment (What Works vs What’s Missing)
+- **Working now:** rep progress dashboard, estimator action, forecast scenario controls, prioritized opportunities, operations dashboard KPI drill-downs, statement approval records, and plan setup related lists.
+- **Missing for production maturity:** dedicated finance cockpit (approval queues + payout windows), manager cockpit with coaching/forecast views, dispute workspace, and deal type admin module in navigation.
+- **Explainability gap:** UI does not yet present base vs accelerator delta earnings as a first-class payout explanation component.
+
+### Additional Requirements Missing from Baseline List
+1. **Configurable commission recognition basis** per plan/org policy (cash-received default, with invoice/bookings/milestone options).
+2. **Executable bonus qualification engine** for ad-hoc and milestone bonuses (e.g., one-time quota-hit bonus), with deterministic audit records.
+3. **Payout timeline forecasting** from expected cash receipts (not only weighted deal-stage estimates).
+4. **Dispute case management domain** (case table, threaded commentary, SLA/aging, ownership, resolution actions).
+5. **Finance/manager operational workspaces** beyond list navigation (queues, bottlenecks, exception aging, approvals throughput).
+6. **Deal type governance UX** (module, lifecycle management, controlled deprecation/merge impact analysis).
+7. **Policy versioning and reproducibility** for payout basis, rate-card logic, and rule snapshots at calc-time.
+
+### Scenario Readiness (Professional Services)
+| Scenario | Current Readiness | Notes |
+|---|---|---|
+| Quota-carrying sellers by deal type with tiered accelerators | **Good** | Deterministic tier selection and persisted snapshots are implemented. |
+| One-time quota-hit bonus payout | **Weak** | Requires structured bonus trigger execution and bonus-earned records. |
+| Cash-received commission payout forecasting | **Partial** | Cash-received calc exists; forecasting does not yet model receipt schedule lifecycle in depth. |
+| Alternate payout basis by policy | **Weak** | Scheduling abstraction exists, but recognition basis is not configurable as a first-class rule. |
+| Manager-led team planning and governance | **Partial** | Team rollups exist; dedicated manager workflow/dashboard depth remains limited. |
+| Finance close/approval/dispute operations | **Partial-Weak** | Statement approvals exist; dispute case and audit-grade event lineage remain missing. |
+
+### Consolidated Outstanding Build & Deploy Backlog (Single Source of Truth)
+> This is the canonical ordered sequence for remaining work. Completed items are marked inline for traceability.
+
+| Seq | Backlog ID | Capability | Build Scope | Deploy Gate (must pass before next) | Est. |
+|---|---|---|---|---|---|
+| 1 | P2.1 | Bulk assignment | Bulk user/team/plan assignment tool with preview and rollback | Dry-run import + rollback validation in lower env | M |
+| 2 | P2.2 | Manager governance | Manager/team rollup workflow hardening + manager operational views | Manager permission regression + team rollup accuracy check | M |
+| 3 | P2.3 ✅ | Deal type governance UX | Add Deal Types module/list/form; lifecycle controls and impact checks | ✅ Completed 2026-02-28: diagnostics clean; lifecycle guardrails active | S-M |
+| 4 | P2.4 | Recognition basis policy | Add configurable recognition basis (`cash_received`,`invoice_issued`,`booking`,`milestone`) and plan-level versioned policy | Side-by-side parity run in cash mode vs current baseline | M |
+| 5 | P2.5 | Runtime basis switch | Calculation runtime uses selected recognition basis; persist applied policy snapshot | Reproducibility check on golden calculation matrix | M |
+| 6 | P2.6 | Forecast payout timeline | Forecast/estimator supports payout timeline by recognition basis (not just stage heuristics) | Forecast backtest against historical periods within agreed variance | M-L |
+| 7 | P2.7 | Bonus rule schema | Replace free-text bonus triggers with structured, validated bonus conditions | Bonus definition validation + migration completion report | M |
+| 8 | P2.8 | Bonus execution engine | Deterministic bonus eligibility at calc-time + persisted bonus-earned records | Golden bonus outcomes for threshold/edge-case scenarios | L |
+| 9 | P2.9 | One-time quota bonus | One-time quota-hit bonus logic (once per rep/period) | Duplicate prevention test across recalculation/reopen paths | S-M |
+| 10 | P2.10 | Accelerator explainability | Persist and render base vs accelerator delta in progress/statement views | Finance UAT sign-off on payout explainability | M |
+| 11 | P2.11 | Finance cockpit | Queue-driven finance workspace (approvals, payout windows, exceptions) | End-to-end statement approval throughput and queue SLA test | M-L |
+| 12 | P3.1 | Dispute case domain | First-class dispute case entity, ownership, status lifecycle, SLA timers | Dispute lifecycle test (open→resolve→reopen) + SLA alerts | M |
+| 13 | P3.2 | Threaded commentary | Discussion threads on disputes/statements/calculations with ACL controls | Persona permission tests + full conversation history integrity | M |
+| 14 | P3.3 | Immutable event journal | Append-only lifecycle events for calc/approval/dispute transitions | Event immutability checks + hash/tamper verification | L |
+| 15 | P3.4 | Compliance exports | Export-ready evidence packages (period close, approvals, disputes, events) | Audit sample export accepted by finance/compliance stakeholders | M |
+| 16 | P3.5 | Multi-currency | FX rate table + rate snapshots at calc-time + reporting currency conversions | Reconciliation tests across mixed-currency scenarios | L |
+| 17 | P3.6 | Analytics maturity | Trend/cohort/variance analytics with saved views by role | Metric parity checks against source transactional data | M |
+
+### Build/Deploy Waves
+- **Wave A (Seq 1–3):** Admin and governance foundation.
+- **Wave B (Seq 4–10):** Core payout correctness and explainability.
+- **Wave C (Seq 11–13):** Operational workflows (finance/disputes).
+- **Wave D (Seq 14–17):** Compliance and enterprise scale.
+
+### Release Exit Criteria (Program-Level)
+- 100% calculations reproducible from persisted policy/rule/tier/bonus snapshots.
+- Bonus outcomes are machine-evaluated and auditable; no free-text-only payout decisions.
+- Forecast includes payout timeline by configured recognition basis.
+- Finance and manager operations run from dedicated queue-driven UI workflows.
+- Dispute + audit evidence lifecycle is fully in-app and export-ready.
 
 ---
 
