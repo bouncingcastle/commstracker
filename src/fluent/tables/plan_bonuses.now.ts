@@ -27,13 +27,7 @@ export const x_823178_commissio_plan_bonuses = Table({
         }),
         deal_type: StringColumn({
             label: 'Deal Type',
-            choices: {
-                any: { label: 'Any', sequence: 0 },
-                new_business: { label: 'New Business', sequence: 1 },
-                renewal: { label: 'Renewal', sequence: 2 },
-                expansion: { label: 'Expansion', sequence: 3 },
-                upsell: { label: 'Upsell', sequence: 4 }
-            },
+            maxLength: 40,
             default: 'any'
         }),
         is_discretionary: BooleanColumn({
