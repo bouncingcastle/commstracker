@@ -95,7 +95,7 @@ export function calculateCommissionOnPayment(current, previous) {
             return;
         }
         
-        // Get commission rate from active plan at DEAL CLOSE DATE (not payment date)
+        // Get commission plan using baseline close-date selection, then apply recognition policy for runtime temporal basis
         var commissionPlan = getCommissionPlan(commissionOwner, closeDate);
         if (!commissionPlan.planId) {
             // BUSINESS REQUIREMENT: Create exception for missing plans rather than failing
@@ -104,11 +104,43 @@ export function calculateCommissionOnPayment(current, previous) {
             current.setValue('commission_calculated', 'pending');
             return;
         }
+
+        var recognitionPolicy = resolveRecognitionPolicy(commissionPlan.planId, closeDate);
+        var recognitionContext = resolveRecognitionContext({
+            policy: recognitionPolicy,
+            paymentDate: current.getValue('payment_date'),
+            invoiceDate: invoiceGr.getValue('invoice_date'),
+            closeDate: closeDate,
+            snapshotTimestamp: dealGr.getValue('snapshot_timestamp')
+        });
+
+        var temporalLookupDate = recognitionContext.temporalLookupDate;
+        if (!temporalLookupDate) {
+            gs.error('Commission Management: Unable to resolve temporal lookup date from recognition policy context');
+            current.setValue('commission_calculated', 'error');
+            return;
+        }
+
+        if (temporalLookupDate !== closeDate) {
+            var planAtBasisDate = getCommissionPlan(commissionOwner, temporalLookupDate);
+            if (planAtBasisDate.planId) {
+                commissionPlan = planAtBasisDate;
+                recognitionPolicy = resolveRecognitionPolicy(commissionPlan.planId, temporalLookupDate);
+                recognitionContext = resolveRecognitionContext({
+                    policy: recognitionPolicy,
+                    paymentDate: current.getValue('payment_date'),
+                    invoiceDate: invoiceGr.getValue('invoice_date'),
+                    closeDate: closeDate,
+                    snapshotTimestamp: dealGr.getValue('snapshot_timestamp')
+                });
+                temporalLookupDate = recognitionContext.temporalLookupDate;
+            }
+        }
         
         var tierEvaluation = evaluateEffectiveCommissionRate({
             plan: commissionPlan,
             salesRep: commissionOwner,
-            closeDate: closeDate,
+            closeDate: temporalLookupDate,
             dealId: dealGr.getUniqueValue(),
             dealType: dealGr.getValue('deal_type'),
             dealAmount: parseFloat(dealGr.getValue('amount')) || 0
@@ -172,7 +204,7 @@ export function calculateCommissionOnPayment(current, previous) {
         }
         
         // BUSINESS REQUIREMENT: Create calculation with comprehensive audit trail
-        var payoutSchedule = getPayoutSchedule(current.getValue('payment_date'));
+        var payoutSchedule = getPayoutSchedule(recognitionContext.payoutAnchorDate, recognitionContext.recognitionBasis);
         var calculationId = createCommissionCalculation({
             payment: current.sys_id,
             deal: dealGr.sys_id,
@@ -183,6 +215,11 @@ export function calculateCommissionOnPayment(current, previous) {
             commissionRate: commissionRate,
             commissionAmount: commissionAmount,
             paymentDate: current.getValue('payment_date'),
+            recognitionDateSnapshot: recognitionContext.recognitionDate,
+            temporalLookupDateSnapshot: temporalLookupDate,
+            recognitionBasisSnapshot: recognitionContext.recognitionBasis,
+            recognitionPolicyVersionSnapshot: recognitionPolicy.versionNumber,
+            recognitionPolicyRecord: recognitionPolicy.policyId,
             payoutEligibleDate: payoutSchedule.payout_eligible_date,
             payoutScheduleSnapshot: payoutSchedule.snapshot,
             dealCloseDate: closeDate,
@@ -209,6 +246,11 @@ export function calculateCommissionOnPayment(current, previous) {
                 quotaAmount: tierEvaluation.quotaAmount,
                 attainedAmount: tierEvaluation.attainedAmount,
                 acceleratorApplied: tierEvaluation.acceleratorApplied,
+                recognitionBasis: recognitionContext.recognitionBasis,
+                recognitionDate: recognitionContext.recognitionDate,
+                temporalLookupDate: temporalLookupDate,
+                recognitionPolicyVersion: recognitionPolicy.versionNumber,
+                recognitionPolicyId: recognitionPolicy.policyId,
                 payoutSchedule: payoutSchedule
             }
         });
@@ -310,6 +352,77 @@ function getCommissionPlan(salesRep, closeDate) {
     }
     
     return plans[0];
+}
+
+function resolveRecognitionPolicy(planId, policyDate) {
+    var basisFallback = (gs.getProperty('x_823178_commissio.default_recognition_basis', 'cash_received') || 'cash_received').toString();
+    var selected = {
+        recognitionBasis: basisFallback,
+        versionNumber: '0',
+        policyId: ''
+    };
+
+    var policyGr = new GlideRecord('x_823178_commissio_plan_recognition_policies');
+    policyGr.addQuery('commission_plan', planId);
+    policyGr.addQuery('is_active', true);
+    policyGr.addQuery('effective_start_date', '<=', policyDate);
+    policyGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', policyDate);
+    policyGr.orderByDesc('effective_start_date');
+    policyGr.orderByDesc('version_number');
+    policyGr.setLimit(1);
+    policyGr.query();
+
+    if (policyGr.next()) {
+        selected.recognitionBasis = (policyGr.getValue('recognition_basis') || basisFallback || 'cash_received').toString();
+        selected.versionNumber = (policyGr.getValue('version_number') || '1').toString();
+        selected.policyId = policyGr.getUniqueValue();
+    }
+
+    return selected;
+}
+
+function resolveRecognitionContext(params) {
+    var basis = (params.policy && params.policy.recognitionBasis ? params.policy.recognitionBasis : 'cash_received').toString();
+    var paymentDate = (params.paymentDate || '').toString();
+    var invoiceDate = (params.invoiceDate || '').toString();
+    var closeDate = (params.closeDate || '').toString();
+    var snapshotDate = extractDateOnly(params.snapshotTimestamp);
+
+    var recognitionDate = paymentDate;
+    var temporalLookupDate = closeDate;
+
+    if (basis === 'invoice_issued') {
+        recognitionDate = invoiceDate || paymentDate || closeDate;
+        temporalLookupDate = recognitionDate || closeDate;
+    } else if (basis === 'booking') {
+        recognitionDate = closeDate || paymentDate;
+        temporalLookupDate = recognitionDate || closeDate;
+    } else if (basis === 'milestone') {
+        recognitionDate = snapshotDate || closeDate || paymentDate;
+        temporalLookupDate = recognitionDate || closeDate;
+    } else {
+        basis = 'cash_received';
+        recognitionDate = paymentDate || closeDate;
+        temporalLookupDate = closeDate || recognitionDate;
+    }
+
+    return {
+        recognitionBasis: basis,
+        recognitionDate: recognitionDate,
+        temporalLookupDate: temporalLookupDate,
+        payoutAnchorDate: basis === 'cash_received' ? (paymentDate || recognitionDate) : recognitionDate
+    };
+}
+
+function extractDateOnly(value) {
+    if (!value) {
+        return '';
+    }
+    var str = value.toString();
+    if (str.length >= 10) {
+        return str.substring(0, 10);
+    }
+    return str;
 }
 
 function getCommissionRateFromPlan(plan, dealType) {
@@ -475,6 +588,21 @@ function createCommissionCalculation(data) {
     commissionGr.setValue('accelerator_applied', data.acceleratorApplied || false);
     commissionGr.setValue('commission_amount', data.commissionAmount);
     commissionGr.setValue('payment_date', data.paymentDate);
+    if (data.recognitionDateSnapshot) {
+        commissionGr.setValue('recognition_date_snapshot', data.recognitionDateSnapshot);
+    }
+    if (data.temporalLookupDateSnapshot) {
+        commissionGr.setValue('temporal_lookup_date_snapshot', data.temporalLookupDateSnapshot);
+    }
+    if (data.recognitionBasisSnapshot) {
+        commissionGr.setValue('recognition_basis_snapshot', data.recognitionBasisSnapshot);
+    }
+    if (data.recognitionPolicyVersionSnapshot) {
+        commissionGr.setValue('recognition_policy_version_snapshot', data.recognitionPolicyVersionSnapshot);
+    }
+    if (data.recognitionPolicyRecord) {
+        commissionGr.setValue('recognition_policy_record', data.recognitionPolicyRecord);
+    }
     if (data.payoutEligibleDate) {
         commissionGr.setValue('payout_eligible_date', data.payoutEligibleDate);
     }
@@ -501,10 +629,10 @@ function createCommissionCalculation(data) {
     }
 }
 
-function getPayoutSchedule(paymentDateValue) {
+function getPayoutSchedule(paymentDateValue, recognitionBasis) {
     var fallback = {
         payout_eligible_date: paymentDateValue,
-        snapshot: 'mode=fallback;eligible=' + paymentDateValue
+        snapshot: 'mode=fallback;basis=' + (recognitionBasis || 'cash_received') + ';eligible=' + paymentDateValue
     };
 
     if (!paymentDateValue) {
@@ -526,7 +654,7 @@ function getPayoutSchedule(paymentDateValue) {
 
             return {
                 payout_eligible_date: byDaysDate,
-                snapshot: 'mode=days;wait_days=' + waitDays + ';eligible=' + byDaysDate
+                snapshot: 'mode=days;basis=' + (recognitionBasis || 'cash_received') + ';wait_days=' + waitDays + ';eligible=' + byDaysDate
             };
         }
 
@@ -551,7 +679,7 @@ function getPayoutSchedule(paymentDateValue) {
 
         return {
             payout_eligible_date: payoutDateValue,
-            snapshot: 'mode=cycle;cycle_days=' + cycleDays + ';cycles_after=' + cyclesAfterPayment + ';anchor=' + anchorDateRaw + ';eligible=' + payoutDateValue
+            snapshot: 'mode=cycle;basis=' + (recognitionBasis || 'cash_received') + ';cycle_days=' + cycleDays + ';cycles_after=' + cyclesAfterPayment + ';anchor=' + anchorDateRaw + ';eligible=' + payoutDateValue
         };
     } catch (e) {
         gs.error('Commission Management: Failed to compute payout schedule - ' + e.message);

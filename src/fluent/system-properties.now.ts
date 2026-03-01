@@ -266,3 +266,75 @@ Record({
         suffix: 'Commission Management'
     }
 })
+
+Record({
+    $id: 'seed_nav_enabled_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.seed_navigation_enabled',
+        value: 'false',
+        description: 'Controls whether navigation/module seed scripts are allowed in deployment workflows (default: false)',
+        type: 'boolean',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: 'seed_demo_data_enabled_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.seed_demo_data_enabled',
+        value: 'false',
+        description: 'Controls whether demo/test data seed scripts are allowed in deployment workflows (default: false)',
+        type: 'boolean',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: 'seed_idempotency_mode_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.seed_idempotency_mode',
+        value: 'strict',
+        description: 'Seed deployment idempotency mode (strict|audit_only). strict blocks non-controlled seed runs.',
+        type: 'string',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: 'forecast_invoice_issue_days_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.forecast_invoice_issue_days',
+        value: '7',
+        description: 'Forecast assumption: days from close to invoice issue for invoice_issued recognition basis',
+        type: 'integer',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: 'forecast_cash_receipt_days_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.forecast_cash_receipt_days',
+        value: '30',
+        description: 'Forecast assumption: days from close to cash receipt for cash_received recognition basis',
+        type: 'integer',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: 'forecast_milestone_days_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.forecast_milestone_days',
+        value: '14',
+        description: 'Forecast assumption: days from close to milestone event for milestone recognition basis',
+        type: 'integer',
+        suffix: 'Commission Management'
+    }
+})

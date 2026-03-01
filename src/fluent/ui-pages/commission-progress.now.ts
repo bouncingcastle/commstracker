@@ -490,6 +490,12 @@ UiPage({
         <div class="breakdown" id="forecastSummary">
           <div class="loading">Loading forecast insights...</div>
         </div>
+        <div style="margin-top:12px;">
+          <div class="selector-sub" style="margin-bottom:6px;">Projected Payout Timeline</div>
+          <div class="breakdown" id="forecastTimeline">
+            <div class="loading">Loading payout timeline...</div>
+          </div>
+        </div>
       </div>
 
       <div class="big-card">
@@ -1510,6 +1516,7 @@ UiPage({
               }
 
               renderForecastSummary(payload.data.summary || {});
+              renderForecastTimeline(payload.data.payout_timeline || [], payload.data.summary || {});
               renderPrioritizedDeals(payload.data.prioritized_deals || []);
               renderScenarioOptions(payload.data.scenarios || [], payload.data.summary || {});
             } catch (e) {
@@ -1522,6 +1529,11 @@ UiPage({
           var summary = document.getElementById('forecastSummary');
           if (summary) {
             summary.innerHTML = '<div class="break-item">' + (message || 'Forecast unavailable') + '</div>';
+          }
+
+          var timeline = document.getElementById('forecastTimeline');
+          if (timeline) {
+            timeline.innerHTML = '<div class="break-item">Payout timeline unavailable.</div>';
           }
 
           var tbody = document.getElementById('priorityTableBody');
@@ -1539,6 +1551,7 @@ UiPage({
 
           var rows = [
             { label: 'Scenario', value: scenarioName },
+            { label: 'Recognition Basis', value: formatDealTypeLabel(summary.recognition_basis || 'cash_received') },
             { label: 'Expected Revenue', value: '$' + (parseFloat(summary.expected_revenue || 0)).toFixed(2) },
             { label: 'Expected Commission', value: '$' + (parseFloat(summary.expected_commission || 0)).toFixed(2) },
             { label: 'Projected Attainment', value: (parseFloat(summary.projected_attainment_percent || 0)).toFixed(1) + '%' },
@@ -1552,6 +1565,28 @@ UiPage({
             item.innerHTML = '<span class="break-label">' + row.label + '</span><span class="break-value">' + row.value + '</span>';
             container.appendChild(item);
           });
+        }
+
+        function renderForecastTimeline(timelineRows, summary) {
+          var container = document.getElementById('forecastTimeline');
+          if (!container) return;
+
+          container.innerHTML = '';
+          if (!timelineRows || timelineRows.length === 0) {
+            container.innerHTML = '<div class="break-item">No projected payouts available for current assumptions.</div>';
+            return;
+          }
+
+          var maxRows = Math.min(timelineRows.length, 8);
+          for (var i = 0; i < maxRows; i++) {
+            var row = timelineRows[i];
+            var item = document.createElement('div');
+            item.className = 'break-item';
+            item.innerHTML =
+              '<span class="break-label">' + (row.month || 'Month') + ' (' + (parseInt(row.deal_count || 0, 10) || 0) + ' deals)</span>' +
+              '<span class="break-value">$' + (parseFloat(row.expected_commission || 0)).toFixed(2) + '</span>';
+            container.appendChild(item);
+          }
         }
 
         function renderPrioritizedDeals(deals) {
@@ -1697,6 +1732,9 @@ UiPage({
               var rows = [
                 { label: 'Deal Amount', value: '$' + (parseFloat(data.amount || 0)).toFixed(2) },
                 { label: 'Close Date', value: data.close_date || '—' },
+                { label: 'Recognition Basis', value: formatDealTypeLabel(data.recognition_basis || 'cash_received') },
+                { label: 'Projected Recognition Date', value: data.projected_recognition_date || '—' },
+                { label: 'Projected Payout Eligible Date', value: data.projected_payout_eligible_date || '—' },
                 { label: 'Commission Rate', value: (parseFloat(data.commission_rate_percent || 0)).toFixed(2) + '%' },
                 { label: 'Expected Payout', value: '$' + (parseFloat(data.expected_payout || data.expected_commission || 0)).toFixed(2) },
                 { label: 'Attainment Before Close', value: (parseFloat(data.current_attainment_percent || 0)).toFixed(1) + '%' },

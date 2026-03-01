@@ -401,6 +401,7 @@ Record({
                     can_select_users: !!(isAdmin || isManager),
                     can_view_all_users: !!isAdmin,
                     can_view_team_rollup: !!(isAdmin || isManager),
+                    manager_scope_count: isManager ? this.getManagedUserIds(gs.getUserID(), false).length : 0,
                     roles: {
                         admin: !!isAdmin,
                         manager: !!isManager,
@@ -702,6 +703,8 @@ Record({
             var pipelineMultiplier = this.normalizeMultiplier(!isNaN(overridePipeline) ? overridePipeline : scenario.pipeline_multiplier);
 
             var prioritized = [];
+            var payoutTimelineMap = {};
+            var basisCounts = {};
             var totals = {
                 expected_revenue: 0,
                 expected_commission: 0,
@@ -735,12 +738,29 @@ Record({
                 var adjustedAmount = amount * pipelineMultiplier;
                 var expectedRevenue = adjustedAmount * probability;
                 var expectedCommission = expectedRevenue * (rate / 100);
+                var recognitionProjection = this.getForecastRecognitionProjection(plan ? plan.getUniqueValue() : '', dealsGr.getValue('close_date'), stage, selectedYear);
                 var urgencyBoost = this.getForecastUrgencyBoost(dealsGr.getValue('close_date'));
                 var score = expectedCommission * (1 + urgencyBoost);
 
                 totals.active_deals++;
                 totals.expected_revenue += expectedRevenue;
                 totals.expected_commission += expectedCommission;
+
+                var monthKey = this.getMonthKey(recognitionProjection.payout_eligible_date || recognitionProjection.recognition_date || dealsGr.getValue('close_date'));
+                if (!payoutTimelineMap[monthKey]) {
+                    payoutTimelineMap[monthKey] = {
+                        month: monthKey,
+                        expected_commission: 0,
+                        expected_revenue: 0,
+                        deal_count: 0
+                    };
+                }
+                payoutTimelineMap[monthKey].expected_commission += expectedCommission;
+                payoutTimelineMap[monthKey].expected_revenue += expectedRevenue;
+                payoutTimelineMap[monthKey].deal_count += 1;
+
+                var basisKey = recognitionProjection.recognition_basis || 'cash_received';
+                basisCounts[basisKey] = (basisCounts[basisKey] || 0) + 1;
 
                 prioritized.push({
                     deal_id: dealsGr.getUniqueValue(),
@@ -752,6 +772,9 @@ Record({
                     amount: amount,
                     probability: probability,
                     commission_rate: rate,
+                    recognition_basis: recognitionProjection.recognition_basis,
+                    projected_recognition_date: recognitionProjection.recognition_date,
+                    projected_payout_eligible_date: recognitionProjection.payout_eligible_date,
                     expected_commission: expectedCommission,
                     priority_score: score
                 });
@@ -763,6 +786,7 @@ Record({
 
             var projectedRevenue = totals.won_revenue_ytd + totals.expected_revenue;
             var projectedAttainment = totals.total_quota > 0 ? (projectedRevenue / totals.total_quota) * 100 : 0;
+            var payoutTimeline = this.toSortedTimeline(payoutTimelineMap);
 
             return JSON.stringify({
                 status: 'success',
@@ -778,8 +802,10 @@ Record({
                         expected_revenue: this.round2(totals.expected_revenue),
                         expected_commission: this.round2(totals.expected_commission),
                         total_quota: this.round2(totals.total_quota),
-                        projected_attainment_percent: this.round2(projectedAttainment)
+                        projected_attainment_percent: this.round2(projectedAttainment),
+                        recognition_basis: this.resolveDominantRecognitionBasis(basisCounts)
                     },
+                    payout_timeline: payoutTimeline,
                     prioritized_deals: prioritized.slice(0, 10),
                     scenarios: this.listForecastScenariosInternal(userId, selectedYear)
                 }
@@ -831,6 +857,7 @@ Record({
             var projectedTier = this.resolveTierByAttainment(this.getPlanTiersForProgress(planId), projectedAttainment);
             var rate = projectedTier ? (parseFloat(projectedTier.rate_percent) || 0) : this.resolveForecastRate(rateCard, dealType);
             var expectedPayout = amount * (rate / 100);
+            var projection = this.getForecastRecognitionProjection(planId, closeDateRaw, 'proposal', selectedYear);
 
             return JSON.stringify({
                 status: 'success',
@@ -844,7 +871,10 @@ Record({
                     current_attainment_percent: this.round2(currentAttainment),
                     projected_attainment_percent: this.round2(projectedAttainment),
                     applied_tier_name: projectedTier ? (projectedTier.tier_name || 'Tier') : 'Base Rate',
-                    accelerator_applied: !!(projectedTier && parseFloat(projectedTier.floor_percent || 0) >= 100)
+                    accelerator_applied: !!(projectedTier && parseFloat(projectedTier.floor_percent || 0) >= 100),
+                    recognition_basis: projection.recognition_basis,
+                    projected_recognition_date: projection.recognition_date,
+                    projected_payout_eligible_date: projection.payout_eligible_date
                 }
             });
         } catch (e) {
@@ -1048,6 +1078,187 @@ Record({
         return rateCard.base_rate;
     },
 
+    getForecastRecognitionProjection: function(planId, closeDateValue, stage, selectedYear) {
+        var closeDate = this.normalizeDateString(closeDateValue);
+        var basis = this.resolveRecognitionBasisForDate(planId, closeDate, selectedYear);
+
+        var stageLagDays = this.getForecastStageLagDays(stage);
+        var invoiceLagDays = parseInt(gs.getProperty('x_823178_commissio.forecast_invoice_issue_days', '7'), 10);
+        var cashLagDays = parseInt(gs.getProperty('x_823178_commissio.forecast_cash_receipt_days', '30'), 10);
+        var milestoneLagDays = parseInt(gs.getProperty('x_823178_commissio.forecast_milestone_days', '14'), 10);
+
+        if (isNaN(invoiceLagDays) || invoiceLagDays < 0) invoiceLagDays = 7;
+        if (isNaN(cashLagDays) || cashLagDays < 0) cashLagDays = 30;
+        if (isNaN(milestoneLagDays) || milestoneLagDays < 0) milestoneLagDays = 14;
+
+        var recognitionDate = closeDate;
+        if (basis === 'invoice_issued') {
+            recognitionDate = this.addDaysToDate(closeDate, stageLagDays + invoiceLagDays);
+        } else if (basis === 'booking') {
+            recognitionDate = this.addDaysToDate(closeDate, stageLagDays);
+        } else if (basis === 'milestone') {
+            recognitionDate = this.addDaysToDate(closeDate, stageLagDays + milestoneLagDays);
+        } else {
+            basis = 'cash_received';
+            recognitionDate = this.addDaysToDate(closeDate, stageLagDays + cashLagDays);
+        }
+
+        var payout = this.getForecastPayoutScheduleForDate(recognitionDate, basis);
+        return {
+            recognition_basis: basis,
+            recognition_date: recognitionDate,
+            payout_eligible_date: payout.payout_eligible_date,
+            payout_schedule_snapshot: payout.snapshot
+        };
+    },
+
+    resolveRecognitionBasisForDate: function(planId, referenceDate, selectedYear) {
+        var fallback = (gs.getProperty('x_823178_commissio.default_recognition_basis', 'cash_received') || 'cash_received').toString();
+        if (!planId) return fallback;
+
+        var policyDate = this.normalizeDateString(referenceDate || (selectedYear + '-01-01'));
+        var policyGr = new GlideRecord('x_823178_commissio_plan_recognition_policies');
+        policyGr.addQuery('commission_plan', planId);
+        policyGr.addQuery('is_active', true);
+        policyGr.addQuery('effective_start_date', '<=', policyDate);
+        policyGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', policyDate);
+        policyGr.orderByDesc('effective_start_date');
+        policyGr.orderByDesc('version_number');
+        policyGr.setLimit(1);
+        policyGr.query();
+
+        if (policyGr.next()) {
+            return (policyGr.getValue('recognition_basis') || fallback || 'cash_received').toString();
+        }
+        return fallback;
+    },
+
+    getForecastPayoutScheduleForDate: function(anchorDateValue, recognitionBasis) {
+        var dateValue = this.normalizeDateString(anchorDateValue);
+        var fallback = {
+            payout_eligible_date: dateValue,
+            snapshot: 'mode=fallback;basis=' + (recognitionBasis || 'cash_received') + ';eligible=' + dateValue
+        };
+
+        if (!dateValue) {
+            return fallback;
+        }
+
+        try {
+            var mode = (gs.getProperty('x_823178_commissio.payout_schedule_mode', 'cycle') || 'cycle').toLowerCase();
+            if (mode === 'days') {
+                var waitDays = parseInt(gs.getProperty('x_823178_commissio.payout_wait_days', '28'), 10);
+                if (isNaN(waitDays) || waitDays < 0) waitDays = 28;
+                var byDaysDate = this.addDaysToDate(dateValue, waitDays);
+                return {
+                    payout_eligible_date: byDaysDate,
+                    snapshot: 'mode=days;basis=' + (recognitionBasis || 'cash_received') + ';wait_days=' + waitDays + ';eligible=' + byDaysDate
+                };
+            }
+
+            var cycleDays = parseInt(gs.getProperty('x_823178_commissio.pay_cycle_days', '14'), 10);
+            if (isNaN(cycleDays) || cycleDays < 1) cycleDays = 14;
+
+            var cyclesAfterPayment = parseInt(gs.getProperty('x_823178_commissio.pay_cycles_after_payment', '2'), 10);
+            if (isNaN(cyclesAfterPayment) || cyclesAfterPayment < 1) cyclesAfterPayment = 2;
+
+            var anchorDateRaw = gs.getProperty('x_823178_commissio.pay_cycle_anchor_date', '2026-01-01') || '2026-01-01';
+            var anchorDate = new GlideDateTime();
+            anchorDate.setValue((anchorDateRaw.length === 10 ? anchorDateRaw + ' 00:00:00' : anchorDateRaw));
+
+            var scheduleDate = new GlideDateTime();
+            scheduleDate.setValue(dateValue + ' 00:00:00');
+
+            var nextCycleStart = new GlideDateTime(anchorDate);
+            while (!nextCycleStart.after(scheduleDate)) {
+                nextCycleStart.addDaysUTC(cycleDays);
+            }
+
+            var payoutDate = new GlideDateTime(nextCycleStart);
+            payoutDate.addDaysUTC((cyclesAfterPayment - 1) * cycleDays);
+            var payoutDateValue = this.normalizeDateString(payoutDate.getValue());
+
+            return {
+                payout_eligible_date: payoutDateValue,
+                snapshot: 'mode=cycle;basis=' + (recognitionBasis || 'cash_received') + ';cycle_days=' + cycleDays + ';cycles_after=' + cyclesAfterPayment + ';anchor=' + anchorDateRaw + ';eligible=' + payoutDateValue
+            };
+        } catch (e) {
+            return fallback;
+        }
+    },
+
+    getForecastStageLagDays: function(stage) {
+        var map = {
+            lead: 45,
+            qualified: 30,
+            proposal: 20,
+            negotiation: 10,
+            closed_won: 0
+        };
+        var key = (stage || 'proposal').toString();
+        if (map.hasOwnProperty(key)) {
+            return map[key];
+        }
+        return 20;
+    },
+
+    addDaysToDate: function(dateValue, daysToAdd) {
+        var base = this.normalizeDateString(dateValue);
+        if (!base) return '';
+        var gdt = new GlideDateTime();
+        gdt.setValue(base + ' 00:00:00');
+        gdt.addDaysUTC(parseInt(daysToAdd, 10) || 0);
+        return this.normalizeDateString(gdt.getValue());
+    },
+
+    normalizeDateString: function(dateValue) {
+        if (!dateValue) return '';
+        var str = String(dateValue);
+        if (str.length >= 10) {
+            return str.substring(0, 10);
+        }
+        return str;
+    },
+
+    getMonthKey: function(dateValue) {
+        var normalized = this.normalizeDateString(dateValue);
+        if (normalized.length >= 7) {
+            return normalized.substring(0, 7);
+        }
+        return 'unknown';
+    },
+
+    toSortedTimeline: function(map) {
+        var timeline = [];
+        var keys = Object.keys(map || {});
+        keys.sort();
+        for (var i = 0; i < keys.length; i++) {
+            var row = map[keys[i]];
+            timeline.push({
+                month: row.month,
+                expected_revenue: this.round2(row.expected_revenue),
+                expected_commission: this.round2(row.expected_commission),
+                deal_count: row.deal_count
+            });
+        }
+        return timeline;
+    },
+
+    resolveDominantRecognitionBasis: function(basisCounts) {
+        var dominant = 'cash_received';
+        var maxCount = -1;
+        var keys = Object.keys(basisCounts || {});
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var count = parseInt(basisCounts[key], 10) || 0;
+            if (count > maxCount) {
+                maxCount = count;
+                dominant = key;
+            }
+        }
+        return dominant;
+    },
+
     getWonRevenueYtd: function(userId, selectedYear) {
         var yearStart = selectedYear + '-01-01';
         var yearEnd = selectedYear + '-12-31';
@@ -1148,6 +1359,14 @@ Record({
     },
 
     isManagedUser: function(managerUserId, targetUserId) {
+        var managedIds = this.getManagedUserIds(managerUserId, false);
+        for (var i = 0; i < managedIds.length; i++) {
+            if (String(managedIds[i]) === String(targetUserId)) {
+                return true;
+            }
+        }
+
+        // Backward-compatible fallback for legacy direct-report manager linkage
         var userGr = new GlideRecord('sys_user');
         userGr.addQuery('sys_id', targetUserId);
         userGr.addQuery('manager', managerUserId);
@@ -1166,6 +1385,29 @@ Record({
             seen[managerUserId] = true;
         }
 
+        // Primary governance source: explicit manager-team memberships
+        var today = new GlideDateTime().getValue().substring(0, 10);
+        var membershipGr = new GlideRecord('x_823178_commissio_manager_team_memberships');
+        membershipGr.addQuery('manager_user', managerUserId);
+        membershipGr.addQuery('is_active', true);
+        membershipGr.addQuery('effective_start_date', '<=', today);
+        membershipGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', today);
+        membershipGr.query();
+
+        while (membershipGr.next()) {
+            var repId = membershipGr.getValue('sales_rep');
+            if (!repId || seen[repId]) {
+                continue;
+            }
+
+            var repUser = new GlideRecord('sys_user');
+            if (repUser.get(repId) && (repUser.getValue('active') === 'true' || repUser.getValue('active') === true || repUser.getValue('active') === '1')) {
+                ids.push(repId);
+                seen[repId] = true;
+            }
+        }
+
+        // Backward-compatible fallback: direct reports where no explicit row exists
         var userGr = new GlideRecord('sys_user');
         userGr.addQuery('manager', managerUserId);
         userGr.addActiveQuery();

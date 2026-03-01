@@ -1,6 +1,6 @@
 import '@servicenow/sdk/global'
 import { Acl } from '@servicenow/sdk/core'
-import { commissionRepRole, commissionAdminRole, commissionFinanceRole } from '../roles/commission-roles.now'
+import { commissionRepRole, commissionAdminRole, commissionFinanceRole, commissionManagerRole } from '../roles/commission-roles.now'
 
 // Commission Plans - Admin only
 Acl({
@@ -199,4 +199,57 @@ Acl({
     active: true,
     admin_overrides: true,
     description: 'Only commission admins can create/update recognition basis policies'
+})
+
+// Bulk plan assignment runs - admin only
+Acl({
+    $id: 'bulk_plan_assignment_runs_read_acl',
+    type: 'record',
+    table: 'x_823178_commissio_bulk_plan_assignment_runs',
+    operation: 'read',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can read bulk plan assignment run records'
+})
+
+Acl({
+    $id: 'bulk_plan_assignment_runs_write_acl',
+    type: 'record',
+    table: 'x_823178_commissio_bulk_plan_assignment_runs',
+    operation: 'write',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can execute bulk plan assignment runs'
+})
+
+// Manager Team Memberships governance
+Acl({
+    $id: 'manager_team_memberships_read_acl',
+    type: 'record',
+    table: 'x_823178_commissio_manager_team_memberships',
+    operation: 'read',
+    roles: [commissionAdminRole, commissionManagerRole],
+    active: true,
+    admin_overrides: true,
+    script: `
+        if (gs.hasRole('x_823178_commissio.manager') && !gs.hasRole('x_823178_commissio.admin')) {
+            answer = current.manager_user == gs.getUserID();
+        } else {
+            answer = true;
+        }
+    `,
+    description: 'Admins can read all manager-team governance rows; managers can read their own scope'
+})
+
+Acl({
+    $id: 'manager_team_memberships_write_acl',
+    type: 'record',
+    table: 'x_823178_commissio_manager_team_memberships',
+    operation: 'write',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can create/update manager-team governance rows'
 })

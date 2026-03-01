@@ -275,6 +275,36 @@ Record({
     }
 })
 
+// Bulk Plan Assignment Runs Module
+Record({
+    $id: 'bulk_plan_assignment_runs_module',
+    table: 'sys_app_module',
+    data: {
+        title: 'Bulk Plan Assignments',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_bulk_plan_assignment_runs',
+        hint: 'Run preview/apply/rollback bulk plan assignments with overlap safeguards',
+        order: 34.2,
+        active: true
+    }
+})
+
+// Manager Team Governance Module
+Record({
+    $id: 'manager_team_memberships_module',
+    table: 'sys_app_module',
+    data: {
+        title: 'Manager Team Governance',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_manager_team_memberships',
+        hint: 'Define manager-to-rep governance scope and effective windows for team rollups',
+        order: 34.3,
+        active: true
+    }
+})
+
 // Administration Separator
 Record({
     $id: Now.ID['admin_separator'],
@@ -329,6 +359,21 @@ Record({
         name: 'x_823178_commissio_reconciliation_log',
         hint: 'View daily reconciliation and audit logs',
         order: 43,
+        active: true
+    }
+})
+
+// System Preferences Module
+Record({
+    $id: 'system_preferences_module',
+    table: 'sys_app_module',
+    data: {
+        title: 'System Preferences',
+        application: commissionApp.$id,
+        link_type: 'DIRECT',
+        query: 'sys_properties_list.do?sysparm_query=nameSTARTSWITHx_823178_commissio.',
+        hint: 'Manage Commission Management system properties and operational settings',
+        order: 44,
         active: true
     }
 })

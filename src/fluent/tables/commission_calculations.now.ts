@@ -66,6 +66,29 @@ export const x_823178_commissio_commission_calculations = Table({
         payment_date: DateColumn({ 
             label: 'Payment Date (Cash Received)'
         }),
+        recognition_date_snapshot: DateColumn({
+            label: 'Recognition Date Snapshot',
+            read_only: true
+        }),
+        temporal_lookup_date_snapshot: DateColumn({
+            label: 'Temporal Lookup Date Snapshot',
+            read_only: true
+        }),
+        recognition_basis_snapshot: StringColumn({
+            label: 'Recognition Basis Snapshot',
+            maxLength: 40,
+            read_only: true
+        }),
+        recognition_policy_version_snapshot: StringColumn({
+            label: 'Recognition Policy Version Snapshot',
+            maxLength: 40,
+            read_only: true
+        }),
+        recognition_policy_record: ReferenceColumn({
+            label: 'Recognition Policy Record',
+            referenceTable: 'x_823178_commissio_plan_recognition_policies',
+            read_only: true
+        }),
         payout_eligible_date: DateColumn({
             label: 'Payout Eligible Date'
         }),
