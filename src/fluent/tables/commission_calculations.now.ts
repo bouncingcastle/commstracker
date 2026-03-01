@@ -40,6 +40,9 @@ export const x_823178_commissio_commission_calculations = Table({
         payment_date: DateColumn({ 
             label: 'Payment Date (Cash Received)'
         }),
+        payout_eligible_date: DateColumn({
+            label: 'Payout Eligible Date'
+        }),
         deal_close_date: DateColumn({ 
             label: 'Deal Close Date (Snapshot)'
         }),
@@ -131,6 +134,11 @@ export const x_823178_commissio_commission_calculations = Table({
         notes: StringColumn({ 
             label: 'Notes',
             maxLength: 1000
+        }),
+        payout_schedule_snapshot: StringColumn({
+            label: 'Payout Schedule Snapshot',
+            maxLength: 500,
+            read_only: true
         })
     },
     audit: true,
