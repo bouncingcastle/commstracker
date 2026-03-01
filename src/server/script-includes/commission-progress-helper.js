@@ -571,10 +571,17 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
             while (bonusGr.next()) {
                 var bonusAmount = parseFloat(bonusGr.getValue('bonus_amount')) || 0;
                 totalBonusValue += bonusAmount;
+                var conditionSummary = bonusGr.getValue('condition_summary') || bonusGr.getValue('bonus_trigger') || '';
+                var evaluationPeriod = bonusGr.getValue('evaluation_period') || 'calculation';
                 details.bonuses.push({
                     name: bonusGr.getValue('bonus_name'),
                     amount: bonusAmount,
-                    trigger: bonusGr.getValue('bonus_trigger'),
+                    trigger: conditionSummary,
+                    qualification_metric: bonusGr.getValue('qualification_metric'),
+                    qualification_operator: bonusGr.getValue('qualification_operator'),
+                    qualification_threshold: bonusGr.getValue('qualification_threshold'),
+                    evaluation_period: evaluationPeriod,
+                    one_time_per_period: bonusGr.getValue('one_time_per_period') === '1' || bonusGr.getValue('one_time_per_period') === 'true' || bonusGr.getValue('one_time_per_period') === true,
                     deal_type: bonusGr.getValue('deal_type'),
                     is_discretionary: bonusGr.getValue('is_discretionary') === '1' || bonusGr.getValue('is_discretionary') === true
                 });

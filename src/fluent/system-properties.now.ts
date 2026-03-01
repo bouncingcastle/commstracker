@@ -292,6 +292,18 @@ Record({
 })
 
 Record({
+    $id: 'seed_bonus_scenarios_enabled_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.seed_bonus_scenarios_enabled',
+        value: 'false',
+        description: 'Controls whether bonus scenario seed script can insert/update click-test plan bonuses (default: false)',
+        type: 'boolean',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
     $id: 'seed_idempotency_mode_prop',
     table: 'sys_properties',
     data: {

@@ -182,6 +182,24 @@ export function calculateCommissionOnPayment(current, previous) {
         if (isNegative) {
             commissionAmount = -Math.abs(commissionAmount);
         }
+
+        var baseCommissionAmount = commissionAmount;
+        var bonusEvaluation = evaluateStructuredBonuses({
+            salesRep: commissionOwner,
+            commissionPlanId: commissionPlan.planId,
+            paymentId: current.getUniqueValue(),
+            paymentDate: current.getValue('payment_date'),
+            dealId: dealGr.getUniqueValue(),
+            dealType: dealGr.getValue('deal_type'),
+            dealAmount: parseFloat(dealGr.getValue('amount')) || 0,
+            invoiceId: invoiceGr.getUniqueValue(),
+            evaluationDate: temporalLookupDate,
+            attainmentPercent: tierEvaluation.attainmentPercent,
+            baseCommissionAmount: baseCommissionAmount,
+            isNegative: isNegative
+        });
+
+        commissionAmount = Math.round((baseCommissionAmount + bonusEvaluation.totalBonusAmount) * 100) / 100;
         
         // BUSINESS REQUIREMENT: Commission approval for high values without blocking processing
         var approvalThreshold = parseFloat(gs.getProperty('x_823178_commissio.approval_threshold', '10000'));
@@ -226,6 +244,9 @@ export function calculateCommissionOnPayment(current, previous) {
             dealType: dealGr.getValue('deal_type'),
             isNegative: isNegative,
             requiresApproval: requiresApproval,
+            bonusAmount: bonusEvaluation.totalBonusAmount,
+            bonusEarnedCount: bonusEvaluation.earnedBonuses.length,
+            bonusSummarySnapshot: bonusEvaluation.summarySnapshot,
             effectiveTierName: tierEvaluation.tierName,
             effectiveTierFloorPercent: tierEvaluation.tierFloorPercent,
             attainmentPercentAtCalc: tierEvaluation.attainmentPercent,
@@ -251,11 +272,15 @@ export function calculateCommissionOnPayment(current, previous) {
                 temporalLookupDate: temporalLookupDate,
                 recognitionPolicyVersion: recognitionPolicy.versionNumber,
                 recognitionPolicyId: recognitionPolicy.policyId,
-                payoutSchedule: payoutSchedule
+                payoutSchedule: payoutSchedule,
+                bonusAmount: bonusEvaluation.totalBonusAmount,
+                bonusEarnedCount: bonusEvaluation.earnedBonuses.length,
+                bonusSummary: bonusEvaluation.summarySnapshot
             }
         });
         
         if (calculationId) {
+            persistBonusEarnings(calculationId, current.getUniqueValue(), bonusEvaluation.earnedBonuses);
             current.setValue('commission_calculated', 'calculated');
             current.setValue('commission_calculation_id', calculationId);
             current.setValue('calculation_lock', false);
@@ -560,6 +585,290 @@ function resolveTierForAttainment(planId, attainmentPercent, dealType) {
     return null;
 }
 
+function evaluateStructuredBonuses(params) {
+    var result = {
+        totalBonusAmount: 0,
+        earnedBonuses: [],
+        summarySnapshot: ''
+    };
+
+    if (params.isNegative) {
+        result.summarySnapshot = 'No bonus evaluation for refund/negative payment';
+        return result;
+    }
+
+    var bonusGr = new GlideRecord('x_823178_commissio_plan_bonuses');
+    bonusGr.addQuery('commission_plan', params.commissionPlanId);
+    bonusGr.addQuery('is_active', true);
+    bonusGr.addQuery('is_discretionary', false);
+    bonusGr.orderBy('bonus_name');
+    bonusGr.query();
+
+    var summaryRows = [];
+
+    while (bonusGr.next()) {
+        var bonusId = bonusGr.getUniqueValue();
+        var bonusName = bonusGr.getValue('bonus_name') || 'Bonus';
+        var bonusAmount = parseFloat(bonusGr.getValue('bonus_amount')) || 0;
+        var metric = (bonusGr.getValue('qualification_metric') || '').toString();
+        var operator = (bonusGr.getValue('qualification_operator') || 'gte').toString();
+        var threshold = parseFloat(bonusGr.getValue('qualification_threshold'));
+        var period = (bonusGr.getValue('evaluation_period') || 'calculation').toString();
+        var oneTimePerPeriod = bonusGr.getValue('one_time_per_period') === 'true' || bonusGr.getValue('one_time_per_period') === true;
+        var bonusDealType = normalizeBonusDealType(bonusGr.getValue('deal_type'));
+
+        if (!metric || isNaN(threshold)) {
+            summaryRows.push(bonusName + ': skipped (incomplete structured condition)');
+            continue;
+        }
+
+        if (!bonusScopeMatches(bonusDealType, params.dealType)) {
+            summaryRows.push(bonusName + ': not qualified (deal type scope mismatch)');
+            continue;
+        }
+
+        var periodInfo = resolveBonusPeriod(params.evaluationDate || params.paymentDate, period, params.paymentId);
+        var metricValue = resolveBonusMetricValue(metric, params, periodInfo, bonusDealType);
+        var qualified = compareThreshold(metricValue, threshold, operator);
+
+        if (!qualified) {
+            summaryRows.push(bonusName + ': not qualified (' + metricValue + ' ' + operator + ' ' + threshold + ')');
+            continue;
+        }
+
+        if (oneTimePerPeriod && hasExistingOneTimeBonusEarning({
+            bonusId: bonusId,
+            salesRep: params.salesRep,
+            periodKey: periodInfo.periodKey,
+            paymentId: params.paymentId
+        })) {
+            summaryRows.push(bonusName + ': already earned for period ' + periodInfo.periodKey);
+            continue;
+        }
+
+        var normalizedBonusAmount = Math.round(Math.abs(bonusAmount) * 100) / 100;
+        if (normalizedBonusAmount <= 0) {
+            summaryRows.push(bonusName + ': skipped (bonus amount <= 0)');
+            continue;
+        }
+
+        result.totalBonusAmount += normalizedBonusAmount;
+        result.earnedBonuses.push({
+            planBonusId: bonusId,
+            salesRep: params.salesRep,
+            commissionPlanId: params.commissionPlanId,
+            paymentId: params.paymentId,
+            dealId: params.dealId,
+            invoiceId: params.invoiceId,
+            earnedAmount: normalizedBonusAmount,
+            earnedDate: (params.paymentDate || params.evaluationDate || '').toString(),
+            periodKey: periodInfo.periodKey,
+            evaluationPeriod: period,
+            oneTimePerPeriod: oneTimePerPeriod,
+            metricValueSnapshot: metricValue,
+            thresholdSnapshot: threshold,
+            operatorSnapshot: operator,
+            qualificationMetricSnapshot: metric,
+            evaluationSnapshot: JSON.stringify({
+                bonus_name: bonusName,
+                metric: metric,
+                operator: operator,
+                threshold: threshold,
+                metric_value: metricValue,
+                period_key: periodInfo.periodKey,
+                period_start: periodInfo.periodStart,
+                period_end: periodInfo.periodEnd,
+                deal_type_scope: bonusDealType,
+                one_time_per_period: oneTimePerPeriod
+            })
+        });
+
+        summaryRows.push(bonusName + ': earned $' + normalizedBonusAmount.toFixed(2));
+    }
+
+    result.totalBonusAmount = Math.round(result.totalBonusAmount * 100) / 100;
+    result.summarySnapshot = summaryRows.join('; ');
+    return result;
+}
+
+function normalizeBonusDealType(value) {
+    var normalized = (value || '').toString();
+    return normalized ? normalized : 'any';
+}
+
+function bonusScopeMatches(scope, dealType) {
+    var normalizedDealType = (dealType || '').toString() || 'other';
+    return scope === 'any' || scope === normalizedDealType;
+}
+
+function resolveBonusMetricValue(metric, params, periodInfo, bonusScopeDealType) {
+    if (metric === 'quota_attainment_percent') {
+        return parseFloat(params.attainmentPercent) || 0;
+    }
+
+    if (metric === 'deal_amount') {
+        return Math.abs(parseFloat(params.dealAmount) || 0);
+    }
+
+    if (metric === 'deal_count') {
+        return getRepWonDealCountForPeriod(params.salesRep, periodInfo.periodStart, periodInfo.periodEnd, bonusScopeDealType);
+    }
+
+    if (metric === 'base_commission_amount') {
+        return Math.abs(parseFloat(params.baseCommissionAmount) || 0);
+    }
+
+    return 0;
+}
+
+function compareThreshold(metricValue, threshold, operator) {
+    var left = parseFloat(metricValue) || 0;
+    var right = parseFloat(threshold) || 0;
+
+    if (operator === 'gt') {
+        return left > right;
+    }
+
+    if (operator === 'eq') {
+        return Math.abs(left - right) < 0.0001;
+    }
+
+    return left >= right;
+}
+
+function resolveBonusPeriod(referenceDate, period, paymentId) {
+    var dateValue = (referenceDate || '').toString();
+    var year = dateValue.length >= 4 ? dateValue.substring(0, 4) : '';
+    var month = dateValue.length >= 7 ? dateValue.substring(5, 7) : '01';
+
+    if (period === 'monthly') {
+        return {
+            periodKey: year + '-' + month,
+            periodStart: year + '-' + month + '-01',
+            periodEnd: year + '-' + month + '-31'
+        };
+    }
+
+    if (period === 'quarterly') {
+        var monthInt = parseInt(month, 10);
+        if (isNaN(monthInt) || monthInt < 1) monthInt = 1;
+        var quarter = Math.floor((monthInt - 1) / 3) + 1;
+        var quarterStartMonth = ((quarter - 1) * 3) + 1;
+        var quarterEndMonth = quarterStartMonth + 2;
+        var startMonthStr = (quarterStartMonth < 10 ? '0' : '') + quarterStartMonth;
+        var endMonthStr = (quarterEndMonth < 10 ? '0' : '') + quarterEndMonth;
+
+        return {
+            periodKey: year + '-Q' + quarter,
+            periodStart: year + '-' + startMonthStr + '-01',
+            periodEnd: year + '-' + endMonthStr + '-31'
+        };
+    }
+
+    if (period === 'annual') {
+        return {
+            periodKey: year,
+            periodStart: year + '-01-01',
+            periodEnd: year + '-12-31'
+        };
+    }
+
+    return {
+        periodKey: 'calc-' + (paymentId || 'na'),
+        periodStart: dateValue,
+        periodEnd: dateValue
+    };
+}
+
+function getRepWonDealCountForPeriod(salesRep, periodStart, periodEnd, dealTypeScope) {
+    var count = 0;
+    var dealGr = new GlideRecord('x_823178_commissio_deals');
+    dealGr.addQuery('owner_at_close', salesRep);
+    dealGr.addQuery('is_won', true);
+
+    if (periodStart) {
+        dealGr.addQuery('close_date', '>=', periodStart);
+    }
+    if (periodEnd) {
+        dealGr.addQuery('close_date', '<=', periodEnd);
+    }
+
+    var normalizedDealType = (dealTypeScope || '').toString();
+    if (normalizedDealType && normalizedDealType !== 'any') {
+        dealGr.addQuery('deal_type', normalizedDealType);
+    }
+
+    dealGr.query();
+    while (dealGr.next()) {
+        count += 1;
+    }
+    return count;
+}
+
+function hasExistingOneTimeBonusEarning(params) {
+    var earningGr = new GlideRecord('x_823178_commissio_bonus_earnings');
+    earningGr.addQuery('plan_bonus', params.bonusId);
+    earningGr.addQuery('sales_rep', params.salesRep);
+    earningGr.addQuery('period_key', params.periodKey);
+    earningGr.addQuery('status', 'earned');
+    earningGr.query();
+
+    while (earningGr.next()) {
+        if (earningGr.getValue('payment') !== params.paymentId) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function persistBonusEarnings(calculationId, paymentId, earnedBonuses) {
+    clearBonusEarningsForPayment(paymentId);
+
+    if (!earnedBonuses || earnedBonuses.length === 0) {
+        return;
+    }
+
+    for (var i = 0; i < earnedBonuses.length; i++) {
+        var earned = earnedBonuses[i];
+        var earningGr = new GlideRecord('x_823178_commissio_bonus_earnings');
+        earningGr.initialize();
+        earningGr.setValue('commission_calculation', calculationId);
+        earningGr.setValue('payment', paymentId);
+        earningGr.setValue('deal', earned.dealId);
+        earningGr.setValue('invoice', earned.invoiceId);
+        earningGr.setValue('sales_rep', earned.salesRep);
+        earningGr.setValue('commission_plan', earned.commissionPlanId);
+        earningGr.setValue('plan_bonus', earned.planBonusId);
+        earningGr.setValue('earned_amount', earned.earnedAmount);
+        earningGr.setValue('earned_date', earned.earnedDate);
+        earningGr.setValue('period_key', earned.periodKey);
+        earningGr.setValue('evaluation_period', earned.evaluationPeriod);
+        earningGr.setValue('one_time_per_period', earned.oneTimePerPeriod);
+        earningGr.setValue('metric_value_snapshot', earned.metricValueSnapshot);
+        earningGr.setValue('threshold_snapshot', earned.thresholdSnapshot);
+        earningGr.setValue('operator_snapshot', earned.operatorSnapshot);
+        earningGr.setValue('qualification_metric_snapshot', earned.qualificationMetricSnapshot);
+        earningGr.setValue('evaluation_snapshot', earned.evaluationSnapshot);
+        earningGr.setValue('status', 'earned');
+        earningGr.insert();
+    }
+}
+
+function clearBonusEarningsForPayment(paymentId) {
+    if (!paymentId) {
+        return;
+    }
+
+    var existingGr = new GlideRecord('x_823178_commissio_bonus_earnings');
+    existingGr.addQuery('payment', paymentId);
+    existingGr.query();
+
+    while (existingGr.next()) {
+        existingGr.deleteRecord();
+    }
+}
+
 function createCommissionCalculation(data) {
     var commissionGr = new GlideRecord('x_823178_commissio_commission_calculations');
     
@@ -586,6 +895,8 @@ function createCommissionCalculation(data) {
     commissionGr.setValue('quota_amount_snapshot', data.quotaAmountSnapshot || 0);
     commissionGr.setValue('attained_amount_snapshot', data.attainedAmountSnapshot || 0);
     commissionGr.setValue('accelerator_applied', data.acceleratorApplied || false);
+    commissionGr.setValue('bonus_amount', data.bonusAmount || 0);
+    commissionGr.setValue('bonus_earned_count', (data.bonusEarnedCount || 0).toString());
     commissionGr.setValue('commission_amount', data.commissionAmount);
     commissionGr.setValue('payment_date', data.paymentDate);
     if (data.recognitionDateSnapshot) {
@@ -608,6 +919,9 @@ function createCommissionCalculation(data) {
     }
     if (data.payoutScheduleSnapshot) {
         commissionGr.setValue('payout_schedule_snapshot', data.payoutScheduleSnapshot);
+    }
+    if (data.bonusSummarySnapshot) {
+        commissionGr.setValue('bonus_summary_snapshot', data.bonusSummarySnapshot);
     }
     commissionGr.setValue('calculation_date', new GlideDateTime().getDisplayValue());
     commissionGr.setValue('deal_close_date', data.dealCloseDate);

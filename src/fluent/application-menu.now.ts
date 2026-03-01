@@ -265,12 +265,26 @@ Record({
     $id: Now.ID['compensation_management_module'],
     table: 'sys_app_module',
     data: {
-        title: 'Plan Assignment (Shortcut)',
+        title: 'Plan Setup Form (Shortcut)',
         application: commissionApp.$id,
         link_type: 'DIRECT',
-        query: 'x_823178_commissio_commission_plans_list.do?sysparm_query=is_active=true',
-        hint: 'Shortcut to the Commission Plans list for quick assignment updates',
+        query: 'x_823178_commissio_commission_plans.do?sys_id=-1',
+        hint: 'Shortcut to create a new plan and configure related lists from the plan form',
         order: 34,
+        active: true
+    }
+})
+
+Record({
+    $id: 'plan_structure_reference_module',
+    table: 'sys_app_module',
+    data: {
+        title: 'Plan Structure Reference',
+        application: commissionApp.$id,
+        link_type: 'DIRECT',
+        query: 'x_823178_commissio_commission_plans_list.do?sysparm_query=is_active=true^ORDERBYsales_rep^ORDERBYDESCeffective_start_date',
+        hint: 'Open individual active plans by rep and review full plan structure via related lists',
+        order: 34.1,
         active: true
     }
 })

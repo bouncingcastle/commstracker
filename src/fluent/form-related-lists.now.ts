@@ -38,3 +38,21 @@ Record({
         related_list: 'x_823178_commissio_plan_recognition_policies.commission_plan'
     }
 })
+
+Record({
+    $id: 'commission_calculation_bonus_earnings_related_list',
+    table: 'sys_ui_related_list',
+    data: {
+        name: 'x_823178_commissio_commission_calculations',
+        related_list: 'x_823178_commissio_bonus_earnings.commission_calculation'
+    }
+})
+
+Record({
+    $id: 'plan_bonus_bonus_earnings_related_list',
+    table: 'sys_ui_related_list',
+    data: {
+        name: 'x_823178_commissio_plan_bonuses',
+        related_list: 'x_823178_commissio_bonus_earnings.plan_bonus'
+    }
+})

@@ -230,7 +230,7 @@ This assessment compares the current application implementation against the requ
 
 ### Additional Requirements Missing from Baseline List
 1. **Runtime execution of configurable recognition basis** with calc-time reproducibility snapshots (policy model now exists; runtime switch remains pending).
-2. **Executable bonus qualification engine** for ad-hoc and milestone bonuses (e.g., one-time quota-hit bonus), with deterministic audit records.
+2. **Executable bonus qualification engine** for ad-hoc and milestone bonuses (e.g., one-time quota-hit bonus), with deterministic audit records (**implemented**).
 3. **Payout timeline forecasting** from expected cash receipts (not only weighted deal-stage estimates).
 4. **Dispute case management domain** (case table, threaded commentary, SLA/aging, ownership, resolution actions).
 5. **Finance/manager operational workspaces** beyond list navigation (queues, bottlenecks, exception aging, approvals throughput).
@@ -241,7 +241,7 @@ This assessment compares the current application implementation against the requ
 | Scenario | Current Readiness | Notes |
 |---|---|---|
 | Quota-carrying sellers by deal type with tiered accelerators | **Good** | Deterministic tier selection and persisted snapshots are implemented. |
-| One-time quota-hit bonus payout | **Weak** | Requires structured bonus trigger execution and bonus-earned records. |
+| One-time quota-hit bonus payout | **Good** | Structured bonus conditions + calc-time earned-record persistence + one-time period dedupe are now implemented. |
 | Cash-received commission payout forecasting | **Partial** | Cash-received calc exists; forecasting does not yet model receipt schedule lifecycle in depth. |
 | Alternate payout basis by policy | **Good** | Versioned recognition policy model is configurable by plan and runtime now applies selected basis with persisted policy snapshots on each calculation. |
 | Manager-led team planning and governance | **Partial** | Team rollups exist; dedicated manager workflow/dashboard depth remains limited. |
@@ -258,9 +258,9 @@ This assessment compares the current application implementation against the requ
 | 4 | P2.4 ✅ | Recognition basis policy | Add configurable recognition basis (`cash_received`,`invoice_issued`,`booking`,`milestone`) and plan-level versioned policy | ✅ Completed 2026-02-28: data model/validation/UX wiring deployed; runtime parity preserved in cash mode | M |
 | 5 | P2.5 ✅ | Runtime basis switch | Calculation runtime uses selected recognition basis; persist applied policy snapshot | ✅ Completed 2026-03-01: runtime basis switch + policy snapshots persisted; diagnostics clean | M |
 | 6 | P2.6 ✅ | Forecast payout timeline | Forecast/estimator supports payout timeline by recognition basis (not just stage heuristics) | ✅ Completed 2026-03-01: basis-aware payout timeline projection + estimator payout dates + UI rendering delivered; diagnostics clean | M-L |
-| 7 | P2.7 | Bonus rule schema | Replace free-text bonus triggers with structured, validated bonus conditions | Bonus definition validation + migration completion report | M |
-| 8 | P2.8 | Bonus execution engine | Deterministic bonus eligibility at calc-time + persisted bonus-earned records | Golden bonus outcomes for threshold/edge-case scenarios | L |
-| 9 | P2.9 | One-time quota bonus | One-time quota-hit bonus logic (once per rep/period) | Duplicate prevention test across recalculation/reopen paths | S-M |
+| 7 | P2.7 ✅ | Bonus rule schema | Replace free-text bonus triggers with structured, validated bonus conditions | ✅ Completed 2026-03-01: structured qualification metric/operator/threshold/period model + validation BR + condition summary snapshot deployed | M |
+| 8 | P2.8 ✅ | Bonus execution engine | Deterministic bonus eligibility at calc-time + persisted bonus-earned records | ✅ Completed 2026-03-01: calc-time evaluator + persisted `bonus_earnings` records + calculation bonus snapshots deployed | L |
+| 9 | P2.9 ✅ | One-time quota bonus | One-time quota-hit bonus logic (once per rep/period) | ✅ Completed 2026-03-01: one-time-per-period dedupe guard across recalculation/reopen paths via period-keyed earned-record checks | S-M |
 | 10 | P2.10 | Accelerator explainability | Persist and render base vs accelerator delta in progress/statement views | Finance UAT sign-off on payout explainability | M |
 | 11 | P2.11 | Finance cockpit | Queue-driven finance workspace (approvals, payout windows, exceptions) | End-to-end statement approval throughput and queue SLA test | M-L |
 | 12 | P2.12 ✅ | Seed governance hardening | Environment-gated/idempotent seed strategy for app menu + demo data, with controlled enablement and duplicate safeguards | ✅ Completed 2026-03-01: seed controls + reconciliation job deployed; diagnostics clean | S-M |
