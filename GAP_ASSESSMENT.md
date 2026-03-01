@@ -119,7 +119,7 @@ This assessment compares the current application implementation against the requ
 
 ### P1 Validation Notes (2026-02-28)
 - `src/fluent/tables/forecast_scenarios.now.ts` adds persisted scenario storage with multipliers and projected outputs.
-- `src/server/script-includes/commission-p1-helper.js` and `src/fluent/script-includes/commission-p1-helper.now.ts` provide forecast, scenario save/list, estimator, and statement approval actions.
+- `src/fluent/script-includes/commission-progress-helper.now.ts` provides forecast, scenario save/list, estimator, and statement approval actions through `CommissionProgressDataService`.
 - `src/fluent/ui-pages/commission-progress.now.ts` now includes forecast simulation controls, prioritized opportunity ranking, and commission estimator UX.
 - `src/fluent/tables/statement_approvals.now.ts` and `src/server/business-rules/statement-approval-workflow.js` add approval workflow entity and enforced transitions with statement status synchronization.
 

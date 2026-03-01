@@ -352,7 +352,6 @@ UiPage({
             <option value="">Select representative...</option>
           </select>
           <select id="yearSelect"></select>
-          <button onclick="loadSelectedUser()">Apply</button>
         </div>
       </div>
     </div>
@@ -647,8 +646,7 @@ UiPage({
 
         function invokeHelper(methodName, params, callback) {
           var helperNames = [
-            'x_823178_commissio.CommissionProgressDataService',
-            'x_823178_commissio.CommissionProgressHelper'
+            'x_823178_commissio.CommissionProgressDataService'
           ];
 
           function tryIndex(index) {
@@ -697,9 +695,7 @@ UiPage({
 
         function invokeP1Helper(methodName, params, callback) {
           var helperNames = [
-            'x_823178_commissio.CommissionProgressDataService',
-            'x_823178_commissio.CommissionP1Helper',
-            'x_823178_commissio.CommissionProgressHelper'
+            'x_823178_commissio.CommissionProgressDataService'
           ];
 
           function tryIndex(index) {
@@ -751,7 +747,7 @@ UiPage({
         var canSelectUsers = false;
         if (chips) {
           var roles = [];
-          if (hasRole('x_823178_commissio.admin')) {
+          if (hasRole('x_823178_commissio.admin') || hasRole('admin')) {
             roles.push('Admin');
             canSelectUsers = true;
           }
@@ -948,7 +944,7 @@ UiPage({
           });
         }
 
-        window.loadSelectedUser = function() {
+        function applySelectedUserAndYear() {
           var select = document.getElementById('userSelect');
           var yearSelect = document.getElementById('yearSelect');
           if (!select) {
@@ -960,8 +956,11 @@ UiPage({
           }
 
           if (!select.value) {
-            alert('Select a representative before applying filters.');
-            return;
+            if (currentUserId) {
+              select.value = currentUserId;
+            } else {
+              return;
+            }
           }
 
           viewingYear = parseInt(yearSelect && yearSelect.value ? yearSelect.value : viewingYear, 10) || viewingYear;
@@ -969,7 +968,26 @@ UiPage({
           var selectedName = select.options[select.selectedIndex] ? select.options[select.selectedIndex].text : 'Selected User';
           viewingUserId = select.value;
           loadRepProgress(viewingUserId, selectedName, viewingYear);
-        };
+        }
+
+        function bindSelectorAutoApply() {
+          var select = document.getElementById('userSelect');
+          var yearSelect = document.getElementById('yearSelect');
+          if (select) {
+            select.addEventListener('change', function() {
+              if (!select.value && currentUserId) {
+                select.value = currentUserId;
+              }
+              applySelectedUserAndYear();
+            });
+          }
+
+          if (yearSelect) {
+            yearSelect.addEventListener('change', function() {
+              applySelectedUserAndYear();
+            });
+          }
+        }
 
         function loadInitialData() {
           if (!viewingUserId) {
@@ -1001,6 +1019,7 @@ UiPage({
         }
 
         resolveViewerAccess(function() {
+          bindSelectorAutoApply();
           loadUserOptions();
           initializeYearContext(function() {
             loadUserOptions();
