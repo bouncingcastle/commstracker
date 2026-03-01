@@ -18,6 +18,15 @@ export const commissionAdminRole = Role({
     contains_roles: [commissionRepRole]
 })
 
+// Manager role - can view own and direct reports rollups
+export const commissionManagerRole = Role({
+    name: 'x_823178_commissio.manager',
+    description: 'Commission managers can view direct-report performance and team rollups',
+    can_delegate: false,
+    grantable: true,
+    contains_roles: [commissionRepRole]
+})
+
 // Finance role - can lock statements and mark as paid
 export const commissionFinanceRole = Role({
     name: 'x_823178_commissio.finance',
