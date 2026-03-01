@@ -9,6 +9,9 @@ import './ui-pages/commission-dashboard-redesigned.now'
 // Sales Rep Commission Progress UI Page
 import './ui-pages/commission-progress.now'
 
+// Client-callable Script Includes
+import './script-includes/commission-progress-helper.now'
+
 // Rep Compensation Management UI Page
 import './ui-pages/rep-compensation-management.now'
 

@@ -513,14 +513,17 @@ UiPage({
 
         // Role chips and admin selector
         var chips = document.getElementById('roleChips');
-        var isAdmin = false;
+        var canSelectUsers = false;
         if (chips && window.g_user && typeof window.g_user.hasRole === 'function') {
           var roles = [];
           if (g_user.hasRole('x_823178_commissio.admin')) {
             roles.push('Admin');
-            isAdmin = true;
+            canSelectUsers = true;
           }
-          if (g_user.hasRole('x_823178_commissio.finance')) roles.push('Finance');
+          if (g_user.hasRole('x_823178_commissio.finance')) {
+            roles.push('Finance');
+            canSelectUsers = true;
+          }
           if (g_user.hasRole('x_823178_commissio.rep')) roles.push('Rep');
           if (roles.length === 0) roles.push('User');
 
@@ -533,7 +536,7 @@ UiPage({
         }
 
         // Show admin user selector
-        if (isAdmin) {
+        if (canSelectUsers) {
           var selector = document.getElementById('userSelector');
           if (selector) selector.classList.add('visible');
         }
