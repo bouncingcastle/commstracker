@@ -335,7 +335,7 @@ Record({
         total_earned: 4400,
         total_paid: 4400,
         pending_amount: 0,
-        statement_number: 1,
+        statement_number: '1',
         statement_year: 2026,
         statement_month: 202601,
         generated_date: '2026-02-03 08:00:00',
@@ -356,7 +356,7 @@ Record({
         total_earned: 2100,
         total_paid: 0,
         pending_amount: 2100,
-        statement_number: 2,
+        statement_number: '2',
         statement_year: 2026,
         statement_month: 202602,
         generated_date: '2026-03-01 08:00:00',
@@ -377,7 +377,7 @@ Record({
         total_earned: 6500,
         total_paid: 6500,
         pending_amount: 0,
-        statement_number: 1,
+        statement_number: '1',
         statement_year: 2026,
         statement_month: 202601,
         generated_date: '2026-02-03 08:00:00',
@@ -461,6 +461,7 @@ Record({
         message: '3 new commission calculations are ready for approval',
         severity: 'medium',
         status: 'open',
+        alert_date: '2026-02-28 10:30:00',
         occurred_at: '2026-02-28 10:30:00',
         alert_source: 'Commission Calculation Engine'
     }
@@ -475,6 +476,7 @@ Record({
         message: '1 payment amount mismatch detected between Books and Commission system',
         severity: 'high',
         status: 'open',
+        alert_date: '2026-02-28 18:15:00',
         occurred_at: '2026-02-28 18:15:00',
         alert_source: 'Daily Reconciliation Job'
     }
