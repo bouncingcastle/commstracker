@@ -53,6 +53,9 @@ import './tables/plan_targets.now'
 import './tables/plan_tiers.now'
 import './tables/plan_bonuses.now'
 
+// Form UX (single-flow plan setup)
+import './form-related-lists.now'
+
 // Demo Data
 import './compensation-demo-data.now'
 import './enhanced-demo-data.now'

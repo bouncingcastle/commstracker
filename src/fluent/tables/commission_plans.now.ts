@@ -28,14 +28,15 @@ export const x_823178_commissio_commission_plans = Table({
             defaultValue: true
         }),
         deal_type: StringColumn({
-            label: 'Deal Type',
+            label: 'Legacy Deal Type (Unused)',
             choices: {
                 new_business: { label: 'New Business', sequence: 0 },
                 renewal: { label: 'Renewal', sequence: 1 },
                 expansion: { label: 'Expansion', sequence: 2 },
                 upsell: { label: 'Upsell', sequence: 3 }
             },
-            defaultValue: 'new_business'
+            defaultValue: 'new_business',
+            description: 'Legacy field kept for compatibility. Active plan design uses per-type rate columns and related Plan Targets/Tiers/Bonuses.'
         }),
         new_business_rate: DecimalColumn({ 
             label: 'New Business Rate (%)',
@@ -71,7 +72,7 @@ export const x_823178_commissio_commission_plans = Table({
             label: 'Plan Target Commission Amount',
             precision: 12,
             scale: 2,
-            description: 'Total commission target for this plan period'
+            description: 'Optional top-level target. Detailed targets, tiering accelerators, and bonuses are configured via related records on this plan.'
         }),
         description: StringColumn({ 
             label: 'Description',
@@ -79,14 +80,17 @@ export const x_823178_commissio_commission_plans = Table({
         }),
         plan_overlap_approved_by: ReferenceColumn({
             label: 'Plan Overlap Approved By',
-            referenceTable: 'sys_user'
+            referenceTable: 'sys_user',
+            read_only: true
         }),
         plan_overlap_approved_on: DateColumn({
-            label: 'Plan Overlap Approved On'
+            label: 'Plan Overlap Approved On',
+            read_only: true
         }),
         plan_overlap_reason: StringColumn({
             label: 'Plan Overlap Reason',
-            maxLength: 500
+            maxLength: 500,
+            read_only: true
         })
     },
     indexes: [
