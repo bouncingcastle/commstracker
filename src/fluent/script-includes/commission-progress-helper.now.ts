@@ -5,13 +5,13 @@ Record({
     $id: Now.ID['commission_progress_helper_script_include'],
     table: 'sys_script_include',
     data: {
-        name: 'CommissionProgressHelper',
+        name: 'CommissionProgressDataService',
         active: true,
         client_callable: true,
         access: 'public',
         script: `
-var CommissionProgressHelper = Class.create();
-CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+    var CommissionProgressDataService = Class.create();
+    CommissionProgressDataService.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     
     getRepProgress: function() {
         var userId = this.getParameter('sysparm_user_id') || this.getParameter('user_id');
@@ -191,14 +191,14 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                 try {
                     result.data.quota_progress = this.getQuotaProgress(userId, planId, selectedYear);
                 } catch (quotaErr) {
-                    gs.log('CommissionProgressHelper quota fetch warning: ' + quotaErr.getMessage(), 'CommissionProgressHelper');
+                    gs.log('CommissionProgressDataService quota fetch warning: ' + quotaErr.getMessage(), 'CommissionProgressDataService');
                 }
             }
 
             return JSON.stringify(result);
 
         } catch (e) {
-            gs.error('CommissionProgressHelper.getRepProgress error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getRepProgress error: ' + e.getMessage());
             return this.getErrorJSON('Error fetching commission progress: ' + e.getMessage());
         }
     },
@@ -256,7 +256,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
 
             return progress;
         } catch (e) {
-            gs.error('CommissionProgressHelper.getQuotaProgress error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getQuotaProgress error: ' + e.getMessage());
             return {};
         }
     },
@@ -271,7 +271,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                 }
             });
         } catch (e) {
-            gs.error('CommissionProgressHelper.getCurrentUser error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getCurrentUser error: ' + e.getMessage());
             return this.getErrorJSON('Unable to resolve current user: ' + e.getMessage());
         }
     },
@@ -300,7 +300,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                 }
             });
         } catch (e) {
-            gs.error('CommissionProgressHelper.getYearContext error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getYearContext error: ' + e.getMessage());
             return this.getErrorJSON('Unable to resolve year context: ' + e.getMessage());
         }
     },
@@ -362,7 +362,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                 }
             });
         } catch (e) {
-            gs.error('CommissionProgressHelper.getDashboardMetrics error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getDashboardMetrics error: ' + e.getMessage());
             return this.getErrorJSON('Unable to load dashboard metrics: ' + e.getMessage());
         }
     },
@@ -448,7 +448,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                 data: users
             });
         } catch (e) {
-            gs.error('CommissionProgressHelper.listUsersWithData error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.listUsersWithData error: ' + e.getMessage());
             return this.getErrorJSON('Unable to load users: ' + e.getMessage());
         }
     },
@@ -496,7 +496,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
 
             return this.getErrorJSON('No user found matching: ' + searchTerm);
         } catch (e) {
-            gs.error('CommissionProgressHelper.searchUsers error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.searchUsers error: ' + e.getMessage());
             return this.getErrorJSON('Error searching users: ' + e.getMessage());
         }
     },
@@ -562,7 +562,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
 
             return details;
         } catch (e) {
-            gs.error('CommissionProgressHelper.getCompensationPlanDetails error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getCompensationPlanDetails error: ' + e.getMessage());
             return { targets: {}, tiers: [], bonuses: [], total_quota: 0, base_rate: 0, total_bonus_potential: 0 };
         }
     },
@@ -574,7 +574,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
         });
     },
 
-    type: 'CommissionProgressHelper'
+    type: 'CommissionProgressDataService'
 });
         `
     }
