@@ -505,13 +505,7 @@ UiPage({
             <option value="expansion">Expansion</option>
             <option value="upsell">Upsell</option>
           </select>
-          <select id="estimateStage">
-            <option value="lead">Lead</option>
-            <option value="qualified" selected>Qualified</option>
-            <option value="proposal">Proposal</option>
-            <option value="negotiation">Negotiation</option>
-            <option value="closed_won">Closed Won</option>
-          </select>
+          <input id="estimateCloseDate" type="date" />
           <button onclick="runCommissionEstimate()">Estimate</button>
         </div>
         <div class="breakdown" id="estimatorResult">
@@ -620,6 +614,13 @@ UiPage({
         var viewingUserId = null;
         var viewingYear = new Date().getFullYear();
         var activeScenarioId = '';
+        var canViewAllUsers = false;
+        var canViewTeamRollup = false;
+
+        var estimateCloseDateInput = document.getElementById('estimateCloseDate');
+        if (estimateCloseDateInput && !estimateCloseDateInput.value) {
+          estimateCloseDateInput.value = new Date().toISOString().split('T')[0];
+        }
 
         function hasRole(roleName) {
           try {
@@ -765,6 +766,10 @@ UiPage({
             roles.push('Admin');
             canSelectUsers = true;
           }
+          if (hasRole('x_823178_commissio.manager')) {
+            roles.push('Manager');
+            canSelectUsers = true;
+          }
           if (hasRole('x_823178_commissio.finance')) {
             roles.push('Finance');
           }
@@ -803,6 +808,8 @@ UiPage({
               var payload = typeof response === 'string' ? JSON.parse(response) : response;
               if (payload && payload.status === 'success' && payload.data) {
                 canSelectUsers = !!payload.data.can_select_users;
+                canViewAllUsers = !!payload.data.can_view_all_users;
+                canViewTeamRollup = !!payload.data.can_view_team_rollup;
                 if (chips && payload.data.roles && payload.data.roles.admin) {
                   var hasAdminChip = false;
                   var chipNodes = chips.querySelectorAll('.chip');
@@ -817,6 +824,22 @@ UiPage({
                     adminChip.className = 'chip';
                     adminChip.textContent = 'Admin';
                     chips.insertBefore(adminChip, chips.firstChild);
+                  }
+                }
+                if (chips && payload.data.roles && payload.data.roles.manager) {
+                  var hasManagerChip = false;
+                  var mgrChipNodes = chips.querySelectorAll('.chip');
+                  for (var m = 0; m < mgrChipNodes.length; m++) {
+                    if ((mgrChipNodes[m].textContent || '').toLowerCase() === 'manager') {
+                      hasManagerChip = true;
+                      break;
+                    }
+                  }
+                  if (!hasManagerChip) {
+                    var managerChip = document.createElement('span');
+                    managerChip.className = 'chip';
+                    managerChip.textContent = 'Manager';
+                    chips.insertBefore(managerChip, chips.firstChild);
                   }
                 }
               }
@@ -941,7 +964,13 @@ UiPage({
                 return;
               }
 
-              select.innerHTML = '<option value="">Select representative...</option><option value="all">All users</option>';
+              select.innerHTML = '<option value="">Select representative...</option>';
+              if (canViewTeamRollup) {
+                select.innerHTML += '<option value="team">My Team</option>';
+              }
+              if (canViewAllUsers) {
+                select.innerHTML += '<option value="all">All users</option>';
+              }
               payload.data.forEach(function(item) {
                 if (!item || !item.user_id) return;
                 var option = document.createElement('option');
@@ -1155,10 +1184,11 @@ UiPage({
 
           var plan = data.active_plan;
           var planYear = plan.plan_year || new Date().getFullYear();
-          var targetAmount = parseFloat(plan.plan_target_amount || 0);
+          var targetAmount = parseFloat(plan.total_quota || plan.plan_target_amount || 0);
           var earnedAmount = parseFloat(data.total_earned || 0);
-          var progressPercent = targetAmount > 0 ? Math.min((earnedAmount / targetAmount) * 100, 100) : 0;
-          var remainingAmount = Math.max(targetAmount - earnedAmount, 0);
+          var progressPercent = targetAmount > 0 ? ((earnedAmount / targetAmount) * 100) : 0;
+          var remainingAmount = targetAmount - earnedAmount;
+          var progressBarPercent = Math.min(Math.max(progressPercent, 0), 100);
 
           planCard.innerHTML = 
             '<div class="plan-header">' +
@@ -1185,7 +1215,7 @@ UiPage({
                 '<span class="plan-progress-percentage">' + progressPercent.toFixed(1) + '%</span>' +
               '</div>' +
               '<div class="plan-progress-bar">' +
-                '<div class="plan-progress-fill" style="width:' + progressPercent + '%;"></div>' +
+                '<div class="plan-progress-fill" style="width:' + progressBarPercent + '%;"></div>' +
               '</div>' +
             '</div>';
         }
@@ -1312,10 +1342,12 @@ UiPage({
               '<div style="width:100%;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;">' +
                 '<div style="height:100%;background:linear-gradient(90deg,' + 
                   (attainment >= 100 ? 'var(--good)' : 'var(--brand)') + 
-                  ',var(--good));width:' + Math.min(attainment, 100) + '%;border-radius:4px;transition:width 300ms ease;"></div>' +
+                  ',var(--good));width:' + Math.min(Math.max(attainment, 0), 100) + '%;border-radius:4px;transition:width 300ms ease;"></div>' +
               '</div>' +
               '<div style="margin-top:12px;font-size:12px;color:var(--muted);">' +
                 '<strong>$' + remaining.toFixed(0) + '</strong> remaining' +
+                (progress.accelerator_active ? '<span style="margin-left:8px;color:var(--good);font-weight:600;">Accelerator Active</span>' : '') +
+                (progress.applied_tier_name ? '<span style="margin-left:8px;color:var(--brand);">' + progress.applied_tier_name + ' @ ' + (parseFloat(progress.applied_rate_percent || 0)).toFixed(2) + '%</span>' : '') +
               '</div>';
             
             container.appendChild(item);
@@ -1444,7 +1476,7 @@ UiPage({
         }
 
         function loadForecastAndPriorities(userId, reportYear) {
-          if (userId === 'all') {
+          if (userId === 'all' || userId === 'team') {
             renderForecastError('Forecast simulation is available for individual representatives only.');
             renderScenarioOptions([], {
               active_scenario_id: '',
@@ -1581,7 +1613,7 @@ UiPage({
         };
 
         window.saveForecastScenario = function() {
-          if (viewingUserId === 'all') {
+          if (viewingUserId === 'all' || viewingUserId === 'team') {
             alert('Save scenario is available for individual representatives only.');
             return;
           }
@@ -1619,17 +1651,22 @@ UiPage({
         };
 
         window.runCommissionEstimate = function() {
-          if (viewingUserId === 'all') {
+          if (viewingUserId === 'all' || viewingUserId === 'team') {
             alert('Commission estimator is available for individual representatives only.');
             return;
           }
 
           var amount = parseFloat((document.getElementById('estimateAmount') || {}).value || '0');
           var dealType = (document.getElementById('estimateDealType') || {}).value || 'new_business';
-          var stage = (document.getElementById('estimateStage') || {}).value || 'qualified';
+          var closeDate = (document.getElementById('estimateCloseDate') || {}).value || '';
 
           if (!amount || amount <= 0) {
             alert('Enter an amount greater than 0.');
+            return;
+          }
+
+          if (!closeDate) {
+            alert('Select an expected close date.');
             return;
           }
 
@@ -1638,8 +1675,7 @@ UiPage({
             sysparm_year: String(viewingYear),
             sysparm_amount: String(amount),
             sysparm_deal_type: dealType,
-            sysparm_stage: stage,
-            sysparm_scenario_id: activeScenarioId
+            sysparm_close_date: closeDate
           }, function(response) {
             var container = document.getElementById('estimatorResult');
             if (!container) return;
@@ -1659,11 +1695,14 @@ UiPage({
               var data = payload.data;
               container.innerHTML = '';
               var rows = [
-                { label: 'Adjusted Amount', value: '$' + (parseFloat(data.adjusted_amount || 0)).toFixed(2) },
+                { label: 'Deal Amount', value: '$' + (parseFloat(data.amount || 0)).toFixed(2) },
+                { label: 'Close Date', value: data.close_date || '—' },
                 { label: 'Commission Rate', value: (parseFloat(data.commission_rate_percent || 0)).toFixed(2) + '%' },
-                { label: 'Stage Probability', value: ((parseFloat(data.probability || 0) * 100).toFixed(1)) + '%' },
-                { label: 'Expected Commission', value: '$' + (parseFloat(data.expected_commission || 0)).toFixed(2) },
-                { label: 'Scenario', value: data.scenario_name || 'Live view' }
+                { label: 'Expected Payout', value: '$' + (parseFloat(data.expected_payout || data.expected_commission || 0)).toFixed(2) },
+                { label: 'Attainment Before Close', value: (parseFloat(data.current_attainment_percent || 0)).toFixed(1) + '%' },
+                { label: 'Attainment After Close', value: (parseFloat(data.projected_attainment_percent || 0)).toFixed(1) + '%' },
+                { label: 'Applied Tier', value: data.applied_tier_name || 'Base Rate' },
+                { label: 'Accelerator', value: data.accelerator_applied ? 'Yes' : 'No' }
               ];
 
               rows.forEach(function(row) {
