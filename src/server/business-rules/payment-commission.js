@@ -199,7 +199,8 @@ export function calculateCommissionOnPayment(current, previous) {
             paymentId: current.getUniqueValue(),
             paymentDate: current.getValue('payment_date'),
             dealId: dealGr.getUniqueValue(),
-            dealType: dealGr.getValue('deal_type'),
+            dealType: tierEvaluation.appliedDealType || dealGr.getValue('deal_type'),
+            dealTypeCandidates: tierEvaluation.dealTypeCandidates || resolveDealTypeCandidates(dealGr.getValue('deal_type')),
             dealAmount: parseFloat(dealGr.getValue('amount')) || 0,
             invoiceId: invoiceGr.getUniqueValue(),
             evaluationDate: temporalLookupDate,
@@ -251,7 +252,7 @@ export function calculateCommissionOnPayment(current, previous) {
             payoutEligibleDate: payoutSchedule.payout_eligible_date,
             payoutScheduleSnapshot: payoutSchedule.snapshot,
             dealCloseDate: closeDate,
-            dealType: dealGr.getValue('deal_type'),
+            dealType: tierEvaluation.appliedDealType || dealGr.getValue('deal_type'),
             isNegative: isNegative,
             requiresApproval: requiresApproval,
             bonusAmount: bonusEvaluation.totalBonusAmount,
@@ -272,6 +273,11 @@ export function calculateCommissionOnPayment(current, previous) {
                 paymentAmount: paymentAmount,
                 paymentRatio: paymentRatio,
                 planName: commissionPlan.planName,
+                originalDealType: dealGr.getValue('deal_type'),
+                appliedDealType: tierEvaluation.appliedDealType,
+                dealTypeCandidates: tierEvaluation.dealTypeCandidates,
+                rateEvaluations: tierEvaluation.rateEvaluations,
+                rateSelectionModel: 'highest_applicable_classification',
                 baseRate: tierEvaluation.baseRate,
                 effectiveRate: tierEvaluation.effectiveRate,
                 tierName: tierEvaluation.tierName,
@@ -467,10 +473,17 @@ function extractDateOnly(value) {
 }
 
 function getCommissionRateFromPlan(plan, dealType) {
-    switch (dealType) {
+    var normalizedDealType = normalizeDealTypeKey(dealType);
+
+    switch (normalizedDealType) {
         case 'new_business':
+        case 'seller_sourced':
+        case 'seller_sourced_deal':
             return plan.newBusinessRate || plan.baseRate;
         case 'renewal':
+        case 'referral_deal':
+        case 'referral_assigned':
+        case 'referral_deal_assigned':
             return plan.renewalRate || plan.baseRate;
         case 'expansion':
             return plan.expansionRate || plan.baseRate;
@@ -489,28 +502,92 @@ function evaluateEffectiveCommissionRate(params) {
     var dealType = params.dealType;
     var dealAmount = Math.abs(parseFloat(params.dealAmount) || 0);
 
-    var baseRate = getCommissionRateFromPlan(plan, dealType);
+    var dealTypeCandidates = resolveDealTypeCandidates(dealType);
+    if (dealTypeCandidates.length === 0) {
+        dealTypeCandidates.push('other');
+    }
+
     var quotaAmount = getPlanQuotaAmount(plan.planId, plan);
     var attainedBefore = getRepAttainedAmountBeforeDeal(salesRep, closeDate, dealId);
     var attainedAmount = attainedBefore + dealAmount;
     var attainmentPercent = quotaAmount > 0 ? (attainedAmount / quotaAmount) * 100 : 0;
 
-    var tier = resolveTierForAttainment(plan.planId, attainmentPercent, dealType);
-    var effectiveRate = tier ? tier.ratePercent : baseRate;
-    if (!effectiveRate || effectiveRate <= 0) {
-        effectiveRate = baseRate;
+    var evaluations = [];
+    for (var i = 0; i < dealTypeCandidates.length; i++) {
+        var candidateDealType = dealTypeCandidates[i];
+        var candidateBaseRate = getCommissionRateFromPlan(plan, candidateDealType);
+        var candidateTier = resolveTierForAttainment(plan.planId, attainmentPercent, candidateDealType);
+        var candidateEffectiveRate = candidateTier ? candidateTier.ratePercent : candidateBaseRate;
+
+        if (!candidateEffectiveRate || candidateEffectiveRate <= 0) {
+            candidateEffectiveRate = candidateBaseRate;
+        }
+
+        evaluations.push({
+            dealType: candidateDealType,
+            baseRate: candidateBaseRate,
+            effectiveRate: candidateEffectiveRate,
+            tier: candidateTier,
+            candidateOrder: i
+        });
     }
 
+    var selectedEvaluation = selectHighestRateEvaluation(evaluations);
+    var selectedTier = selectedEvaluation ? selectedEvaluation.tier : null;
+    var selectedBaseRate = selectedEvaluation ? selectedEvaluation.baseRate : getCommissionRateFromPlan(plan, dealTypeCandidates[0]);
+    var selectedEffectiveRate = selectedEvaluation ? selectedEvaluation.effectiveRate : selectedBaseRate;
+    var selectedDealType = selectedEvaluation ? selectedEvaluation.dealType : dealTypeCandidates[0];
+
     return {
-        baseRate: baseRate,
-        effectiveRate: effectiveRate,
-        tierName: tier ? tier.tierName : '',
-        tierFloorPercent: tier ? tier.floorPercent : 0,
+        baseRate: selectedBaseRate,
+        effectiveRate: selectedEffectiveRate,
+        tierName: selectedTier ? selectedTier.tierName : '',
+        tierFloorPercent: selectedTier ? selectedTier.floorPercent : 0,
         attainmentPercent: attainmentPercent,
         quotaAmount: quotaAmount,
         attainedAmount: attainedAmount,
-        acceleratorApplied: !!(tier && tier.floorPercent >= 100)
+        acceleratorApplied: !!(selectedTier && selectedTier.floorPercent >= 100),
+        appliedDealType: selectedDealType,
+        dealTypeCandidates: dealTypeCandidates,
+        rateEvaluations: evaluations
     };
+}
+
+function selectHighestRateEvaluation(evaluations) {
+    if (!evaluations || evaluations.length === 0) {
+        return null;
+    }
+
+    var best = null;
+    for (var i = 0; i < evaluations.length; i++) {
+        var candidate = evaluations[i];
+        if (!best) {
+            best = candidate;
+            continue;
+        }
+
+        var candidateRate = parseFloat(candidate.effectiveRate) || 0;
+        var bestRate = parseFloat(best.effectiveRate) || 0;
+        if (candidateRate > bestRate) {
+            best = candidate;
+            continue;
+        }
+
+        if (candidateRate === bestRate) {
+            var candidateFloor = candidate.tier ? (parseFloat(candidate.tier.floorPercent) || 0) : 0;
+            var bestFloor = best.tier ? (parseFloat(best.tier.floorPercent) || 0) : 0;
+            if (candidateFloor > bestFloor) {
+                best = candidate;
+                continue;
+            }
+
+            if (candidateFloor === bestFloor && (candidate.candidateOrder || 0) < (best.candidateOrder || 0)) {
+                best = candidate;
+            }
+        }
+    }
+
+    return best;
 }
 
 function getPlanQuotaAmount(planId, plan) {
@@ -555,10 +632,10 @@ function resolveTierForAttainment(planId, attainmentPercent, dealType) {
 
     var selectedTier = null;
     var highestEligibleTier = null;
-    var normalizedDealType = (dealType || '').toString();
+    var normalizedDealType = normalizeDealTypeKey(dealType);
 
     while (tierGr.next()) {
-        var tierDealType = (tierGr.getValue('deal_type') || 'all').toString();
+        var tierDealType = normalizeDealTypeKey(tierGr.getValue('deal_type') || 'all');
         var dealTypeMatches = tierDealType === 'all' || tierDealType === '' || tierDealType === normalizedDealType;
         if (!dealTypeMatches) {
             continue;
@@ -601,6 +678,42 @@ function resolveTierForAttainment(planId, attainmentPercent, dealType) {
     return null;
 }
 
+function normalizeDealTypeKey(value) {
+    var normalized = (value || '').toString().toLowerCase();
+    normalized = normalized.replace(/[\s\-]+/g, '_').replace(/__+/g, '_');
+    normalized = normalized.replace(/^_+|_+$/g, '');
+    return normalized;
+}
+
+function resolveDealTypeCandidates(rawDealType) {
+    var raw = (rawDealType || '').toString();
+    if (!raw) {
+        return [];
+    }
+
+    var parts = raw.split(/[;,|]+/);
+    var seen = {};
+    var candidates = [];
+
+    for (var i = 0; i < parts.length; i++) {
+        var normalized = normalizeDealTypeKey(parts[i]);
+        if (!normalized || seen[normalized]) {
+            continue;
+        }
+        seen[normalized] = true;
+        candidates.push(normalized);
+    }
+
+    if (candidates.length === 0) {
+        var fallback = normalizeDealTypeKey(raw);
+        if (fallback) {
+            candidates.push(fallback);
+        }
+    }
+
+    return candidates;
+}
+
 function evaluateStructuredBonuses(params) {
     var result = {
         totalBonusAmount: 0,
@@ -638,7 +751,7 @@ function evaluateStructuredBonuses(params) {
             continue;
         }
 
-        if (!bonusScopeMatches(bonusDealType, params.dealType)) {
+        if (!bonusScopeMatches(bonusDealType, params.dealType, params.dealTypeCandidates)) {
             summaryRows.push(bonusName + ': not qualified (deal type scope mismatch)');
             continue;
         }
@@ -708,13 +821,29 @@ function evaluateStructuredBonuses(params) {
 }
 
 function normalizeBonusDealType(value) {
-    var normalized = (value || '').toString();
+    var normalized = normalizeDealTypeKey(value);
     return normalized ? normalized : 'any';
 }
 
-function bonusScopeMatches(scope, dealType) {
-    var normalizedDealType = (dealType || '').toString() || 'other';
-    return scope === 'any' || scope === normalizedDealType;
+function bonusScopeMatches(scope, dealType, dealTypeCandidates) {
+    if (scope === 'any') {
+        return true;
+    }
+
+    var normalizedDealType = normalizeDealTypeKey(dealType) || 'other';
+    if (scope === normalizedDealType) {
+        return true;
+    }
+
+    if (dealTypeCandidates && dealTypeCandidates.length) {
+        for (var i = 0; i < dealTypeCandidates.length; i++) {
+            if (normalizeDealTypeKey(dealTypeCandidates[i]) === scope) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 function resolveBonusMetricValue(metric, params, periodInfo, bonusScopeDealType) {

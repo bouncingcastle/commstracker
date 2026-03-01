@@ -1207,14 +1207,21 @@ UiPage({
           var planYear = plan.plan_year || new Date().getFullYear();
           var targetAmount = parseFloat(plan.total_quota || plan.plan_target_amount || 0);
           var earnedAmount = parseFloat(data.total_earned || 0);
-          var progressPercent = targetAmount > 0 ? ((earnedAmount / targetAmount) * 100) : 0;
-          var remainingAmount = targetAmount - earnedAmount;
+          var quotaSummary = summarizeQuotaProgress(data.quota_progress || null);
+          var attainedAmount = quotaSummary && quotaSummary.target_amount > 0 ? quotaSummary.achieved_amount : earnedAmount;
+          var progressPercent = quotaSummary && quotaSummary.target_amount > 0
+            ? quotaSummary.attainment_percent
+            : (targetAmount > 0 ? ((earnedAmount / targetAmount) * 100) : 0);
+          var remainingAmount = (quotaSummary && quotaSummary.target_amount > 0)
+            ? quotaSummary.remaining_amount
+            : (targetAmount - attainedAmount);
           var progressBarPercent = Math.min(Math.max(progressPercent, 0), 100);
           var sortedTiers = getSortedTiers(plan.tiers || []);
           var currentTier = resolveTierByPercent(sortedTiers, progressPercent);
           var currentTierLabel = currentTier
             ? (currentTier.tier_name || 'Tier') + ' @ ' + (parseFloat(currentTier.rate_percent || 0)).toFixed(2) + '%'
-            : 'Base rate';
+            : (sortedTiers.length ? 'No matching tier' : 'No active tiers configured');
+          var progressLabel = quotaSummary && quotaSummary.target_amount > 0 ? 'Quota Attainment' : 'Progress';
           var tierMarkers = renderTierMarkers(sortedTiers);
 
           planCard.innerHTML = 
@@ -1228,8 +1235,8 @@ UiPage({
                 '<div class="plan-item-value">$' + targetAmount.toFixed(2) + '</div>' +
               '</div>' +
               '<div class="plan-item">' +
-                '<div class="plan-item-label">Earned to Date</div>' +
-                '<div class="plan-item-value good">$' + earnedAmount.toFixed(2) + '</div>' +
+                '<div class="plan-item-label">' + (quotaSummary && quotaSummary.target_amount > 0 ? 'Attained to Date' : 'Earned to Date') + '</div>' +
+                '<div class="plan-item-value good">$' + attainedAmount.toFixed(2) + '</div>' +
               '</div>' +
               '<div class="plan-item">' +
                 '<div class="plan-item-label">Remaining</div>' +
@@ -1238,7 +1245,7 @@ UiPage({
             '</div>' +
             '<div class="plan-progress">' +
               '<div class="plan-progress-label">' +
-                '<span>Progress</span>' +
+                '<span>' + progressLabel + '</span>' +
                 '<span class="plan-progress-percentage">' + progressPercent.toFixed(1) + '%</span>' +
               '</div>' +
               '<div class="plan-progress-bar">' +
@@ -1249,6 +1256,29 @@ UiPage({
             '</div>';
         }
 
+        function summarizeQuotaProgress(quotaProgress) {
+          if (!quotaProgress || typeof quotaProgress !== 'object') return null;
+
+          var target = 0;
+          var achieved = 0;
+
+          Object.keys(quotaProgress).forEach(function(dealType) {
+            var p = quotaProgress[dealType] || {};
+            target += parseFloat(p.target_amount || 0);
+            achieved += parseFloat(p.achieved_amount || 0);
+          });
+
+          if (target <= 0) return null;
+
+          var attainment = (achieved / target) * 100;
+          return {
+            target_amount: target,
+            achieved_amount: achieved,
+            remaining_amount: target - achieved,
+            attainment_percent: attainment
+          };
+        }
+
         function getSortedTiers(tiers) {
           if (!tiers || !tiers.length) return [];
 
@@ -1257,7 +1287,8 @@ UiPage({
               return {
                 tier_name: tier.tier_name || 'Tier',
                 floor_percent: parseFloat(tier.floor_percent || 0),
-                rate_percent: parseFloat(tier.rate_percent || 0)
+                rate_percent: parseFloat(tier.rate_percent || 0),
+                deal_type: String(tier.deal_type || 'all').toLowerCase()
               };
             })
             .filter(function(tier) {
@@ -1266,6 +1297,18 @@ UiPage({
             .sort(function(a, b) {
               return a.floor_percent - b.floor_percent;
             });
+        }
+
+        function filterTiersForDealType(tiers, dealType) {
+          if (!tiers || !tiers.length) return [];
+          var normalized = String(dealType || '').toLowerCase();
+
+          var scoped = tiers.filter(function(tier) {
+            var tierScope = String(tier.deal_type || 'all').toLowerCase();
+            return tierScope === 'all' || tierScope === '' || tierScope === normalized;
+          });
+
+          return scoped.length ? scoped : tiers;
         }
 
         function resolveTierByPercent(tiers, attainmentPercent) {
@@ -1429,13 +1472,14 @@ UiPage({
             var achieved = parseFloat(progress.achieved_amount || 0);
             var attainment = parseFloat(progress.attainment_percent || 0);
             var remaining = parseFloat(progress.remaining_amount || 0);
+            var scopedTiers = filterTiersForDealType(sortedTiers, dealType);
             var resolvedTier = progress.applied_tier_name
               ? {
                   tier_name: progress.applied_tier_name,
                   rate_percent: parseFloat(progress.applied_rate_percent || 0)
                 }
-              : resolveTierByPercent(sortedTiers, attainment);
-            var tierMarkers = renderTierMarkers(sortedTiers);
+              : resolveTierByPercent(scopedTiers, attainment);
+            var tierMarkers = renderTierMarkers(scopedTiers);
 
             var item = document.createElement('div');
             item.className = 'progress-item';
