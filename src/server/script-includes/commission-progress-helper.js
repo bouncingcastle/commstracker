@@ -149,7 +149,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
 
             // Fetch active deals for this rep (current owner, not won/lost)
             var dealGr = new GlideRecord('x_823178_commissio_deals');
-            dealGr.addQuery('current_owner', userId);
+            dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
             dealGr.addQuery('is_won', false);
             dealGr.addQuery('stage', '!=', 'closed_lost');
             dealGr.orderBy('close_date');
@@ -235,7 +235,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
             var yearEnd = selectedYear + '-12-31';
 
             var dealGr = new GlideRecord('x_823178_commissio_deals');
-            dealGr.addQuery('current_owner', userId);
+            dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
             dealGr.addQuery('is_won', true);
             dealGr.addQuery('close_date', '>=', yearStart);
             dealGr.addQuery('close_date', '<=', yearEnd);
@@ -321,7 +321,9 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
 
     getDashboardMetrics: function() {
         try {
-            var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
+            var requestedYearRaw = this.getParameter('sysparm_year') || this.getParameter('year') || '';
+            var isAllYears = String(requestedYearRaw).toLowerCase() === 'all';
+            var requestedYear = parseInt(requestedYearRaw, 10);
             var today = new GlideDateTime();
             var currentYear = parseInt(today.getYearLocalTime(), 10);
             var selectedYear = (!isNaN(requestedYear) && requestedYear >= 2000 && requestedYear <= 2100) ? requestedYear : currentYear;
@@ -329,16 +331,19 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
             var yearEnd = selectedYear + '-12-31';
 
             var statements = new GlideAggregate('x_823178_commissio_commission_statements');
-            statements.addQuery('statement_period_start', '>=', yearStart);
-            statements.addQuery('statement_period_start', '<=', yearEnd);
+            if (!isAllYears) {
+                statements.addQuery('statement_year', selectedYear);
+            }
             statements.addAggregate('COUNT');
             statements.query();
             var totalStatements = statements.next() ? parseInt(statements.getAggregate('COUNT'), 10) : 0;
 
             var pending = new GlideAggregate('x_823178_commissio_exception_approvals');
             pending.addQuery('status', 'pending');
-            pending.addQuery('sys_created_on', '>=', yearStart + ' 00:00:00');
-            pending.addQuery('sys_created_on', '<=', yearEnd + ' 23:59:59');
+            if (!isAllYears) {
+                pending.addQuery('request_date', '>=', yearStart + ' 00:00:00');
+                pending.addQuery('request_date', '<=', yearEnd + ' 23:59:59');
+            }
             pending.addAggregate('COUNT');
             pending.query();
             var pendingReviews = pending.next() ? parseInt(pending.getAggregate('COUNT'), 10) : 0;
@@ -346,16 +351,16 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
             var deals = new GlideAggregate('x_823178_commissio_deals');
             deals.addQuery('is_won', false);
             deals.addQuery('stage', '!=', 'closed_lost');
-            deals.addQuery('close_date', '>=', yearStart);
-            deals.addQuery('close_date', '<=', yearEnd);
             deals.addAggregate('COUNT');
             deals.query();
             var activeDeals = deals.next() ? parseInt(deals.getAggregate('COUNT'), 10) : 0;
 
             var alerts = new GlideAggregate('x_823178_commissio_system_alerts');
-            alerts.addQuery('status', 'open');
-            alerts.addQuery('alert_date', '>=', yearStart + ' 00:00:00');
-            alerts.addQuery('alert_date', '<=', yearEnd + ' 23:59:59');
+            alerts.addQuery('status', 'IN', 'open,acknowledged');
+            if (!isAllYears) {
+                alerts.addQuery('alert_date', '>=', yearStart + ' 00:00:00');
+                alerts.addQuery('alert_date', '<=', yearEnd + ' 23:59:59');
+            }
             alerts.addAggregate('COUNT');
             alerts.query();
             var openAlerts = alerts.next() ? parseInt(alerts.getAggregate('COUNT'), 10) : 0;
@@ -363,7 +368,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
             return JSON.stringify({
                 status: 'success',
                 data: {
-                    report_year: selectedYear,
+                    report_year: isAllYears ? 'all' : selectedYear,
                     total_statements: totalStatements,
                     pending_reviews: pendingReviews,
                     active_deals: activeDeals,

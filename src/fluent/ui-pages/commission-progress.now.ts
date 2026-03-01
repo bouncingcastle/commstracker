@@ -180,8 +180,19 @@ UiPage({
       border:1px solid var(--border);border-radius:6px;color:var(--text);
     }
     .selector-field select{
-      flex:1;padding:8px 12px;background:rgba(255,255,255,.08);
-      border:1px solid var(--border);border-radius:6px;color:var(--text);
+      flex:1;padding:8px 12px;background:var(--panel2) !important;
+      border:1px solid var(--border) !important;border-radius:6px;color:var(--text) !important;
+      appearance:none;-webkit-appearance:none;color-scheme:dark;
+    }
+    .selector-field select option,
+    .selector-field select optgroup{
+      background:var(--panel2) !important;color:var(--text) !important;
+    }
+    .selector-field select:focus,
+    .selector-field input:focus{
+      outline:none;
+      border-color:rgba(110,168,255,.6) !important;
+      box-shadow:0 0 0 2px rgba(110,168,255,.2);
     }
     .selector-field button{
       padding:8px 16px;background:var(--brand);color:var(--bg);
@@ -327,18 +338,13 @@ UiPage({
     <div class="header">
       <!-- User Selector -->
       <div class="user-selector" id="userSelector">
-        <div class="selector-label">User Scope</div>
+        <div class="selector-label">Representative Scope</div>
         <div class="selector-field">
           <select id="userSelect">
             <option value="">Select representative...</option>
           </select>
           <select id="yearSelect"></select>
           <button onclick="loadSelectedUser()">Apply</button>
-        </div>
-        <div class="selector-field" style="margin-top:8px;">
-          <input type="text" id="userSearchInput" placeholder="Search by representative name or sys_id..." />
-          <button onclick="searchAndSelectUser()">Search</button>
-          <button onclick="resetToCurrentUser()" style="background:var(--warn);color:var(--bg);">View My Data</button>
         </div>
       </div>
 
@@ -567,7 +573,7 @@ UiPage({
         }
 
         function invokeHelper(methodName, params, callback) {
-          var helperNames = ['x_823178_commissio.CommissionProgressHelper', 'CommissionProgressHelper'];
+          var helperNames = ['x_823178_commissio.CommissionProgressHelper', 'global.CommissionProgressHelper', 'CommissionProgressHelper'];
 
           function tryIndex(index) {
             if (index >= helperNames.length) {
@@ -585,11 +591,28 @@ UiPage({
             }
 
             ajax.getXMLAnswer(function(response) {
-              if (!response && index < helperNames.length - 1) {
-                tryIndex(index + 1);
+              if (response) {
+                callback(response);
                 return;
               }
-              callback(response);
+
+              ajax.getXML(function(res) {
+                var xmlAnswer = null;
+                try {
+                  if (res && res.responseXML && res.responseXML.documentElement) {
+                    xmlAnswer = res.responseXML.documentElement.getAttribute('answer');
+                  }
+                } catch (e) {
+                  xmlAnswer = null;
+                }
+
+                if (!xmlAnswer && index < helperNames.length - 1) {
+                  tryIndex(index + 1);
+                  return;
+                }
+
+                callback(xmlAnswer);
+              });
             });
           }
 
@@ -607,7 +630,6 @@ UiPage({
           }
           if (hasRole('x_823178_commissio.finance')) {
             roles.push('Finance');
-            canSelectUsers = true;
           }
           if (hasRole('x_823178_commissio.rep')) roles.push('Rep');
           if (roles.length === 0) roles.push('User');
@@ -718,6 +740,15 @@ UiPage({
             }
           }
 
+          if (!canSelectUsers) {
+            select.innerHTML = '<option value="">Select representative...</option>';
+            ensureCurrentUserOption();
+            select.disabled = true;
+            return;
+          }
+
+          select.disabled = false;
+
           invokeHelper('listUsersWithData', {}, function(response) {
             if (!response) {
               ensureCurrentUserOption();
@@ -752,7 +783,15 @@ UiPage({
         window.loadSelectedUser = function() {
           var select = document.getElementById('userSelect');
           var yearSelect = document.getElementById('yearSelect');
-          if (!select || !select.value) {
+          if (!select) {
+            return;
+          }
+
+          if (!select.value && currentUserId) {
+            select.value = currentUserId;
+          }
+
+          if (!select.value) {
             alert('Select a representative before applying filters.');
             return;
           }
@@ -765,60 +804,6 @@ UiPage({
         };
 
         loadUserOptions();
-
-        // User search (admin/finance)
-        window.searchAndSelectUser = function() {
-          var input = document.getElementById('userSearchInput');
-          var searchTerm = input ? input.value.trim() : '';
-          if (!searchTerm) {
-            alert('Enter at least part of a representative name or sys_id.');
-            return;
-          }
-
-          invokeHelper('searchUsers', {
-            sysparm_search_term: searchTerm
-          }, function(response) {
-            if (response) {
-              var data = typeof response === 'string' ? JSON.parse(response) : response;
-              if (data && data.status === 'success' && data.data && data.data.user_id) {
-                viewingUserId = data.data.user_id;
-                var select = document.getElementById('userSelect');
-                if (select) {
-                  var exists = false;
-                  for (var i = 0; i < select.options.length; i++) {
-                    if (select.options[i].value === data.data.user_id) {
-                      select.selectedIndex = i;
-                      exists = true;
-                      break;
-                    }
-                  }
-                  if (!exists) {
-                    var opt = document.createElement('option');
-                    opt.value = data.data.user_id;
-                    opt.textContent = data.data.user_name || data.data.user_id;
-                    opt.selected = true;
-                    select.appendChild(opt);
-                  }
-                }
-                var yearSelect = document.getElementById('yearSelect');
-                viewingYear = parseInt(yearSelect && yearSelect.value ? yearSelect.value : viewingYear, 10) || viewingYear;
-                loadRepProgress(viewingUserId, data.data.user_name, viewingYear);
-              } else {
-                alert('Representative not found: ' + (data.message || 'Unknown error'));
-              }
-            } else {
-              alert('Unable to complete representative search');
-            }
-          });
-        };
-
-        // Reset to current user
-        window.resetToCurrentUser = function() {
-          viewingUserId = currentUserId;
-          if (currentUserId) {
-            loadRepProgress(currentUserId, userCtx.name || 'You', viewingYear);
-          }
-        };
 
         function loadInitialData() {
           if (!viewingUserId) {
