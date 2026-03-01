@@ -335,9 +335,9 @@ Record({
         total_earned: 4400,
         total_paid: 4400,
         pending_amount: 0,
-        statement_month: '2026-01',
+        statement_month: 202601,
         generated_date: '2026-02-03 08:00:00',
-        status: 'published',
+        status: 'paid',
         notes: 'January commission statement - CloudTech deal closed'
     }
 })
@@ -354,7 +354,7 @@ Record({
         total_earned: 2100,
         total_paid: 0,
         pending_amount: 2100,
-        statement_month: '2026-02',
+        statement_month: 202602,
         generated_date: '2026-03-01 08:00:00',
         status: 'draft',
         notes: 'February commission statement - DataVault expansion'
@@ -373,9 +373,9 @@ Record({
         total_earned: 6500,
         total_paid: 6500,
         pending_amount: 0,
-        statement_month: '2026-01',
+        statement_month: 202601,
         generated_date: '2026-02-03 08:00:00',
-        status: 'published',
+        status: 'paid',
         notes: 'January statement - Premium deal closed'
     }
 })
@@ -398,6 +398,11 @@ Record({
         approved_by: 'sys_user:U4',
         approval_date: '2026-02-09 11:30:00',
         status: 'approved',
+        request_type: 'rate_override',
+        reference_record: Now.ID['demo_deal_abel_2'],
+        reference_table: 'x_823178_commissio_deals',
+        request_date: '2026-02-09 11:00:00',
+        business_justification: 'Strategic account',
         notes: 'DataVault expansion - special arrangement'
     }
 })
@@ -412,6 +417,10 @@ Record({
         requested_by: '0a826bf03710200044e0bfc8bcbe5d7a',
         adjustment_amount: 500,
         status: 'pending',
+        request_type: 'bonus_adjustment',
+        reference_record: '',
+        reference_table: '',
+        business_justification: 'Customer early payment',
         notes: 'Customer paid invoice early - requesting courtesy bonus',
         request_date: '2026-02-25 09:00:00'
     }
@@ -429,7 +438,7 @@ Record({
         title: 'Zoho Integration Sync Complete',
         message: 'Successfully synced 5 deals, 3 invoices, 2 payments from Zoho',
         severity: 'low',
-        status: 'cleared',
+        status: 'resolved',
         occurred_at: '2026-02-28 06:00:00',
         resolved_at: '2026-02-28 06:05:00',
         alert_source: 'Zoho Integration Scheduler'
@@ -472,7 +481,7 @@ Record({
     $id: Now.ID['recon_daily_2026_02_28'],
     table: 'x_823178_commissio_reconciliation_log',
     data: {
-        reconciliation_date: '2026-02-28',
+        reconciliation_date: '2026-02-28 00:00:00',
         reconciliation_type: 'daily',
         deals_synced: 2,
         invoices_synced: 2,
@@ -481,7 +490,7 @@ Record({
         total_amount_processed: 95000,
         discrepancies_found: 0,
         errors_encountered: 0,
-        status: 'success',
+        status: 'passed',
         notes: 'Daily sync completed successfully - all systems aligned',
         execution_time_ms: 2341,
         started_at: '2026-02-28 06:00:00',
@@ -494,7 +503,7 @@ Record({
     $id: Now.ID['recon_daily_2026_02_27'],
     table: 'x_823178_commissio_reconciliation_log',
     data: {
-        reconciliation_date: '2026-02-27',
+        reconciliation_date: '2026-02-27 00:00:00',
         reconciliation_type: 'daily',
         deals_synced: 3,
         invoices_synced: 3,
@@ -503,7 +512,7 @@ Record({
         total_amount_processed: 185000,
         discrepancies_found: 0,
         errors_encountered: 0,
-        status: 'success',
+        status: 'passed',
         notes: 'Daily reconciliation - all records matched',
         execution_time_ms: 3156,
         started_at: '2026-02-27 06:00:00',
@@ -516,7 +525,7 @@ Record({
     $id: Now.ID['recon_monthly_2026_01'],
     table: 'x_823178_commissio_reconciliation_log',
     data: {
-        reconciliation_date: '2026-02-03',
+        reconciliation_date: '2026-02-03 00:00:00',
         reconciliation_type: 'monthly',
         deals_synced: 25,
         invoices_synced: 24,
@@ -525,7 +534,7 @@ Record({
         total_amount_processed: 1850000,
         discrepancies_found: 0,
         errors_encountered: 0,
-        status: 'success',
+        status: 'passed',
         period: '2026-01',
         notes: 'January monthly reconciliation complete - perfect match',
         execution_time_ms: 5421,
