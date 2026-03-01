@@ -105,7 +105,16 @@ export function calculateCommissionOnPayment(current, previous) {
             return;
         }
         
-        var commissionRate = getCommissionRateFromPlan(commissionPlan, dealGr.getValue('deal_type'));
+        var tierEvaluation = evaluateEffectiveCommissionRate({
+            plan: commissionPlan,
+            salesRep: commissionOwner,
+            closeDate: closeDate,
+            dealId: dealGr.getUniqueValue(),
+            dealType: dealGr.getValue('deal_type'),
+            dealAmount: parseFloat(dealGr.getValue('amount')) || 0
+        });
+
+        var commissionRate = tierEvaluation.effectiveRate;
         if (!commissionRate || commissionRate <= 0) {
             gs.error('Commission Management: Invalid commission rate for deal type ' + dealGr.getValue('deal_type'));
             current.setValue('commission_calculated', 'error');
@@ -180,12 +189,26 @@ export function calculateCommissionOnPayment(current, previous) {
             dealType: dealGr.getValue('deal_type'),
             isNegative: isNegative,
             requiresApproval: requiresApproval,
+            effectiveTierName: tierEvaluation.tierName,
+            effectiveTierFloorPercent: tierEvaluation.tierFloorPercent,
+            attainmentPercentAtCalc: tierEvaluation.attainmentPercent,
+            quotaAmountSnapshot: tierEvaluation.quotaAmount,
+            attainedAmountSnapshot: tierEvaluation.attainedAmount,
+            acceleratorApplied: tierEvaluation.acceleratorApplied,
             calculationInputs: {
                 invoiceSubtotal: invoiceSubtotal,
                 invoiceTotal: invoiceTotal,
                 paymentAmount: paymentAmount,
                 paymentRatio: paymentRatio,
                 planName: commissionPlan.planName,
+                baseRate: tierEvaluation.baseRate,
+                effectiveRate: tierEvaluation.effectiveRate,
+                tierName: tierEvaluation.tierName,
+                tierFloorPercent: tierEvaluation.tierFloorPercent,
+                attainmentPercent: tierEvaluation.attainmentPercent,
+                quotaAmount: tierEvaluation.quotaAmount,
+                attainedAmount: tierEvaluation.attainedAmount,
+                acceleratorApplied: tierEvaluation.acceleratorApplied,
                 payoutSchedule: payoutSchedule
             }
         });
@@ -304,6 +327,91 @@ function getCommissionRateFromPlan(plan, dealType) {
     }
 }
 
+function evaluateEffectiveCommissionRate(params) {
+    var plan = params.plan;
+    var salesRep = params.salesRep;
+    var closeDate = params.closeDate;
+    var dealId = params.dealId;
+    var dealType = params.dealType;
+    var dealAmount = Math.abs(parseFloat(params.dealAmount) || 0);
+
+    var baseRate = getCommissionRateFromPlan(plan, dealType);
+    var quotaAmount = getPlanQuotaAmount(plan.planId, plan);
+    var attainedBefore = getRepAttainedAmountBeforeDeal(salesRep, closeDate, dealId);
+    var attainedAmount = attainedBefore + dealAmount;
+    var attainmentPercent = quotaAmount > 0 ? (attainedAmount / quotaAmount) * 100 : 0;
+
+    var tier = resolveTierForAttainment(plan.planId, attainmentPercent);
+    var effectiveRate = tier ? tier.ratePercent : baseRate;
+    if (!effectiveRate || effectiveRate <= 0) {
+        effectiveRate = baseRate;
+    }
+
+    return {
+        baseRate: baseRate,
+        effectiveRate: effectiveRate,
+        tierName: tier ? tier.tierName : '',
+        tierFloorPercent: tier ? tier.floorPercent : 0,
+        attainmentPercent: attainmentPercent,
+        quotaAmount: quotaAmount,
+        attainedAmount: attainedAmount,
+        acceleratorApplied: !!(tier && tier.floorPercent >= 100)
+    };
+}
+
+function getPlanQuotaAmount(planId, plan) {
+    var totalQuota = 0;
+    var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+    targetGr.addQuery('commission_plan', planId);
+    targetGr.addQuery('is_active', true);
+    targetGr.query();
+    while (targetGr.next()) {
+        totalQuota += parseFloat(targetGr.getValue('annual_target_amount')) || 0;
+    }
+
+    if (totalQuota <= 0 && plan) {
+        totalQuota = parseFloat(plan.planTargetAmount || 0) || 0;
+    }
+    return totalQuota;
+}
+
+function getRepAttainedAmountBeforeDeal(salesRep, closeDate, currentDealId) {
+    var attained = 0;
+    var dealGr = new GlideRecord('x_823178_commissio_deals');
+    dealGr.addQuery('owner_at_close', salesRep);
+    dealGr.addQuery('is_won', true);
+    dealGr.addQuery('close_date', '<=', closeDate);
+    if (currentDealId) {
+        dealGr.addQuery('sys_id', '!=', currentDealId);
+    }
+    dealGr.query();
+
+    while (dealGr.next()) {
+        attained += Math.abs(parseFloat(dealGr.getValue('amount')) || 0);
+    }
+    return attained;
+}
+
+function resolveTierForAttainment(planId, attainmentPercent) {
+    var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
+    tierGr.addQuery('commission_plan', planId);
+    tierGr.addQuery('is_active', true);
+    tierGr.addQuery('attainment_floor_percent', '<=', attainmentPercent);
+    tierGr.orderByDesc('attainment_floor_percent');
+    tierGr.setLimit(1);
+    tierGr.query();
+
+    if (!tierGr.next()) {
+        return null;
+    }
+
+    return {
+        tierName: tierGr.getValue('tier_name') || 'Tier',
+        floorPercent: parseFloat(tierGr.getValue('attainment_floor_percent')) || 0,
+        ratePercent: parseFloat(tierGr.getValue('commission_rate_percent')) || 0
+    };
+}
+
 function createCommissionCalculation(data) {
     var commissionGr = new GlideRecord('x_823178_commissio_commission_calculations');
     
@@ -324,6 +432,12 @@ function createCommissionCalculation(data) {
     commissionGr.setValue('commission_plan', data.commissionPlan);
     commissionGr.setValue('commission_base_amount', data.commissionBaseAmount);
     commissionGr.setValue('commission_rate', data.commissionRate);
+    commissionGr.setValue('effective_tier_name', data.effectiveTierName || '');
+    commissionGr.setValue('effective_tier_floor_percent', data.effectiveTierFloorPercent || 0);
+    commissionGr.setValue('attainment_percent_at_calc', data.attainmentPercentAtCalc || 0);
+    commissionGr.setValue('quota_amount_snapshot', data.quotaAmountSnapshot || 0);
+    commissionGr.setValue('attained_amount_snapshot', data.attainedAmountSnapshot || 0);
+    commissionGr.setValue('accelerator_applied', data.acceleratorApplied || false);
     commissionGr.setValue('commission_amount', data.commissionAmount);
     commissionGr.setValue('payment_date', data.paymentDate);
     if (data.payoutEligibleDate) {

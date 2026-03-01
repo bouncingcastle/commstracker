@@ -119,9 +119,25 @@ This assessment compares the current application implementation against the requ
 
 ### P1 Validation Notes (2026-02-28)
 - `src/fluent/tables/forecast_scenarios.now.ts` adds persisted scenario storage with multipliers and projected outputs.
-- `src/fluent/script-includes/commission-progress-helper.now.ts` provides forecast, scenario save/list, estimator, and statement approval actions through `CommissionProgressDataService`.
+- `src/server/script-includes/commission-p1-helper.js` and `src/fluent/script-includes/commission-p1-helper.now.ts` provide forecast, scenario save/list, estimator, and statement approval actions.
 - `src/fluent/ui-pages/commission-progress.now.ts` now includes forecast simulation controls, prioritized opportunity ranking, and commission estimator UX.
 - `src/fluent/tables/statement_approvals.now.ts` and `src/server/business-rules/statement-approval-workflow.js` add approval workflow entity and enforced transitions with statement status synchronization.
+
+### Newly Identified Logic Gaps (2026-02-28 Addendum)
+1. **Plan tiers are not consistently driving calculation/runtime logic**
+   - **Observed behavior:** Tier records can exist but are not consistently applied to effective commission rate when attainment crosses floor thresholds.
+   - **Required behavior:** Effective rate must change deterministically when attainment reaches each tier floor (including accelerators over 100% attainment).
+   - **Action:** Centralize tier evaluation in calculation runtime and ensure the selected tier + effective rate are stored on calculation records.
+
+2. **Commission performance tracker does not surface accelerator earnings clearly**
+   - **Observed behavior:** Plan target rollup can calculate correctly, but accelerator impact/earnings are not transparently shown in attainment visuals and earnings breakdown.
+   - **Required behavior:** UI must show base vs accelerator rate context and incremental earnings attributable to accelerator tiers.
+   - **Action:** Add accelerator delta metrics to helper response and render dedicated accelerator earnings rows in progress cards/graphs.
+
+3. **Plan bonus triggers are free-text and non-executable**
+   - **Observed behavior:** Bonus trigger logic is stored as text only and does not drive deterministic bonus qualification.
+   - **Required behavior:** Bonus triggers must be structured (typed conditions) and evaluated by runtime logic with auditable outcomes.
+   - **Action:** Introduce bonus trigger schema (condition type/operator/threshold/scope) and enforce evaluation during calculation with explicit bonus-earned records.
 
 ### UI Smoke Checklist (2026-02-28)
 #### Operations Dashboard (`src/fluent/ui-pages/commission-dashboard-redesigned.now.ts`)
@@ -142,6 +158,14 @@ This assessment compares the current application implementation against the requ
 1. Add dispute case workflow with threaded commentary and SLAs.
 2. Add bulk team/user/plan assignment tools and safe rollback.
 3. Add manager/team rollup views and manager role governance.
+4. ✅ Enforce deterministic tier evaluation and persisted effective tier/rate on calculations.
+5. Add accelerator earnings visibility (base vs accelerator deltas) to performance tracking UI.
+6. Replace free-text plan bonus triggers with structured, executable bonus logic.
+
+### P2 Validation Notes (2026-02-28)
+- **Item 4 validated:** `src/server/business-rules/payment-commission.js` now centralizes tier evaluation via `evaluateEffectiveCommissionRate(...)`, selecting the highest active tier floor at or below attainment and applying the resulting effective rate deterministically.
+- **Item 4 validated:** Calculation records now persist tier/rate context snapshots in runtime write path (`effective_tier_name`, `effective_tier_floor_percent`, `attainment_percent_at_calc`, `quota_amount_snapshot`, `attained_amount_snapshot`, `accelerator_applied`).
+- **Item 4 validated:** Schema support exists in `src/fluent/tables/commission_calculations.now.ts` for all persisted tier snapshot fields used by the runtime.
 
 ## P3 (Enterprise/Compliance Expansion)
 1. Multi-currency model with rate snapshots at calculation time.

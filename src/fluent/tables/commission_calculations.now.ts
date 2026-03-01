@@ -34,6 +34,32 @@ export const x_823178_commissio_commission_calculations = Table({
         commission_rate: DecimalColumn({ 
             label: 'Commission Rate (%)'
         }),
+        effective_tier_name: StringColumn({
+            label: 'Effective Tier Name',
+            maxLength: 120,
+            read_only: true
+        }),
+        effective_tier_floor_percent: DecimalColumn({
+            label: 'Effective Tier Floor (%)',
+            read_only: true
+        }),
+        attainment_percent_at_calc: DecimalColumn({
+            label: 'Attainment (%) at Calculation',
+            read_only: true
+        }),
+        quota_amount_snapshot: DecimalColumn({
+            label: 'Quota Amount Snapshot',
+            read_only: true
+        }),
+        attained_amount_snapshot: DecimalColumn({
+            label: 'Attained Amount Snapshot',
+            read_only: true
+        }),
+        accelerator_applied: BooleanColumn({
+            label: 'Accelerator Applied',
+            default: false,
+            read_only: true
+        }),
         commission_amount: DecimalColumn({ 
             label: 'Commission Amount'
         }),
