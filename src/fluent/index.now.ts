@@ -29,6 +29,8 @@ import './business-rules/deal-management.now'
 import './business-rules/invoice-management.now'
 import './business-rules/payment-commission.now'
 import './business-rules/commission-plan-validation.now'
+import './business-rules/plan-tier-validation.now'
+import './business-rules/deal-type-validation.now'
 import './business-rules/statement-approval-workflow.now'
 
 // Client-callable Script Includes
@@ -42,6 +44,7 @@ import './tables/deals.now'
 import './tables/invoices.now'
 import './tables/payments.now'
 import './tables/commission_plans.now'
+import './tables/deal_types.now'
 import './tables/commission_calculations.now'
 import './tables/commission_statements.now'
 import './tables/statement_approvals.now'
@@ -55,6 +58,9 @@ import './tables/plan_bonuses.now'
 
 // Form UX (single-flow plan setup)
 import './form-related-lists.now'
+
+// Configuration seed data
+import './deal-types-data.now'
 
 // Demo Data
 import './compensation-demo-data.now'

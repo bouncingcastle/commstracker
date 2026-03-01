@@ -341,7 +341,7 @@ function evaluateEffectiveCommissionRate(params) {
     var attainedAmount = attainedBefore + dealAmount;
     var attainmentPercent = quotaAmount > 0 ? (attainedAmount / quotaAmount) * 100 : 0;
 
-    var tier = resolveTierForAttainment(plan.planId, attainmentPercent);
+    var tier = resolveTierForAttainment(plan.planId, attainmentPercent, dealType);
     var effectiveRate = tier ? tier.ratePercent : baseRate;
     if (!effectiveRate || effectiveRate <= 0) {
         effectiveRate = baseRate;
@@ -392,24 +392,59 @@ function getRepAttainedAmountBeforeDeal(salesRep, closeDate, currentDealId) {
     return attained;
 }
 
-function resolveTierForAttainment(planId, attainmentPercent) {
+function resolveTierForAttainment(planId, attainmentPercent, dealType) {
     var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
     tierGr.addQuery('commission_plan', planId);
     tierGr.addQuery('is_active', true);
-    tierGr.addQuery('attainment_floor_percent', '<=', attainmentPercent);
-    tierGr.orderByDesc('attainment_floor_percent');
-    tierGr.setLimit(1);
+    tierGr.orderBy('attainment_floor_percent');
     tierGr.query();
 
-    if (!tierGr.next()) {
-        return null;
+    var selectedTier = null;
+    var highestEligibleTier = null;
+    var normalizedDealType = (dealType || '').toString();
+
+    while (tierGr.next()) {
+        var tierDealType = (tierGr.getValue('deal_type') || 'all').toString();
+        var dealTypeMatches = tierDealType === 'all' || tierDealType === '' || tierDealType === normalizedDealType;
+        if (!dealTypeMatches) {
+            continue;
+        }
+
+        var floor = parseFloat(tierGr.getValue('attainment_floor_percent')) || 0;
+        var ceilingRaw = parseFloat(tierGr.getValue('attainment_ceiling_percent'));
+        var hasCeiling = !isNaN(ceilingRaw) && ceilingRaw > 0;
+        var ceiling = hasCeiling ? ceilingRaw : 0;
+
+        if (attainmentPercent >= floor) {
+            highestEligibleTier = {
+                tierName: tierGr.getValue('tier_name') || 'Tier',
+                floorPercent: floor,
+                ceilingPercent: ceiling,
+                hasCeiling: hasCeiling,
+                ratePercent: parseFloat(tierGr.getValue('commission_rate_percent')) || 0
+            };
+        }
+
+        if (attainmentPercent >= floor && (!hasCeiling || attainmentPercent <= ceiling)) {
+            selectedTier = {
+                tierName: tierGr.getValue('tier_name') || 'Tier',
+                floorPercent: floor,
+                ceilingPercent: ceiling,
+                hasCeiling: hasCeiling,
+                ratePercent: parseFloat(tierGr.getValue('commission_rate_percent')) || 0
+            };
+        }
     }
 
-    return {
-        tierName: tierGr.getValue('tier_name') || 'Tier',
-        floorPercent: parseFloat(tierGr.getValue('attainment_floor_percent')) || 0,
-        ratePercent: parseFloat(tierGr.getValue('commission_rate_percent')) || 0
-    };
+    if (selectedTier) {
+        return selectedTier;
+    }
+
+    if (highestEligibleTier && highestEligibleTier.hasCeiling && attainmentPercent > highestEligibleTier.ceilingPercent) {
+        return highestEligibleTier;
+    }
+
+    return null;
 }
 
 function createCommissionCalculation(data) {

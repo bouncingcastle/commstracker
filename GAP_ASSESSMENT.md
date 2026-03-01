@@ -86,7 +86,7 @@ This assessment compares the current application implementation against the requ
 
 ### Data Layers
 - **Transactional tables**: deals/invoices/payments/calculations/statements
-- **Configuration tables**: plan rules/tiers/targets/bonuses/currency rates
+- **Configuration tables**: plan rules/tiers/targets/bonuses/deal types/currency rates
 - **Workflow tables**: approvals/disputes/comments/tasks
 - **Audit ledger**: immutable event records for compliance traceability
 
@@ -139,6 +139,11 @@ This assessment compares the current application implementation against the requ
    - **Required behavior:** Bonus triggers must be structured (typed conditions) and evaluated by runtime logic with auditable outcomes.
    - **Action:** Introduce bonus trigger schema (condition type/operator/threshold/scope) and enforce evaluation during calculation with explicit bonus-earned records.
 
+4. **Deal type taxonomy is not normalized as a governed reference dimension**
+   - **Observed behavior:** `deal_type` is represented as string values across deals/targets/tiers/bonuses/calculations, which can drift over time.
+   - **Required behavior:** Deal type should be a managed reference entity with active/inactive governance, display metadata, and stable keys consumed consistently across runtime and UI.
+   - **Action:** Introduce `deal_types` configuration table and migrate `deal_type` fields to reference/validated key usage.
+
 ### UI Smoke Checklist (2026-02-28)
 #### Operations Dashboard (`src/fluent/ui-pages/commission-dashboard-redesigned.now.ts`)
 - ✅ KPI year selector renders and drives metric refresh through `getDashboardMetrics`.
@@ -161,6 +166,7 @@ This assessment compares the current application implementation against the requ
 4. ✅ Enforce deterministic tier evaluation and persisted effective tier/rate on calculations.
 5. Add accelerator earnings visibility (base vs accelerator deltas) to performance tracking UI.
 6. Replace free-text plan bonus triggers with structured, executable bonus logic.
+7. Add a governed deal type reference table and migrate plan/deal configuration to use normalized deal type keys.
 
 ### P2 Validation Notes (2026-02-28)
 - **Item 4 validated:** `src/server/business-rules/payment-commission.js` now centralizes tier evaluation via `evaluateEffectiveCommissionRate(...)`, selecting the highest active tier floor at or below attainment and applying the resulting effective rate deterministically.

@@ -77,12 +77,7 @@ export const x_823178_commissio_commission_calculations = Table({
         }),
         deal_type: StringColumn({ 
             label: 'Deal Type',
-            choices: {
-                new_business: { label: 'New Business', sequence: 0 },
-                renewal: { label: 'Renewal', sequence: 1 },
-                expansion: { label: 'Expansion', sequence: 2 },
-                upsell: { label: 'Upsell', sequence: 3 }
-            }
+            maxLength: 40
         }),
         is_negative: BooleanColumn({ 
             label: 'Is Refund/Negative Entry'

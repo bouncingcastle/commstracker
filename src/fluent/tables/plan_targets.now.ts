@@ -13,12 +13,7 @@ export const x_823178_commissio_plan_targets = Table({
         deal_type: StringColumn({
             label: 'Deal Type',
             mandatory: true,
-            choices: {
-                new_business: { label: 'New Business', sequence: 0 },
-                renewal: { label: 'Renewal', sequence: 1 },
-                expansion: { label: 'Expansion', sequence: 2 },
-                upsell: { label: 'Upsell', sequence: 3 }
-            }
+            maxLength: 40
         }),
         annual_target_amount: DecimalColumn({
             label: 'Annual Target Amount',

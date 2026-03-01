@@ -47,12 +47,7 @@ export const x_823178_commissio_deals = Table({
         }),
         deal_type: StringColumn({ 
             label: 'Deal Type',
-            choices: {
-                new_business: { label: 'New Business', sequence: 0 },
-                renewal: { label: 'Renewal', sequence: 1 },
-                expansion: { label: 'Expansion', sequence: 2 },
-                upsell: { label: 'Upsell', sequence: 3 }
-            }
+            maxLength: 40
         }),
         is_won: BooleanColumn({ 
             label: 'Is Won'
