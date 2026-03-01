@@ -50,7 +50,10 @@ UiPage({
     </div>
   </div>
 
-  <script>
+</body>
+</html>
+  `,
+  clientScript: `
     (function(){
       function q(name){
         var m = new URLSearchParams(window.location.search).get(name);
@@ -71,28 +74,25 @@ UiPage({
 
       if (!planId) {
         planIdEl.textContent = '(not provided)';
-        treeEl.innerHTML = '<li><span class="label">No plan selected</span><span class="meta">Open from Plan Structure Reference and append ?sysparm_plan_id=<plan_sys_id>, or pick a plan from the active plans list below.</span></li>';
+        treeEl.innerHTML = '<li><span class="label">No plan selected</span><span class="meta">Open Plan Structure Reference, then open a specific plan and launch hierarchy with that plan sys_id.</span></li>';
         actionsEl.innerHTML =
           '<a class="btn" href="/x_823178_commissio_commission_plans_list.do?sysparm_query=is_active=true^ORDERBYsales_rep^ORDERBYDESCeffective_start_date">Open Plan Structure Reference</a>' +
-          '<a class="btn" href="/x_823178_commissio_commission_plans.do?sys_id=-1">Create New Plan</a>';
+          '<a class="btn" href="/x_823178_commissio_commission_plans.do?sys_id=-1&sysparm_view=default">Create New Plan</a>';
         return;
       }
 
       planIdEl.textContent = planId;
 
       actionsEl.innerHTML =
-        '<a class="btn" href="/x_823178_commissio_commission_plans.do?sys_id=' + planId + '">Open Plan Form</a>' +
+        '<a class="btn" href="/x_823178_commissio_commission_plans.do?sys_id=' + planId + '&sysparm_view=default">Open Plan Form</a>' +
         '<a class="btn" href="/x_823178_commissio_commission_plans_list.do?sysparm_query=sys_id=' + planId + '">Open Plan Record in List</a>';
 
       treeEl.innerHTML =
-        row('Commission Plan', '/x_823178_commissio_commission_plans.do?sys_id=' + planId, 'Parent configuration record') +
+        row('Commission Plan', '/x_823178_commissio_commission_plans.do?sys_id=' + planId + '&sysparm_view=default', 'Parent configuration record') +
         row('└─ Plan Targets', '/x_823178_commissio_plan_targets_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYdeal_type', 'Quota by deal type') +
         row('└─ Plan Tiers', '/x_823178_commissio_plan_tiers_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYattainment_floor_percent', 'Rate bands and accelerators') +
         row('└─ Plan Bonuses', '/x_823178_commissio_plan_bonuses_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYbonus_name', 'Structured bonus rules') +
         row('└─ Recognition Policies', '/x_823178_commissio_plan_recognition_policies_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYDESCeffective_start_date', 'Versioned recognition basis policies');
     })();
-  </script>
-</body>
-</html>
   `
 })

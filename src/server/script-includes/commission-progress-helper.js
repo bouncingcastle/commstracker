@@ -21,6 +21,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                     pending_count: 0,
                     paid_amount: 0,
                     paid_count: 0,
+                    explainability_summary: {},
                     active_deals_count: 0,
                     pipeline_value: 0,
                     breakdown: {},
@@ -95,6 +96,9 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
             var pendingCount = 0;
             var paidAmount = 0;
             var paidCount = 0;
+            var totalBaseComponent = 0;
+            var totalAcceleratorDelta = 0;
+            var totalBonusComponent = 0;
             var breakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
             var recentCalcs = [];
 
@@ -113,6 +117,11 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                 }
                 totalEarned += commAmount;
 
+                var explainability = this.getExplainabilityComponentsFromCalc(calcGr);
+                totalBaseComponent += explainability.base_component;
+                totalAcceleratorDelta += explainability.accelerator_component;
+                totalBonusComponent += explainability.bonus_component;
+
                 // Breakdown by deal type (keys must match exactly)
                 if (breakdown.hasOwnProperty(dealType)) {
                     breakdown[dealType] += commAmount;
@@ -130,6 +139,9 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                         deal_type: calcGr.getValue('deal_type'),
                         commission_base_amount: calcGr.getValue('commission_base_amount'),
                         commission_rate: calcGr.getValue('commission_rate'),
+                        base_component: explainability.base_component,
+                        accelerator_component: explainability.accelerator_component,
+                        bonus_component: explainability.bonus_component,
                         commission_amount: calcGr.getValue('commission_amount'),
                         payment_date: calcGr.getValue('payment_date'),
                         status: status
@@ -142,6 +154,13 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
             result.data.pending_count = pendingCount;
             result.data.paid_amount = paidAmount;
             result.data.paid_count = paidCount;
+            result.data.explainability_summary = {
+                base_component: totalBaseComponent,
+                accelerator_component: totalAcceleratorDelta,
+                bonus_component: totalBonusComponent,
+                explained_total: totalBaseComponent + totalAcceleratorDelta + totalBonusComponent,
+                unexplained_delta: totalEarned - (totalBaseComponent + totalAcceleratorDelta + totalBonusComponent)
+            };
             result.data.breakdown = breakdown;
             result.data.recent_calculations = recentCalcs;
 
@@ -594,6 +613,55 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
             gs.error('CommissionProgressHelper.getCompensationPlanDetails error: ' + e.getMessage());
             return { targets: {}, tiers: [], bonuses: [], total_quota: 0, base_rate: 0, total_bonus_potential: 0 };
         }
+    },
+
+    getExplainabilityComponentsFromCalc: function(calcGr) {
+        var baseComponent = parseFloat(calcGr.getValue('base_commission_component'));
+        var acceleratorComponent = parseFloat(calcGr.getValue('accelerator_delta_component'));
+        var bonusComponent = parseFloat(calcGr.getValue('bonus_component'));
+
+        if (!isNaN(baseComponent) && !isNaN(acceleratorComponent) && !isNaN(bonusComponent)) {
+            return {
+                base_component: baseComponent,
+                accelerator_component: acceleratorComponent,
+                bonus_component: bonusComponent
+            };
+        }
+
+        var calculatedBase = 0;
+        var calculatedAccelerator = 0;
+        var calculatedBonus = parseFloat(calcGr.getValue('bonus_amount')) || 0;
+
+        var commissionBaseAmount = parseFloat(calcGr.getValue('commission_base_amount')) || 0;
+        var effectiveRate = parseFloat(calcGr.getValue('commission_rate')) || 0;
+        var effectiveCommission = Math.round(commissionBaseAmount * (effectiveRate / 100) * 100) / 100;
+
+        var inputsRaw = calcGr.getValue('calculation_inputs') || '';
+        if (inputsRaw) {
+            try {
+                var inputs = JSON.parse(inputsRaw);
+                var baseRate = parseFloat(inputs.baseRate);
+                if (!isNaN(baseRate)) {
+                    calculatedBase = Math.round(commissionBaseAmount * (baseRate / 100) * 100) / 100;
+                    calculatedAccelerator = Math.round((effectiveCommission - calculatedBase) * 100) / 100;
+                } else {
+                    calculatedBase = effectiveCommission;
+                    calculatedAccelerator = 0;
+                }
+            } catch (e) {
+                calculatedBase = effectiveCommission;
+                calculatedAccelerator = 0;
+            }
+        } else {
+            calculatedBase = effectiveCommission;
+            calculatedAccelerator = 0;
+        }
+
+        return {
+            base_component: calculatedBase,
+            accelerator_component: calculatedAccelerator,
+            bonus_component: calculatedBonus
+        };
     },
 
     getErrorJSON: function(msg) {

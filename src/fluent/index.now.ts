@@ -70,6 +70,7 @@ import './tables/plan_bonuses.now'
 
 // Form UX (single-flow plan setup)
 import './form-related-lists.now'
+import './plan-form-actions.now'
 
 // Configuration seed data
 import './deal-types-data.now'

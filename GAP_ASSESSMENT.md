@@ -211,7 +211,7 @@ This assessment compares the current application implementation against the requ
 | Area | Status | Evidence | Gap to Fully-Fledged System |
 |---|---|---|---|
 | Plan setup across targets/tiers/bonuses | **Partial-Strong** | `src/fluent/form-related-lists.now.ts`, `src/fluent/tables/plan_targets.now.ts`, `src/fluent/tables/plan_tiers.now.ts`, `src/fluent/tables/plan_bonuses.now.ts` | No composable rule engine for nested conditions/priority/conflict resolution. |
-| Deterministic tiers/accelerators in runtime | **Strong** | `src/server/business-rules/payment-commission.js` (`evaluateEffectiveCommissionRate`, persisted effective tier fields) | No incremental accelerator earnings breakdown stored/rendered for explainability. |
+| Deterministic tiers/accelerators in runtime | **Strong** | `src/server/business-rules/payment-commission.js` (`evaluateEffectiveCommissionRate`, persisted effective tier fields + explainability components) | Remaining gap is richer workflow/context UX for finance and managers, not component-level explainability persistence. |
 | Bonus logic execution | **Weak-Partial** | Bonus schema exists in `src/fluent/tables/plan_bonuses.now.ts` | `bonus_trigger` remains free-text; payout qualification is not executed deterministically in runtime. |
 | Forecasting/simulation | **Partial** | `src/fluent/tables/forecast_scenarios.now.ts`, forecast methods in `src/fluent/script-includes/commission-progress-helper.now.ts` | Model is heuristic (stage probabilities), lacks scenario governance/versioning and finance calibration workflow. |
 | Estimator UX for reps | **Partial-Strong** | `estimateCommission` in `src/fluent/script-includes/commission-progress-helper.now.ts`, UI in `src/fluent/ui-pages/commission-progress.now.ts` | Estimate is single-deal oriented; no full payout-timeline forecast across expected cash receipts. |
@@ -220,18 +220,18 @@ This assessment compares the current application implementation against the requ
 | Dispute management/commentary | **Weak** | Dispute fields exist on calculations (`src/fluent/tables/commission_calculations.now.ts`) | No dispute case table, no threaded comments, no assignment/SLA lifecycle. |
 | Audit/compliance controls | **Partial-Strong** | Broad `audit: true`; reconciliation/alerts in scheduled scripts + monitoring tables | No immutable event journal for full calculation lineage and evidence export. |
 | Deal type governance | **Partial-Strong (new)** | `src/fluent/tables/deal_types.now.ts`, seed data + validation rules | Need UI module/list integration and migration hardening for legacy values/reporting consistency. |
-| Payout basis flexibility | **Strong-Partial** | Runtime basis switch + policy resolution + calc-time snapshot persistence are implemented in `src/server/business-rules/payment-commission.js` and `src/fluent/tables/commission_calculations.now.ts` | End-to-end forecast timeline parity by basis remains pending (`P2.6`). |
+| Payout basis flexibility | **Strong** | Runtime basis switch + policy resolution + calc-time snapshot persistence are implemented in `src/server/business-rules/payment-commission.js` and `src/fluent/tables/commission_calculations.now.ts` | Remaining gap is operational explainability/UX depth, not basis-switch correctness. |
 | Multi-currency | **Missing** | No FX table/services/snapshots | Required for enterprise finance parity and cross-geo professional services operations. |
 
 ### UI Functionality Assessment (What Works vs What’s Missing)
 - **Working now:** rep progress dashboard, estimator action, forecast scenario controls, prioritized opportunities, operations dashboard KPI drill-downs, statement approval records, and plan setup related lists.
-- **Missing for production maturity:** dedicated finance cockpit (approval queues + payout windows), manager cockpit with coaching/forecast views, dispute workspace, and runtime basis-switch execution for non-cash policy modes.
-- **Explainability gap:** UI does not yet present base vs accelerator delta earnings as a first-class payout explanation component.
+- **Missing for production maturity:** dedicated finance cockpit (approval queues + payout windows), manager cockpit with coaching/forecast views, dispute workspace, and richer payout explainability for reps/finance.
+- **Explainability:** Base commission vs accelerator delta vs bonus component is now surfaced in progress and statement data outputs; next uplift is richer visual drill-down and manager/finance workflow context.
 
 ### Additional Requirements Missing from Baseline List
-1. **Runtime execution of configurable recognition basis** with calc-time reproducibility snapshots (policy model now exists; runtime switch remains pending).
+1. **Runtime execution of configurable recognition basis** with calc-time reproducibility snapshots (**implemented**).
 2. **Executable bonus qualification engine** for ad-hoc and milestone bonuses (e.g., one-time quota-hit bonus), with deterministic audit records (**implemented**).
-3. **Payout timeline forecasting** from expected cash receipts (not only weighted deal-stage estimates).
+3. **Payout timeline forecasting** from expected cash receipts (not only weighted deal-stage estimates) (**partially implemented; needs deeper finance calibration and receipt-lifecycle modeling**).
 4. **Dispute case management domain** (case table, threaded commentary, SLA/aging, ownership, resolution actions).
 5. **Finance/manager operational workspaces** beyond list navigation (queues, bottlenecks, exception aging, approvals throughput).
 6. **Deal type governance UX** (module, lifecycle management, controlled deprecation/merge impact analysis).
@@ -261,7 +261,7 @@ This assessment compares the current application implementation against the requ
 | 7 | P2.7 ✅ | Bonus rule schema | Replace free-text bonus triggers with structured, validated bonus conditions | ✅ Completed 2026-03-01: structured qualification metric/operator/threshold/period model + validation BR + condition summary snapshot deployed | M |
 | 8 | P2.8 ✅ | Bonus execution engine | Deterministic bonus eligibility at calc-time + persisted bonus-earned records | ✅ Completed 2026-03-01: calc-time evaluator + persisted `bonus_earnings` records + calculation bonus snapshots deployed | L |
 | 9 | P2.9 ✅ | One-time quota bonus | One-time quota-hit bonus logic (once per rep/period) | ✅ Completed 2026-03-01: one-time-per-period dedupe guard across recalculation/reopen paths via period-keyed earned-record checks | S-M |
-| 10 | P2.10 | Accelerator explainability | Persist and render base vs accelerator delta in progress/statement views | Finance UAT sign-off on payout explainability | M |
+| 10 | P2.10 ✅ | Accelerator explainability | Persist and render base vs accelerator delta in progress/statement views | ✅ Completed 2026-03-01: calculation component snapshots + progress UI explainability breakdown + statement-level component totals delivered | M |
 | 11 | P2.11 | Finance cockpit | Queue-driven finance workspace (approvals, payout windows, exceptions) | End-to-end statement approval throughput and queue SLA test | M-L |
 | 12 | P2.12 ✅ | Seed governance hardening | Environment-gated/idempotent seed strategy for app menu + demo data, with controlled enablement and duplicate safeguards | ✅ Completed 2026-03-01: seed controls + reconciliation job deployed; diagnostics clean | S-M |
 | 13 | P3.1 | Dispute case domain | First-class dispute case entity, ownership, status lifecycle, SLA timers | Dispute lifecycle test (open→resolve→reopen) + SLA alerts | M |
