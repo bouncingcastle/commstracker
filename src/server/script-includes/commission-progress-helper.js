@@ -15,6 +15,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
             var result = {
                 status: 'success',
                 data: {
+                    report_year: 0,
                     total_earned: 0,
                     pending_amount: 0,
                     pending_count: 0,
@@ -30,27 +31,29 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
                 }
             };
 
-            // Get current date
+            var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
             var today = new GlideDateTime();
-            var currentYear = today.getYearLocalTime();
-            
-            // Build year range for filtering
-            var yearStart = currentYear + '-01-01';
-            var yearEnd = currentYear + '-12-31';
+            var currentYear = parseInt(today.getYearLocalTime(), 10);
+            var selectedYear = (!isNaN(requestedYear) && requestedYear >= 2000 && requestedYear <= 2100) ? requestedYear : currentYear;
 
-            // Get active commission plan for this rep (current year)
+            var yearStart = selectedYear + '-01-01';
+            var yearEnd = selectedYear + '-12-31';
+            result.data.report_year = selectedYear;
+
+            // Get plan that covers the selected year for this rep
+            var planId = '';
             var planGr = new GlideRecord('x_823178_commissio_commission_plans');
             planGr.addQuery('sales_rep', userId);
             planGr.addQuery('is_active', true);
-            planGr.addQuery('effective_start_date', '<=', today.getDisplayValue());
-            planGr.addQuery('effective_end_date', '>=', today.getDisplayValue());
-            planGr.orderBy('effective_start_date');
+            planGr.addQuery('effective_start_date', '<=', yearEnd);
+            planGr.addQuery('effective_end_date', '>=', yearStart);
+            planGr.orderByDesc('effective_start_date');
             planGr.query();
 
             if (planGr.next()) {
                 var planYearStr = planGr.getValue('effective_start_date');
-                var planYear = planYearStr ? new GlideDateTime(planYearStr).getYearLocalTime() : currentYear;
-                var planId = planGr.getValue('sys_id');
+                var planYear = planYearStr ? new GlideDateTime(planYearStr).getYearLocalTime() : selectedYear;
+                planId = planGr.getValue('sys_id');
                 
                 // Fetch compensation plan details (targets, tiers, bonuses)
                 var compDetails = this.getCompensationPlanDetails(planId);
@@ -191,7 +194,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
             // Fetch quota progress by deal type if compensation data available
             if (planId) {
                 try {
-                    var quotaProgress = this.getQuotaProgress(userId, planId);
+                    var quotaProgress = this.getQuotaProgress(userId, planId, selectedYear);
                     result.data.quota_progress = quotaProgress;
                 } catch (e) {
                     gs.log('Commission-progress-helper: Could not fetch quota progress: ' + e.getMessage(), 'CommissionProgressHelper');
@@ -206,7 +209,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
         }
     },
 
-    getQuotaProgress: function(userId, planId) {
+    getQuotaProgress: function(userId, planId, reportYear) {
         try {
             var progress = {};
 
@@ -222,11 +225,14 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
                 targets[dealType] = target;
             }
 
-            // Fetch current year closed deals (won) for this rep, grouped by deal type
             var today = new GlideDateTime();
-            var currentYear = today.getYearLocalTime();
-            var yearStart = currentYear + '-01-01';
-            var yearEnd = currentYear + '-12-31';
+            var currentYear = parseInt(today.getYearLocalTime(), 10);
+            var selectedYear = parseInt(reportYear, 10);
+            if (isNaN(selectedYear) || selectedYear < 2000 || selectedYear > 2100) {
+                selectedYear = currentYear;
+            }
+            var yearStart = selectedYear + '-01-01';
+            var yearEnd = selectedYear + '-12-31';
 
             var dealGr = new GlideRecord('x_823178_commissio_deals');
             dealGr.addQuery('current_owner', userId);
@@ -281,6 +287,151 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
         } catch (e) {
             gs.error('CommissionProgressHelper.getCurrentUser error: ' + e.getMessage());
             return this.getErrorJSON('Unable to resolve current user: ' + e.getMessage());
+        }
+    },
+
+    getYearContext: function() {
+        try {
+            var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
+            var requestedWindow = parseInt(this.getParameter('sysparm_year_window') || this.getParameter('year_window'), 10);
+            var windowSize = (!isNaN(requestedWindow) && requestedWindow >= 1 && requestedWindow <= 5) ? requestedWindow : 2;
+
+            var today = new GlideDateTime();
+            var currentYear = parseInt(today.getYearLocalTime(), 10);
+            var defaultYear = (!isNaN(requestedYear) && requestedYear >= 2000 && requestedYear <= 2100) ? requestedYear : currentYear;
+
+            var years = [];
+            for (var year = currentYear + windowSize; year >= currentYear - windowSize; year--) {
+                years.push(year);
+            }
+
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    current_year: currentYear,
+                    default_year: defaultYear,
+                    years: years
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressHelper.getYearContext error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to resolve year context: ' + e.getMessage());
+        }
+    },
+
+    getDashboardMetrics: function() {
+        try {
+            var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
+            var today = new GlideDateTime();
+            var currentYear = parseInt(today.getYearLocalTime(), 10);
+            var selectedYear = (!isNaN(requestedYear) && requestedYear >= 2000 && requestedYear <= 2100) ? requestedYear : currentYear;
+            var yearStart = selectedYear + '-01-01';
+            var yearEnd = selectedYear + '-12-31';
+
+            var statements = new GlideAggregate('x_823178_commissio_commission_statements');
+            statements.addQuery('statement_period_start', '>=', yearStart);
+            statements.addQuery('statement_period_start', '<=', yearEnd);
+            statements.addAggregate('COUNT');
+            statements.query();
+            var totalStatements = statements.next() ? parseInt(statements.getAggregate('COUNT'), 10) : 0;
+
+            var pending = new GlideAggregate('x_823178_commissio_exception_approvals');
+            pending.addQuery('status', 'pending');
+            pending.addQuery('sys_created_on', '>=', yearStart + ' 00:00:00');
+            pending.addQuery('sys_created_on', '<=', yearEnd + ' 23:59:59');
+            pending.addAggregate('COUNT');
+            pending.query();
+            var pendingReviews = pending.next() ? parseInt(pending.getAggregate('COUNT'), 10) : 0;
+
+            var deals = new GlideAggregate('x_823178_commissio_deals');
+            deals.addQuery('is_won', false);
+            deals.addQuery('stage', '!=', 'closed_lost');
+            deals.addQuery('close_date', '>=', yearStart);
+            deals.addQuery('close_date', '<=', yearEnd);
+            deals.addAggregate('COUNT');
+            deals.query();
+            var activeDeals = deals.next() ? parseInt(deals.getAggregate('COUNT'), 10) : 0;
+
+            var alerts = new GlideAggregate('x_823178_commissio_system_alerts');
+            alerts.addQuery('status', 'open');
+            alerts.addQuery('alert_date', '>=', yearStart + ' 00:00:00');
+            alerts.addQuery('alert_date', '<=', yearEnd + ' 23:59:59');
+            alerts.addAggregate('COUNT');
+            alerts.query();
+            var openAlerts = alerts.next() ? parseInt(alerts.getAggregate('COUNT'), 10) : 0;
+
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    report_year: selectedYear,
+                    total_statements: totalStatements,
+                    pending_reviews: pendingReviews,
+                    active_deals: activeDeals,
+                    open_alerts: openAlerts
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressHelper.getDashboardMetrics error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to load dashboard metrics: ' + e.getMessage());
+        }
+    },
+
+    listUsersWithData: function() {
+        try {
+            var users = [];
+            var seen = {};
+
+            var addUserById = function(repId) {
+                if (!repId || seen[repId]) return;
+                var repGr = new GlideRecord('sys_user');
+                if (repGr.get(repId)) {
+                    users.push({
+                        user_id: repId,
+                        user_name: repGr.getDisplayValue('name') || repGr.getDisplayValue()
+                    });
+                    seen[repId] = true;
+                }
+            };
+
+            var planAgg = new GlideAggregate('x_823178_commissio_commission_plans');
+            planAgg.groupBy('sales_rep');
+            planAgg.query();
+
+            while (planAgg.next()) {
+                addUserById(planAgg.getValue('sales_rep'));
+            }
+
+            var calcAgg = new GlideAggregate('x_823178_commissio_commission_calculations');
+            calcAgg.groupBy('sales_rep');
+            calcAgg.query();
+
+            while (calcAgg.next()) {
+                addUserById(calcAgg.getValue('sales_rep'));
+            }
+
+            var dealAgg = new GlideAggregate('x_823178_commissio_deals');
+            dealAgg.groupBy('current_owner');
+            dealAgg.query();
+
+            while (dealAgg.next()) {
+                addUserById(dealAgg.getValue('current_owner'));
+            }
+
+            users.sort(function(a, b) {
+                var an = (a.user_name || '').toLowerCase();
+                var bn = (b.user_name || '').toLowerCase();
+                if (an < bn) return -1;
+                if (an > bn) return 1;
+                return 0;
+            });
+
+            return JSON.stringify({
+                status: 'success',
+                data: users
+            });
+        } catch (e) {
+            gs.error('CommissionProgressHelper.listUsersWithData error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to load users: ' + e.getMessage());
         }
     },
 
