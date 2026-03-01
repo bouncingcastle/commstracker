@@ -344,8 +344,7 @@ UiPage({
 
         function invokeHelper(methodName, params, callback) {
           var helperNames = [
-            'x_823178_commissio.CommissionProgressDataService',
-            'x_823178_commissio.CommissionProgressHelper'
+            'x_823178_commissio.CommissionProgressDataService'
           ];
 
           function tryIndex(index) {
