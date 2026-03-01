@@ -58,6 +58,10 @@ UiPage({
     }
     .toolbar{
       margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:8px 10px;
     }
     .toolbar-label{
       font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;font-weight:600;
@@ -68,6 +72,20 @@ UiPage({
       appearance:none;-webkit-appearance:none;color-scheme:dark;
       opacity:1 !important;
       pointer-events:auto !important;
+      width:auto !important;
+      min-width:96px;
+      max-width:140px;
+      flex:0 0 auto;
+      -webkit-text-fill-color:var(--text) !important;
+    }
+    #kpiYearSelect,
+    select#kpiYearSelect,
+    .toolbar #kpiYearSelect{
+      background-color:var(--panel2) !important;
+      color:var(--text) !important;
+      border:1px solid var(--border) !important;
+      -webkit-text-fill-color:var(--text) !important;
+      box-shadow:none !important;
     }
     .toolbar select option,
     .toolbar select optgroup{
@@ -79,7 +97,8 @@ UiPage({
       box-shadow:0 0 0 2px rgba(110,168,255,.2);
     }
     .toolbar-note{
-      font-size:12px;color:var(--muted);
+      font-size:12px;color:var(--text);
+      opacity:.9;
     }
 
     .grid{
