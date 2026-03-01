@@ -92,6 +92,9 @@ function generateStatementForRep(salesRep, year, month) {
         var totalPayments = 0;
         var commissionIds = [];
         var hasUnapprovedCalculations = false;
+        var totalBaseCommission = 0;
+        var totalAcceleratorDelta = 0;
+        var totalBonusAmount = 0;
         
         while (calcGr.next()) {
             // Double-check approval status for high-value items
@@ -102,6 +105,9 @@ function generateStatementForRep(salesRep, year, month) {
             }
             
             totalCommission += parseFloat(calcGr.getValue('commission_amount')) || 0;
+            totalBaseCommission += parseFloat(calcGr.getValue('base_commission_component')) || 0;
+            totalAcceleratorDelta += parseFloat(calcGr.getValue('accelerator_delta_component')) || 0;
+            totalBonusAmount += parseFloat(calcGr.getValue('bonus_component')) || 0;
             totalPayments++;
             commissionIds.push(calcGr.sys_id.toString());
         }
@@ -110,6 +116,7 @@ function generateStatementForRep(salesRep, year, month) {
         var quarterlyBonusAmount = parseFloat(quarterlyBonus.total_bonus_amount) || 0;
         if (quarterlyBonusAmount > 0) {
             totalCommission += quarterlyBonusAmount;
+            totalBonusAmount += quarterlyBonusAmount;
         }
         
         if (totalPayments === 0 && quarterlyBonusAmount <= 0) {
@@ -135,13 +142,19 @@ function generateStatementForRep(salesRep, year, month) {
         statementGr.setValue('period_start_date', year + '-' + padNumber(month) + '-01');
         statementGr.setValue('period_end_date', getLastDayOfMonth(year, month));
         statementGr.setValue('total_commission_amount', totalCommission);
+        statementGr.setValue('total_base_commission', totalBaseCommission);
+        statementGr.setValue('total_accelerator_delta', totalAcceleratorDelta);
+        statementGr.setValue('total_bonus_amount', totalBonusAmount);
         statementGr.setValue('total_payments_processed', totalPayments);
         statementGr.setValue('status', 'draft');
         statementGr.setValue('generated_date', new GlideDateTime().getDisplayValue());
         statementGr.setValue('is_auto_generated', true);
         
         // BUSINESS REQUIREMENT: Add business notes for transparency
-        var businessNotes = 'Auto-generated statement including ' + totalPayments + ' approved calculations.';
+        var businessNotes = 'Auto-generated statement including ' + totalPayments + ' approved calculations.' +
+            ' Breakdown: base $' + totalBaseCommission.toFixed(2) +
+            ', accelerator delta $' + totalAcceleratorDelta.toFixed(2) +
+            ', bonus $' + totalBonusAmount.toFixed(2) + '.';
         if (quarterlyBonusAmount > 0) {
             businessNotes += ' Included quarterly bonus payout of $' + quarterlyBonusAmount.toFixed(2);
             if (quarterlyBonus.bonuses && quarterlyBonus.bonuses.length) {

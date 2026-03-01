@@ -183,7 +183,16 @@ export function calculateCommissionOnPayment(current, previous) {
             commissionAmount = -Math.abs(commissionAmount);
         }
 
-        var baseCommissionAmount = commissionAmount;
+        var effectiveCommissionComponent = commissionAmount;
+        var baseRateForExplainability = tierEvaluation.baseRate || commissionRate;
+        var baseCommissionComponent = Math.round(commissionBaseAmount * (baseRateForExplainability / 100) * 100) / 100;
+        if (isNegative) {
+            baseCommissionComponent = -Math.abs(baseCommissionComponent);
+        }
+
+        var acceleratorDeltaComponent = Math.round((effectiveCommissionComponent - baseCommissionComponent) * 100) / 100;
+
+        var baseCommissionAmount = effectiveCommissionComponent;
         var bonusEvaluation = evaluateStructuredBonuses({
             salesRep: commissionOwner,
             commissionPlanId: commissionPlan.planId,
@@ -199,7 +208,8 @@ export function calculateCommissionOnPayment(current, previous) {
             isNegative: isNegative
         });
 
-        commissionAmount = Math.round((baseCommissionAmount + bonusEvaluation.totalBonusAmount) * 100) / 100;
+        var bonusComponent = Math.round((parseFloat(bonusEvaluation.totalBonusAmount) || 0) * 100) / 100;
+        commissionAmount = Math.round((baseCommissionAmount + bonusComponent) * 100) / 100;
         
         // BUSINESS REQUIREMENT: Commission approval for high values without blocking processing
         var approvalThreshold = parseFloat(gs.getProperty('x_823178_commissio.approval_threshold', '10000'));
@@ -247,6 +257,9 @@ export function calculateCommissionOnPayment(current, previous) {
             bonusAmount: bonusEvaluation.totalBonusAmount,
             bonusEarnedCount: bonusEvaluation.earnedBonuses.length,
             bonusSummarySnapshot: bonusEvaluation.summarySnapshot,
+            baseCommissionComponent: baseCommissionComponent,
+            acceleratorDeltaComponent: acceleratorDeltaComponent,
+            bonusComponent: bonusComponent,
             effectiveTierName: tierEvaluation.tierName,
             effectiveTierFloorPercent: tierEvaluation.tierFloorPercent,
             attainmentPercentAtCalc: tierEvaluation.attainmentPercent,
@@ -275,7 +288,10 @@ export function calculateCommissionOnPayment(current, previous) {
                 payoutSchedule: payoutSchedule,
                 bonusAmount: bonusEvaluation.totalBonusAmount,
                 bonusEarnedCount: bonusEvaluation.earnedBonuses.length,
-                bonusSummary: bonusEvaluation.summarySnapshot
+                bonusSummary: bonusEvaluation.summarySnapshot,
+                baseCommissionComponent: baseCommissionComponent,
+                acceleratorDeltaComponent: acceleratorDeltaComponent,
+                bonusComponent: bonusComponent
             }
         });
         
@@ -897,6 +913,9 @@ function createCommissionCalculation(data) {
     commissionGr.setValue('accelerator_applied', data.acceleratorApplied || false);
     commissionGr.setValue('bonus_amount', data.bonusAmount || 0);
     commissionGr.setValue('bonus_earned_count', (data.bonusEarnedCount || 0).toString());
+    commissionGr.setValue('base_commission_component', data.baseCommissionComponent || 0);
+    commissionGr.setValue('accelerator_delta_component', data.acceleratorDeltaComponent || 0);
+    commissionGr.setValue('bonus_component', data.bonusComponent || 0);
     commissionGr.setValue('commission_amount', data.commissionAmount);
     commissionGr.setValue('payment_date', data.paymentDate);
     if (data.recognitionDateSnapshot) {

@@ -70,6 +70,18 @@ export const x_823178_commissio_commission_calculations = Table({
             default: '0',
             read_only: true
         }),
+        base_commission_component: DecimalColumn({
+            label: 'Base Commission Component',
+            read_only: true
+        }),
+        accelerator_delta_component: DecimalColumn({
+            label: 'Accelerator Delta Component',
+            read_only: true
+        }),
+        bonus_component: DecimalColumn({
+            label: 'Bonus Component',
+            read_only: true
+        }),
         commission_amount: DecimalColumn({ 
             label: 'Commission Amount'
         }),

@@ -45,6 +45,7 @@ Record({
                     pending_count: 0,
                     paid_amount: 0,
                     paid_count: 0,
+                    explainability_summary: {},
                     active_deals_count: 0,
                     pipeline_value: 0,
                     breakdown: {},
@@ -141,6 +142,9 @@ Record({
             var pendingCount = 0;
             var paidAmount = 0;
             var paidCount = 0;
+            var totalBaseComponent = 0;
+            var totalAcceleratorDelta = 0;
+            var totalBonusComponent = 0;
             var breakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
             var recentCalcs = [];
 
@@ -157,6 +161,11 @@ Record({
                     pendingCount++;
                 }
                 totalEarned += commAmount;
+
+                var explainability = this.getExplainabilityComponentsFromCalc(calcGr);
+                totalBaseComponent += explainability.base_component;
+                totalAcceleratorDelta += explainability.accelerator_component;
+                totalBonusComponent += explainability.bonus_component;
 
                 if (breakdown.hasOwnProperty(dealType)) {
                     breakdown[dealType] += commAmount;
@@ -182,6 +191,9 @@ Record({
                         deal_type: calcGr.getValue('deal_type'),
                         commission_base_amount: calcGr.getValue('commission_base_amount'),
                         commission_rate: calcGr.getValue('commission_rate'),
+                        base_component: explainability.base_component,
+                        accelerator_component: explainability.accelerator_component,
+                        bonus_component: explainability.bonus_component,
                         commission_amount: calcGr.getValue('commission_amount'),
                         payment_date: calcGr.getValue('payment_date'),
                         status: status
@@ -194,6 +206,13 @@ Record({
             result.data.pending_count = pendingCount;
             result.data.paid_amount = paidAmount;
             result.data.paid_count = paidCount;
+            result.data.explainability_summary = {
+                base_component: totalBaseComponent,
+                accelerator_component: totalAcceleratorDelta,
+                bonus_component: totalBonusComponent,
+                explained_total: totalBaseComponent + totalAcceleratorDelta + totalBonusComponent,
+                unexplained_delta: totalEarned - (totalBaseComponent + totalAcceleratorDelta + totalBonusComponent)
+            };
             result.data.breakdown = breakdown;
             result.data.recent_calculations = recentCalcs;
 
@@ -617,6 +636,155 @@ Record({
             gs.error('CommissionProgressDataService.searchUsers error: ' + e.getMessage());
             return this.getErrorJSON('Error searching users: ' + e.getMessage());
         }
+    },
+
+    getStatementExplainability: function() {
+        var statementId = this.getParameter('sysparm_statement_id') || this.getParameter('statement_id') || '';
+
+        try {
+            var statementGr = new GlideRecord('x_823178_commissio_commission_statements');
+
+            if (statementId) {
+                if (!statementGr.get(statementId)) {
+                    return this.getErrorJSON('Statement not found');
+                }
+
+                if (!this.canViewUser(statementGr.getValue('sales_rep')) && !this.isFinanceViewer()) {
+                    return this.getErrorJSON('You do not have permission to view this statement');
+                }
+            } else {
+                this.applyStatementViewerScope(statementGr);
+                statementGr.orderByDesc('statement_year');
+                statementGr.orderByDesc('statement_month');
+                statementGr.orderByDesc('generated_date');
+                statementGr.setLimit(1);
+                statementGr.query();
+
+                if (!statementGr.next()) {
+                    return JSON.stringify({
+                        status: 'success',
+                        data: {
+                            statement: null,
+                            summary: {
+                                base_component: 0,
+                                accelerator_component: 0,
+                                bonus_component: 0,
+                                total_commission: 0,
+                                unexplained_delta: 0,
+                                line_items_count: 0
+                            },
+                            line_items: []
+                        }
+                    });
+                }
+            }
+
+            var payload = this.buildStatementExplainabilityPayload(statementGr);
+            return JSON.stringify({ status: 'success', data: payload });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getStatementExplainability error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to load statement explainability: ' + e.getMessage());
+        }
+    },
+
+    applyStatementViewerScope: function(statementGr) {
+        if (this.isAdminViewer() || this.isFinanceViewer()) {
+            return;
+        }
+
+        var viewerId = gs.getUserID();
+        if (this.isManagerViewer()) {
+            var managedIds = this.getManagedUserIds(viewerId, true);
+            if (managedIds.length === 0) {
+                statementGr.addQuery('sys_id', '');
+                return;
+            }
+            statementGr.addQuery('sales_rep', 'IN', managedIds.join(','));
+            return;
+        }
+
+        statementGr.addQuery('sales_rep', viewerId);
+    },
+
+    buildStatementExplainabilityPayload: function(statementGr) {
+        var lineItems = [];
+        var totals = {
+            base_component: 0,
+            accelerator_component: 0,
+            bonus_component: 0,
+            total_commission: 0
+        };
+
+        var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
+        calcGr.addQuery('statement', statementGr.getUniqueValue());
+        calcGr.orderByDesc('calculation_date');
+        calcGr.query();
+
+        while (calcGr.next()) {
+            var explainability = this.getExplainabilityComponentsFromCalc(calcGr);
+            var commissionAmount = parseFloat(calcGr.getValue('commission_amount')) || 0;
+
+            totals.base_component += explainability.base_component;
+            totals.accelerator_component += explainability.accelerator_component;
+            totals.bonus_component += explainability.bonus_component;
+            totals.total_commission += commissionAmount;
+
+            var dealName = '';
+            var dealGr = new GlideRecord('x_823178_commissio_deals');
+            if (dealGr.get(calcGr.getValue('deal'))) {
+                dealName = dealGr.getDisplayValue('deal_name') || dealGr.getValue('deal_name') || '';
+            }
+
+            lineItems.push({
+                calculation_id: calcGr.getUniqueValue(),
+                deal_name: dealName,
+                deal_type: calcGr.getValue('deal_type') || 'other',
+                payment_date: calcGr.getValue('payment_date') || '',
+                status: calcGr.getValue('status') || 'draft',
+                base_component: explainability.base_component,
+                accelerator_component: explainability.accelerator_component,
+                bonus_component: explainability.bonus_component,
+                commission_amount: commissionAmount
+            });
+        }
+
+        var statementTotal = parseFloat(statementGr.getValue('total_commission_amount'));
+        if (!isNaN(statementTotal)) {
+            totals.total_commission = statementTotal;
+        }
+
+        var storedBase = parseFloat(statementGr.getValue('total_base_commission'));
+        var storedAccelerator = parseFloat(statementGr.getValue('total_accelerator_delta'));
+        var storedBonus = parseFloat(statementGr.getValue('total_bonus_amount'));
+        if (!isNaN(storedBase)) totals.base_component = storedBase;
+        if (!isNaN(storedAccelerator)) totals.accelerator_component = storedAccelerator;
+        if (!isNaN(storedBonus)) totals.bonus_component = storedBonus;
+
+        var explainedTotal = totals.base_component + totals.accelerator_component + totals.bonus_component;
+
+        return {
+            statement: {
+                sys_id: statementGr.getUniqueValue(),
+                statement_number: statementGr.getValue('statement_number') || '',
+                sales_rep: statementGr.getValue('sales_rep') || '',
+                sales_rep_name: statementGr.getDisplayValue('sales_rep') || '',
+                statement_year: statementGr.getValue('statement_year') || '',
+                statement_month: statementGr.getValue('statement_month') || '',
+                period_start_date: statementGr.getValue('period_start_date') || '',
+                period_end_date: statementGr.getValue('period_end_date') || '',
+                status: statementGr.getValue('status') || 'draft',
+                total_commission_amount: totals.total_commission
+            },
+            summary: {
+                base_component: totals.base_component,
+                accelerator_component: totals.accelerator_component,
+                bonus_component: totals.bonus_component,
+                total_commission: totals.total_commission,
+                unexplained_delta: totals.total_commission - explainedTotal,
+                line_items_count: lineItems.length
+            },
+            line_items: lineItems
+        };
     },
 
     getCompensationPlanDetails: function(planId) {
@@ -1347,6 +1515,11 @@ Record({
         return !!user.hasRole('x_823178_commissio.manager');
     },
 
+    isFinanceViewer: function() {
+        var user = gs.getUser();
+        return !!user.hasRole('x_823178_commissio.finance');
+    },
+
     canViewUser: function(targetUserId) {
         var viewerId = gs.getUserID();
         if (!targetUserId) return false;
@@ -1537,6 +1710,55 @@ Record({
 
     round4: function(value) {
         return Math.round((parseFloat(value) || 0) * 10000) / 10000;
+    },
+
+    getExplainabilityComponentsFromCalc: function(calcGr) {
+        var baseComponent = parseFloat(calcGr.getValue('base_commission_component'));
+        var acceleratorComponent = parseFloat(calcGr.getValue('accelerator_delta_component'));
+        var bonusComponent = parseFloat(calcGr.getValue('bonus_component'));
+
+        if (!isNaN(baseComponent) && !isNaN(acceleratorComponent) && !isNaN(bonusComponent)) {
+            return {
+                base_component: baseComponent,
+                accelerator_component: acceleratorComponent,
+                bonus_component: bonusComponent
+            };
+        }
+
+        var calculatedBase = 0;
+        var calculatedAccelerator = 0;
+        var calculatedBonus = parseFloat(calcGr.getValue('bonus_amount')) || 0;
+
+        var commissionBaseAmount = parseFloat(calcGr.getValue('commission_base_amount')) || 0;
+        var effectiveRate = parseFloat(calcGr.getValue('commission_rate')) || 0;
+        var effectiveCommission = Math.round(commissionBaseAmount * (effectiveRate / 100) * 100) / 100;
+
+        var inputsRaw = calcGr.getValue('calculation_inputs') || '';
+        if (inputsRaw) {
+            try {
+                var inputs = JSON.parse(inputsRaw);
+                var baseRate = parseFloat(inputs.baseRate);
+                if (!isNaN(baseRate)) {
+                    calculatedBase = Math.round(commissionBaseAmount * (baseRate / 100) * 100) / 100;
+                    calculatedAccelerator = Math.round((effectiveCommission - calculatedBase) * 100) / 100;
+                } else {
+                    calculatedBase = effectiveCommission;
+                    calculatedAccelerator = 0;
+                }
+            } catch (e) {
+                calculatedBase = effectiveCommission;
+                calculatedAccelerator = 0;
+            }
+        } else {
+            calculatedBase = effectiveCommission;
+            calculatedAccelerator = 0;
+        }
+
+        return {
+            base_component: calculatedBase,
+            accelerator_component: calculatedAccelerator,
+            bonus_component: calculatedBonus
+        };
     },
 
     getErrorJSON: function(msg) {

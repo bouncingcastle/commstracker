@@ -568,13 +568,14 @@ UiPage({
             <th>Type</th>
             <th>Base Amount</th>
             <th>Rate</th>
+            <th>Explainability</th>
             <th>Commission</th>
             <th>Payment Date</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody id="calcTableBody">
-          <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td></tr>
+          <tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td></tr>
         </tbody>
       </table>
     </div>
@@ -1162,7 +1163,7 @@ UiPage({
 
           var calcBody = document.getElementById('calcTableBody');
           if (calcBody) {
-            calcBody.innerHTML = '<tr><td colspan="7" class="empty">Commission calculation records are unavailable</td></tr>';
+            calcBody.innerHTML = '<tr><td colspan="8" class="empty">Commission calculation records are unavailable</td></tr>';
           }
 
           var dealsBody = document.getElementById('dealsTableBody');
@@ -1265,6 +1266,39 @@ UiPage({
                 '<span class="break-value">$' + parseFloat(val).toFixed(2) + '</span>';
               breakdown.appendChild(item);
             });
+          }
+
+          var explainability = data.explainability_summary || {};
+          var explainedBase = parseFloat(explainability.base_component || 0);
+          var explainedAccel = parseFloat(explainability.accelerator_component || 0);
+          var explainedBonus = parseFloat(explainability.bonus_component || 0);
+          var unexplainedDelta = parseFloat(explainability.unexplained_delta || 0);
+
+          var divider = document.createElement('div');
+          divider.className = 'break-item';
+          divider.innerHTML = '<span class="break-label"><strong>Earnings Explainability</strong></span><span class="break-value">&nbsp;</span>';
+          breakdown.appendChild(divider);
+
+          var explainRows = [
+            { label: 'Base Commission Component', value: explainedBase },
+            { label: 'Accelerator Delta Component', value: explainedAccel },
+            { label: 'Bonus Component', value: explainedBonus }
+          ];
+
+          explainRows.forEach(function(row) {
+            var item = document.createElement('div');
+            item.className = 'break-item';
+            item.innerHTML = '<span class="break-label">' + row.label + '</span>' +
+              '<span class="break-value">$' + row.value.toFixed(2) + '</span>';
+            breakdown.appendChild(item);
+          });
+
+          if (Math.abs(unexplainedDelta) >= 0.01) {
+            var gapItem = document.createElement('div');
+            gapItem.className = 'break-item';
+            gapItem.innerHTML = '<span class="break-label">Legacy/Unexplained Delta</span>' +
+              '<span class="break-value ' + (unexplainedDelta >= 0 ? 'warn' : 'bad') + '">$' + unexplainedDelta.toFixed(2) + '</span>';
+            breakdown.appendChild(gapItem);
           }
 
           // Deal breakdown
@@ -1777,17 +1811,21 @@ UiPage({
           var tbody = document.getElementById('calcTableBody');
           tbody.innerHTML = '';
           if (calcs.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="empty">No commission calculations are available for the selected year.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" class="empty">No commission calculations are available for the selected year.</td></tr>';
             return;
           }
           calcs.forEach(function(calc) {
             var row = document.createElement('tr');
             var statusClass = 'status-' + (calc.status || 'draft');
+            var baseComponent = (parseFloat(calc.base_component) || 0);
+            var acceleratorComponent = (parseFloat(calc.accelerator_component) || 0);
+            var bonusComponent = (parseFloat(calc.bonus_component) || 0);
             row.innerHTML = 
               '<td>' + (calc.deal_name || '–') + '</td>' +
               '<td>' + (calc.deal_type || '–') + '</td>' +
               '<td>$' + (parseFloat(calc.commission_base_amount) || 0).toFixed(2) + '</td>' +
               '<td>' + (parseFloat(calc.commission_rate) || 0).toFixed(2) + '%</td>' +
+              '<td>Base $' + baseComponent.toFixed(2) + '<br/>Accel $' + acceleratorComponent.toFixed(2) + '<br/>Bonus $' + bonusComponent.toFixed(2) + '</td>' +
               '<td><strong>$' + (parseFloat(calc.commission_amount) || 0).toFixed(2) + '</strong></td>' +
               '<td>' + (calc.payment_date || '–') + '</td>' +
               '<td><span class="status-badge ' + statusClass + '">' + (calc.status || 'draft') + '</span></td>';

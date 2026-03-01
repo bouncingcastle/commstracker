@@ -33,6 +33,15 @@ export const x_823178_commissio_commission_statements = Table({
         total_commission_amount: DecimalColumn({ 
             label: 'Total Commission Amount'
         }),
+        total_base_commission: DecimalColumn({
+            label: 'Total Base Commission'
+        }),
+        total_accelerator_delta: DecimalColumn({
+            label: 'Total Accelerator Delta'
+        }),
+        total_bonus_amount: DecimalColumn({
+            label: 'Total Bonus Amount'
+        }),
         total_payments_processed: IntegerColumn({ 
             label: 'Total Payments Processed'
         }),
