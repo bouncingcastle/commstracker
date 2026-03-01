@@ -27,8 +27,7 @@ export function generateMonthlyStatements() {
         
         // BUSINESS REQUIREMENT: Only include approved calculations
         var repQuery = new GlideRecord('x_823178_commissio_commission_calculations');
-        repQuery.addQuery('payment_date', '>=', year + '-' + padNumber(monthNumber) + '-01');
-        repQuery.addQuery('payment_date', '<', getFirstDayOfNextMonth(year, monthNumber));
+        addPayoutEligibilityFilter(repQuery, year, monthNumber);
         repQuery.addQuery('status', 'IN', 'draft,locked'); // Include draft and locked, exclude disputed/error
         repQuery.addNullQuery('requires_approval').addOrCondition('requires_approval', false)
             .addOrCondition('approved', true); // Only approved high-value calculations
@@ -81,8 +80,7 @@ function generateStatementForRep(salesRep, year, month) {
         // Get all approved commission calculations for this rep and month
         var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
         calcGr.addQuery('sales_rep', salesRep);
-        calcGr.addQuery('payment_date', '>=', year + '-' + padNumber(month) + '-01');
-        calcGr.addQuery('payment_date', '<', getFirstDayOfNextMonth(year, month));
+        addPayoutEligibilityFilter(calcGr, year, month);
         calcGr.addQuery('status', 'IN', 'draft,locked');
         
         // BUSINESS REQUIREMENT: Only include approved calculations
@@ -107,8 +105,14 @@ function generateStatementForRep(salesRep, year, month) {
             totalPayments++;
             commissionIds.push(calcGr.sys_id.toString());
         }
+
+        var quarterlyBonus = getQuarterlyBonusPayout(salesRep, year, month);
+        var quarterlyBonusAmount = parseFloat(quarterlyBonus.total_bonus_amount) || 0;
+        if (quarterlyBonusAmount > 0) {
+            totalCommission += quarterlyBonusAmount;
+        }
         
-        if (totalPayments === 0) {
+        if (totalPayments === 0 && quarterlyBonusAmount <= 0) {
             return { success: false, error: 'No approved commission calculations found' };
         }
         
@@ -138,6 +142,14 @@ function generateStatementForRep(salesRep, year, month) {
         
         // BUSINESS REQUIREMENT: Add business notes for transparency
         var businessNotes = 'Auto-generated statement including ' + totalPayments + ' approved calculations.';
+        if (quarterlyBonusAmount > 0) {
+            businessNotes += ' Included quarterly bonus payout of $' + quarterlyBonusAmount.toFixed(2);
+            if (quarterlyBonus.bonuses && quarterlyBonus.bonuses.length) {
+                businessNotes += ' (' + quarterlyBonus.bonuses.join(', ') + ').';
+            } else {
+                businessNotes += '.';
+            }
+        }
         if (hasUnapprovedCalculations) {
             businessNotes += ' Note: Some high-value calculations pending approval were excluded.';
         }
@@ -270,4 +282,62 @@ function getLastDayOfMonth(year, month) {
     }
     
     return year + '-' + padNumber(month) + '-' + padNumber(lastDays[month - 1]);
+}
+
+function addPayoutEligibilityFilter(gr, year, month) {
+    var periodStart = year + '-' + padNumber(month) + '-01';
+    var nextPeriodStart = getFirstDayOfNextMonth(year, month);
+
+    gr.addEncodedQuery(
+        'payout_eligible_date>=' + periodStart + '^payout_eligible_date<' + nextPeriodStart +
+        '^ORpayout_eligible_dateISEMPTY^payment_date>=' + periodStart + '^payment_date<' + nextPeriodStart
+    );
+}
+
+function getQuarterlyBonusPayout(salesRep, year, month) {
+    var result = {
+        total_bonus_amount: 0,
+        bonuses: []
+    };
+
+    if (month !== 3 && month !== 6 && month !== 9 && month !== 12) {
+        return result;
+    }
+
+    try {
+        var quarterStartMonth = month - 2;
+        var quarterStartDate = year + '-' + padNumber(quarterStartMonth) + '-01';
+        var quarterEndDate = getLastDayOfMonth(year, month);
+
+        var planGr = new GlideRecord('x_823178_commissio_commission_plans');
+        planGr.addQuery('sales_rep', salesRep);
+        planGr.addQuery('is_active', true);
+        planGr.addQuery('effective_start_date', '<=', quarterEndDate);
+        planGr.addQuery('effective_end_date', '>=', quarterStartDate).addOrCondition('effective_end_date', '');
+        planGr.orderByDesc('effective_start_date');
+        planGr.query();
+
+        if (!planGr.next()) {
+            return result;
+        }
+
+        var bonusGr = new GlideRecord('x_823178_commissio_plan_bonuses');
+        bonusGr.addQuery('commission_plan', planGr.getUniqueValue());
+        bonusGr.addQuery('is_active', true);
+        bonusGr.addQuery('auto_payout', true);
+        bonusGr.addQuery('payout_frequency', 'quarterly');
+        bonusGr.query();
+
+        while (bonusGr.next()) {
+            var amount = parseFloat(bonusGr.getValue('bonus_amount')) || 0;
+            if (amount <= 0) continue;
+            result.total_bonus_amount += amount;
+            result.bonuses.push(bonusGr.getValue('bonus_name') || 'Quarterly bonus');
+        }
+
+        return result;
+    } catch (e) {
+        gs.error('Commission Management: Error calculating quarterly bonus payout for rep ' + salesRep + ' - ' + e.message);
+        return result;
+    }
 }

@@ -163,6 +163,7 @@ export function calculateCommissionOnPayment(current, previous) {
         }
         
         // BUSINESS REQUIREMENT: Create calculation with comprehensive audit trail
+        var payoutSchedule = getPayoutSchedule(current.getValue('payment_date'));
         var calculationId = createCommissionCalculation({
             payment: current.sys_id,
             deal: dealGr.sys_id,
@@ -173,6 +174,8 @@ export function calculateCommissionOnPayment(current, previous) {
             commissionRate: commissionRate,
             commissionAmount: commissionAmount,
             paymentDate: current.getValue('payment_date'),
+            payoutEligibleDate: payoutSchedule.payout_eligible_date,
+            payoutScheduleSnapshot: payoutSchedule.snapshot,
             dealCloseDate: closeDate,
             dealType: dealGr.getValue('deal_type'),
             isNegative: isNegative,
@@ -182,7 +185,8 @@ export function calculateCommissionOnPayment(current, previous) {
                 invoiceTotal: invoiceTotal,
                 paymentAmount: paymentAmount,
                 paymentRatio: paymentRatio,
-                planName: commissionPlan.planName
+                planName: commissionPlan.planName,
+                payoutSchedule: payoutSchedule
             }
         });
         
@@ -322,6 +326,12 @@ function createCommissionCalculation(data) {
     commissionGr.setValue('commission_rate', data.commissionRate);
     commissionGr.setValue('commission_amount', data.commissionAmount);
     commissionGr.setValue('payment_date', data.paymentDate);
+    if (data.payoutEligibleDate) {
+        commissionGr.setValue('payout_eligible_date', data.payoutEligibleDate);
+    }
+    if (data.payoutScheduleSnapshot) {
+        commissionGr.setValue('payout_schedule_snapshot', data.payoutScheduleSnapshot);
+    }
     commissionGr.setValue('calculation_date', new GlideDateTime().getDisplayValue());
     commissionGr.setValue('deal_close_date', data.dealCloseDate);
     commissionGr.setValue('deal_type', data.dealType);
@@ -340,6 +350,70 @@ function createCommissionCalculation(data) {
         commissionGr.update();
         return commissionGr.sys_id;
     }
+}
+
+function getPayoutSchedule(paymentDateValue) {
+    var fallback = {
+        payout_eligible_date: paymentDateValue,
+        snapshot: 'mode=fallback;eligible=' + paymentDateValue
+    };
+
+    if (!paymentDateValue) {
+        return fallback;
+    }
+
+    try {
+        var mode = (gs.getProperty('x_823178_commissio.payout_schedule_mode', 'cycle') || 'cycle').toLowerCase();
+        var paymentDate = new GlideDateTime();
+        paymentDate.setValue(paymentDateValue);
+
+        if (mode === 'days') {
+            var waitDays = parseInt(gs.getProperty('x_823178_commissio.payout_wait_days', '28'), 10);
+            if (isNaN(waitDays) || waitDays < 0) waitDays = 28;
+
+            var byDays = new GlideDateTime(paymentDate);
+            byDays.addDaysUTC(waitDays);
+            var byDaysDate = toDateString(byDays);
+
+            return {
+                payout_eligible_date: byDaysDate,
+                snapshot: 'mode=days;wait_days=' + waitDays + ';eligible=' + byDaysDate
+            };
+        }
+
+        var cycleDays = parseInt(gs.getProperty('x_823178_commissio.pay_cycle_days', '14'), 10);
+        if (isNaN(cycleDays) || cycleDays < 1) cycleDays = 14;
+
+        var cyclesAfterPayment = parseInt(gs.getProperty('x_823178_commissio.pay_cycles_after_payment', '2'), 10);
+        if (isNaN(cyclesAfterPayment) || cyclesAfterPayment < 1) cyclesAfterPayment = 2;
+
+        var anchorDateRaw = gs.getProperty('x_823178_commissio.pay_cycle_anchor_date', '2026-01-01') || '2026-01-01';
+        var anchorDate = new GlideDateTime();
+        anchorDate.setValue((anchorDateRaw.length === 10 ? anchorDateRaw + ' 00:00:00' : anchorDateRaw));
+
+        var nextCycleStart = new GlideDateTime(anchorDate);
+        while (!nextCycleStart.after(paymentDate)) {
+            nextCycleStart.addDaysUTC(cycleDays);
+        }
+
+        var payoutDate = new GlideDateTime(nextCycleStart);
+        payoutDate.addDaysUTC((cyclesAfterPayment - 1) * cycleDays);
+        var payoutDateValue = toDateString(payoutDate);
+
+        return {
+            payout_eligible_date: payoutDateValue,
+            snapshot: 'mode=cycle;cycle_days=' + cycleDays + ';cycles_after=' + cyclesAfterPayment + ';anchor=' + anchorDateRaw + ';eligible=' + payoutDateValue
+        };
+    } catch (e) {
+        gs.error('Commission Management: Failed to compute payout schedule - ' + e.message);
+        return fallback;
+    }
+}
+
+function toDateString(dateTime) {
+    var value = dateTime ? dateTime.getValue() : '';
+    if (!value) return '';
+    return value.substring(0, 10);
 }
 
 function checkApprovedOverride(recordId, requestType) {

@@ -276,6 +276,31 @@ Record({
         }
     },
 
+    getViewerAccess: function() {
+        try {
+            var user = gs.getUser();
+            var isScopedAdmin = user.hasRole('x_823178_commissio.admin');
+            var isSystemAdmin = user.hasRole('admin');
+            var isFinance = user.hasRole('x_823178_commissio.finance');
+            var isRep = user.hasRole('x_823178_commissio.rep');
+
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    can_select_users: !!(isScopedAdmin || isSystemAdmin),
+                    roles: {
+                        admin: !!(isScopedAdmin || isSystemAdmin),
+                        finance: !!isFinance,
+                        rep: !!isRep
+                    }
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getViewerAccess error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to resolve viewer access: ' + e.getMessage());
+        }
+    },
+
     getYearContext: function() {
         try {
             var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
@@ -371,11 +396,18 @@ Record({
         try {
             var users = [];
             var seen = {};
+            var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
+            var selectedYear = (!isNaN(requestedYear) && requestedYear >= 2000 && requestedYear <= 2100) ? requestedYear : null;
+            var yearStart = selectedYear ? (selectedYear + '-01-01') : '';
+            var yearEnd = selectedYear ? (selectedYear + '-12-31') : '';
 
             var addUserById = function(repId) {
                 if (!repId || seen[repId]) return;
                 var repGr = new GlideRecord('sys_user');
-                if (repGr.get(repId)) {
+                repGr.addQuery('sys_id', repId);
+                repGr.addActiveQuery();
+                repGr.query();
+                if (repGr.next()) {
                     users.push({
                         user_id: repId,
                         user_name: repGr.getDisplayValue('name') || repGr.getDisplayValue()
@@ -385,55 +417,17 @@ Record({
             };
 
             var planAgg = new GlideAggregate('x_823178_commissio_commission_plans');
+            planAgg.addQuery('is_active', true);
+            if (selectedYear) {
+                planAgg.addQuery('effective_start_date', '<=', yearEnd);
+                planAgg.addQuery('effective_end_date', '>=', yearStart).addOrCondition('effective_end_date', '');
+            }
             planAgg.groupBy('sales_rep');
             planAgg.query();
 
             while (planAgg.next()) {
                 addUserById(planAgg.getValue('sales_rep'));
             }
-
-            var calcAgg = new GlideAggregate('x_823178_commissio_commission_calculations');
-            calcAgg.groupBy('sales_rep');
-            calcAgg.query();
-
-            while (calcAgg.next()) {
-                addUserById(calcAgg.getValue('sales_rep'));
-            }
-
-            var dealAgg = new GlideAggregate('x_823178_commissio_deals');
-            dealAgg.groupBy('current_owner');
-            dealAgg.query();
-
-            while (dealAgg.next()) {
-                addUserById(dealAgg.getValue('current_owner'));
-            }
-
-            var roleNames = [
-                'x_823178_commissio.rep',
-                'x_823178_commissio.finance',
-                'x_823178_commissio.admin'
-            ];
-            var roleIds = [];
-
-            var roleGr = new GlideRecord('sys_user_role');
-            roleGr.addQuery('name', 'IN', roleNames.join(','));
-            roleGr.query();
-
-            while (roleGr.next()) {
-                roleIds.push(roleGr.getUniqueValue());
-            }
-
-            if (roleIds.length > 0) {
-                var userRoleGr = new GlideRecord('sys_user_has_role');
-                userRoleGr.addQuery('role', 'IN', roleIds.join(','));
-                userRoleGr.query();
-
-                while (userRoleGr.next()) {
-                    addUserById(userRoleGr.getValue('user'));
-                }
-            }
-
-            addUserById(gs.getUserID());
 
             users.sort(function(a, b) {
                 var an = (a.user_name || '').toLowerCase();

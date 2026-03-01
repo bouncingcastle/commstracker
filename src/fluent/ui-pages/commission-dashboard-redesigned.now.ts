@@ -309,7 +309,10 @@ UiPage({
         console.log('Commission dashboard loaded');
 
         function invokeHelper(methodName, params, callback) {
-          var helperNames = ['x_823178_commissio.CommissionProgressDataService', 'CommissionProgressDataService'];
+          var helperNames = [
+            'x_823178_commissio.CommissionProgressDataService',
+            'x_823178_commissio.CommissionProgressHelper'
+          ];
 
           function tryIndex(index) {
             if (index >= helperNames.length) {
