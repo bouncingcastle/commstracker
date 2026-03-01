@@ -1,5 +1,5 @@
 import '@servicenow/sdk/global'
-import { Table, StringColumn, DateColumn, DateTimeColumn, DecimalColumn, ReferenceColumn, BooleanColumn } from '@servicenow/sdk/core'
+import { Table, StringColumn, DateColumn, DecimalColumn, ReferenceColumn, BooleanColumn } from '@servicenow/sdk/core'
 
 export const x_823178_commissio_bonus_earnings = Table({
     name: 'x_823178_commissio_bonus_earnings',
