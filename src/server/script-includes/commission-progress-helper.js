@@ -95,11 +95,10 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
             var pendingCount = 0;
             var paidAmount = 0;
             var paidCount = 0;
-            var breakdown = { 'New Business': 0, 'Renewal': 0, 'Expansion': 0, 'Upsell': 0, 'Other': 0 };
+            var breakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
             var recentCalcs = [];
-            var calcCount = 0;
 
-            while (calcGr.next() && calcCount < 10) {
+            while (calcGr.next()) {
                 var commAmount = parseFloat(calcGr.getValue('commission_amount')) || 0;
                 var status = calcGr.getValue('status') || 'draft';
                 var dealType = calcGr.getValue('deal_type') || 'other';
@@ -118,7 +117,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                 if (breakdown.hasOwnProperty(dealType)) {
                     breakdown[dealType] += commAmount;
                 } else {
-                    breakdown['Other'] += commAmount;
+                    breakdown['other'] += commAmount;
                 }
 
                 // Recent calculations (for table)
@@ -136,7 +135,6 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                         status: status
                     });
                 }
-                calcCount++;
             }
 
             result.data.total_earned = totalEarned;
@@ -157,7 +155,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
 
             var activeDeals = [];
             var pipelineValue = 0;
-            var dealBreakdown = { 'New Business': 0, 'Renewal': 0, 'Expansion': 0, 'Upsell': 0, 'Other': 0 };
+            var dealBreakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
             var dealCount = 0;
 
             while (dealGr.next() && dealCount < 50) {
@@ -169,7 +167,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(global.AbstractAjaxPro
                 if (dealBreakdown.hasOwnProperty(dealType)) {
                     dealBreakdown[dealType] += dealAmount;
                 } else {
-                    dealBreakdown['Other'] += dealAmount;
+                    dealBreakdown['other'] += dealAmount;
                 }
 
                 // Active deals table (first 20)
