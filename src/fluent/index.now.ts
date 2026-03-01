@@ -4,7 +4,7 @@ import '@servicenow/sdk/global'
 import './application-menu.now'
 
 // Commission Dashboard UI Page
-import './ui-pages/commission-dashboard.now'
+import './ui-pages/commission-dashboard-redesigned.now'
 
 // Sales Rep Commission Progress UI Page
 import './ui-pages/commission-progress.now'
