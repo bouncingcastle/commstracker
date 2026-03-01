@@ -202,10 +202,10 @@ Record({
                 if (selectedUserIds.length === 0) {
                     dealGr.addQuery('sys_id', '');
                 } else {
-                    dealGr.addQuery('current_owner', 'IN', selectedUserIds.join(',')).addOrCondition('owner_at_close', 'IN', selectedUserIds.join(','));
+                    this.addOwnerScopeQuery(dealGr, selectedUserIds);
                 }
             } else {
-                dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+                this.addOwnerScopeQuery(dealGr, userId);
             }
             dealGr.addQuery('is_won', false);
             dealGr.addQuery('stage', '!=', 'closed_lost');
@@ -295,10 +295,9 @@ Record({
             var yearEnd = selectedYear + '-12-31';
 
             var dealGr = new GlideRecord('x_823178_commissio_deals');
-            dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+            this.addOwnerScopeQuery(dealGr, userId);
             dealGr.addQuery('is_won', true);
-            dealGr.addQuery('close_date', '>=', yearStart);
-            dealGr.addQuery('close_date', '<=', yearEnd);
+            this.addDateRangeQuery(dealGr, 'close_date', yearStart, yearEnd);
             dealGr.query();
 
             var achieved = {};
@@ -343,10 +342,9 @@ Record({
 
         var achieved = {};
         var dealGr = new GlideRecord('x_823178_commissio_deals');
-        dealGr.addQuery('current_owner', 'IN', userIds.join(',')).addOrCondition('owner_at_close', 'IN', userIds.join(','));
+        this.addOwnerScopeQuery(dealGr, userIds);
         dealGr.addQuery('is_won', true);
-        dealGr.addQuery('close_date', '>=', yearStart);
-        dealGr.addQuery('close_date', '<=', yearEnd);
+        this.addDateRangeQuery(dealGr, 'close_date', yearStart, yearEnd);
         dealGr.query();
 
         while (dealGr.next()) {
@@ -721,7 +719,7 @@ Record({
             };
 
             var dealsGr = new GlideRecord('x_823178_commissio_deals');
-            dealsGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+            this.addOwnerScopeQuery(dealsGr, userId);
             dealsGr.addQuery('is_won', false);
             dealsGr.addQuery('stage', '!=', 'closed_lost');
             dealsGr.query();
@@ -920,7 +918,7 @@ Record({
         var expectedCommission = 0;
 
         var dealsGr = new GlideRecord('x_823178_commissio_deals');
-        dealsGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+        this.addOwnerScopeQuery(dealsGr, userId);
         dealsGr.addQuery('is_won', false);
         dealsGr.addQuery('stage', '!=', 'closed_lost');
         dealsGr.query();
@@ -1055,10 +1053,9 @@ Record({
         var yearEnd = selectedYear + '-12-31';
         var total = 0;
         var dealGr = new GlideRecord('x_823178_commissio_deals');
-        dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+        this.addOwnerScopeQuery(dealGr, userId);
         dealGr.addQuery('is_won', true);
-        dealGr.addQuery('close_date', '>=', yearStart);
-        dealGr.addQuery('close_date', '<=', yearEnd);
+        this.addDateRangeQuery(dealGr, 'close_date', yearStart, yearEnd);
         dealGr.query();
         while (dealGr.next()) {
             total += parseFloat(dealGr.getValue('amount')) || 0;
@@ -1076,10 +1073,9 @@ Record({
 
         var total = 0;
         var dealGr = new GlideRecord('x_823178_commissio_deals');
-        dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+        this.addOwnerScopeQuery(dealGr, userId);
         dealGr.addQuery('is_won', true);
-        dealGr.addQuery('close_date', '>=', yearStart);
-        dealGr.addQuery('close_date', '<=', throughDate);
+        this.addDateRangeQuery(dealGr, 'close_date', yearStart, throughDate);
         dealGr.query();
         while (dealGr.next()) {
             total += parseFloat(dealGr.getValue('amount')) || 0;
@@ -1101,6 +1097,24 @@ Record({
         } catch (e) {
             return 0;
         }
+    },
+
+    addOwnerScopeQuery: function(record, userScope) {
+        if (Array.isArray(userScope)) {
+            if (userScope.length === 0) {
+                record.addQuery('sys_id', '');
+                return;
+            }
+            var joinedIds = userScope.join(',');
+            record.addQuery('current_owner', 'IN', joinedIds).addOrCondition('owner_at_close', 'IN', joinedIds);
+            return;
+        }
+        record.addQuery('current_owner', userScope).addOrCondition('owner_at_close', userScope);
+    },
+
+    addDateRangeQuery: function(record, fieldName, startDate, endDate) {
+        record.addQuery(fieldName, '>=', startDate);
+        record.addQuery(fieldName, '<=', endDate);
     },
 
     getValidYear: function(yearRaw) {
