@@ -178,6 +178,21 @@ This assessment compares the current application implementation against the requ
 - **Backlog P2.4 validated:** Versioned recognition basis policies are now modeled per plan in `src/fluent/tables/plan_recognition_policies.now.ts` with supported basis options (`cash_received`, `invoice_issued`, `booking`, `milestone`).
 - **Backlog P2.4 validated:** Policy lifecycle validation is enforced by `src/server/business-rules/plan-recognition-policy-validation.js` and `src/fluent/business-rules/plan-recognition-policy-validation.now.ts`, including date-range integrity, overlap controls, and exception-gated change governance.
 - **Backlog P2.4 validated:** Admin governance UX and control wiring are deployed through `src/fluent/application-menu.now.ts`, `src/fluent/ui-pages/commission-dashboard-redesigned.now.ts`, `src/fluent/form-related-lists.now.ts`, `src/fluent/acls/commission-security.now.ts`, and `src/fluent/tables/exception_approvals.now.ts`.
+- **Backlog P2.5 validated:** Payment runtime now resolves and applies plan recognition policy basis in `src/server/business-rules/payment-commission.js` via `resolveRecognitionPolicy(...)` and `resolveRecognitionContext(...)`, switching temporal lookup behavior by configured basis.
+- **Backlog P2.5 validated:** Calculation records now persist policy snapshots (`recognition_basis_snapshot`, `recognition_policy_version_snapshot`, `recognition_policy_record`, `recognition_date_snapshot`, `temporal_lookup_date_snapshot`) in `src/fluent/tables/commission_calculations.now.ts` and runtime write path.
+- **Backlog P2.5 validated:** Payout schedule snapshots now include recognition basis context in `payment-commission.js`, improving reproducibility and audit traceability of eligibility timing.
+- **Backlog P2.12 validated:** Seed governance control properties are defined in `src/fluent/system-properties.now.ts` (`seed_navigation_enabled`, `seed_demo_data_enabled`, `seed_idempotency_mode`) to support controlled, environment-aware seeding behavior.
+- **Backlog P2.12 validated:** Idempotent seed reconciliation is implemented in `src/server/scheduled-scripts/seed-governance-reconcile.js`, including duplicate module cleanup and duplicate demo-config cleanup logic under strict mode controls.
+- **Backlog P2.12 validated:** A controlled reconciliation job record is deployed via `src/fluent/scheduled-scripts/seed-governance-reconcile.now.ts` and wired in `src/fluent/index.now.ts` for operational enable/disable governance.
+- **Backlog P2.1 validated:** Bulk assignment run domain is now modeled in `src/fluent/tables/bulk_plan_assignment_runs.now.ts` with explicit preview/apply/rollback modes, execution status tracking, and rollback metadata fields.
+- **Backlog P2.1 validated:** Runtime processor logic in `src/server/business-rules/bulk-plan-assignment.js` executes safe preview/apply/rollback with user validation, overlap checks, clone creation, and plan deactivation rollback handling.
+- **Backlog P2.1 validated:** Admin governance and UX exposure were added via `src/fluent/business-rules/bulk-plan-assignment.now.ts`, `src/fluent/acls/commission-security.now.ts`, `src/fluent/application-menu.now.ts`, `src/fluent/ui-pages/commission-dashboard-redesigned.now.ts`, and index imports.
+- **Backlog P2.2 validated:** Manager governance model is now explicit through `src/fluent/tables/manager_team_memberships.now.ts` with effective-dated manager-to-rep mappings, auditability, and governance metadata.
+- **Backlog P2.2 validated:** Membership integrity checks are enforced in `src/server/business-rules/manager-team-governance.js` and `src/fluent/business-rules/manager-team-governance.now.ts` (active users, manager role requirement, overlap prevention, self-assignment block).
+- **Backlog P2.2 validated:** Team rollup permission scope in `src/fluent/script-includes/commission-progress-helper.now.ts` now uses governed manager-team memberships (with direct-report fallback), and manager governance visibility is exposed in `src/fluent/acls/commission-security.now.ts`, `src/fluent/application-menu.now.ts`, and `src/fluent/ui-pages/commission-dashboard-redesigned.now.ts`.
+- **Backlog P2.6 validated:** Forecast service in `src/fluent/script-includes/commission-progress-helper.now.ts` now projects payout timeline buckets by month using recognition-basis-aware date projection (`getForecastRecognitionProjection`) and payout schedule modeling (`getForecastPayoutScheduleForDate`).
+- **Backlog P2.6 validated:** Forecast summary now includes dominant recognition basis context and timeline payload, and estimator output now includes projected recognition/payout-eligible dates tied to recognition basis assumptions.
+- **Backlog P2.6 validated:** UI rendering in `src/fluent/ui-pages/commission-progress.now.ts` now shows projected payout timeline and recognition-basis details in forecast and estimator panels; assumption properties are governed in `src/fluent/system-properties.now.ts`.
 
 ## P3 (Enterprise/Compliance Expansion)
 1. Multi-currency model with rate snapshots at calculation time.
@@ -205,7 +220,7 @@ This assessment compares the current application implementation against the requ
 | Dispute management/commentary | **Weak** | Dispute fields exist on calculations (`src/fluent/tables/commission_calculations.now.ts`) | No dispute case table, no threaded comments, no assignment/SLA lifecycle. |
 | Audit/compliance controls | **Partial-Strong** | Broad `audit: true`; reconciliation/alerts in scheduled scripts + monitoring tables | No immutable event journal for full calculation lineage and evidence export. |
 | Deal type governance | **Partial-Strong (new)** | `src/fluent/tables/deal_types.now.ts`, seed data + validation rules | Need UI module/list integration and migration hardening for legacy values/reporting consistency. |
-| Payout basis flexibility | **Partial-Strong** | Cash-received calculation + payout schedule mode (`cycle|days`) in `payment-commission.js`; versioned per-plan recognition policies in `src/fluent/tables/plan_recognition_policies.now.ts` with validation BR coverage | Runtime basis switch and calc-time policy snapshot persistence are still pending (`P2.5`). |
+| Payout basis flexibility | **Strong-Partial** | Runtime basis switch + policy resolution + calc-time snapshot persistence are implemented in `src/server/business-rules/payment-commission.js` and `src/fluent/tables/commission_calculations.now.ts` | End-to-end forecast timeline parity by basis remains pending (`P2.6`). |
 | Multi-currency | **Missing** | No FX table/services/snapshots | Required for enterprise finance parity and cross-geo professional services operations. |
 
 ### UI Functionality Assessment (What Works vs What’s Missing)
@@ -228,7 +243,7 @@ This assessment compares the current application implementation against the requ
 | Quota-carrying sellers by deal type with tiered accelerators | **Good** | Deterministic tier selection and persisted snapshots are implemented. |
 | One-time quota-hit bonus payout | **Weak** | Requires structured bonus trigger execution and bonus-earned records. |
 | Cash-received commission payout forecasting | **Partial** | Cash-received calc exists; forecasting does not yet model receipt schedule lifecycle in depth. |
-| Alternate payout basis by policy | **Partial** | Versioned recognition policy model is now configurable by plan; runtime calculation still executes cash-received baseline until P2.5 runtime basis switch is delivered. |
+| Alternate payout basis by policy | **Good** | Versioned recognition policy model is configurable by plan and runtime now applies selected basis with persisted policy snapshots on each calculation. |
 | Manager-led team planning and governance | **Partial** | Team rollups exist; dedicated manager workflow/dashboard depth remains limited. |
 | Finance close/approval/dispute operations | **Partial-Weak** | Statement approvals exist; dispute case and audit-grade event lineage remain missing. |
 
@@ -237,29 +252,30 @@ This assessment compares the current application implementation against the requ
 
 | Seq | Backlog ID | Capability | Build Scope | Deploy Gate (must pass before next) | Est. |
 |---|---|---|---|---|---|
-| 1 | P2.1 | Bulk assignment | Bulk user/team/plan assignment tool with preview and rollback | Dry-run import + rollback validation in lower env | M |
-| 2 | P2.2 | Manager governance | Manager/team rollup workflow hardening + manager operational views | Manager permission regression + team rollup accuracy check | M |
+| 1 | P2.1 ✅ | Bulk assignment | Bulk user/team/plan assignment tool with preview and rollback | ✅ Completed 2026-03-01: preview/apply/rollback run engine + admin UX/ACL wiring deployed; diagnostics clean | M |
+| 2 | P2.2 ✅ | Manager governance | Manager/team rollup workflow hardening + manager operational views | ✅ Completed 2026-03-01: governed manager scope model + rollup permission hardening + admin UX wiring; diagnostics clean | M |
 | 3 | P2.3 ✅ | Deal type governance UX | Add Deal Types module/list/form; lifecycle controls and impact checks | ✅ Completed 2026-02-28: diagnostics clean; lifecycle guardrails active | S-M |
 | 4 | P2.4 ✅ | Recognition basis policy | Add configurable recognition basis (`cash_received`,`invoice_issued`,`booking`,`milestone`) and plan-level versioned policy | ✅ Completed 2026-02-28: data model/validation/UX wiring deployed; runtime parity preserved in cash mode | M |
-| 5 | P2.5 | Runtime basis switch | Calculation runtime uses selected recognition basis; persist applied policy snapshot | Reproducibility check on golden calculation matrix | M |
-| 6 | P2.6 | Forecast payout timeline | Forecast/estimator supports payout timeline by recognition basis (not just stage heuristics) | Forecast backtest against historical periods within agreed variance | M-L |
+| 5 | P2.5 ✅ | Runtime basis switch | Calculation runtime uses selected recognition basis; persist applied policy snapshot | ✅ Completed 2026-03-01: runtime basis switch + policy snapshots persisted; diagnostics clean | M |
+| 6 | P2.6 ✅ | Forecast payout timeline | Forecast/estimator supports payout timeline by recognition basis (not just stage heuristics) | ✅ Completed 2026-03-01: basis-aware payout timeline projection + estimator payout dates + UI rendering delivered; diagnostics clean | M-L |
 | 7 | P2.7 | Bonus rule schema | Replace free-text bonus triggers with structured, validated bonus conditions | Bonus definition validation + migration completion report | M |
 | 8 | P2.8 | Bonus execution engine | Deterministic bonus eligibility at calc-time + persisted bonus-earned records | Golden bonus outcomes for threshold/edge-case scenarios | L |
 | 9 | P2.9 | One-time quota bonus | One-time quota-hit bonus logic (once per rep/period) | Duplicate prevention test across recalculation/reopen paths | S-M |
 | 10 | P2.10 | Accelerator explainability | Persist and render base vs accelerator delta in progress/statement views | Finance UAT sign-off on payout explainability | M |
 | 11 | P2.11 | Finance cockpit | Queue-driven finance workspace (approvals, payout windows, exceptions) | End-to-end statement approval throughput and queue SLA test | M-L |
-| 12 | P3.1 | Dispute case domain | First-class dispute case entity, ownership, status lifecycle, SLA timers | Dispute lifecycle test (open→resolve→reopen) + SLA alerts | M |
-| 13 | P3.2 | Threaded commentary | Discussion threads on disputes/statements/calculations with ACL controls | Persona permission tests + full conversation history integrity | M |
-| 14 | P3.3 | Immutable event journal | Append-only lifecycle events for calc/approval/dispute transitions | Event immutability checks + hash/tamper verification | L |
-| 15 | P3.4 | Compliance exports | Export-ready evidence packages (period close, approvals, disputes, events) | Audit sample export accepted by finance/compliance stakeholders | M |
-| 16 | P3.5 | Multi-currency | FX rate table + rate snapshots at calc-time + reporting currency conversions | Reconciliation tests across mixed-currency scenarios | L |
-| 17 | P3.6 | Analytics maturity | Trend/cohort/variance analytics with saved views by role | Metric parity checks against source transactional data | M |
+| 12 | P2.12 ✅ | Seed governance hardening | Environment-gated/idempotent seed strategy for app menu + demo data, with controlled enablement and duplicate safeguards | ✅ Completed 2026-03-01: seed controls + reconciliation job deployed; diagnostics clean | S-M |
+| 13 | P3.1 | Dispute case domain | First-class dispute case entity, ownership, status lifecycle, SLA timers | Dispute lifecycle test (open→resolve→reopen) + SLA alerts | M |
+| 14 | P3.2 | Threaded commentary | Discussion threads on disputes/statements/calculations with ACL controls | Persona permission tests + full conversation history integrity | M |
+| 15 | P3.3 | Immutable event journal | Append-only lifecycle events for calc/approval/dispute transitions | Event immutability checks + hash/tamper verification | L |
+| 16 | P3.4 | Compliance exports | Export-ready evidence packages (period close, approvals, disputes, events) | Audit sample export accepted by finance/compliance stakeholders | M |
+| 17 | P3.5 | Multi-currency | FX rate table + rate snapshots at calc-time + reporting currency conversions | Reconciliation tests across mixed-currency scenarios | L |
+| 18 | P3.6 | Analytics maturity | Trend/cohort/variance analytics with saved views by role | Metric parity checks against source transactional data | M |
 
 ### Build/Deploy Waves
 - **Wave A (Seq 1–3):** Admin and governance foundation.
 - **Wave B (Seq 4–10):** Core payout correctness and explainability.
-- **Wave C (Seq 11–13):** Operational workflows (finance/disputes).
-- **Wave D (Seq 14–17):** Compliance and enterprise scale.
+- **Wave C (Seq 11–14):** Operational workflows and deployment governance.
+- **Wave D (Seq 15–18):** Compliance and enterprise scale.
 
 ### Release Exit Criteria (Program-Level)
 - 100% calculations reproducible from persisted policy/rule/tier/bonus snapshots.

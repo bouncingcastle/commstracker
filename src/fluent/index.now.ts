@@ -23,6 +23,7 @@ import './ui-pages/commission-progress.now'
 import './scheduled-scripts/monthly-statements.now'
 import './scheduled-scripts/daily-reconciliation.now'
 import './scheduled-scripts/backfill-payout-eligibility.now'
+import './scheduled-scripts/seed-governance-reconcile.now'
 
 // Business rules
 import './business-rules/deal-management.now'
@@ -33,6 +34,8 @@ import './business-rules/plan-tier-validation.now'
 import './business-rules/deal-type-validation.now'
 import './business-rules/deal-type-governance.now'
 import './business-rules/plan-recognition-policy-validation.now'
+import './business-rules/bulk-plan-assignment.now'
+import './business-rules/manager-team-governance.now'
 import './business-rules/statement-approval-workflow.now'
 
 // Client-callable Script Includes
@@ -51,6 +54,8 @@ import './tables/plan_recognition_policies.now'
 import './tables/commission_calculations.now'
 import './tables/commission_statements.now'
 import './tables/statement_approvals.now'
+import './tables/bulk_plan_assignment_runs.now'
+import './tables/manager_team_memberships.now'
 import './tables/exception_approvals.now'
 import './tables/forecast_scenarios.now'
 

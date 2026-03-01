@@ -259,12 +259,24 @@ UiPage({
             <span>Statement Approvals</span>
             <span>→</span>
           </a>
+          <a class="nav-item" href="/x_823178_commissio_bulk_plan_assignment_runs_list.do">
+            <span>Bulk Plan Assignments</span>
+            <span>→</span>
+          </a>
+          <a class="nav-item" href="/x_823178_commissio_manager_team_memberships_list.do">
+            <span>Manager Team Governance</span>
+            <span>→</span>
+          </a>
           <a class="nav-item" href="/x_823178_commissio_reconciliation_log_list.do">
             <span>Reconciliation Log</span>
             <span>→</span>
           </a>
           <a class="nav-item" href="/x_823178_commissio_system_alerts_list.do">
             <span>System Alerts</span>
+            <span>→</span>
+          </a>
+          <a class="nav-item" href="/sys_properties_list.do?sysparm_query=nameSTARTSWITHx_823178_commissio.">
+            <span>System Preferences</span>
             <span>→</span>
           </a>
           <p style="font-size:12px;color:var(--muted);margin-top:8px;">Oversee exceptions, reconciliation outcomes, and operational alerts.</p>
