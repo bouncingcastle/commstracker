@@ -175,6 +175,9 @@ This assessment compares the current application implementation against the requ
 - **Item 3 validated:** Deal Types governance UX is now exposed in application navigation (`src/fluent/application-menu.now.ts`) and operations dashboard quick links (`src/fluent/ui-pages/commission-dashboard-redesigned.now.ts`).
 - **Item 3 validated:** Lifecycle impact controls now enforce safe deactivation with reference checks and override workflow (`src/server/business-rules/deal-type-governance.js`, `src/fluent/business-rules/deal-type-governance.now.ts`).
 - **Item 3 validated:** Admin-only ACL controls were added for deal type governance records (`src/fluent/acls/commission-security.now.ts`) and a dedicated override request type was added (`src/fluent/tables/exception_approvals.now.ts`).
+- **Backlog P2.4 validated:** Versioned recognition basis policies are now modeled per plan in `src/fluent/tables/plan_recognition_policies.now.ts` with supported basis options (`cash_received`, `invoice_issued`, `booking`, `milestone`).
+- **Backlog P2.4 validated:** Policy lifecycle validation is enforced by `src/server/business-rules/plan-recognition-policy-validation.js` and `src/fluent/business-rules/plan-recognition-policy-validation.now.ts`, including date-range integrity, overlap controls, and exception-gated change governance.
+- **Backlog P2.4 validated:** Admin governance UX and control wiring are deployed through `src/fluent/application-menu.now.ts`, `src/fluent/ui-pages/commission-dashboard-redesigned.now.ts`, `src/fluent/form-related-lists.now.ts`, `src/fluent/acls/commission-security.now.ts`, and `src/fluent/tables/exception_approvals.now.ts`.
 
 ## P3 (Enterprise/Compliance Expansion)
 1. Multi-currency model with rate snapshots at calculation time.
@@ -202,16 +205,16 @@ This assessment compares the current application implementation against the requ
 | Dispute management/commentary | **Weak** | Dispute fields exist on calculations (`src/fluent/tables/commission_calculations.now.ts`) | No dispute case table, no threaded comments, no assignment/SLA lifecycle. |
 | Audit/compliance controls | **Partial-Strong** | Broad `audit: true`; reconciliation/alerts in scheduled scripts + monitoring tables | No immutable event journal for full calculation lineage and evidence export. |
 | Deal type governance | **Partial-Strong (new)** | `src/fluent/tables/deal_types.now.ts`, seed data + validation rules | Need UI module/list integration and migration hardening for legacy values/reporting consistency. |
-| Payout basis flexibility | **Partial** | Cash-received calculation + payout schedule mode (`cycle|days`) in `payment-commission.js` and `system-properties.now.ts` | Missing configurable recognition basis abstraction (`cash_received`, `invoice_issued`, `booking`, `milestone`) and per-plan policy. |
+| Payout basis flexibility | **Partial-Strong** | Cash-received calculation + payout schedule mode (`cycle|days`) in `payment-commission.js`; versioned per-plan recognition policies in `src/fluent/tables/plan_recognition_policies.now.ts` with validation BR coverage | Runtime basis switch and calc-time policy snapshot persistence are still pending (`P2.5`). |
 | Multi-currency | **Missing** | No FX table/services/snapshots | Required for enterprise finance parity and cross-geo professional services operations. |
 
 ### UI Functionality Assessment (What Works vs What’s Missing)
 - **Working now:** rep progress dashboard, estimator action, forecast scenario controls, prioritized opportunities, operations dashboard KPI drill-downs, statement approval records, and plan setup related lists.
-- **Missing for production maturity:** dedicated finance cockpit (approval queues + payout windows), manager cockpit with coaching/forecast views, dispute workspace, and deal type admin module in navigation.
+- **Missing for production maturity:** dedicated finance cockpit (approval queues + payout windows), manager cockpit with coaching/forecast views, dispute workspace, and runtime basis-switch execution for non-cash policy modes.
 - **Explainability gap:** UI does not yet present base vs accelerator delta earnings as a first-class payout explanation component.
 
 ### Additional Requirements Missing from Baseline List
-1. **Configurable commission recognition basis** per plan/org policy (cash-received default, with invoice/bookings/milestone options).
+1. **Runtime execution of configurable recognition basis** with calc-time reproducibility snapshots (policy model now exists; runtime switch remains pending).
 2. **Executable bonus qualification engine** for ad-hoc and milestone bonuses (e.g., one-time quota-hit bonus), with deterministic audit records.
 3. **Payout timeline forecasting** from expected cash receipts (not only weighted deal-stage estimates).
 4. **Dispute case management domain** (case table, threaded commentary, SLA/aging, ownership, resolution actions).
@@ -225,7 +228,7 @@ This assessment compares the current application implementation against the requ
 | Quota-carrying sellers by deal type with tiered accelerators | **Good** | Deterministic tier selection and persisted snapshots are implemented. |
 | One-time quota-hit bonus payout | **Weak** | Requires structured bonus trigger execution and bonus-earned records. |
 | Cash-received commission payout forecasting | **Partial** | Cash-received calc exists; forecasting does not yet model receipt schedule lifecycle in depth. |
-| Alternate payout basis by policy | **Weak** | Scheduling abstraction exists, but recognition basis is not configurable as a first-class rule. |
+| Alternate payout basis by policy | **Partial** | Versioned recognition policy model is now configurable by plan; runtime calculation still executes cash-received baseline until P2.5 runtime basis switch is delivered. |
 | Manager-led team planning and governance | **Partial** | Team rollups exist; dedicated manager workflow/dashboard depth remains limited. |
 | Finance close/approval/dispute operations | **Partial-Weak** | Statement approvals exist; dispute case and audit-grade event lineage remain missing. |
 
@@ -237,7 +240,7 @@ This assessment compares the current application implementation against the requ
 | 1 | P2.1 | Bulk assignment | Bulk user/team/plan assignment tool with preview and rollback | Dry-run import + rollback validation in lower env | M |
 | 2 | P2.2 | Manager governance | Manager/team rollup workflow hardening + manager operational views | Manager permission regression + team rollup accuracy check | M |
 | 3 | P2.3 ✅ | Deal type governance UX | Add Deal Types module/list/form; lifecycle controls and impact checks | ✅ Completed 2026-02-28: diagnostics clean; lifecycle guardrails active | S-M |
-| 4 | P2.4 | Recognition basis policy | Add configurable recognition basis (`cash_received`,`invoice_issued`,`booking`,`milestone`) and plan-level versioned policy | Side-by-side parity run in cash mode vs current baseline | M |
+| 4 | P2.4 ✅ | Recognition basis policy | Add configurable recognition basis (`cash_received`,`invoice_issued`,`booking`,`milestone`) and plan-level versioned policy | ✅ Completed 2026-02-28: data model/validation/UX wiring deployed; runtime parity preserved in cash mode | M |
 | 5 | P2.5 | Runtime basis switch | Calculation runtime uses selected recognition basis; persist applied policy snapshot | Reproducibility check on golden calculation matrix | M |
 | 6 | P2.6 | Forecast payout timeline | Forecast/estimator supports payout timeline by recognition basis (not just stage heuristics) | Forecast backtest against historical periods within agreed variance | M-L |
 | 7 | P2.7 | Bonus rule schema | Replace free-text bonus triggers with structured, validated bonus conditions | Bonus definition validation + migration completion report | M |

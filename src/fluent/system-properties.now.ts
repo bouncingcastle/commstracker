@@ -220,6 +220,18 @@ Record({
 })
 
 Record({
+    $id: 'default_recognition_basis_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.default_recognition_basis',
+        value: 'cash_received',
+        description: 'Default commission recognition basis for new plan recognition policies (cash_received, invoice_issued, booking, milestone)',
+        type: 'string',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
     $id: Now.ID['payout_wait_days_prop'],
     table: 'sys_properties',
     data: {
