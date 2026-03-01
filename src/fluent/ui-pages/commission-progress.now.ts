@@ -573,7 +573,10 @@ UiPage({
         }
 
         function invokeHelper(methodName, params, callback) {
-          var helperNames = ['x_823178_commissio.CommissionProgressDataService', 'CommissionProgressDataService'];
+          var helperNames = [
+            'x_823178_commissio.CommissionProgressDataService',
+            'x_823178_commissio.CommissionProgressHelper'
+          ];
 
           function tryIndex(index) {
             if (index >= helperNames.length) {
@@ -653,6 +656,42 @@ UiPage({
         var userEl = document.getElementById('userName');
         if (userEl) {
           userEl.textContent = 'Representative: ' + (userCtx.name || 'Sales Rep');
+        }
+
+        function resolveViewerAccess(callback) {
+          invokeHelper('getViewerAccess', {}, function(response) {
+            if (!response) {
+              if (callback) callback();
+              return;
+            }
+
+            try {
+              var payload = typeof response === 'string' ? JSON.parse(response) : response;
+              if (payload && payload.status === 'success' && payload.data) {
+                canSelectUsers = !!payload.data.can_select_users;
+                if (chips && payload.data.roles && payload.data.roles.admin) {
+                  var hasAdminChip = false;
+                  var chipNodes = chips.querySelectorAll('.chip');
+                  for (var i = 0; i < chipNodes.length; i++) {
+                    if ((chipNodes[i].textContent || '').toLowerCase() === 'admin') {
+                      hasAdminChip = true;
+                      break;
+                    }
+                  }
+                  if (!hasAdminChip) {
+                    var adminChip = document.createElement('span');
+                    adminChip.className = 'chip';
+                    adminChip.textContent = 'Admin';
+                    chips.insertBefore(adminChip, chips.firstChild);
+                  }
+                }
+              }
+            } catch (e) {
+              console.log('Viewer access parse error:', e);
+            }
+
+            if (callback) callback();
+          });
         }
 
         function updatePeriodInfo(year, isYtd) {
@@ -751,16 +790,20 @@ UiPage({
 
           select.disabled = false;
 
-          invokeHelper('listUsersWithData', {}, function(response) {
+          invokeHelper('listUsersWithData', {
+            sysparm_year: String(viewingYear)
+          }, function(response) {
             if (!response) {
-              ensureCurrentUserOption();
+              select.innerHTML = '<option value="">No representatives with plans</option>';
+              select.disabled = true;
               return;
             }
 
             try {
               var payload = typeof response === 'string' ? JSON.parse(response) : response;
               if (!payload || payload.status !== 'success' || !payload.data || !payload.data.length) {
-                ensureCurrentUserOption();
+                select.innerHTML = '<option value="">No representatives with plans</option>';
+                select.disabled = true;
                 return;
               }
 
@@ -773,11 +816,10 @@ UiPage({
                 if (currentUserId && currentUserId === item.user_id) option.selected = true;
                 select.appendChild(option);
               });
-
-              ensureCurrentUserOption();
             } catch (e) {
               console.log('User options parse error:', e);
-              ensureCurrentUserOption();
+              select.innerHTML = '<option value="">No representatives with plans</option>';
+              select.disabled = true;
             }
           });
         }
@@ -804,8 +846,6 @@ UiPage({
           viewingUserId = select.value;
           loadRepProgress(viewingUserId, selectedName, viewingYear);
         };
-
-        loadUserOptions();
 
         function loadInitialData() {
           if (!viewingUserId) {
@@ -836,7 +876,13 @@ UiPage({
           }
         }
 
-        initializeYearContext(loadInitialData);
+        resolveViewerAccess(function() {
+          loadUserOptions();
+          initializeYearContext(function() {
+            loadUserOptions();
+            loadInitialData();
+          });
+        });
 
         function loadRepProgress(userId, displayName, reportYear) {
           if (!userId) return;

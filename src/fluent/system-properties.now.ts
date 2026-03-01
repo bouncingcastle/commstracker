@@ -170,3 +170,87 @@ Record({
         suffix: 'Commission Management'
     }
 })
+
+Record({
+    $id: Now.ID['payout_schedule_mode_prop'],
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.payout_schedule_mode',
+        value: 'cycle',
+        description: 'Commission payout scheduling mode: cycle (pay-cycle based) or days (fixed delay)',
+        type: 'string',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: Now.ID['pay_cycle_days_prop'],
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.pay_cycle_days',
+        value: '14',
+        description: 'Length of payroll cycle in days for cycle payout mode (default: 14)',
+        type: 'integer',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: Now.ID['pay_cycles_after_payment_prop'],
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.pay_cycles_after_payment',
+        value: '2',
+        description: 'Number of pay cycles after payment before commission becomes payout-eligible (default: 2)',
+        type: 'integer',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: Now.ID['pay_cycle_anchor_date_prop'],
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.pay_cycle_anchor_date',
+        value: '2026-01-01',
+        description: 'Anchor date for pay-cycle boundaries in cycle payout mode (YYYY-MM-DD)',
+        type: 'string',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: Now.ID['payout_wait_days_prop'],
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.payout_wait_days',
+        value: '28',
+        description: 'Fixed wait days after payment in days payout mode (default: 28)',
+        type: 'integer',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: Now.ID['payout_backfill_limit_prop'],
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.payout_backfill_limit',
+        value: '5000',
+        description: 'Maximum commission calculations updated per backfill run (default: 5000)',
+        type: 'integer',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: Now.ID['payout_backfill_recompute_existing_prop'],
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.payout_backfill_recompute_existing',
+        value: 'false',
+        description: 'When true, backfill recalculates payout eligibility for rows that already have payout_eligible_date',
+        type: 'boolean',
+        suffix: 'Commission Management'
+    }
+})

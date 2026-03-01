@@ -40,6 +40,19 @@ export const x_823178_commissio_plan_bonuses = Table({
             label: 'Discretionary',
             default: false
         }),
+        payout_frequency: StringColumn({
+            label: 'Payout Frequency',
+            choices: {
+                info_only: { label: 'Info Only (No Auto-Payout)', sequence: 0 },
+                quarterly: { label: 'Quarterly', sequence: 1 },
+                annual: { label: 'Annual', sequence: 2 }
+            },
+            default: 'info_only'
+        }),
+        auto_payout: BooleanColumn({
+            label: 'Auto Payout',
+            default: false
+        }),
         is_active: BooleanColumn({
             label: 'Active',
             default: true
