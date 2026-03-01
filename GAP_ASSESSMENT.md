@@ -112,9 +112,31 @@ This assessment compares the current application implementation against the requ
 - **Claim 3 validated:** `src/fluent/index.now.ts` imports roles, ACLs, system properties, monitoring tables, scheduled scripts (`monthly-statements`, `daily-reconciliation`, `backfill-payout-eligibility`), business rules, core tables, and API records.
 
 ## P1 (Core Product Gap Closure)
-1. Build plan simulation and forecasting engine with scenario storage.
-2. Add commission estimator and deal prioritization insights for reps.
-3. Implement formal statement approval workflow entity + transitions.
+**Status Update (2026-02-28): MVP Implemented**
+1. ✅ Build plan simulation and forecasting engine with scenario storage.
+2. ✅ Add commission estimator and deal prioritization insights for reps.
+3. ✅ Implement formal statement approval workflow entity + transitions.
+
+### P1 Validation Notes (2026-02-28)
+- `src/fluent/tables/forecast_scenarios.now.ts` adds persisted scenario storage with multipliers and projected outputs.
+- `src/server/script-includes/commission-p1-helper.js` and `src/fluent/script-includes/commission-p1-helper.now.ts` provide forecast, scenario save/list, estimator, and statement approval actions.
+- `src/fluent/ui-pages/commission-progress.now.ts` now includes forecast simulation controls, prioritized opportunity ranking, and commission estimator UX.
+- `src/fluent/tables/statement_approvals.now.ts` and `src/server/business-rules/statement-approval-workflow.js` add approval workflow entity and enforced transitions with statement status synchronization.
+
+### UI Smoke Checklist (2026-02-28)
+#### Operations Dashboard (`src/fluent/ui-pages/commission-dashboard-redesigned.now.ts`)
+- ✅ KPI year selector renders and drives metric refresh through `getDashboardMetrics`.
+- ✅ KPI cards are clickable, keyboard accessible, and drill down to filtered lists.
+- ✅ Year label behavior is stable (no repeated year suffix accumulation).
+- ✅ KPI subtext and year note retain dark-theme styling (no white background regression).
+- ✅ Navigation includes new P1 records: Forecast Scenarios and Statement Approvals.
+
+#### Commission Performance Dashboard (`src/fluent/ui-pages/commission-progress.now.ts`)
+- ✅ “View As” selector visibility and year filter are functional via `getViewerAccess` and `listUsersWithData`.
+- ✅ Forecast Simulation section renders with scenario picker and multiplier controls.
+- ✅ Commission Estimator action runs and returns projected payout output.
+- ✅ Prioritized Opportunities table renders expected commission ranking rows.
+- ✅ Fallback helper chain is active; `CommissionProgressDataService` contains P1 methods to avoid `AbstractAjaxProcessor` regression path.
 
 ## P2 (Admin/Workflow Maturity)
 1. Add dispute case workflow with threaded commentary and SLAs.
