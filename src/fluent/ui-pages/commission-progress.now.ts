@@ -173,6 +173,10 @@ UiPage({
       flex:1;padding:8px 12px;background:rgba(255,255,255,.08);
       border:1px solid var(--border);border-radius:6px;color:var(--text);
     }
+    .selector-field select{
+      flex:1;padding:8px 12px;background:rgba(255,255,255,.08);
+      border:1px solid var(--border);border-radius:6px;color:var(--text);
+    }
     .selector-field button{
       padding:8px 16px;background:var(--brand);color:var(--bg);
       border:0;border-radius:6px;font-weight:600;cursor:pointer;
@@ -317,18 +321,25 @@ UiPage({
     <div class="header">
       <!-- User Selector -->
       <div class="user-selector" id="userSelector">
-        <div class="selector-label">👤 View User Progress</div>
+        <div class="selector-label">User Scope</div>
         <div class="selector-field">
-          <input type="text" id="userSearchInput" placeholder="Enter user name or ID..." />
-          <button onclick="searchAndSelectUser()">Load User</button>
-          <button onclick="resetToCurrentUser()" style="background:var(--warn);color:var(--bg);">Reset to Me</button>
+          <select id="userSelect">
+            <option value="">Select representative...</option>
+          </select>
+          <select id="yearSelect"></select>
+          <button onclick="loadSelectedUser()">Apply</button>
+        </div>
+        <div class="selector-field" style="margin-top:8px;">
+          <input type="text" id="userSearchInput" placeholder="Search by representative name or sys_id..." />
+          <button onclick="searchAndSelectUser()">Search</button>
+          <button onclick="resetToCurrentUser()" style="background:var(--warn);color:var(--bg);">View My Data</button>
         </div>
       </div>
 
-      <h1 class="title">My Commission Progress</h1>
-      <p class="subtitle">Track your earnings, pending amounts, and deal pipeline</p>
+      <h1 class="title">Commission Performance</h1>
+      <p class="subtitle">Track earned commissions, pending exposure, targets, and pipeline performance.</p>
       <div class="userInfo">
-        <span id="userName">Loading...</span>
+        <span id="userName">Loading user context...</span>
         <span id="periodInfo" style="margin-left:16px;"></span>
       </div>
       <div class="chips" id="roleChips"></div>
@@ -336,33 +347,33 @@ UiPage({
 
     <!-- Plan Progress Card -->
     <div class="plan-card" id="planCard">
-      <div class="loading">Loading plan data...</div>
+      <div class="loading">Loading plan details...</div>
     </div>
 
     <!-- KPI Cards -->
     <div class="grid">
       <div class="card metric">
-        <div class="metric-label">💰 Total Earned</div>
+        <div class="metric-label">Total Commissions</div>
         <div class="metric-value" id="totalEarned">$0.00</div>
-        <div class="metric-sub" id="earnedPeriod">Current Year</div>
+        <div class="metric-sub" id="earnedPeriod">Selected Year</div>
       </div>
 
       <div class="card metric">
-        <div class="metric-label">⏳ Pending Commissions</div>
+        <div class="metric-label">Pending Commissions</div>
         <div class="metric-value" id="pendingAmount">$0.00</div>
-        <div class="metric-sub" id="pendingCount">0 draft calculations</div>
+        <div class="metric-sub" id="pendingCount">0 pending calculations</div>
       </div>
 
       <div class="card metric">
-        <div class="metric-label">✅ Locked & Paid</div>
+        <div class="metric-label">Finalized Commissions</div>
         <div class="metric-value" id="paidAmount">$0.00</div>
-        <div class="metric-sub" id="paidCount">0 locked/paid</div>
+        <div class="metric-sub" id="paidCount">0 finalized entries</div>
       </div>
 
       <div class="card metric">
-        <div class="metric-label">🚀 Active Deals</div>
+        <div class="metric-label">Open Deals</div>
         <div class="metric-value" id="activeDeals">0</div>
-        <div class="metric-sub" id="dealPipeline">Total pipeline value</div>
+        <div class="metric-sub" id="dealPipeline">Pipeline value</div>
       </div>
     </div>
 
@@ -374,7 +385,7 @@ UiPage({
           Commission Summary
         </div>
         <div class="breakdown" id="commissionBreakdown">
-          <div class="loading">Loading data...</div>
+          <div class="loading">Loading summary...</div>
         </div>
       </div>
 
@@ -384,7 +395,7 @@ UiPage({
           Deal Pipeline by Type
         </div>
         <div class="breakdown" id="dealBreakdown">
-          <div class="loading">Loading data...</div>
+          <div class="loading">Loading pipeline...</div>
         </div>
     </div>
     </div>
@@ -397,7 +408,7 @@ UiPage({
           Quota Targets by Deal Type
         </div>
         <div class="breakdown" id="quotaTargets">
-          <div class="loading">Loading data...</div>
+          <div class="loading">Loading targets...</div>
         </div>
       </div>
 
@@ -407,7 +418,7 @@ UiPage({
           On-Target Earnings (OTE)
         </div>
         <div id="oteDisplay" style="padding:16px;">
-          <div class="loading">Loading data...</div>
+          <div class="loading">Loading earnings model...</div>
         </div>
       </div>
     </div>
@@ -420,7 +431,7 @@ UiPage({
           Commission Tier Structure
         </div>
         <div class="breakdown" id="tierDisplay">
-          <div class="loading">Loading data...</div>
+          <div class="loading">Loading tiers...</div>
         </div>
       </div>
 
@@ -430,7 +441,7 @@ UiPage({
           Active Bonuses
         </div>
         <div class="breakdown" id="bonusDisplay">
-          <div class="loading">Loading data...</div>
+          <div class="loading">Loading bonuses...</div>
         </div>
       </div>
     </div>
@@ -443,7 +454,7 @@ UiPage({
         Quota Progress by Deal Type
       </div>
       <div class="breakdown" id="quotaProgress">
-        <div class="loading">No quota data available</div>
+        <div class="loading">No quota progress available for the selected year</div>
       </div>
     </div>
 
@@ -451,7 +462,7 @@ UiPage({
     <div class="big-card">
       <div class="card-title">
         <span class="icon">📈</span>
-        Recent Commission Calculations (Last 10)
+        Recent Commission Calculations
       </div>
       <table class="list-table" id="calculationsTable">
         <thead>
@@ -466,7 +477,7 @@ UiPage({
           </tr>
         </thead>
         <tbody id="calcTableBody">
-          <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Loading...</td></tr>
+          <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td></tr>
         </tbody>
       </table>
     </div>
@@ -475,7 +486,7 @@ UiPage({
     <div class="big-card" style="margin-top:16px;">
       <div class="card-title">
         <span class="icon">🎯</span>
-        Your Active Deals (Not Won/Lost)
+        Open Deals (Not Won/Lost)
       </div>
       <table class="list-table" id="dealsTable">
         <thead>
@@ -490,15 +501,15 @@ UiPage({
           </tr>
         </thead>
         <tbody id="dealsTableBody">
-          <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Loading...</td></tr>
+          <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="foot">
-    Data updates in real-time from commission calculations and deal records.
-    Last updated: <span id="lastUpdate">now</span>
+    Data reflects commission calculations and deal records.
+    Last refreshed: <span id="lastUpdate">now</span>
   </div>
 </body>
 </html>
@@ -510,6 +521,7 @@ UiPage({
 
         var currentUserId = null;
         var viewingUserId = null;
+        var viewingYear = new Date().getFullYear();
 
         function hasRole(roleName) {
           try {
@@ -612,22 +624,120 @@ UiPage({
         viewingUserId = currentUserId;
         var userEl = document.getElementById('userName');
         if (userEl) {
-          userEl.textContent = 'Welcome, ' + (userCtx.name || 'Sales Rep') + '!';
+          userEl.textContent = 'Representative: ' + (userCtx.name || 'Sales Rep');
         }
 
-        // Set current year period
-        var now = new Date();
-        var periodEl = document.getElementById('periodInfo');
-        if (periodEl) {
-          periodEl.textContent = 'Year-to-Date: Jan 1 - ' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear();
+        function updatePeriodInfo(year, isYtd) {
+          var periodEl = document.getElementById('periodInfo');
+          if (!periodEl) return;
+
+          var targetYear = parseInt(year, 10) || new Date().getFullYear();
+          if (isYtd) {
+            var now = new Date();
+            periodEl.textContent = 'Year-to-date (' + targetYear + '): Jan 1 - ' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear();
+          } else {
+            periodEl.textContent = 'Year view: ' + targetYear;
+          }
         }
+
+        function initYearOptions(years, defaultYear) {
+          var yearSelect = document.getElementById('yearSelect');
+          if (!yearSelect) return;
+
+          var currentYear = new Date().getFullYear();
+          var options = (years && years.length) ? years : [currentYear + 2, currentYear + 1, currentYear, currentYear - 1, currentYear - 2];
+          viewingYear = parseInt(defaultYear, 10) || viewingYear;
+          yearSelect.innerHTML = '';
+
+          for (var i = 0; i < options.length; i++) {
+            var year = parseInt(options[i], 10);
+            if (isNaN(year)) continue;
+            var option = document.createElement('option');
+            option.value = String(year);
+            option.textContent = String(year);
+            if (year === viewingYear) option.selected = true;
+            yearSelect.appendChild(option);
+          }
+        }
+
+        function initializeYearContext(callback) {
+          var currentYear = new Date().getFullYear();
+          invokeHelper('getYearContext', {
+            sysparm_year: String(viewingYear),
+            sysparm_year_window: '2'
+          }, function(response) {
+            if (!response) {
+              initYearOptions(null, currentYear);
+              updatePeriodInfo(viewingYear, viewingYear === currentYear);
+              if (callback) callback();
+              return;
+            }
+
+            try {
+              var payload = typeof response === 'string' ? JSON.parse(response) : response;
+              if (payload && payload.status === 'success' && payload.data) {
+                initYearOptions(payload.data.years, payload.data.default_year);
+              } else {
+                initYearOptions(null, currentYear);
+              }
+            } catch (e) {
+              initYearOptions(null, currentYear);
+            }
+
+            updatePeriodInfo(viewingYear, viewingYear === currentYear);
+            if (callback) callback();
+          });
+        }
+
+        function loadUserOptions() {
+          var select = document.getElementById('userSelect');
+          if (!select) return;
+
+          invokeHelper('listUsersWithData', {}, function(response) {
+            if (!response) return;
+
+            try {
+              var payload = typeof response === 'string' ? JSON.parse(response) : response;
+              if (!payload || payload.status !== 'success' || !payload.data || !payload.data.length) return;
+
+              select.innerHTML = '<option value="">Select representative...</option>';
+              payload.data.forEach(function(item) {
+                if (!item || !item.user_id) return;
+                var option = document.createElement('option');
+                option.value = item.user_id;
+                option.textContent = item.user_name || item.user_id;
+                if (currentUserId && currentUserId === item.user_id) option.selected = true;
+                select.appendChild(option);
+              });
+            } catch (e) {
+              console.log('User options parse error:', e);
+            }
+          });
+        }
+
+        window.loadSelectedUser = function() {
+          var select = document.getElementById('userSelect');
+          var yearSelect = document.getElementById('yearSelect');
+          if (!select || !select.value) {
+            alert('Select a representative before applying filters.');
+            return;
+          }
+
+          viewingYear = parseInt(yearSelect && yearSelect.value ? yearSelect.value : viewingYear, 10) || viewingYear;
+
+          var selectedName = select.options[select.selectedIndex] ? select.options[select.selectedIndex].text : 'Selected User';
+          viewingUserId = select.value;
+          loadRepProgress(viewingUserId, selectedName, viewingYear);
+        };
+
+        loadUserOptions();
 
         // User search (admin/finance)
         window.searchAndSelectUser = function() {
           var input = document.getElementById('userSearchInput');
           var searchTerm = input ? input.value.trim() : '';
           if (!searchTerm) {
-            alert('Please enter a user name or ID');
+            alert('Enter at least part of a representative name or sys_id.');
             return;
           }
 
@@ -638,12 +748,32 @@ UiPage({
               var data = typeof response === 'string' ? JSON.parse(response) : response;
               if (data && data.status === 'success' && data.data && data.data.user_id) {
                 viewingUserId = data.data.user_id;
-                loadRepProgress(viewingUserId, data.data.user_name);
+                var select = document.getElementById('userSelect');
+                if (select) {
+                  var exists = false;
+                  for (var i = 0; i < select.options.length; i++) {
+                    if (select.options[i].value === data.data.user_id) {
+                      select.selectedIndex = i;
+                      exists = true;
+                      break;
+                    }
+                  }
+                  if (!exists) {
+                    var opt = document.createElement('option');
+                    opt.value = data.data.user_id;
+                    opt.textContent = data.data.user_name || data.data.user_id;
+                    opt.selected = true;
+                    select.appendChild(opt);
+                  }
+                }
+                var yearSelect = document.getElementById('yearSelect');
+                viewingYear = parseInt(yearSelect && yearSelect.value ? yearSelect.value : viewingYear, 10) || viewingYear;
+                loadRepProgress(viewingUserId, data.data.user_name, viewingYear);
               } else {
-                alert('User not found: ' + (data.message || 'Unknown error'));
+                alert('Representative not found: ' + (data.message || 'Unknown error'));
               }
             } else {
-              alert('Error searching for user');
+              alert('Unable to complete representative search');
             }
           });
         };
@@ -652,43 +782,50 @@ UiPage({
         window.resetToCurrentUser = function() {
           viewingUserId = currentUserId;
           if (currentUserId) {
-            loadRepProgress(currentUserId, userCtx.name || 'You');
+            loadRepProgress(currentUserId, userCtx.name || 'You', viewingYear);
           }
         };
 
-        // Load initial data
-        if (!viewingUserId) {
-          invokeHelper('getCurrentUser', {}, function(response) {
-            if (!response) {
-              showGlobalLoadError('Unable to resolve current user context. Please refresh or contact admin.');
-              return;
-            }
+        function loadInitialData() {
+          if (!viewingUserId) {
+            invokeHelper('getCurrentUser', {}, function(response) {
+              if (!response) {
+                showGlobalLoadError('Unable to resolve current user context. Please refresh or contact admin.');
+                return;
+              }
 
-            try {
-              var payload = typeof response === 'string' ? JSON.parse(response) : response;
-              if (payload && payload.status === 'success' && payload.data && payload.data.user_id) {
-                currentUserId = payload.data.user_id;
-                viewingUserId = payload.data.user_id;
-                if (userEl) {
-                  userEl.textContent = 'Welcome, ' + (payload.data.user_name || userCtx.name || 'Sales Rep') + '!';
+              try {
+                var payload = typeof response === 'string' ? JSON.parse(response) : response;
+                if (payload && payload.status === 'success' && payload.data && payload.data.user_id) {
+                  currentUserId = payload.data.user_id;
+                  viewingUserId = payload.data.user_id;
+                  if (userEl) {
+                    userEl.textContent = 'Representative: ' + (payload.data.user_name || userCtx.name || 'Sales Rep');
+                  }
+                  loadRepProgress(viewingUserId, null, viewingYear);
+                } else {
+                  showGlobalLoadError('Unable to resolve current user context.');
                 }
-                loadRepProgress(viewingUserId, null);
-              } else {
+              } catch (e) {
                 showGlobalLoadError('Unable to resolve current user context.');
               }
-            } catch (e) {
-              showGlobalLoadError('Unable to resolve current user context.');
-            }
-          });
-        } else {
-          loadRepProgress(viewingUserId, null);
+            });
+          } else {
+            loadRepProgress(viewingUserId, null, viewingYear);
+          }
         }
 
-        function loadRepProgress(userId, displayName) {
+        initializeYearContext(loadInitialData);
+
+        function loadRepProgress(userId, displayName, reportYear) {
           if (!userId) return;
 
+          var targetYear = parseInt(reportYear, 10) || new Date().getFullYear();
+          viewingYear = targetYear;
+
           invokeHelper('getRepProgress', {
-            sysparm_user_id: userId
+            sysparm_user_id: userId,
+            sysparm_year: String(targetYear)
           }, function(response) {
             if (response) {
               try {
@@ -698,9 +835,12 @@ UiPage({
                   if (displayName && userId !== currentUserId) {
                     var userEl = document.getElementById('userName');
                     if (userEl) {
-                      userEl.textContent = 'Viewing: ' + displayName;
+                      userEl.textContent = 'Viewing representative: ' + displayName;
                     }
                   }
+
+                  var responseYear = parseInt(data.data.report_year, 10) || targetYear;
+                  updatePeriodInfo(responseYear, responseYear === new Date().getFullYear());
 
                   updatePlanCard(data.data);
                   updateMetrics(data.data);
@@ -722,7 +862,7 @@ UiPage({
         }
 
         function showGlobalLoadError(message) {
-          var msg = message || 'Unable to load commission progress data.';
+          var msg = message || 'Commission performance data is currently unavailable.';
 
           var planCard = document.getElementById('planCard');
           if (planCard) {
@@ -736,31 +876,31 @@ UiPage({
           }
 
           var pendingCount = document.getElementById('pendingCount');
-          if (pendingCount) pendingCount.textContent = 'Unable to load';
+          if (pendingCount) pendingCount.textContent = 'Data unavailable';
 
           var paidCount = document.getElementById('paidCount');
-          if (paidCount) paidCount.textContent = 'Unable to load';
+          if (paidCount) paidCount.textContent = 'Data unavailable';
 
           var dealPipeline = document.getElementById('dealPipeline');
-          if (dealPipeline) dealPipeline.textContent = 'Unable to load';
+          if (dealPipeline) dealPipeline.textContent = 'Data unavailable';
 
           var breakdown = document.getElementById('commissionBreakdown');
-          if (breakdown) breakdown.innerHTML = '<div class="break-item">Unable to load commission breakdown</div>';
+          if (breakdown) breakdown.innerHTML = '<div class="break-item">Commission summary is unavailable</div>';
 
           var dealBreakdown = document.getElementById('dealBreakdown');
-          if (dealBreakdown) dealBreakdown.innerHTML = '<div class="break-item">Unable to load deal breakdown</div>';
+          if (dealBreakdown) dealBreakdown.innerHTML = '<div class="break-item">Pipeline summary is unavailable</div>';
 
           var quotaProgress = document.getElementById('quotaProgress');
-          if (quotaProgress) quotaProgress.innerHTML = '<div class="break-item">Unable to load quota progress</div>';
+          if (quotaProgress) quotaProgress.innerHTML = '<div class="break-item">Quota progress is unavailable</div>';
 
           var calcBody = document.getElementById('calcTableBody');
           if (calcBody) {
-            calcBody.innerHTML = '<tr><td colspan="7" class="empty">Unable to load calculations</td></tr>';
+            calcBody.innerHTML = '<tr><td colspan="7" class="empty">Commission calculation records are unavailable</td></tr>';
           }
 
           var dealsBody = document.getElementById('dealsTableBody');
           if (dealsBody) {
-            dealsBody.innerHTML = '<tr><td colspan="7" class="empty">Unable to load active deals</td></tr>';
+            dealsBody.innerHTML = '<tr><td colspan="7" class="empty">Deal records are unavailable</td></tr>';
           }
 
           var lastUpEl = document.getElementById('lastUpdate');
@@ -772,7 +912,7 @@ UiPage({
           if (!planCard) return;
 
           if (!data.active_plan) {
-            planCard.innerHTML = '<div class="empty"><div class="empty-icon">📋</div>No active commission plan assigned</div>';
+            planCard.innerHTML = '<div class="empty"><div class="empty-icon">📋</div>No commission plan is assigned for the selected year</div>';
             return;
           }
 
@@ -817,24 +957,28 @@ UiPage({
           // Total Earned
           var earned = parseFloat(data.total_earned || 0);
           document.getElementById('totalEarned').textContent = '$' + earned.toFixed(2);
+          var earnedPeriod = document.getElementById('earnedPeriod');
+          if (earnedPeriod) {
+            earnedPeriod.textContent = (data.report_year || viewingYear || new Date().getFullYear()) + ' performance';
+          }
 
           // Pending Commissions
           var pending = parseFloat(data.pending_amount || 0);
           var pendingCount = data.pending_count || 0;
           document.getElementById('pendingAmount').textContent = '$' + pending.toFixed(2);
-          document.getElementById('pendingCount').textContent = pendingCount + ' draft calculation' + (pendingCount !== 1 ? 's' : '');
+          document.getElementById('pendingCount').textContent = pendingCount + ' pending calculation' + (pendingCount !== 1 ? 's' : '');
 
           // Locked & Paid
           var paid = parseFloat(data.paid_amount || 0);
           var paidCount = data.paid_count || 0;
           document.getElementById('paidAmount').textContent = '$' + paid.toFixed(2);
-          document.getElementById('paidCount').textContent = paidCount + ' locked/paid';
+          document.getElementById('paidCount').textContent = paidCount + ' finalized entries';
 
           // Active Deals
           var activeCount = data.active_deals_count || 0;
           var pipelineValue = parseFloat(data.pipeline_value || 0);
           document.getElementById('activeDeals').textContent = activeCount;
-          document.getElementById('dealPipeline').textContent = '$' + pipelineValue.toFixed(2) + ' pipeline';
+          document.getElementById('dealPipeline').textContent = '$' + pipelineValue.toFixed(2) + ' pipeline amount';
 
           // Commission breakdown
           var breakdown = document.getElementById('commissionBreakdown');
@@ -895,7 +1039,7 @@ UiPage({
           container.innerHTML = '';
 
           if (!quotaProgress || Object.keys(quotaProgress).length === 0) {
-            container.innerHTML = '<div class="break-item">No quota progress available</div>';
+            container.innerHTML = '<div class="break-item">No quota progress is available for this year</div>';
             return;
           }
 
@@ -946,7 +1090,7 @@ UiPage({
           container.innerHTML = '';
           
           if (!plan.targets || Object.keys(plan.targets).length === 0) {
-            container.innerHTML = '<div class="break-item">No quota targets available</div>';
+            container.innerHTML = '<div class="break-item">No quota targets are configured for this plan</div>';
             return;
           }
 
@@ -998,7 +1142,7 @@ UiPage({
           container.innerHTML = '';
 
           if (!tiers || tiers.length === 0) {
-            container.innerHTML = '<div class="break-item">No tier structure available</div>';
+            container.innerHTML = '<div class="break-item">No commission tiers are configured for this plan</div>';
             return;
           }
 
@@ -1035,7 +1179,7 @@ UiPage({
           container.innerHTML = '';
 
           if (!bonuses || bonuses.length === 0) {
-            container.innerHTML = '<div class="break-item">No bonuses available</div>';
+            container.innerHTML = '<div class="break-item">No active bonuses are configured for this plan</div>';
             return;
           }
 
@@ -1070,7 +1214,7 @@ UiPage({
           var tbody = document.getElementById('calcTableBody');
           tbody.innerHTML = '';
           if (calcs.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="empty">No commission calculations yet. Active deals and payments will generate calculations.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="empty">No commission calculations are available for the selected year.</td></tr>';
             return;
           }
           calcs.forEach(function(calc) {
@@ -1092,7 +1236,7 @@ UiPage({
           var tbody = document.getElementById('dealsTableBody');
           tbody.innerHTML = '';
           if (deals.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="empty">No active deals. Once you have open deals, they\'ll appear here.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="empty">No open deals are available for the selected year.</td></tr>';
             return;
           }
           deals.forEach(function(deal) {

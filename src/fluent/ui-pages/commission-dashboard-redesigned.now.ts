@@ -56,6 +56,19 @@ UiPage({
       border:1px solid var(--border);background:rgba(255,255,255,.06);
       color:var(--muted);font-weight:500;
     }
+    .toolbar{
+      margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    }
+    .toolbar-label{
+      font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;font-weight:600;
+    }
+    .toolbar select{
+      background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--border);
+      border-radius:6px;padding:6px 10px;font-size:12px;
+    }
+    .toolbar-note{
+      font-size:12px;color:var(--muted);
+    }
 
     .grid{
       display:grid;
@@ -137,35 +150,40 @@ UiPage({
 <body>
   <div class="container">
     <div class="header">
-      <h1 class="title">📋 Commission Management</h1>
-      <p class="subtitle">Navigate deals, invoices, payments, calculations, plans, and statements. Real-time operational hub.</p>
+      <h1 class="title">Commission Operations</h1>
+      <p class="subtitle">Operational dashboard for plans, calculations, statements, and source-system synchronization.</p>
+      <div class="toolbar">
+        <span class="toolbar-label">Metrics Year</span>
+        <select id="kpiYearSelect"></select>
+        <span class="toolbar-note" id="kpiYearNote"></span>
+      </div>
       <div class="chips" id="roleChips"></div>
     </div>
 
     <!-- Key Metrics -->
     <div class="grid">
       <div class="card metric">
-        <div class="metric-label">💰 Total Statements</div>
+        <div class="metric-label">Total Statements</div>
         <div class="metric-value" id="kpiStatements">—</div>
-        <div class="metric-sub">Commission statements issued</div>
+        <div class="metric-sub">Statements generated</div>
       </div>
 
       <div class="card metric">
-        <div class="metric-label">⏳ Pending Reviews</div>
+        <div class="metric-label">Pending Exceptions</div>
         <div class="metric-value" id="kpiExceptions">—</div>
-        <div class="metric-sub">Exceptions awaiting approval</div>
+        <div class="metric-sub">Exceptions awaiting review</div>
       </div>
 
       <div class="card metric">
-        <div class="metric-label">🎯 Active Deals</div>
+        <div class="metric-label">Active Deals</div>
         <div class="metric-value" id="kpiDeals">—</div>
-        <div class="metric-sub">Deals in-flight</div>
+        <div class="metric-sub">Open deals in pipeline</div>
       </div>
 
       <div class="card metric">
-        <div class="metric-label">🚨 System Alerts</div>
+        <div class="metric-label">Open Alerts</div>
         <div class="metric-value" id="kpiAlerts">—</div>
-        <div class="metric-sub">Active alerts & issues</div>
+        <div class="metric-sub">Monitoring alerts</div>
       </div>
     </div>
 
@@ -178,10 +196,10 @@ UiPage({
         </div>
         <div class="nav-group">
           <a class="nav-item" href="/x_823178_commissio_progress.do">
-            <span>My Progress</span>
+            <span>Performance Dashboard</span>
             <span>→</span>
           </a>
-          <p style="font-size:12px;color:var(--muted);margin-top:8px;">View your earnings, pending amounts, quota targets, and active pipeline.</p>
+          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Review representative earnings, targets, and pipeline performance by year.</p>
         </div>
       </div>
 
@@ -203,7 +221,7 @@ UiPage({
             <span>Payments</span>
             <span>→</span>
           </a>
-          <p style="font-size:12px;color:var(--muted);margin-top:8px;">View and validate Zoho sync output.</p>
+          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Review source records synchronized from Zoho Bigin and Zoho Books.</p>
         </div>
       </div>
     </div>
@@ -239,7 +257,7 @@ UiPage({
             <span>Statements</span>
             <span>→</span>
           </a>
-          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Manage commission plans, targets, tiers, bonuses, calculations and statements.</p>
+          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Manage plan design, calculations, and statement lifecycle records.</p>
         </div>
       </div>
 
@@ -261,14 +279,14 @@ UiPage({
             <span>System Alerts</span>
             <span>→</span>
           </a>
-          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Review exceptions, reconciliation audits, and system health.</p>
+          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Oversee exceptions, reconciliation outcomes, and operational alerts.</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="footer">
-    Commission Management System · Real-time sync with Zoho Bigin & Books
+    Commission Management · Synchronized with Zoho Bigin and Zoho Books
   </div>
 </body>
 </html>
@@ -277,6 +295,36 @@ UiPage({
     (function () {
       try {
         console.log('Commission dashboard loaded');
+
+        function invokeHelper(methodName, params, callback) {
+          var helperNames = ['x_823178_commissio.CommissionProgressHelper', 'CommissionProgressHelper'];
+
+          function tryIndex(index) {
+            if (index >= helperNames.length) {
+              callback(null);
+              return;
+            }
+
+            var ajax = new GlideAjax(helperNames[index]);
+            ajax.addParam('sysparm_name', methodName);
+
+            if (params) {
+              Object.keys(params).forEach(function(k) {
+                ajax.addParam(k, params[k]);
+              });
+            }
+
+            ajax.getXMLAnswer(function(response) {
+              if (!response && index < helperNames.length - 1) {
+                tryIndex(index + 1);
+                return;
+              }
+              callback(response);
+            });
+          }
+
+          tryIndex(0);
+        }
 
         // Role chips
         var chips = document.getElementById('roleChips');
@@ -298,15 +346,124 @@ UiPage({
           }
         }
 
-        // Placeholder KPI values
+        // Dashboard KPIs from real tables
         var setText = function (id, val) {
           var el = document.getElementById(id);
           if (el) el.textContent = val;
         };
-        setText('kpiStatements', '—');
-        setText('kpiExceptions', '—');
-        setText('kpiDeals', '—');
-        setText('kpiAlerts', '—');
+
+        var kpiYear = new Date().getFullYear();
+
+        function setMetricSubs(year) {
+          var subLabels = document.querySelectorAll('.metric-sub');
+          for (var idx = 0; idx < subLabels.length; idx++) {
+            var text = subLabels[idx].textContent || '';
+            subLabels[idx].textContent = text.replace(/\s\(\d{4}\)$/, '') + ' (' + year + ')';
+          }
+          var note = document.getElementById('kpiYearNote');
+          if (note) note.textContent = 'Metrics for year ' + year;
+        }
+
+        function initKpiYearSelect(years, defaultYear) {
+          var select = document.getElementById('kpiYearSelect');
+          if (!select) return;
+
+          var currentYear = new Date().getFullYear();
+          var options = (years && years.length) ? years : [currentYear + 2, currentYear + 1, currentYear, currentYear - 1, currentYear - 2];
+          kpiYear = parseInt(defaultYear, 10) || kpiYear;
+          select.innerHTML = '';
+          for (var i = 0; i < options.length; i++) {
+            var year = parseInt(options[i], 10);
+            if (isNaN(year)) continue;
+            var option = document.createElement('option');
+            option.value = String(year);
+            option.textContent = String(year);
+            if (year === kpiYear) option.selected = true;
+            select.appendChild(option);
+          }
+
+          select.addEventListener('change', function() {
+            kpiYear = parseInt(select.value, 10) || currentYear;
+            loadMetrics(kpiYear);
+          });
+        }
+
+        function initializeYearContext(callback) {
+          var currentYear = new Date().getFullYear();
+          invokeHelper('getYearContext', {
+            sysparm_year: String(kpiYear),
+            sysparm_year_window: '2'
+          }, function(response) {
+            if (!response) {
+              initKpiYearSelect(null, currentYear);
+              setMetricSubs(kpiYear);
+              if (callback) callback();
+              return;
+            }
+
+            try {
+              var payload = typeof response === 'string' ? JSON.parse(response) : response;
+              if (payload && payload.status === 'success' && payload.data) {
+                initKpiYearSelect(payload.data.years, payload.data.default_year);
+              } else {
+                initKpiYearSelect(null, currentYear);
+              }
+            } catch (e) {
+              initKpiYearSelect(null, currentYear);
+            }
+
+            setMetricSubs(kpiYear);
+            if (callback) callback();
+          });
+        }
+
+        function loadMetrics(year) {
+          setText('kpiStatements', '...');
+          setText('kpiExceptions', '...');
+          setText('kpiDeals', '...');
+          setText('kpiAlerts', '...');
+
+          invokeHelper('getDashboardMetrics', {
+            sysparm_year: String(year)
+          }, function(response) {
+            if (!response) {
+              setText('kpiStatements', '0');
+              setText('kpiExceptions', '0');
+              setText('kpiDeals', '0');
+              setText('kpiAlerts', '0');
+              setMetricSubs(year);
+              return;
+            }
+
+            try {
+              var payload = typeof response === 'string' ? JSON.parse(response) : response;
+              if (payload && payload.status === 'success' && payload.data) {
+                setText('kpiStatements', String(payload.data.total_statements || 0));
+                setText('kpiExceptions', String(payload.data.pending_reviews || 0));
+                setText('kpiDeals', String(payload.data.active_deals || 0));
+                setText('kpiAlerts', String(payload.data.open_alerts || 0));
+                setMetricSubs(payload.data.report_year || year);
+              } else {
+                setText('kpiStatements', '0');
+                setText('kpiExceptions', '0');
+                setText('kpiDeals', '0');
+                setText('kpiAlerts', '0');
+                setMetricSubs(year);
+              }
+            } catch (e) {
+              console.log('Dashboard metrics parse error:', e);
+              setText('kpiStatements', '0');
+              setText('kpiExceptions', '0');
+              setText('kpiDeals', '0');
+              setText('kpiAlerts', '0');
+              setMetricSubs(year);
+            }
+          });
+        }
+
+        initializeYearContext(function() {
+          loadMetrics(kpiYear);
+        });
 
       } catch (err) {
         console.log('Dashboard error:', err);
