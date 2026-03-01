@@ -24,6 +24,21 @@ Record({
     }
 })
 
+// My Progress Module - Sales Rep Personal View
+Record({
+    $id: Now.ID['progress_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'My Progress',
+        application: commissionApp.$id,
+        link_type: 'DIRECT',
+        query: 'x_823178_commissio_progress.do',
+        hint: 'Track your earnings, pending amounts, and deal pipeline',
+        order: 7,
+        active: true
+    }
+})
+
 // Data Management Separator
 Record({
     $id: Now.ID['data_separator'],

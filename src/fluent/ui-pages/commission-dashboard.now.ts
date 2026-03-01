@@ -202,7 +202,15 @@ UiPage({
 
       <!-- Panels -->
       <div class="card panel">
-        <div class="panelHead">📊 Data <span class="chip">lists</span></div>
+        <div class="panelHead">� Sales Rep <span class="chip">personal</span></div>
+        <div class="panelBody">
+          <a class="btn" href="/x_823178_commissio_progress.do"><span>My Progress</span><span class="go">Open →</span></a>
+          <div class="meta" style="color:var(--muted);font-size:12px;">View your earnings, pending amounts, and active deals.</div>
+        </div>
+      </div>
+
+      <div class="card panel">
+        <div class="panelHead">�📊 Data <span class="chip">lists</span></div>
         <div class="panelBody">
           <a class="btn" href="/x_823178_commissio_deals_list.do"><span>Deals</span><span class="go">Open →</span></a>
           <a class="btn" href="/x_823178_commissio_invoices_list.do"><span>Invoices</span><span class="go">Open →</span></a>
@@ -268,6 +276,8 @@ UiPage({
 
         // Jump box routing
         var routes = [
+          { k: 'progress', url: '/x_823178_commissio_progress.do' },
+          { k: 'my ', url: '/x_823178_commissio_progress.do' },
           { k: 'deal', url: '/x_823178_commissio_deals_list.do' },
           { k: 'invoice', url: '/x_823178_commissio_invoices_list.do' },
           { k: 'payment', url: '/x_823178_commissio_payments_list.do' },
