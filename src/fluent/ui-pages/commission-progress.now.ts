@@ -315,9 +315,9 @@ UiPage({
 <body>
   <div class="container">
     <div class="header">
-      <!-- Admin User Selector -->
+      <!-- User Selector -->
       <div class="user-selector" id="userSelector">
-        <div class="selector-label">👤 View User Progress (Admin Only)</div>
+        <div class="selector-label">👤 View User Progress</div>
         <div class="selector-field">
           <input type="text" id="userSearchInput" placeholder="Enter user name or ID..." />
           <button onclick="searchAndSelectUser()">Load User</button>
@@ -511,20 +511,87 @@ UiPage({
         var currentUserId = null;
         var viewingUserId = null;
 
-        // Role chips and admin selector
+        function hasRole(roleName) {
+          try {
+            if (window.g_user && typeof window.g_user.hasRole === 'function') {
+              return !!window.g_user.hasRole(roleName);
+            }
+            if (window.NOW && NOW.user) {
+              var roles = NOW.user.roles || NOW.user.role || '';
+              if (Array.isArray(roles)) return roles.indexOf(roleName) !== -1;
+              return String(roles).indexOf(roleName) !== -1;
+            }
+          } catch (e) {
+            console.log('Role check error:', e);
+          }
+          return false;
+        }
+
+        function getCurrentUserContext() {
+          try {
+            if (window.g_user && typeof window.g_user.getID === 'function') {
+              return {
+                id: window.g_user.getID(),
+                name: window.g_user.getFullName ? window.g_user.getFullName() : 'Sales Rep'
+              };
+            }
+
+            if (window.NOW && NOW.user) {
+              return {
+                id: NOW.user.userID || NOW.user.userId || NOW.user_id || null,
+                name: NOW.user_display_name || NOW.user.name || 'Sales Rep'
+              };
+            }
+          } catch (e) {
+            console.log('User context error:', e);
+          }
+          return { id: null, name: 'Sales Rep' };
+        }
+
+        function invokeHelper(methodName, params, callback) {
+          var helperNames = ['x_823178_commissio.CommissionProgressHelper', 'CommissionProgressHelper'];
+
+          function tryIndex(index) {
+            if (index >= helperNames.length) {
+              callback(null);
+              return;
+            }
+
+            var ajax = new GlideAjax(helperNames[index]);
+            ajax.addParam('sysparm_name', methodName);
+
+            if (params) {
+              Object.keys(params).forEach(function(k) {
+                ajax.addParam(k, params[k]);
+              });
+            }
+
+            ajax.getXMLAnswer(function(response) {
+              if (!response && index < helperNames.length - 1) {
+                tryIndex(index + 1);
+                return;
+              }
+              callback(response);
+            });
+          }
+
+          tryIndex(0);
+        }
+
+        // Role chips
         var chips = document.getElementById('roleChips');
         var canSelectUsers = false;
-        if (chips && window.g_user && typeof window.g_user.hasRole === 'function') {
+        if (chips) {
           var roles = [];
-          if (g_user.hasRole('x_823178_commissio.admin')) {
+          if (hasRole('x_823178_commissio.admin')) {
             roles.push('Admin');
             canSelectUsers = true;
           }
-          if (g_user.hasRole('x_823178_commissio.finance')) {
+          if (hasRole('x_823178_commissio.finance')) {
             roles.push('Finance');
             canSelectUsers = true;
           }
-          if (g_user.hasRole('x_823178_commissio.rep')) roles.push('Rep');
+          if (hasRole('x_823178_commissio.rep')) roles.push('Rep');
           if (roles.length === 0) roles.push('User');
 
           for (var i = 0; i < roles.length; i++) {
@@ -535,20 +602,17 @@ UiPage({
           }
         }
 
-        // Show admin user selector
-        if (canSelectUsers) {
-          var selector = document.getElementById('userSelector');
-          if (selector) selector.classList.add('visible');
-        }
+        // Show user selector
+        var selector = document.getElementById('userSelector');
+        if (selector) selector.classList.add('visible');
 
         // Set user name
-        if (window.g_user) {
-          currentUserId = window.g_user.getID();
-          viewingUserId = currentUserId;
-          var userEl = document.getElementById('userName');
-          if (userEl) {
-            userEl.textContent = 'Welcome, ' + (window.g_user.getFullName ? window.g_user.getFullName() : 'Sales Rep') + '!';
-          }
+        var userCtx = getCurrentUserContext();
+        currentUserId = userCtx.id;
+        viewingUserId = currentUserId;
+        var userEl = document.getElementById('userName');
+        if (userEl) {
+          userEl.textContent = 'Welcome, ' + (userCtx.name || 'Sales Rep') + '!';
         }
 
         // Set current year period
@@ -558,7 +622,7 @@ UiPage({
           periodEl.textContent = 'Year-to-Date: Jan 1 - ' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear();
         }
 
-        // Admin user search
+        // User search (admin/finance)
         window.searchAndSelectUser = function() {
           var input = document.getElementById('userSearchInput');
           var searchTerm = input ? input.value.trim() : '';
@@ -566,11 +630,10 @@ UiPage({
             alert('Please enter a user name or ID');
             return;
           }
-          
-          var ajax = new GlideAjax('CommissionProgressHelper');
-          ajax.addParam('sysparm_name', 'searchUsers');
-          ajax.addParam('sysparm_search_term', searchTerm);
-          ajax.getXMLAnswer(function(response) {
+
+          invokeHelper('searchUsers', {
+            sysparm_search_term: searchTerm
+          }, function(response) {
             if (response) {
               var data = typeof response === 'string' ? JSON.parse(response) : response;
               if (data && data.status === 'success' && data.data && data.data.user_id) {
@@ -588,21 +651,45 @@ UiPage({
         // Reset to current user
         window.resetToCurrentUser = function() {
           viewingUserId = currentUserId;
-          if (window.g_user) {
-            loadRepProgress(currentUserId, window.g_user.getFullName ? window.g_user.getFullName() : 'You');
+          if (currentUserId) {
+            loadRepProgress(currentUserId, userCtx.name || 'You');
           }
         };
 
         // Load initial data
-        loadRepProgress(viewingUserId, null);
+        if (!viewingUserId) {
+          invokeHelper('getCurrentUser', {}, function(response) {
+            if (!response) {
+              showGlobalLoadError('Unable to resolve current user context. Please refresh or contact admin.');
+              return;
+            }
+
+            try {
+              var payload = typeof response === 'string' ? JSON.parse(response) : response;
+              if (payload && payload.status === 'success' && payload.data && payload.data.user_id) {
+                currentUserId = payload.data.user_id;
+                viewingUserId = payload.data.user_id;
+                if (userEl) {
+                  userEl.textContent = 'Welcome, ' + (payload.data.user_name || userCtx.name || 'Sales Rep') + '!';
+                }
+                loadRepProgress(viewingUserId, null);
+              } else {
+                showGlobalLoadError('Unable to resolve current user context.');
+              }
+            } catch (e) {
+              showGlobalLoadError('Unable to resolve current user context.');
+            }
+          });
+        } else {
+          loadRepProgress(viewingUserId, null);
+        }
 
         function loadRepProgress(userId, displayName) {
           if (!userId) return;
 
-          var ajax = new GlideAjax('CommissionProgressHelper');
-          ajax.addParam('sysparm_name', 'getRepProgress');
-          ajax.addParam('sysparm_user_id', userId);
-          ajax.getXMLAnswer(function(response) {
+          invokeHelper('getRepProgress', {
+            sysparm_user_id: userId
+          }, function(response) {
             if (response) {
               try {
                 var data = typeof response === 'string' ? JSON.parse(response) : response;

@@ -12,6 +12,11 @@ import './ui-pages/commission-progress.now'
 // Client-callable Script Includes
 import './script-includes/commission-progress-helper.now'
 
+// Plan configuration tables
+import './tables/plan_targets.now'
+import './tables/plan_tiers.now'
+import './tables/plan_bonuses.now'
+
 // Rep Compensation Management UI Page
 import './ui-pages/rep-compensation-management.now'
 

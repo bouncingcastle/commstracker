@@ -254,6 +254,21 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
         }
     },
 
+    getCurrentUser: function() {
+        try {
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    user_id: gs.getUserID(),
+                    user_name: gs.getUserDisplayName()
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressHelper.getCurrentUser error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to resolve current user: ' + e.getMessage());
+        }
+    },
+
     searchUsers: function() {
         var searchTerm = this.getParameter('sysparm_search_term') || this.getParameter('search_term') || '';
 
