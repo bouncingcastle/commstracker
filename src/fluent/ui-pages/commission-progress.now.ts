@@ -458,6 +458,78 @@ UiPage({
       </div>
     </div>
 
+    <!-- Forecast, Simulation & Estimator -->
+    <div class="big-grid" id="forecastSection">
+      <div class="big-card">
+        <div class="card-title">
+          <span class="icon">🔮</span>
+          Forecast Simulation
+        </div>
+        <div class="selector-field" style="margin-bottom:12px;">
+          <select id="scenarioSelect">
+            <option value="">Live view (no saved scenario)</option>
+          </select>
+          <input id="winRateMultiplier" type="number" min="0.1" step="0.05" value="1" placeholder="Win-rate multiplier" />
+          <input id="pipelineMultiplier" type="number" min="0.1" step="0.05" value="1" placeholder="Pipeline multiplier" />
+          <button onclick="applyForecastScenario()">Apply</button>
+          <button onclick="saveForecastScenario()">Save</button>
+        </div>
+        <div class="breakdown" id="forecastSummary">
+          <div class="loading">Loading forecast insights...</div>
+        </div>
+      </div>
+
+      <div class="big-card">
+        <div class="card-title">
+          <span class="icon">🧮</span>
+          Commission Estimator
+        </div>
+        <div class="selector-field" style="margin-bottom:12px;">
+          <input id="estimateAmount" type="number" min="0" step="100" placeholder="Deal amount" />
+          <select id="estimateDealType">
+            <option value="new_business">New Business</option>
+            <option value="renewal">Renewal</option>
+            <option value="expansion">Expansion</option>
+            <option value="upsell">Upsell</option>
+          </select>
+          <select id="estimateStage">
+            <option value="lead">Lead</option>
+            <option value="qualified" selected>Qualified</option>
+            <option value="proposal">Proposal</option>
+            <option value="negotiation">Negotiation</option>
+            <option value="closed_won">Closed Won</option>
+          </select>
+          <button onclick="runCommissionEstimate()">Estimate</button>
+        </div>
+        <div class="breakdown" id="estimatorResult">
+          <div class="break-item">Run an estimate to view projected payout for a deal scenario.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="big-card" style="margin-bottom:16px;">
+      <div class="card-title">
+        <span class="icon">🏁</span>
+        Prioritized Opportunities by Projected Commission
+      </div>
+      <table class="list-table" id="priorityTable">
+        <thead>
+          <tr>
+            <th>Deal</th>
+            <th>Type</th>
+            <th>Stage</th>
+            <th>Amount</th>
+            <th>Probability</th>
+            <th>Rate</th>
+            <th>Expected Commission</th>
+          </tr>
+        </thead>
+        <tbody id="priorityTableBody">
+          <tr><td colspan="7" class="empty">Loading prioritized opportunities...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
 
     <!-- Recent Calculations -->
     <div class="big-card">
@@ -534,6 +606,7 @@ UiPage({
         var currentUserId = null;
         var viewingUserId = null;
         var viewingYear = new Date().getFullYear();
+        var activeScenarioId = '';
 
         function hasRole(roleName) {
           try {
@@ -575,6 +648,57 @@ UiPage({
         function invokeHelper(methodName, params, callback) {
           var helperNames = [
             'x_823178_commissio.CommissionProgressDataService',
+            'x_823178_commissio.CommissionProgressHelper'
+          ];
+
+          function tryIndex(index) {
+            if (index >= helperNames.length) {
+              callback(null);
+              return;
+            }
+
+            var ajax = new GlideAjax(helperNames[index]);
+            ajax.addParam('sysparm_name', methodName);
+
+            if (params) {
+              Object.keys(params).forEach(function(k) {
+                ajax.addParam(k, params[k]);
+              });
+            }
+
+            ajax.getXMLAnswer(function(response) {
+              if (response) {
+                callback(response);
+                return;
+              }
+
+              ajax.getXML(function(res) {
+                var xmlAnswer = null;
+                try {
+                  if (res && res.responseXML && res.responseXML.documentElement) {
+                    xmlAnswer = res.responseXML.documentElement.getAttribute('answer');
+                  }
+                } catch (e) {
+                  xmlAnswer = null;
+                }
+
+                if (!xmlAnswer && index < helperNames.length - 1) {
+                  tryIndex(index + 1);
+                  return;
+                }
+
+                callback(xmlAnswer);
+              });
+            });
+          }
+
+          tryIndex(0);
+        }
+
+        function invokeP1Helper(methodName, params, callback) {
+          var helperNames = [
+            'x_823178_commissio.CommissionProgressDataService',
+            'x_823178_commissio.CommissionP1Helper',
             'x_823178_commissio.CommissionProgressHelper'
           ];
 
@@ -911,6 +1035,7 @@ UiPage({
 
                   updatePlanCard(data.data);
                   updateMetrics(data.data);
+                  loadForecastAndPriorities(userId, responseYear);
                   updateCalculationsTable(data.data.recent_calculations || []);
                   updateDealsTable(data.data.active_deals || []);
                 } else {
@@ -968,6 +1093,11 @@ UiPage({
           var dealsBody = document.getElementById('dealsTableBody');
           if (dealsBody) {
             dealsBody.innerHTML = '<tr><td colspan="7" class="empty">Deal records are unavailable</td></tr>';
+          }
+
+          var priorityBody = document.getElementById('priorityTableBody');
+          if (priorityBody) {
+            priorityBody.innerHTML = '<tr><td colspan="7" class="empty">Prioritized opportunities are unavailable</td></tr>';
           }
 
           var lastUpEl = document.getElementById('lastUpdate');
@@ -1272,6 +1402,220 @@ UiPage({
             container.appendChild(item);
           });
         }
+
+        function loadForecastAndPriorities(userId, reportYear) {
+          var winMultiplier = parseFloat((document.getElementById('winRateMultiplier') || {}).value || '1') || 1;
+          var pipelineMultiplier = parseFloat((document.getElementById('pipelineMultiplier') || {}).value || '1') || 1;
+
+          invokeP1Helper('getForecastAndPriorities', {
+            sysparm_user_id: userId,
+            sysparm_year: String(reportYear),
+            sysparm_scenario_id: activeScenarioId,
+            sysparm_win_rate_multiplier: String(winMultiplier),
+            sysparm_pipeline_multiplier: String(pipelineMultiplier)
+          }, function(response) {
+            if (!response) {
+              renderForecastError('Forecast service did not return data.');
+              return;
+            }
+
+            try {
+              var payload = typeof response === 'string' ? JSON.parse(response) : response;
+              if (!payload || payload.status !== 'success' || !payload.data) {
+                renderForecastError(payload && payload.message ? payload.message : 'Unable to compute forecast.');
+                return;
+              }
+
+              renderForecastSummary(payload.data.summary || {});
+              renderPrioritizedDeals(payload.data.prioritized_deals || []);
+              renderScenarioOptions(payload.data.scenarios || [], payload.data.summary || {});
+            } catch (e) {
+              renderForecastError('Unable to parse forecast response.');
+            }
+          });
+        }
+
+        function renderForecastError(message) {
+          var summary = document.getElementById('forecastSummary');
+          if (summary) {
+            summary.innerHTML = '<div class="break-item">' + (message || 'Forecast unavailable') + '</div>';
+          }
+
+          var tbody = document.getElementById('priorityTableBody');
+          if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty">No prioritized opportunities available.</td></tr>';
+          }
+        }
+
+        function renderForecastSummary(summary) {
+          var container = document.getElementById('forecastSummary');
+          if (!container) return;
+
+          var scenarioName = summary.active_scenario_name ? summary.active_scenario_name : 'Live view';
+          container.innerHTML = '';
+
+          var rows = [
+            { label: 'Scenario', value: scenarioName },
+            { label: 'Expected Revenue', value: '$' + (parseFloat(summary.expected_revenue || 0)).toFixed(2) },
+            { label: 'Expected Commission', value: '$' + (parseFloat(summary.expected_commission || 0)).toFixed(2) },
+            { label: 'Projected Attainment', value: (parseFloat(summary.projected_attainment_percent || 0)).toFixed(1) + '%' },
+            { label: 'Won Revenue YTD', value: '$' + (parseFloat(summary.won_revenue_ytd || 0)).toFixed(2) },
+            { label: 'Total Quota', value: '$' + (parseFloat(summary.total_quota || 0)).toFixed(2) }
+          ];
+
+          rows.forEach(function(row) {
+            var item = document.createElement('div');
+            item.className = 'break-item';
+            item.innerHTML = '<span class="break-label">' + row.label + '</span><span class="break-value">' + row.value + '</span>';
+            container.appendChild(item);
+          });
+        }
+
+        function renderPrioritizedDeals(deals) {
+          var tbody = document.getElementById('priorityTableBody');
+          if (!tbody) return;
+
+          tbody.innerHTML = '';
+          if (!deals || deals.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty">No open opportunities available for prioritization.</td></tr>';
+            return;
+          }
+
+          deals.forEach(function(deal) {
+            var row = document.createElement('tr');
+            row.innerHTML =
+              '<td>' + (deal.deal_name || '–') + '</td>' +
+              '<td>' + formatDealTypeLabel(deal.deal_type || 'other') + '</td>' +
+              '<td>' + (deal.stage || '–') + '</td>' +
+              '<td>$' + (parseFloat(deal.amount || 0)).toFixed(2) + '</td>' +
+              '<td>' + ((parseFloat(deal.probability || 0) * 100).toFixed(1)) + '%</td>' +
+              '<td>' + (parseFloat(deal.commission_rate || 0)).toFixed(2) + '%</td>' +
+              '<td><strong>$' + (parseFloat(deal.expected_commission || 0)).toFixed(2) + '</strong></td>';
+            tbody.appendChild(row);
+          });
+        }
+
+        function renderScenarioOptions(scenarios, summary) {
+          var select = document.getElementById('scenarioSelect');
+          if (!select) return;
+
+          var selected = (summary && summary.active_scenario_id) ? summary.active_scenario_id : activeScenarioId;
+          select.innerHTML = '<option value="">Live view (no saved scenario)</option>';
+
+          (scenarios || []).forEach(function(s) {
+            var option = document.createElement('option');
+            option.value = s.scenario_id;
+            option.textContent = (s.scenario_name || 'Scenario') + ' (' + (parseFloat(s.projected_attainment_percent || 0)).toFixed(1) + '%)';
+            if (selected && selected === s.scenario_id) {
+              option.selected = true;
+              activeScenarioId = selected;
+            }
+            select.appendChild(option);
+          });
+
+          var winInput = document.getElementById('winRateMultiplier');
+          var pipelineInput = document.getElementById('pipelineMultiplier');
+          if (winInput && summary && summary.win_rate_multiplier) {
+            winInput.value = String(parseFloat(summary.win_rate_multiplier).toFixed(2));
+          }
+          if (pipelineInput && summary && summary.pipeline_multiplier) {
+            pipelineInput.value = String(parseFloat(summary.pipeline_multiplier).toFixed(2));
+          }
+        }
+
+        window.applyForecastScenario = function() {
+          var select = document.getElementById('scenarioSelect');
+          activeScenarioId = (select && select.value) ? select.value : '';
+          loadForecastAndPriorities(viewingUserId || currentUserId, viewingYear);
+        };
+
+        window.saveForecastScenario = function() {
+          var scenarioName = window.prompt('Scenario name');
+          if (!scenarioName) return;
+
+          var winMultiplier = parseFloat((document.getElementById('winRateMultiplier') || {}).value || '1') || 1;
+          var pipelineMultiplier = parseFloat((document.getElementById('pipelineMultiplier') || {}).value || '1') || 1;
+
+          invokeP1Helper('saveForecastScenario', {
+            sysparm_user_id: viewingUserId || currentUserId,
+            sysparm_year: String(viewingYear),
+            sysparm_scenario_name: scenarioName,
+            sysparm_win_rate_multiplier: String(winMultiplier),
+            sysparm_pipeline_multiplier: String(pipelineMultiplier)
+          }, function(response) {
+            if (!response) {
+              alert('Scenario save failed.');
+              return;
+            }
+
+            try {
+              var payload = typeof response === 'string' ? JSON.parse(response) : response;
+              if (payload && payload.status === 'success' && payload.data && payload.data.scenario_id) {
+                activeScenarioId = payload.data.scenario_id;
+                loadForecastAndPriorities(viewingUserId || currentUserId, viewingYear);
+                return;
+              }
+              alert(payload && payload.message ? payload.message : 'Scenario save failed.');
+            } catch (e) {
+              alert('Scenario save failed.');
+            }
+          });
+        };
+
+        window.runCommissionEstimate = function() {
+          var amount = parseFloat((document.getElementById('estimateAmount') || {}).value || '0');
+          var dealType = (document.getElementById('estimateDealType') || {}).value || 'new_business';
+          var stage = (document.getElementById('estimateStage') || {}).value || 'qualified';
+
+          if (!amount || amount <= 0) {
+            alert('Enter an amount greater than 0.');
+            return;
+          }
+
+          invokeP1Helper('estimateCommission', {
+            sysparm_user_id: viewingUserId || currentUserId,
+            sysparm_year: String(viewingYear),
+            sysparm_amount: String(amount),
+            sysparm_deal_type: dealType,
+            sysparm_stage: stage,
+            sysparm_scenario_id: activeScenarioId
+          }, function(response) {
+            var container = document.getElementById('estimatorResult');
+            if (!container) return;
+
+            if (!response) {
+              container.innerHTML = '<div class="break-item">Estimator service did not return data.</div>';
+              return;
+            }
+
+            try {
+              var payload = typeof response === 'string' ? JSON.parse(response) : response;
+              if (!payload || payload.status !== 'success' || !payload.data) {
+                container.innerHTML = '<div class="break-item">' + (payload && payload.message ? payload.message : 'Unable to estimate commission.') + '</div>';
+                return;
+              }
+
+              var data = payload.data;
+              container.innerHTML = '';
+              var rows = [
+                { label: 'Adjusted Amount', value: '$' + (parseFloat(data.adjusted_amount || 0)).toFixed(2) },
+                { label: 'Commission Rate', value: (parseFloat(data.commission_rate_percent || 0)).toFixed(2) + '%' },
+                { label: 'Stage Probability', value: ((parseFloat(data.probability || 0) * 100).toFixed(1)) + '%' },
+                { label: 'Expected Commission', value: '$' + (parseFloat(data.expected_commission || 0)).toFixed(2) },
+                { label: 'Scenario', value: data.scenario_name || 'Live view' }
+              ];
+
+              rows.forEach(function(row) {
+                var item = document.createElement('div');
+                item.className = 'break-item';
+                item.innerHTML = '<span class="break-label">' + row.label + '</span><span class="break-value">' + row.value + '</span>';
+                container.appendChild(item);
+              });
+            } catch (e) {
+              container.innerHTML = '<div class="break-item">Unable to parse estimator response.</div>';
+            }
+          });
+        };
 
         function capitalizeFirst(str) {
           return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();

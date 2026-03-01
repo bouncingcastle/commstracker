@@ -29,9 +29,11 @@ import './business-rules/deal-management.now'
 import './business-rules/invoice-management.now'
 import './business-rules/payment-commission.now'
 import './business-rules/commission-plan-validation.now'
+import './business-rules/statement-approval-workflow.now'
 
 // Client-callable Script Includes
 import './script-includes/commission-progress-helper.now'
+import './script-includes/commission-p1-helper.now'
 
 // Scripted REST APIs
 import './scripted-rest-apis/zoho-integration.now'
@@ -43,7 +45,9 @@ import './tables/payments.now'
 import './tables/commission_plans.now'
 import './tables/commission_calculations.now'
 import './tables/commission_statements.now'
+import './tables/statement_approvals.now'
 import './tables/exception_approvals.now'
+import './tables/forecast_scenarios.now'
 
 // Plan configuration tables
 import './tables/plan_targets.now'

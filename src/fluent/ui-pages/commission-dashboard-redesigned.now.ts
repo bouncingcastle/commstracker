@@ -95,6 +95,13 @@ UiPage({
     }
     .card.metric{
       grid-column:span 1;
+      cursor:pointer;
+      transition:all 150ms ease;
+    }
+    .card.metric:hover{
+      background:rgba(110,168,255,.08);
+      border-color:rgba(110,168,255,.3);
+      transform:translateY(-1px);
     }
     .metric-value{
       font-size:36px;font-weight:900;margin:12px 0 4px;
@@ -174,25 +181,25 @@ UiPage({
 
     <!-- Key Metrics -->
     <div class="grid">
-      <div class="card metric">
+      <div class="card metric" data-kpi="statements" title="Open statements list">
         <div class="metric-label">Total Statements</div>
         <div class="metric-value" id="kpiStatements">—</div>
         <div class="metric-sub">Statements generated</div>
       </div>
 
-      <div class="card metric">
+      <div class="card metric" data-kpi="exceptions" title="Open pending exceptions list">
         <div class="metric-label">Pending Exceptions</div>
         <div class="metric-value" id="kpiExceptions">—</div>
         <div class="metric-sub">Exceptions awaiting review</div>
       </div>
 
-      <div class="card metric">
+      <div class="card metric" data-kpi="deals" title="Open active deals list">
         <div class="metric-label">Active Deals</div>
         <div class="metric-value" id="kpiDeals">—</div>
         <div class="metric-sub">Open deals in pipeline</div>
       </div>
 
-      <div class="card metric">
+      <div class="card metric" data-kpi="alerts" title="Open system alerts list">
         <div class="metric-label">Open Alerts</div>
         <div class="metric-value" id="kpiAlerts">—</div>
         <div class="metric-sub">Monitoring alerts</div>
@@ -269,6 +276,10 @@ UiPage({
             <span>Statements</span>
             <span>→</span>
           </a>
+          <a class="nav-item" href="/x_823178_commissio_forecast_scenarios_list.do">
+            <span>Forecast Scenarios</span>
+            <span>→</span>
+          </a>
           <p style="font-size:12px;color:var(--muted);margin-top:8px;">Manage plan design, calculations, and statement lifecycle records.</p>
         </div>
       </div>
@@ -281,6 +292,10 @@ UiPage({
         <div class="nav-group">
           <a class="nav-item" href="/x_823178_commissio_exception_approvals_list.do">
             <span>Exception Approvals</span>
+            <span>→</span>
+          </a>
+          <a class="nav-item" href="/x_823178_commissio_statement_approvals_list.do">
+            <span>Statement Approvals</span>
             <span>→</span>
           </a>
           <a class="nav-item" href="/x_823178_commissio_reconciliation_log_list.do">
@@ -385,6 +400,65 @@ UiPage({
         };
 
         var kpiYear = String(new Date().getFullYear());
+
+        function getYearQueryPrefix(fieldName, yearValue) {
+          if (!yearValue || String(yearValue).toLowerCase() === 'all') return '';
+          var year = String(yearValue);
+          return fieldName + '>=' + year + '-01-01^' + fieldName + '<=' + year + '-12-31';
+        }
+
+        function openKpiDrilldown(metricType) {
+          var basePath = '';
+          var query = '';
+
+          if (metricType === 'statements') {
+            basePath = '/x_823178_commissio_commission_statements_list.do';
+            query = String(kpiYear).toLowerCase() === 'all' ? '' : ('statement_year=' + kpiYear);
+          } else if (metricType === 'exceptions') {
+            basePath = '/x_823178_commissio_exception_approvals_list.do';
+            query = 'status=pending';
+            if (String(kpiYear).toLowerCase() !== 'all') {
+              query += '^' + getYearQueryPrefix('request_date', kpiYear);
+            }
+          } else if (metricType === 'deals') {
+            basePath = '/x_823178_commissio_deals_list.do';
+            query = 'is_won=false^stage!=closed_lost';
+          } else if (metricType === 'alerts') {
+            basePath = '/x_823178_commissio_system_alerts_list.do';
+            query = 'statusINopen,acknowledged';
+            if (String(kpiYear).toLowerCase() !== 'all') {
+              query += '^' + getYearQueryPrefix('alert_date', kpiYear);
+            }
+          }
+
+          if (!basePath) return;
+          var url = basePath + (query ? ('?sysparm_query=' + encodeURIComponent(query)) : '');
+          window.location.href = url;
+        }
+
+        function initializeKpiDrilldowns() {
+          var cards = document.querySelectorAll('.card.metric[data-kpi]');
+          for (var i = 0; i < cards.length; i++) {
+            (function(card) {
+              var metricType = card.getAttribute('data-kpi');
+              if (!metricType) return;
+
+              card.addEventListener('click', function() {
+                openKpiDrilldown(metricType);
+              });
+
+              card.addEventListener('keydown', function(evt) {
+                if (evt.key === 'Enter' || evt.key === ' ') {
+                  evt.preventDefault();
+                  openKpiDrilldown(metricType);
+                }
+              });
+
+              card.setAttribute('tabindex', '0');
+              card.setAttribute('role', 'button');
+            })(cards[i]);
+          }
+        }
 
         function setMetricSubs(year) {
           var subLabels = document.querySelectorAll('.metric-sub');
@@ -503,6 +577,7 @@ UiPage({
         }
 
         initializeYearContext(function() {
+          initializeKpiDrilldowns();
           loadMetrics(kpiYear);
         });
 

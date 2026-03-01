@@ -200,6 +200,36 @@ Record({
     }
 })
 
+// Forecast Scenarios Module
+Record({
+    $id: Now.ID['forecast_scenarios_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Forecast Scenarios',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_forecast_scenarios',
+        hint: 'Create and compare saved forecast scenarios',
+        order: 33.5,
+        active: true
+    }
+})
+
+// Statement Approvals Module
+Record({
+    $id: Now.ID['statement_approvals_module'],
+    table: 'sys_app_module',
+    data: {
+        title: 'Statement Approvals',
+        application: commissionApp.$id,
+        link_type: 'LIST',
+        name: 'x_823178_commissio_statement_approvals',
+        hint: 'Manage statement approval workflow transitions',
+        order: 33.6,
+        active: true
+    }
+})
+
 // Rep Compensation Management Module
 Record({
     $id: Now.ID['compensation_management_module'],
