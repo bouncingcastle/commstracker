@@ -5,7 +5,7 @@ var CommissionProgressHelper = Class.create();
 CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor, {
     
     getRepProgress: function() {
-        var userId = this.getParameter('sysparm_name') === 'getRepProgress' ? this.getParameter('user_id') : null;
+        var userId = this.getParameter('sysparm_user_id') || this.getParameter('user_id');
         
         if (!userId) {
             return this.getErrorJSON('No user ID provided');
@@ -270,7 +270,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
     },
 
     searchUsers: function() {
-        var searchTerm = this.getParameter('search_term') || '';
+        var searchTerm = this.getParameter('sysparm_search_term') || this.getParameter('search_term') || '';
         
         if (!searchTerm || searchTerm.length < 2) {
             return this.getErrorJSON('Search term must be at least 2 characters');

@@ -29,6 +29,7 @@ UiPage({
       --radius:8px;
     }
     *{margin:0;padding:0;box-sizing:border-box}
+    html{background:var(--bg);}
     body{
       background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
       font-size:14px;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;
