@@ -221,6 +221,10 @@ UiPage({
             <span>Plan Bonuses</span>
             <span>→</span>
           </a>
+          <a class="nav-item" href="/x_823178_commissio_deal_types_list.do">
+            <span>Deal Types</span>
+            <span>→</span>
+          </a>
           <a class="nav-item" href="/x_823178_commissio_commission_calculations_list.do">
             <span>Calculations</span>
             <span>→</span>

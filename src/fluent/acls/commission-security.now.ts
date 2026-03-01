@@ -154,3 +154,26 @@ Acl({
     admin_overrides: true,
     description: 'Only admins can read payments'
 })
+
+// Deal Types governance - admin only
+Acl({
+    $id: 'deal_types_read_acl',
+    type: 'record',
+    table: 'x_823178_commissio_deal_types',
+    operation: 'read',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can read governed deal type records'
+})
+
+Acl({
+    $id: 'deal_types_write_acl',
+    type: 'record',
+    table: 'x_823178_commissio_deal_types',
+    operation: 'write',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can create/update/deactivate deal type records'
+})
