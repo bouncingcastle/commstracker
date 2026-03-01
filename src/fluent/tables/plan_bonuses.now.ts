@@ -1,0 +1,63 @@
+import '@servicenow/sdk/global'
+import { Table, StringColumn, DecimalColumn, ReferenceColumn, BooleanColumn } from '@servicenow/sdk/core'
+
+export const x_823178_commissio_plan_bonuses = Table({
+    name: 'x_823178_commissio_plan_bonuses',
+    label: 'Plan Bonuses',
+    schema: {
+        commission_plan: ReferenceColumn({
+            label: 'Commission Plan',
+            referenceTable: 'x_823178_commissio_commission_plans',
+            mandatory: true
+        }),
+        bonus_name: StringColumn({
+            label: 'Bonus Name',
+            maxLength: 120,
+            mandatory: true
+        }),
+        bonus_amount: DecimalColumn({
+            label: 'Bonus Amount',
+            precision: 14,
+            scale: 2,
+            mandatory: true
+        }),
+        bonus_trigger: StringColumn({
+            label: 'Bonus Trigger',
+            maxLength: 500
+        }),
+        deal_type: StringColumn({
+            label: 'Deal Type',
+            choices: {
+                any: { label: 'Any', sequence: 0 },
+                new_business: { label: 'New Business', sequence: 1 },
+                renewal: { label: 'Renewal', sequence: 2 },
+                expansion: { label: 'Expansion', sequence: 3 },
+                upsell: { label: 'Upsell', sequence: 4 }
+            },
+            default: 'any'
+        }),
+        is_discretionary: BooleanColumn({
+            label: 'Discretionary',
+            default: false
+        }),
+        is_active: BooleanColumn({
+            label: 'Active',
+            default: true
+        }),
+        description: StringColumn({
+            label: 'Description',
+            maxLength: 500
+        })
+    },
+    indexes: [
+        {
+            name: 'idx_plan_bonus_plan_name',
+            fields: ['commission_plan', 'bonus_name']
+        }
+    ],
+    audit: true,
+    accessible_from: 'public',
+    caller_access: 'tracking',
+    actions: ['create', 'read', 'update', 'delete'],
+    allow_web_service_access: true
+})
