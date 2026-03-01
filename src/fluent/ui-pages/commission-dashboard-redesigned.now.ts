@@ -209,12 +209,16 @@ UiPage({
             <span>Commission Plans</span>
             <span>→</span>
           </a>
-          <a class="nav-item" href="/x_823178_commissio_commission_plans.do?sys_id=-1">
+          <a class="nav-item" href="/x_823178_commissio_commission_plans.do?sys_id=-1&sysparm_view=default">
             <span>Plan Setup Form (New)</span>
             <span>→</span>
           </a>
           <a class="nav-item" href="/x_823178_commissio_commission_plans_list.do?sysparm_query=is_active=true^ORDERBYsales_rep^ORDERBYDESCeffective_start_date">
             <span>Plan Structure Reference (By Rep)</span>
+            <span>→</span>
+          </a>
+          <a class="nav-item" href="/x_823178_commissio_plan_hierarchy.do">
+            <span>Plan Hierarchy View</span>
             <span>→</span>
           </a>
           <a class="nav-item" href="/x_823178_commissio_plan_targets_list.do">
