@@ -16,7 +16,7 @@ export function validateCommissionPlan(current, previous) {
     
     // Validate sales rep is active
     var repGr = new GlideRecord('sys_user');
-    if (!repGr.get(current.getValue('sales_rep')) || repGr.getValue('active') !== 'true') {
+    if (!repGr.get(current.getValue('sales_rep')) || !isTruthyBoolean(repGr.getValue('active'))) {
         gs.addErrorMessage('Sales rep must be an active user');
         current.setAbortAction(true);
         return;
@@ -110,7 +110,7 @@ export function validateCommissionPlan(current, previous) {
                     return;
                 } else {
                     gs.addInfoMessage('PLAN MODIFICATION APPROVED: Changes approved via exception process');
-                    createAuditLog('plan_modification', current.sys_id, 'Plan modified with existing calculations: ' + approvedPlanChange);
+                    createAuditLog('plan_modification', current.sys_id, 'Plan modified with existing calculations: ' + approvedPlanChange.business_justification);
                 }
             }
         }
@@ -183,8 +183,9 @@ export function preventOverlapAndGaps(current, previous) {
             current.setAbortAction(true);
             return;
         } else {
-            gs.addInfoMessage('PLAN OVERLAP APPROVED: Overlap approved for business transition: ' + approvedOverlap);
-            createAuditLog('approved_overlap', current.sys_id, 'Plan overlap approved: ' + approvedOverlap);
+            gs.addInfoMessage('PLAN OVERLAP APPROVED: Overlap approved for business transition: ' + approvedOverlap.business_justification);
+            applyOverlapApprovalMetadata(current, approvedOverlap);
+            createAuditLog('approved_overlap', current.sys_id, 'Plan overlap approved: ' + approvedOverlap.business_justification);
         }
     }
     
@@ -269,9 +270,31 @@ function checkApprovedOverride(recordId, requestType) {
     approvalGr.query();
     
     if (approvalGr.next()) {
-        return approvalGr.getValue('business_justification');
+        return {
+            approval_id: approvalGr.getUniqueValue(),
+            approved_by: approvalGr.getValue('approved_by') || '',
+            approval_date: approvalGr.getValue('approval_date') || '',
+            business_justification: approvalGr.getValue('business_justification') || ''
+        };
     }
     return false;
+}
+
+function applyOverlapApprovalMetadata(current, approval) {
+    try {
+        if (!approval) return;
+        if (approval.approved_by) {
+            current.setValue('plan_overlap_approved_by', approval.approved_by);
+        }
+        if (approval.approval_date) {
+            current.setValue('plan_overlap_approved_on', approval.approval_date);
+        }
+        if (approval.business_justification) {
+            current.setValue('plan_overlap_reason', approval.business_justification);
+        }
+    } catch (e) {
+        gs.error('Commission Management: Failed to apply overlap approval metadata - ' + e.message);
+    }
 }
 
 function createAuditLog(eventType, recordId, details) {
@@ -287,4 +310,9 @@ function createAuditLog(eventType, recordId, details) {
     } catch (e) {
         gs.error('Commission Management: Failed to create audit log - ' + e.message);
     }
+}
+
+function isTruthyBoolean(value) {
+    var normalized = String(value || '').toLowerCase();
+    return normalized === 'true' || normalized === '1';
 }

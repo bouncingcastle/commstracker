@@ -170,20 +170,11 @@ Record({
     },
 })
 Record({
-    $id: Now.ID['506867d683d73210a0365dc6feaad304'],
-    table: 'sys_ui_element',
-    data: {
-        element: 'deal_type',
-        position: 18,
-        sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
-    },
-})
-Record({
     $id: Now.ID['1c6867d683d73210a0365dc6feaad304'],
     table: 'sys_ui_element',
     data: {
         element: '.split',
-        position: 19,
+        position: 18,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
         type: '.split',
     },
@@ -193,7 +184,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'plan_overlap_approved_by',
-        position: 20,
+        position: 19,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
 })
@@ -202,7 +193,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'plan_overlap_approved_on',
-        position: 21,
+        position: 20,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
 })
@@ -211,7 +202,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: '.end_split',
-        position: 22,
+        position: 21,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
         type: '.end_split',
     },
@@ -221,7 +212,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'plan_overlap_reason',
-        position: 23,
+        position: 22,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
 })
