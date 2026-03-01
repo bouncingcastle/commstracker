@@ -229,6 +229,10 @@ UiPage({
             <span>Plan Bonuses</span>
             <span>→</span>
           </a>
+          <a class="nav-item" href="/x_823178_commissio_bonus_earnings_list.do">
+            <span>Bonus Earnings</span>
+            <span>→</span>
+          </a>
           <a class="nav-item" href="/x_823178_commissio_deal_types_list.do">
             <span>Deal Types</span>
             <span>→</span>
@@ -285,6 +289,10 @@ UiPage({
           </a>
           <a class="nav-item" href="/sys_properties_list.do?sysparm_query=nameSTARTSWITHx_823178_commissio.">
             <span>System Preferences</span>
+            <span>→</span>
+          </a>
+          <a class="nav-item" href="/sysauto_script_list.do?sysparm_query=name=Commission%20Bonus%20Scenario%20Seed">
+            <span>Run Bonus Scenario Seed</span>
             <span>→</span>
           </a>
           <p style="font-size:12px;color:var(--muted);margin-top:8px;">Oversee exceptions, reconciliation outcomes, and operational alerts.</p>

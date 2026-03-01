@@ -1462,6 +1462,8 @@ UiPage({
             var amount = parseFloat(bonus.amount || 0);
             var isDiscretionary = bonus.is_discretionary;
             var dealType = bonus.deal_type || 'Any deal type';
+            var evaluationPeriod = bonus.evaluation_period || 'calculation';
+            var oneTimePerPeriod = !!bonus.one_time_per_period;
 
             var item = document.createElement('div');
             item.className = 'bonus-item';
@@ -1476,6 +1478,8 @@ UiPage({
                   (isDiscretionary ? 'Discretionary' : 'Auto-Earned') + 
                 '</span>' +
                 '<span class="bonus-badge">' + capitalizeFirst(dealType.replace(/_/g, ' ')) + '</span>' +
+                '<span class="bonus-badge">' + capitalizeFirst(String(evaluationPeriod).replace(/_/g, ' ')) + '</span>' +
+                (oneTimePerPeriod ? '<span class="bonus-badge">One-Time</span>' : '') +
               '</div>';
             container.appendChild(item);
           });

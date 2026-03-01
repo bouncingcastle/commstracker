@@ -60,6 +60,16 @@ export const x_823178_commissio_commission_calculations = Table({
             default: false,
             read_only: true
         }),
+        bonus_amount: DecimalColumn({
+            label: 'Bonus Amount',
+            read_only: true
+        }),
+        bonus_earned_count: StringColumn({
+            label: 'Bonus Earned Count',
+            maxLength: 10,
+            default: '0',
+            read_only: true
+        }),
         commission_amount: DecimalColumn({ 
             label: 'Commission Amount'
         }),
@@ -182,6 +192,11 @@ export const x_823178_commissio_commission_calculations = Table({
         payout_schedule_snapshot: StringColumn({
             label: 'Payout Schedule Snapshot',
             maxLength: 500,
+            read_only: true
+        }),
+        bonus_summary_snapshot: StringColumn({
+            label: 'Bonus Summary Snapshot',
+            maxLength: 1000,
             read_only: true
         })
     },

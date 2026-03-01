@@ -21,9 +21,52 @@ export const x_823178_commissio_plan_bonuses = Table({
             scale: 2,
             mandatory: true
         }),
-        bonus_trigger: StringColumn({
-            label: 'Bonus Trigger',
-            maxLength: 500
+        qualification_metric: StringColumn({
+            label: 'Qualification Metric',
+            choices: {
+                quota_attainment_percent: { label: 'Quota Attainment (%)', sequence: 0 },
+                deal_amount: { label: 'Deal Amount', sequence: 1 },
+                deal_count: { label: 'Deal Count', sequence: 2 },
+                base_commission_amount: { label: 'Base Commission Amount', sequence: 3 }
+            },
+            default: 'quota_attainment_percent',
+            mandatory: true
+        }),
+        qualification_operator: StringColumn({
+            label: 'Qualification Operator',
+            choices: {
+                gte: { label: '>=', sequence: 0 },
+                gt: { label: '>', sequence: 1 },
+                eq: { label: '=', sequence: 2 }
+            },
+            default: 'gte',
+            mandatory: true
+        }),
+        qualification_threshold: DecimalColumn({
+            label: 'Qualification Threshold',
+            precision: 14,
+            scale: 2,
+            mandatory: true
+        }),
+        evaluation_period: StringColumn({
+            label: 'Evaluation Period',
+            choices: {
+                calculation: { label: 'Per Calculation', sequence: 0 },
+                monthly: { label: 'Monthly', sequence: 1 },
+                quarterly: { label: 'Quarterly', sequence: 2 },
+                annual: { label: 'Annual', sequence: 3 }
+            },
+            default: 'calculation',
+            mandatory: true
+        }),
+        one_time_per_period: BooleanColumn({
+            label: 'One Time Per Period',
+            default: false
+        }),
+        condition_summary: StringColumn({
+            label: 'Condition Summary',
+            maxLength: 500,
+            read_only: true
         }),
         deal_type: StringColumn({
             label: 'Deal Type',
@@ -46,6 +89,11 @@ export const x_823178_commissio_plan_bonuses = Table({
         auto_payout: BooleanColumn({
             label: 'Auto Payout',
             default: false
+        }),
+        bonus_trigger: StringColumn({
+            label: 'Legacy Bonus Trigger (Deprecated)',
+            maxLength: 500,
+            read_only: true
         }),
         is_active: BooleanColumn({
             label: 'Active',

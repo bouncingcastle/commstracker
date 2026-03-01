@@ -253,3 +253,33 @@ Acl({
     admin_overrides: true,
     description: 'Only commission admins can create/update manager-team governance rows'
 })
+
+// Bonus earnings - Admin/Finance and Rep (own records)
+Acl({
+    $id: 'bonus_earnings_read_acl',
+    type: 'record',
+    table: 'x_823178_commissio_bonus_earnings',
+    operation: 'read',
+    roles: [commissionAdminRole, commissionRepRole, commissionFinanceRole],
+    active: true,
+    admin_overrides: true,
+    script: `
+        if (gs.hasRole('x_823178_commissio.rep') && !gs.hasRole('x_823178_commissio.admin') && !gs.hasRole('x_823178_commissio.finance')) {
+            answer = current.sales_rep == gs.getUserID();
+        } else {
+            answer = true;
+        }
+    `,
+    description: 'Reps can read their own bonus earnings; admins and finance can read all'
+})
+
+Acl({
+    $id: 'bonus_earnings_write_acl',
+    type: 'record',
+    table: 'x_823178_commissio_bonus_earnings',
+    operation: 'write',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can modify bonus earnings records'
+})
