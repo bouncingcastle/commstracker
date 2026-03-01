@@ -29,6 +29,7 @@ UiPage({
       --radius:8px;
     }
     *{margin:0;padding:0;box-sizing:border-box}
+    html{background:var(--bg);}
     body{
       background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
       font-size:14px;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;
@@ -565,7 +566,7 @@ UiPage({
           
           var ajax = new GlideAjax('CommissionProgressHelper');
           ajax.addParam('sysparm_name', 'searchUsers');
-          ajax.addParam('search_term', searchTerm);
+          ajax.addParam('sysparm_search_term', searchTerm);
           ajax.getXMLAnswer(function(response) {
             if (response) {
               var data = typeof response === 'string' ? JSON.parse(response) : response;
@@ -597,7 +598,7 @@ UiPage({
 
           var ajax = new GlideAjax('CommissionProgressHelper');
           ajax.addParam('sysparm_name', 'getRepProgress');
-          ajax.addParam('user_id', userId);
+          ajax.addParam('sysparm_user_id', userId);
           ajax.getXMLAnswer(function(response) {
             if (response) {
               try {
@@ -617,17 +618,63 @@ UiPage({
                   updateDealsTable(data.data.active_deals || []);
                 } else {
                   console.error('Invalid response format', data);
-                  document.getElementById('planCard').innerHTML = '<div class="empty"><div class="empty-icon">❌</div>Error loading plan data. Please check the browser console.</div>';
+                  showGlobalLoadError((data && data.message) ? data.message : 'Error loading commission progress data.');
                 }
               } catch (e) {
                 console.error('Error parsing response:', e);
-                document.getElementById('planCard').innerHTML = '<div class="empty"><div class="empty-icon">❌</div>Error parsing response: ' + e.message + '</div>';
+                showGlobalLoadError('Error parsing response: ' + e.message);
               }
             } else {
               console.error('No response from server');
-              document.getElementById('planCard').innerHTML = '<div class="empty"><div class="empty-icon">❌</div>No response from server</div>';
+              showGlobalLoadError('No response from server');
             }
           });
+        }
+
+        function showGlobalLoadError(message) {
+          var msg = message || 'Unable to load commission progress data.';
+
+          var planCard = document.getElementById('planCard');
+          if (planCard) {
+            planCard.innerHTML = '<div class="empty"><div class="empty-icon">❌</div>' + msg + '</div>';
+          }
+
+          var metricIds = ['totalEarned', 'pendingAmount', 'paidAmount', 'activeDeals'];
+          for (var i = 0; i < metricIds.length; i++) {
+            var metricEl = document.getElementById(metricIds[i]);
+            if (metricEl) metricEl.textContent = '—';
+          }
+
+          var pendingCount = document.getElementById('pendingCount');
+          if (pendingCount) pendingCount.textContent = 'Unable to load';
+
+          var paidCount = document.getElementById('paidCount');
+          if (paidCount) paidCount.textContent = 'Unable to load';
+
+          var dealPipeline = document.getElementById('dealPipeline');
+          if (dealPipeline) dealPipeline.textContent = 'Unable to load';
+
+          var breakdown = document.getElementById('commissionBreakdown');
+          if (breakdown) breakdown.innerHTML = '<div class="break-item">Unable to load commission breakdown</div>';
+
+          var dealBreakdown = document.getElementById('dealBreakdown');
+          if (dealBreakdown) dealBreakdown.innerHTML = '<div class="break-item">Unable to load deal breakdown</div>';
+
+          var quotaProgress = document.getElementById('quotaProgress');
+          if (quotaProgress) quotaProgress.innerHTML = '<div class="break-item">Unable to load quota progress</div>';
+
+          var calcBody = document.getElementById('calcTableBody');
+          if (calcBody) {
+            calcBody.innerHTML = '<tr><td colspan="7" class="empty">Unable to load calculations</td></tr>';
+          }
+
+          var dealsBody = document.getElementById('dealsTableBody');
+          if (dealsBody) {
+            dealsBody.innerHTML = '<tr><td colspan="7" class="empty">Unable to load active deals</td></tr>';
+          }
+
+          var lastUpEl = document.getElementById('lastUpdate');
+          if (lastUpEl) lastUpEl.textContent = 'Error';
         }
 
         function updatePlanCard(data) {
