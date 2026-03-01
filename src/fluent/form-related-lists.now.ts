@@ -8,7 +8,8 @@ Record({
     table: 'sys_ui_related_list',
     data: {
         name: 'x_823178_commissio_commission_plans',
-        related_list: 'x_823178_commissio_plan_targets.commission_plan'
+        related_list: 'x_823178_commissio_plan_targets.commission_plan',
+        view_name: 'default'
     }
 })
 
@@ -17,7 +18,8 @@ Record({
     table: 'sys_ui_related_list',
     data: {
         name: 'x_823178_commissio_commission_plans',
-        related_list: 'x_823178_commissio_plan_tiers.commission_plan'
+        related_list: 'x_823178_commissio_plan_tiers.commission_plan',
+        view_name: 'default'
     }
 })
 
@@ -26,7 +28,8 @@ Record({
     table: 'sys_ui_related_list',
     data: {
         name: 'x_823178_commissio_commission_plans',
-        related_list: 'x_823178_commissio_plan_bonuses.commission_plan'
+        related_list: 'x_823178_commissio_plan_bonuses.commission_plan',
+        view_name: 'default'
     }
 })
 
@@ -35,7 +38,8 @@ Record({
     table: 'sys_ui_related_list',
     data: {
         name: 'x_823178_commissio_commission_plans',
-        related_list: 'x_823178_commissio_plan_recognition_policies.commission_plan'
+        related_list: 'x_823178_commissio_plan_recognition_policies.commission_plan',
+        view_name: 'default'
     }
 })
 
@@ -44,7 +48,8 @@ Record({
     table: 'sys_ui_related_list',
     data: {
         name: 'x_823178_commissio_commission_calculations',
-        related_list: 'x_823178_commissio_bonus_earnings.commission_calculation'
+        related_list: 'x_823178_commissio_bonus_earnings.commission_calculation',
+        view_name: 'default'
     }
 })
 
@@ -53,6 +58,7 @@ Record({
     table: 'sys_ui_related_list',
     data: {
         name: 'x_823178_commissio_plan_bonuses',
-        related_list: 'x_823178_commissio_bonus_earnings.plan_bonus'
+        related_list: 'x_823178_commissio_bonus_earnings.plan_bonus',
+        view_name: 'default'
     }
 })

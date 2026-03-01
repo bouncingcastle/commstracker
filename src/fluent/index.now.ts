@@ -15,6 +15,7 @@ import './monitoring-tables.now'
 
 // Commission Dashboard UI Page
 import './ui-pages/commission-dashboard-redesigned.now'
+import './ui-pages/plan-structure-hierarchy.now'
 
 // Sales Rep Commission Progress UI Page
 import './ui-pages/commission-progress.now'
