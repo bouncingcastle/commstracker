@@ -180,8 +180,17 @@ Record({
                 }
 
                 if (recentCalcs.length < 10) {
-                    var calcDealGr = new GlideRecord('x_823178_commissio_deals');
-                    calcDealGr.get(calcGr.getValue('deal'));
+                    var calcDealName = calcGr.getDisplayValue('deal') || '';
+                    var calcDealId = calcGr.getValue('deal') || '';
+                    if (!calcDealName && calcDealId) {
+                        var calcDealGr = new GlideRecord('x_823178_commissio_deals');
+                        if (calcDealGr.get(calcDealId)) {
+                            calcDealName = calcDealGr.getDisplayValue('deal_name') || calcDealGr.getValue('deal_name') || '';
+                        }
+                    }
+                    if (!calcDealName) {
+                        calcDealName = calcGr.getValue('deal_name') || calcGr.getDisplayValue('payment') || 'Deal unavailable';
+                    }
 
                     var repName = '';
                     if (includeAllUsers) {
@@ -193,7 +202,8 @@ Record({
                     
                     recentCalcs.push({
                         sales_rep_name: repName,
-                        deal_name: calcDealGr.getDisplayValue('deal_name'),
+                        deal_name: calcDealName,
+                        deal_display: calcDealName,
                         deal_type: calcGr.getValue('deal_type'),
                         commission_base_amount: calcGr.getValue('commission_base_amount'),
                         commission_rate: calcGr.getValue('commission_rate'),
@@ -333,6 +343,32 @@ Record({
                 var amount = parseFloat(dealGr.getValue('amount')) || 0;
                 if (!achieved[dt2]) achieved[dt2] = 0;
                 achieved[dt2] += amount;
+            }
+
+            if (Object.keys(targets).length === 0) {
+                var planTargetFallback = 0;
+                var planForTarget = new GlideRecord('x_823178_commissio_commission_plans');
+                if (planForTarget.get(planId)) {
+                    planTargetFallback = parseFloat(planForTarget.getValue('plan_target_amount')) || 0;
+                }
+
+                if (planTargetFallback > 0) {
+                    var achievedKeys = Object.keys(achieved);
+                    var achievedTotal = 0;
+                    for (var k = 0; k < achievedKeys.length; k++) {
+                        achievedTotal += parseFloat(achieved[achievedKeys[k]] || 0);
+                    }
+
+                    if (achievedTotal > 0 && achievedKeys.length > 0) {
+                        for (var i = 0; i < achievedKeys.length; i++) {
+                            var key = achievedKeys[i];
+                            var share = (parseFloat(achieved[key] || 0) / achievedTotal);
+                            targets[key] = this.round2(planTargetFallback * share);
+                        }
+                    } else {
+                        targets.new_business = planTargetFallback;
+                    }
+                }
             }
 
             Object.keys(targets).forEach(function(dealType) {

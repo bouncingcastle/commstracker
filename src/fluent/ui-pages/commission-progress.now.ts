@@ -485,53 +485,15 @@ UiPage({
       </div>
     </div>
 
-    <!-- Forecast, Simulation & Estimator -->
-    <div class="big-grid" id="forecastSection">
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">🔮</span>
-          Forecast Simulation
-        </div>
-        <div class="selector-field" style="margin-bottom:12px;">
-          <select id="scenarioSelect">
-            <option value="">Live view (no saved scenario)</option>
-          </select>
-          <input id="winRateMultiplier" type="number" min="0.1" step="0.05" value="1" placeholder="Win-rate multiplier" />
-          <input id="pipelineMultiplier" type="number" min="0.1" step="0.05" value="1" placeholder="Pipeline multiplier" />
-          <button onclick="applyForecastScenario()">Apply</button>
-          <button onclick="saveForecastScenario()">Save</button>
-        </div>
-        <div class="breakdown" id="forecastSummary">
-          <div class="loading">Loading forecast insights...</div>
-        </div>
-        <div style="margin-top:12px;">
-          <div class="selector-sub" style="margin-bottom:6px;">Projected Payout Timeline</div>
-          <div class="breakdown" id="forecastTimeline">
-            <div class="loading">Loading payout timeline...</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">🧮</span>
-          Commission Estimator
-        </div>
-        <div class="selector-field" style="margin-bottom:12px;">
-          <input id="estimateAmount" type="number" min="0" step="100" placeholder="Deal amount" />
-          <select id="estimateDealType">
-            <option value="new_business">New Business</option>
-            <option value="renewal">Renewal</option>
-            <option value="expansion">Expansion</option>
-            <option value="upsell">Upsell</option>
-          </select>
-          <input id="estimateCloseDate" type="date" />
-          <button onclick="runCommissionEstimate()">Estimate</button>
-        </div>
-        <div class="breakdown" id="estimatorResult">
-          <div class="break-item">Run an estimate to view projected payout for a deal scenario.</div>
-        </div>
-      </div>
+    <!-- Forecast simulator is intentionally hidden in the dashboard UI. -->
+    <div id="forecastSection" style="display:none;">
+      <select id="scenarioSelect">
+        <option value="">Live view (no saved scenario)</option>
+      </select>
+      <input id="winRateMultiplier" type="number" min="0.1" step="0.05" value="1" />
+      <input id="pipelineMultiplier" type="number" min="0.1" step="0.05" value="1" />
+      <div class="breakdown" id="forecastSummary"></div>
+      <div class="breakdown" id="forecastTimeline"></div>
     </div>
 
     <div class="big-card" style="margin-bottom:16px;">
@@ -616,6 +578,27 @@ UiPage({
           <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="big-card" style="margin-top:16px;">
+      <div class="card-title">
+        <span class="icon">🧮</span>
+        Commission Estimator
+      </div>
+      <div class="selector-field" style="margin-bottom:12px;">
+        <input id="estimateAmount" type="number" min="0" step="100" placeholder="Deal amount" />
+        <select id="estimateDealType">
+          <option value="new_business">New Business</option>
+          <option value="renewal">Renewal</option>
+          <option value="expansion">Expansion</option>
+          <option value="upsell">Upsell</option>
+        </select>
+        <input id="estimateCloseDate" type="date" />
+        <button onclick="runCommissionEstimate()">Estimate</button>
+      </div>
+      <div class="breakdown" id="estimatorResult">
+        <div class="break-item">Run an estimate to view projected payout for a deal scenario.</div>
+      </div>
     </div>
   </div>
 
@@ -1389,9 +1372,10 @@ UiPage({
           }
 
           // Update quota progress tracker
-          if (data.quota_progress && Object.keys(data.quota_progress).length > 0) {
-            updateQuotaProgress(data.quota_progress, data.active_plan && data.active_plan.tiers ? data.active_plan.tiers : []);
-          }
+          var quotaProgressPayload = (data.quota_progress && Object.keys(data.quota_progress).length > 0)
+            ? data.quota_progress
+            : buildQuotaProgressFromTargets(data.active_plan && data.active_plan.targets ? data.active_plan.targets : null);
+          updateQuotaProgress(quotaProgressPayload, data.active_plan && data.active_plan.tiers ? data.active_plan.tiers : []);
 
           // Update timestamp
           var lastUpEl = document.getElementById('lastUpdate');
@@ -1651,6 +1635,27 @@ UiPage({
           }
         }
 
+        function buildQuotaProgressFromTargets(targets) {
+          if (!targets || typeof targets !== 'object') return {};
+
+          var fallback = {};
+          Object.keys(targets).forEach(function(dealType) {
+            var normalizedTarget = parseFloat(targets[dealType] || 0);
+            fallback[dealType] = {
+              target_amount: normalizedTarget,
+              achieved_amount: 0,
+              remaining_amount: normalizedTarget,
+              attainment_percent: 0,
+              is_over_quota: false,
+              applied_tier_name: '',
+              applied_rate_percent: 0,
+              accelerator_active: false
+            };
+          });
+
+          return fallback;
+        }
+
         function renderForecastSummary(summary) {
           var container = document.getElementById('forecastSummary');
           if (!container) return;
@@ -1891,12 +1896,18 @@ UiPage({
             var baseComponent = (parseFloat(calc.base_component) || 0);
             var acceleratorComponent = (parseFloat(calc.accelerator_component) || 0);
             var bonusComponent = (parseFloat(calc.bonus_component) || 0);
+            var explainabilityParts = [];
+            if (Math.abs(baseComponent) >= 0.01) explainabilityParts.push('Base $' + baseComponent.toFixed(2));
+            if (Math.abs(acceleratorComponent) >= 0.01) explainabilityParts.push('Accel $' + acceleratorComponent.toFixed(2));
+            if (Math.abs(bonusComponent) >= 0.01) explainabilityParts.push('Bonus $' + bonusComponent.toFixed(2));
+            var explainabilityDisplay = explainabilityParts.length ? explainabilityParts.join('<br/>') : 'No component breakdown';
+            var dealName = calc.deal_name && String(calc.deal_name).trim() ? calc.deal_name : (calc.deal_display || 'Deal unavailable');
             row.innerHTML = 
-              '<td>' + (calc.deal_name || '–') + '</td>' +
-              '<td>' + (calc.deal_type || '–') + '</td>' +
+              '<td>' + dealName + '</td>' +
+              '<td>' + formatDealTypeLabel(calc.deal_type || 'other') + '</td>' +
               '<td>$' + (parseFloat(calc.commission_base_amount) || 0).toFixed(2) + '</td>' +
               '<td>' + (parseFloat(calc.commission_rate) || 0).toFixed(2) + '%</td>' +
-              '<td>Base $' + baseComponent.toFixed(2) + '<br/>Accel $' + acceleratorComponent.toFixed(2) + '<br/>Bonus $' + bonusComponent.toFixed(2) + '</td>' +
+              '<td>' + explainabilityDisplay + '</td>' +
               '<td><strong>$' + (parseFloat(calc.commission_amount) || 0).toFixed(2) + '</strong></td>' +
               '<td>' + (calc.payment_date || '–') + '</td>' +
               '<td><span class="status-badge ' + statusClass + '">' + (calc.status || 'draft') + '</span></td>';
