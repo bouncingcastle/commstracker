@@ -321,6 +321,19 @@ For every proposed change, record this in this file before implementation:
 | SoT Sections Updated | Function Impact Record Log |
 | Decision | Approved for implementation |
 
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-015 |
+| Date | 2026-03-05 |
+| Summary | Regression fix: restore admin representative selector population and selection workflow in commission progress dashboard |
+| Impacted Functions | F-14, F-17 |
+| Change Type | access control, workflow |
+| Expected Effect | enhancement (restores intended admin user-selection behavior) |
+| Required Validation | Diagnostics clean; admin can load representative list and select a user to view progress |
+| Gap Impact | Stabilizes T4 usability and role-path demo gate reliability |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
 ## KPIs
 - Reproducible calculations from persisted snapshots: target 100%
 - Core UI checklist critical pass rate: target 100%
