@@ -108,6 +108,7 @@ Record({
         commission_plan: Now.ID['abel_plan_2026'],
         tier_name: '0-100% of Quota',
         attainment_floor_percent: 0,
+        attainment_ceiling_percent: 100,
         commission_rate_percent: 5.0,
         sort_order: 1,
         description: 'Base commission rate for Abel'
@@ -121,6 +122,7 @@ Record({
         commission_plan: Now.ID['abel_plan_2026'],
         tier_name: '101-120% of Quota',
         attainment_floor_percent: 101,
+        attainment_ceiling_percent: 120,
         commission_rate_percent: 6.5,
         sort_order: 2,
         description: 'Accelerated rate for exceeding quota'
@@ -134,6 +136,7 @@ Record({
         commission_plan: Now.ID['abel_plan_2026'],
         tier_name: '121%+ of Quota',
         attainment_floor_percent: 121,
+        attainment_ceiling_percent: 1000,
         commission_rate_percent: 8.5,
         sort_order: 3,
         description: 'Premium rate for stretch goal achievement'
@@ -148,6 +151,7 @@ Record({
         commission_plan: Now.ID['adela_plan_2026'],
         tier_name: '0-100% of Quota',
         attainment_floor_percent: 0,
+        attainment_ceiling_percent: 100,
         commission_rate_percent: 6.0,
         sort_order: 1,
         description: 'Base commission rate for Adela'
@@ -161,6 +165,7 @@ Record({
         commission_plan: Now.ID['adela_plan_2026'],
         tier_name: '101-120% of Quota',
         attainment_floor_percent: 101,
+        attainment_ceiling_percent: 120,
         commission_rate_percent: 7.5,
         sort_order: 2,
         description: 'Accelerated rate for exceeding quota'
@@ -174,6 +179,7 @@ Record({
         commission_plan: Now.ID['adela_plan_2026'],
         tier_name: '121%+ of Quota',
         attainment_floor_percent: 121,
+        attainment_ceiling_percent: 1000,
         commission_rate_percent: 9.5,
         sort_order: 3,
         description: 'Premium rate for stretch goal achievement'
@@ -188,6 +194,7 @@ Record({
         commission_plan: Now.ID['abraham_plan_2026'],
         tier_name: '0-100% of Quota',
         attainment_floor_percent: 0,
+        attainment_ceiling_percent: 100,
         commission_rate_percent: 4.5,
         sort_order: 1,
         description: 'Base commission rate for Abraham'
@@ -201,6 +208,7 @@ Record({
         commission_plan: Now.ID['abraham_plan_2026'],
         tier_name: '101%+ of Quota',
         attainment_floor_percent: 101,
+        attainment_ceiling_percent: 1000,
         commission_rate_percent: 6.0,
         sort_order: 2,
         description: 'Accelerated rate for exceeding quota'
