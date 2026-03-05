@@ -334,6 +334,19 @@ For every proposed change, record this in this file before implementation:
 | SoT Sections Updated | Function Impact Record Log |
 | Decision | Approved for implementation |
 
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-016 |
+| Date | 2026-03-05 |
+| Summary | Role model cleanup for manual in-instance assignment: remove obsolete seeded user-role mapping artifact and align documentation to manual assignment workflow |
+| Impacted Functions | F-14 |
+| Change Type | access control, workflow |
+| Expected Effect | enhancement (reduced configuration ambiguity; no runtime role-check behavior change) |
+| Required Validation | Diagnostics clean; role definitions remain unchanged; ACL/UI role checks still reference canonical scope roles; docs point to manual assignment |
+| Gap Impact | Improves T4 role-path reliability and reduces deployment confusion during T5 readiness |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
 ## KPIs
 - Reproducible calculations from persisted snapshots: target 100%
 - Core UI checklist critical pass rate: target 100%

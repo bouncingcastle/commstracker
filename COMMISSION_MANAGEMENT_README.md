@@ -29,7 +29,7 @@ A comprehensive commission management system that integrates with **Zoho Bigin**
 - ✅ **Quota tracking by deal type per rep** - Commission plans table
 - ✅ **Commission calculation per payment allocation** - Automated calculations
 - ✅ **Monthly statements (Draft → Locked → Paid)** - Statement workflow
-- ✅ **Role-based access (Rep/Admin/Finance)** - Complete security model
+- ✅ **Role-based access (Rep/Admin/Manager/Finance)** - Complete security model
 - ✅ **Full audit trail, no duplicate entries** - Audit flags and validation
 
 ---
@@ -60,13 +60,24 @@ A comprehensive commission management system that integrates with **Zoho Bigin**
 ### **Roles**
 - **`x_823178_commissio.rep`** - View own commission data
 - **`x_823178_commissio.admin`** - Full system access
+- **`x_823178_commissio.manager`** - View direct-report rollups
 - **`x_823178_commissio.finance`** - Lock/pay statements
 
 ### **Access Control**
 - **Reps**: Can only see their own deals, calculations, and statements
 - **Admins**: Full access to all data and configuration
+- **Managers**: Can view direct-report performance and team rollups
 - **Finance**: Can update statement status (lock/pay) but not amounts
 - **System Integration**: Secure REST API endpoints for Zoho sync
+
+### **User Role Assignment (Manual in Instance)**
+- Assign roles directly in ServiceNow (`User Administration > Users > [user] > Roles`)
+- Use role names only (do not rely on static role sys_ids across instances):
+	- `x_823178_commissio.rep`
+	- `x_823178_commissio.admin`
+	- `x_823178_commissio.manager`
+	- `x_823178_commissio.finance`
+- Validate assignment in `sys_user_has_role` where `state=active`
 
 ---
 
