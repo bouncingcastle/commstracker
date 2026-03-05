@@ -26,6 +26,9 @@ import './scheduled-scripts/daily-reconciliation.now'
 import './scheduled-scripts/backfill-payout-eligibility.now'
 import './scheduled-scripts/backfill-tier-and-deal-classifications.now'
 import './scheduled-scripts/seed-governance-reconcile.now'
+import './scheduled-scripts/architecture-integrity-check.now'
+import './scheduled-scripts/production-mvp-readiness-check.now'
+import './scheduled-scripts/month-end-readiness-audit.now'
 import './scheduled-scripts/seed-bonus-scenarios.now'
 
 // Business rules

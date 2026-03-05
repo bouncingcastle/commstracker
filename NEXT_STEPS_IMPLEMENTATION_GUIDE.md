@@ -28,6 +28,13 @@
 | LLM-008 | Lifecycle/versioning governance uplift | F-01, F-09, F-11, F-12, F-13, F-19 | T2/T6 | In Review | Diagnostics clean + approval flow sanity + queue field readiness | Implemented; validation evidence pending |
 | LLM-009 | Runtime lifecycle validation guards | F-01, F-09, F-12, F-19 | T2/T6 | In Review | Diagnostics clean + negative-case insert/update validation | Implemented in business-rule validators |
 | LLM-010 | AE demo readiness pack (M4/M5) | F-10, F-14, F-17 | T4/T5 | Ready | Role-nav smoke + AE progress page go/no-go checklist complete | Checklist added; execution pending in instance |
+| LLM-011 | Role access model dependency restore | F-12, F-14 | T4 | In Review | Missing import target restored + diagnostics clean | Added `src/server/script-includes/role-access-model.js` |
+| LLM-012 | Production MVP exit execution | F-14, F-17, F-18 | T4/T5 | Ready | E1–E5 evidence complete in canonical checklist | Execution pending in instance |
+| LLM-013 | Reconciliation evidence automation | F-17, F-18 | T4/T5 | In Review | Reconcile run writes structured row to reconciliation log with mode/toggle/module metrics | Implemented in server scripts/utilities |
+| LLM-014 | Production readiness check automation | F-14, F-17, F-18 | T5 | In Review | Scheduled check emits readiness verdict + metrics to reconciliation log/alerts | Implemented and wired in fluent index |
+| LLM-015 | Month-end readiness audit automation | F-11, F-12, F-17, F-18 | T5 | In Review | Scheduled audit emits month-end metrics + integrity risks to reconciliation log/alerts | Implemented and wired in fluent index |
+| LLM-016 | Build architecture validation hardening | F-11, F-12, F-14, F-17, F-18 | T4/T5 | In Review | Static wiring validation complete + required system properties present for readiness jobs | Implemented in config and server layers |
+| LLM-017 | Consolidated architecture integrity job | F-14, F-17, F-18 | T4/T5 | In Review | Single job validates core component presence and emits one reconciliation evidence record | Implemented and wired in fluent index |
 
 Status values: `Backlog` | `Ready` | `In Progress` | `Blocked` | `In Review` | `Done`
 
@@ -63,6 +70,12 @@ Copy/paste for each new request:
 | 2026-03-05 | S-003 | LLM-008 | In Review | Added plan/policy lifecycle+version fields, queue-oriented statement/approval indexes, and approval SLA due date defaulting |
 | 2026-03-05 | S-004 | LLM-009 | In Review | Added validator guards for lifecycle state ↔ active coherence, positive version enforcement, and supersede-chain integrity checks for plans/policies |
 | 2026-03-05 | S-005 | LLM-010 | Ready | Added AE demo minimum-record contract and role/menu smoke runbook for manual instance execution |
+| 2026-03-05 | S-006 | LLM-011/LLM-012 | In Progress | Added production MVP binary exit gate and restored missing role-access script include used by progress and statement approval paths |
+| 2026-03-05 | S-007 | LLM-013 | In Review | Enhanced seed-governance reconciliation to log records checked, duplicate variances, seed mode/toggles, and module baseline stats to reconciliation log |
+| 2026-03-05 | S-008 | LLM-014 | In Review | Added `Commission Production MVP Readiness Check` scheduled script and registered it in fluent index import graph |
+| 2026-03-05 | S-009 | LLM-015 | In Review | Added `Commission Month-End Readiness Audit` with stale approval/orphan calc integrity checks and reconciliation evidence output |
+| 2026-03-05 | S-010 | LLM-016 | In Review | Added missing readiness system properties and completed static architecture wiring validation across server/fluent imports |
+| 2026-03-05 | S-011 | LLM-017 | In Review | Added `Commission Architecture Integrity Check` to validate required tables/roles/properties/modules/jobs and log consolidated architecture posture |
 
 ## 7) Blockers / Decisions
 | Date | Type | Description | Owner | Resolution Target |
@@ -115,3 +128,26 @@ Run this once before demo day:
 - **Go** when at least 2 AEs pass all checks in 9.2 with expected numbers.
 - **No-Go** if any AE shows missing plan, empty quota progress with existing targets/deals, or role-scope leakage.
 - If No-Go, fix data linkage first (`sales_rep`, plan linkages, year dates), then retest same AE.
+
+## 10) Production MVP Exit Execution (From Canonical E1–E5)
+
+### 10.1 Execution order
+1. **E1 (T4 closure):** run M4 reconcile, then M5 role/menu smoke, then collect two clean deploy passes for M6.
+2. **E2 (Access UAT):** complete Rep/Manager/Finance/Admin matrix and sign-off.
+3. **E3 (Month-end dry run):** ingest → calc → statement generation → approval decision path.
+4. **E4 (Ops readiness):** finalize runbook, ownership, rollback.
+5. **E5 (Cutover plan):** first-week support roster and escalation.
+
+### 10.2 Evidence pack required for release decision
+- Reconciliation output and duplicate-removal summary.
+- Role-nav screenshots or run logs for all four personas.
+- Dry-run artifact bundle (counts, durations, exceptions, statement outputs).
+- Runbook URL/location + named on-call owners.
+- Cutover checklist with rollback trigger points.
+
+### 10.3 Instance execution commands/jobs (current automation)
+- Run `Commission Seed Governance Reconciliation` first (M4 evidence baseline).
+- Run `Commission Architecture Integrity Check` second (consolidated architecture posture evidence).
+- Run `Commission Production MVP Readiness Check` third (E1/E4 preflight evidence).
+- Run `Commission Month-End Readiness Audit` fourth (E3 operational dry-run evidence).
+- Confirm all runs write rows in `x_823178_commissio_reconciliation_log` and produce expected alert severity.

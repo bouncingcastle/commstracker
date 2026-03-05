@@ -77,11 +77,11 @@
 ## Controlled Remediation: Menu Deployment Wiring (T4 Caveat)
 | Step | Status | Note |
 |---|---|---|
-| M1 Baseline menu/module inventory | Pending | Capture instance baseline before/after reconciliation |
-| M2 Controlled seed mode verification | Pending | Strict seed mode required during menu deploy window |
+| M1 Baseline menu/module inventory | In progress (automation added) | Reconciliation now captures module totals/uniques/actives + records checked in `x_823178_commissio_reconciliation_log` |
+| M2 Controlled seed mode verification | In progress (automation added) | Reconciliation now records seed mode + seed toggles (`mode`, `navSeedEnabled`, `demoSeedEnabled`) as evidence |
 | M3 Re-enable `application-menu.now` import | Completed (2026-03-05) | `src/fluent/index.now.ts` import re-enabled |
-| M4 Run seed-governance reconcile | Pending | Remove/merge duplicate navigation artifacts |
-| M5 Role-based UX/menu validation | Pending | Admin/Manager/Finance/Rep navigation smoke |
+| M4 Run seed-governance reconcile | Pending (automation enhanced) | Reconcile now writes structured evidence to `x_823178_commissio_reconciliation_log` |
+| M5 Role-based UX/menu validation | Pending (repo precondition fixed) | Admin/Manager/Finance/Rep navigation smoke; `role-access-model.js` dependency now present |
 | M6 Promote T4 caveat to closed | Pending | Requires two clean deploy passes with evidence |
 
 ### AE Demo Readiness Gate (Target: Account Executive Progress Demo)
@@ -95,6 +95,25 @@ Required to declare demo-ready:
 	- Active pipeline list/value populated (from open deals)
 
 This gate is data-agnostic: records may be manually created for demo setup as long as table linkages are valid.
+
+## Production MVP Exit Checklist (Binary Go/No-Go)
+Production MVP is **Go** only when all items below are complete with evidence:
+
+| Exit Item | Current Status | Evidence Required |
+|---|---|---|
+| E1: T4 remediation closure (M4/M5/M6) | In progress | Reconcile output logs + role-nav smoke results + two clean deploy passes |
+| E2: Role/access UAT sign-off (Rep/Manager/Finance/Admin) | Pending | Access matrix with pass/fail and approver |
+| E3: Month-end dry run (ingest→calc→statement→approval) | Pending | Single-cycle run log with zero critical integrity exceptions |
+| E4: Operational readiness pack (runbook + alert ownership + rollback) | Pending | Published runbook + owner roster + rollback steps validated |
+| E5: Production cutover and first-week hypercare plan | Pending | Named owners, timelines, escalation path |
+
+**Current verdict (2026-03-05):** No-Go for production MVP, Go for controlled demo/pilot.
+
+Automation now available to accelerate evidence capture:
+- `Commission Seed Governance Reconciliation` (enhanced) logs duplicate/seed posture metrics to reconciliation log.
+- `Commission Architecture Integrity Check` (new, default inactive) validates required tables/roles/properties/modules/jobs and logs a single architecture readiness record.
+- `Commission Production MVP Readiness Check` (new, default inactive) logs module/role/seed posture checks to reconciliation log + alerts.
+- `Commission Month-End Readiness Audit` (new, default inactive) logs month-end operational metrics and integrity warnings/errors to reconciliation log + alerts.
 
 ## Change Control (Mandatory)
 For every proposed change, record this in this file before implementation:
@@ -171,6 +190,84 @@ For every proposed change, record this in this file before implementation:
 | Gap Impact | Clarifies T4 closure criteria and accelerates T5 adoption readiness |
 | SoT Sections Updated | Controlled Remediation, Function Impact Record Log |
 | Decision | Approved and pending execution in instance |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-005 |
+| Date | 2026-03-05 |
+| Summary | Added production MVP binary exit checklist and fixed missing role-access script include dependency |
+| Impacted Functions | F-12, F-14, F-17 |
+| Change Type | workflow, access control |
+| Expected Effect | enhancement (release-readiness clarity + role-validation runtime dependency restored) |
+| Required Validation | Diagnostics clean on new script include; execute M4/M5 operational evidence steps in instance |
+| Gap Impact | Advances T4 remediation and strengthens T5 readiness gating |
+| SoT Sections Updated | Controlled Remediation, Production MVP Exit Checklist, Function Impact Record Log |
+| Decision | Approved; repo-side remediation implemented, instance execution pending |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-006 |
+| Date | 2026-03-05 |
+| Summary | Added structured reconciliation evidence logging and baseline metrics capture to seed-governance reconcile path |
+| Impacted Functions | F-17, F-18 |
+| Change Type | observability, workflow |
+| Expected Effect | enhancement (M1/M2/M4 evidence captured automatically in reconciliation log) |
+| Required Validation | Diagnostics clean; execute reconcile job and confirm `x_823178_commissio_reconciliation_log` row contains mode/toggle/module metrics |
+| Gap Impact | Reduces manual work for T4 remediation closure and improves T5 operational readiness proof |
+| SoT Sections Updated | Controlled Remediation, Function Impact Record Log |
+| Decision | Approved and implemented (instance run pending) |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-007 |
+| Date | 2026-03-05 |
+| Summary | Added production MVP readiness scheduled check and wired deployment import for automated E1/E4 prerequisite validation |
+| Impacted Functions | F-14, F-17, F-18 |
+| Change Type | observability, workflow, access control |
+| Expected Effect | enhancement (faster release gating with repeatable readiness evidence) |
+| Required Validation | Diagnostics clean; execute readiness check job and verify reconciliation log + alert outputs |
+| Gap Impact | Strengthens T5 readiness and reduces manual gate drift across production cutover checks |
+| SoT Sections Updated | Controlled Remediation, Production MVP Exit Checklist, Function Impact Record Log |
+| Decision | Approved and implemented (instance run pending) |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-008 |
+| Date | 2026-03-05 |
+| Summary | Added month-end readiness audit job with integrity-risk checks (orphaned locked calculations, stale approvals, statement generation presence) |
+| Impacted Functions | F-11, F-12, F-17, F-18 |
+| Change Type | observability, workflow |
+| Expected Effect | enhancement (repeatable E3 dry-run evidence and early detection of month-end blockers) |
+| Required Validation | Diagnostics clean; execute audit job and verify reconciliation log + alert severity reflects findings |
+| Gap Impact | Advances T5 operational readiness and production cutover confidence |
+| SoT Sections Updated | Production MVP Exit Checklist, Function Impact Record Log |
+| Decision | Approved and implemented (instance run pending) |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-009 |
+| Date | 2026-03-05 |
+| Summary | Build-time architecture hardening: added missing readiness/approval system properties and completed static wiring validation for server↔fluent dependencies |
+| Impacted Functions | F-11, F-12, F-14, F-17, F-18 |
+| Change Type | observability, workflow, access control |
+| Expected Effect | enhancement (deploy-time configurability and reduced runtime drift risk) |
+| Required Validation | Diagnostics clean on touched files; run build/deploy in instance workspace and execute readiness jobs |
+| Gap Impact | Strengthens T4/T5 gate reliability for production MVP exit checks |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved and implemented |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-010 |
+| Date | 2026-03-05 |
+| Summary | Added consolidated architecture integrity check job with required component validation (tables, roles, properties, modules, jobs) |
+| Impacted Functions | F-14, F-17, F-18 |
+| Change Type | observability, workflow |
+| Expected Effect | enhancement (single-source architecture posture evidence for build governance) |
+| Required Validation | Diagnostics clean; execute architecture integrity job and verify reconciliation log + alert output |
+| Gap Impact | Improves T4/T5 governance reliability and reduces release gate ambiguity |
+| SoT Sections Updated | Production MVP Exit Checklist, Function Impact Record Log |
+| Decision | Approved and implemented (instance run pending) |
 
 ## KPIs
 - Reproducible calculations from persisted snapshots: target 100%
