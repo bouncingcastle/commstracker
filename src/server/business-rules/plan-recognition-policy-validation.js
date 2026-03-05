@@ -1,4 +1,5 @@
 import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
+import { CALC_STATUS } from '../script-includes/status-model.js'
 
 export function validatePlanRecognitionPolicy(current, previous) {
     if (!current.getValue('commission_plan')) {
@@ -144,7 +145,7 @@ function hasFrozenCalculationImpact(current, previous) {
 
     var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
     calcGr.addQuery('commission_plan', current.getValue('commission_plan'));
-    calcGr.addQuery('status', '!=', 'draft');
+    calcGr.addQuery('status', '!=', CALC_STATUS.DRAFT);
     calcGr.setLimit(1);
     calcGr.query();
 

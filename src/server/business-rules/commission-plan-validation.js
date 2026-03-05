@@ -1,4 +1,6 @@
 import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
+import { getApprovedOverrideDetails, createSystemAlert, createOverrideAuditLog } from '../script-includes/ops-governance-utils.js'
+import { CALC_STATUS } from '../script-includes/status-model.js'
 
 export function validateCommissionPlan(current, previous) {
     // Validate required fields
@@ -84,7 +86,7 @@ export function validateCommissionPlan(current, previous) {
     if (previous && previous.sys_id) {
         var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
         calcGr.addQuery('commission_plan', current.sys_id);
-        calcGr.addQuery('status', '!=', 'draft');
+        calcGr.addQuery('status', '!=', CALC_STATUS.DRAFT);
         calcGr.setLimit(1);
         calcGr.query();
         
@@ -244,40 +246,18 @@ function checkForGaps(current) {
 }
 
 function createGapException(endingPlan, startingPlan, salesRep) {
-    try {
-        var alertGr = new GlideRecord('x_823178_commissio_system_alerts');
-        alertGr.initialize();
-        alertGr.setValue('title', 'Commission Plan Gap Detected');
-        alertGr.setValue('message', 'Gap detected between plan "' + endingPlan.planName + 
-            '" (ends ' + endingPlan.endDate + ') and plan "' + startingPlan.planName + 
-            '" (starts ' + startingPlan.startDate + ') for sales rep: ' + salesRep);
-        alertGr.setValue('severity', 'medium');
-        alertGr.setValue('alert_date', new GlideDateTime().getDisplayValue());
-        alertGr.setValue('status', 'open');
-        alertGr.insert();
-    } catch (e) {
-        gs.error('Commission Management: Failed to create gap exception - ' + e.message);
-    }
+    createSystemAlert(
+        'Commission Plan Gap Detected',
+        'Gap detected between plan "' + endingPlan.planName +
+            '" (ends ' + endingPlan.endDate + ') and plan "' + startingPlan.planName +
+            '" (starts ' + startingPlan.startDate + ') for sales rep: ' + salesRep,
+        'medium',
+        'open'
+    );
 }
 
 function checkApprovedOverride(recordId, requestType) {
-    var approvalGr = new GlideRecord('x_823178_commissio_exception_approvals');
-    approvalGr.addQuery('reference_record', recordId);
-    approvalGr.addQuery('request_type', requestType);
-    approvalGr.addQuery('status', 'approved');
-    approvalGr.orderByDesc('approval_date');
-    approvalGr.setLimit(1);
-    approvalGr.query();
-    
-    if (approvalGr.next()) {
-        return {
-            approval_id: approvalGr.getUniqueValue(),
-            approved_by: approvalGr.getValue('approved_by') || '',
-            approval_date: approvalGr.getValue('approval_date') || '',
-            business_justification: approvalGr.getValue('business_justification') || ''
-        };
-    }
-    return false;
+    return getApprovedOverrideDetails(recordId, requestType) || false;
 }
 
 function applyOverlapApprovalMetadata(current, approval) {
@@ -298,18 +278,7 @@ function applyOverlapApprovalMetadata(current, approval) {
 }
 
 function createAuditLog(eventType, recordId, details) {
-    try {
-        var auditGr = new GlideRecord('x_823178_commissio_system_alerts');
-        auditGr.initialize();
-        auditGr.setValue('title', 'Approved Override: ' + eventType);
-        auditGr.setValue('message', details);
-        auditGr.setValue('severity', 'low');
-        auditGr.setValue('alert_date', new GlideDateTime().getDisplayValue());
-        auditGr.setValue('status', 'resolved');
-        auditGr.insert();
-    } catch (e) {
-        gs.error('Commission Management: Failed to create audit log - ' + e.message);
-    }
+    createOverrideAuditLog(eventType, details, 'low');
 }
 
 function isTruthyBoolean(value) {

@@ -1,8 +1,11 @@
 import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
+import { normalizeDealType as normalizeDealTypeCanonical } from '../script-includes/deal-type-normalizer.js'
+import { getApprovedOverrideJustification } from '../script-includes/ops-governance-utils.js'
+import { PAYMENT_CALC_STATE, CALC_STATUS } from '../script-includes/status-model.js'
 
 export function calculateCommissionOnPayment(current, previous) {
     // BUSINESS REQUIREMENT: Prevent duplicate calculations but allow legitimate recalculations
-    if (current.getValue('commission_calculated') === 'calculated' && !shouldRecalculate(current)) {
+    if (current.getValue('commission_calculated') === PAYMENT_CALC_STATE.CALCULATED && !shouldRecalculate(current)) {
         return; // Already calculated and no recalculation needed
     }
     
@@ -45,7 +48,7 @@ export function calculateCommissionOnPayment(current, previous) {
         var invoiceGr = new GlideRecord('x_823178_commissio_invoices');
         if (!invoiceGr.get(current.getValue('invoice'))) {
             gs.error('Commission Management: Invoice not found');
-            current.setValue('commission_calculated', 'error');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
         
@@ -53,14 +56,14 @@ export function calculateCommissionOnPayment(current, previous) {
         var dealGr = new GlideRecord('x_823178_commissio_deals');
         if (!dealGr.get(invoiceGr.getValue('deal'))) {
             gs.error('Commission Management: Deal not found for invoice');
-            current.setValue('commission_calculated', 'error');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
         
         // BUSINESS REQUIREMENT: Deal must be properly closed, but allow processing of approved high-value deals
         if (!dealGr.getValue('is_won') || !dealGr.getValue('snapshot_taken') || !dealGr.getValue('snapshot_timestamp')) {
             gs.warn('Commission Management: Deal is not properly closed or snapshot incomplete');
-            current.setValue('commission_calculated', 'error');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
         
@@ -68,7 +71,7 @@ export function calculateCommissionOnPayment(current, previous) {
         if (dealGr.getValue('requires_finance_approval') === 'true' && 
             dealGr.getValue('finance_approved') !== 'true') {
             gs.warn('Commission Management: Deal requires finance approval before commission calculation');
-            current.setValue('commission_calculated', 'pending');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.PENDING);
             return;
         }
         
@@ -76,14 +79,14 @@ export function calculateCommissionOnPayment(current, previous) {
         var commissionOwner = dealGr.getValue('owner_at_close');
         if (!commissionOwner) {
             gs.error('Commission Management: No commission owner in snapshot');
-            current.setValue('commission_calculated', 'error');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
         
         var ownerGr = new GlideRecord('sys_user');
         if (!ownerGr.get(commissionOwner)) {
             gs.error('Commission Management: Commission owner not found: ' + commissionOwner);
-            current.setValue('commission_calculated', 'error');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
         
@@ -91,7 +94,7 @@ export function calculateCommissionOnPayment(current, previous) {
         var closeDate = dealGr.getValue('close_date');
         if (!closeDate) {
             gs.error('Commission Management: Deal has no close date');
-            current.setValue('commission_calculated', 'error');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
         
@@ -101,7 +104,7 @@ export function calculateCommissionOnPayment(current, previous) {
             // BUSINESS REQUIREMENT: Create exception for missing plans rather than failing
             createMissingPlanException(dealGr, commissionOwner, closeDate);
             gs.warn('Commission Management: No commission plan found - exception created for manual resolution');
-            current.setValue('commission_calculated', 'pending');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.PENDING);
             return;
         }
 
@@ -117,7 +120,7 @@ export function calculateCommissionOnPayment(current, previous) {
         var temporalLookupDate = recognitionContext.temporalLookupDate;
         if (!temporalLookupDate) {
             gs.error('Commission Management: Unable to resolve temporal lookup date from recognition policy context');
-            current.setValue('commission_calculated', 'error');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
 
@@ -149,7 +152,7 @@ export function calculateCommissionOnPayment(current, previous) {
         var commissionRate = tierEvaluation.effectiveRate;
         if (!commissionRate || commissionRate <= 0) {
             gs.error('Commission Management: Invalid commission rate for deal type ' + dealGr.getValue('deal_type'));
-            current.setValue('commission_calculated', 'error');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
         
@@ -160,7 +163,7 @@ export function calculateCommissionOnPayment(current, previous) {
         
         if (invoiceSubtotal <= 0 || invoiceTotal <= 0) {
             gs.error('Commission Management: Invalid invoice amounts');
-            current.setValue('commission_calculated', 'error');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
         
@@ -175,15 +178,23 @@ export function calculateCommissionOnPayment(current, previous) {
         // BUSINESS REQUIREMENT: Precise calculation maintaining subtotal focus
         var paymentRatio = invoiceTotal > 0 ? Math.min(Math.abs(paymentAmount) / invoiceTotal, 1.0) : 0;
         var commissionBaseAmount = Math.round(invoiceSubtotal * paymentRatio * 100) / 100;
-        var commissionAmount = Math.round(commissionBaseAmount * (commissionRate / 100) * 100) / 100;
+        var effectiveCommissionComponent = calculateMarginalCommissionAmount({
+            planId: commissionPlan.planId,
+            dealType: tierEvaluation.appliedDealType || dealGr.getValue('deal_type'),
+            baseRate: tierEvaluation.baseRate || commissionRate,
+            attainedBeforePercent: tierEvaluation.attainedBeforePercent,
+            attainedAfterPercent: tierEvaluation.attainmentPercent,
+            baseAmount: commissionBaseAmount
+        });
+        var commissionAmount = effectiveCommissionComponent;
         
         // Handle refunds (negative amounts)
         var isNegative = current.getValue('payment_type') === 'refund' || paymentAmount < 0;
         if (isNegative) {
             commissionAmount = -Math.abs(commissionAmount);
+            effectiveCommissionComponent = -Math.abs(effectiveCommissionComponent);
         }
 
-        var effectiveCommissionComponent = commissionAmount;
         var baseRateForExplainability = tierEvaluation.baseRate || commissionRate;
         var baseCommissionComponent = Math.round(commissionBaseAmount * (baseRateForExplainability / 100) * 100) / 100;
         if (isNegative) {
@@ -200,7 +211,7 @@ export function calculateCommissionOnPayment(current, previous) {
             paymentDate: current.getValue('payment_date'),
             dealId: dealGr.getUniqueValue(),
             dealType: tierEvaluation.appliedDealType || dealGr.getValue('deal_type'),
-            dealTypeCandidates: tierEvaluation.dealTypeCandidates || resolveDealTypeCandidates(dealGr.getValue('deal_type')),
+            dealTypeCandidates: tierEvaluation.dealTypeCandidates || resolveDealTypeCandidates(dealGr.getValue('deal_type'), dealGr.getUniqueValue()),
             dealAmount: parseFloat(dealGr.getValue('amount')) || 0,
             invoiceId: invoiceGr.getUniqueValue(),
             evaluationDate: temporalLookupDate,
@@ -224,7 +235,7 @@ export function calculateCommissionOnPayment(current, previous) {
             var approvedHighCommission = checkApprovedOverride(current.sys_id, 'high_value_commission');
             if (!approvedHighCommission) {
                 gs.error('Commission Management: Commission amount $' + commissionAmount.toFixed(2) + ' exceeds maximum limit $' + maxCommissionLimit.toFixed(2) + ' - requires exception approval');
-                current.setValue('commission_calculated', 'error');
+                current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
                 createHighValueCommissionException(current, commissionAmount, maxCommissionLimit);
                 return;
             } else {
@@ -280,12 +291,16 @@ export function calculateCommissionOnPayment(current, previous) {
                 rateSelectionModel: 'highest_applicable_classification',
                 baseRate: tierEvaluation.baseRate,
                 effectiveRate: tierEvaluation.effectiveRate,
+                attainedBeforePercent: tierEvaluation.attainedBeforePercent,
                 tierName: tierEvaluation.tierName,
                 tierFloorPercent: tierEvaluation.tierFloorPercent,
+                tierCeilingPercent: tierEvaluation.tierCeilingPercent,
                 attainmentPercent: tierEvaluation.attainmentPercent,
                 quotaAmount: tierEvaluation.quotaAmount,
+                attainedBeforeAmount: tierEvaluation.attainedBeforeAmount,
                 attainedAmount: tierEvaluation.attainedAmount,
                 acceleratorApplied: tierEvaluation.acceleratorApplied,
+                payoutComputationMode: 'marginal_tier_bands',
                 recognitionBasis: recognitionContext.recognitionBasis,
                 recognitionDate: recognitionContext.recognitionDate,
                 temporalLookupDate: temporalLookupDate,
@@ -303,26 +318,27 @@ export function calculateCommissionOnPayment(current, previous) {
         
         if (calculationId) {
             persistBonusEarnings(calculationId, current.getUniqueValue(), bonusEvaluation.earnedBonuses);
-            current.setValue('commission_calculated', 'calculated');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.CALCULATED);
             current.setValue('commission_calculation_id', calculationId);
             current.setValue('calculation_lock', false);
             gs.info('Commission Management: Commission calculated - Amount: $' + commissionAmount.toFixed(2) + 
                    (requiresApproval ? ' (Requires Approval)' : ''));
         } else {
-            current.setValue('commission_calculated', 'error');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             gs.error('Commission Management: Failed to create commission calculation');
         }
         
     } catch (e) {
         gs.error('Commission Management: Error calculating commission - ' + e.message);
-        current.setValue('commission_calculated', 'error');
+        current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
         current.setValue('calculation_lock', false);
     }
 }
 
 function shouldRecalculate(paymentRecord) {
     // Allow recalculation if specifically requested or if calculation is in error state
-    if (paymentRecord.getValue('commission_calculated') === 'error') {
+    if (paymentRecord.getValue('commission_calculated') === PAYMENT_CALC_STATE.ERROR) {
+            commissionGr.setValue('status', CALC_STATUS.DRAFT);
         return true;
     }
     
@@ -502,7 +518,7 @@ function evaluateEffectiveCommissionRate(params) {
     var dealType = params.dealType;
     var dealAmount = Math.abs(parseFloat(params.dealAmount) || 0);
 
-    var dealTypeCandidates = resolveDealTypeCandidates(dealType);
+    var dealTypeCandidates = resolveDealTypeCandidates(dealType, dealId);
     if (dealTypeCandidates.length === 0) {
         dealTypeCandidates.push('other');
     }
@@ -510,6 +526,7 @@ function evaluateEffectiveCommissionRate(params) {
     var quotaAmount = getPlanQuotaAmount(plan.planId, plan);
     var attainedBefore = getRepAttainedAmountBeforeDeal(salesRep, closeDate, dealId);
     var attainedAmount = attainedBefore + dealAmount;
+    var attainedBeforePercent = quotaAmount > 0 ? (attainedBefore / quotaAmount) * 100 : 0;
     var attainmentPercent = quotaAmount > 0 ? (attainedAmount / quotaAmount) * 100 : 0;
 
     var evaluations = [];
@@ -517,7 +534,15 @@ function evaluateEffectiveCommissionRate(params) {
         var candidateDealType = dealTypeCandidates[i];
         var candidateBaseRate = getCommissionRateFromPlan(plan, candidateDealType);
         var candidateTier = resolveTierForAttainment(plan.planId, attainmentPercent, candidateDealType);
-        var candidateEffectiveRate = candidateTier ? candidateTier.ratePercent : candidateBaseRate;
+        var candidateMarginalRate = calculateMarginalEffectiveRate({
+            planId: plan.planId,
+            dealType: candidateDealType,
+            baseRate: candidateBaseRate,
+            attainedBeforePercent: attainedBeforePercent,
+            attainedAfterPercent: attainmentPercent,
+            amount: dealAmount
+        });
+        var candidateEffectiveRate = candidateMarginalRate > 0 ? candidateMarginalRate : (candidateTier ? candidateTier.ratePercent : candidateBaseRate);
 
         if (!candidateEffectiveRate || candidateEffectiveRate <= 0) {
             candidateEffectiveRate = candidateBaseRate;
@@ -543,8 +568,11 @@ function evaluateEffectiveCommissionRate(params) {
         effectiveRate: selectedEffectiveRate,
         tierName: selectedTier ? selectedTier.tierName : '',
         tierFloorPercent: selectedTier ? selectedTier.floorPercent : 0,
+        tierCeilingPercent: selectedTier ? selectedTier.ceilingPercent : 0,
         attainmentPercent: attainmentPercent,
+        attainedBeforePercent: attainedBeforePercent,
         quotaAmount: quotaAmount,
+        attainedBeforeAmount: attainedBefore,
         attainedAmount: attainedAmount,
         acceleratorApplied: !!(selectedTier && selectedTier.floorPercent >= 100),
         appliedDealType: selectedDealType,
@@ -588,6 +616,126 @@ function selectHighestRateEvaluation(evaluations) {
     }
 
     return best;
+}
+
+function getTierBandsForDealType(planId, dealType) {
+    var bands = [];
+    var normalizedDealType = normalizeDealTypeKey(dealType) || 'other';
+
+    var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
+    tierGr.addQuery('commission_plan', planId);
+    tierGr.addQuery('is_active', true);
+    tierGr.orderBy('attainment_floor_percent');
+    tierGr.query();
+
+    while (tierGr.next()) {
+        var tierDealType = normalizeDealTypeKey(tierGr.getValue('deal_type') || 'all');
+        if (!(tierDealType === 'all' || tierDealType === '' || tierDealType === normalizedDealType)) {
+            continue;
+        }
+
+        var floor = parseFloat(tierGr.getValue('attainment_floor_percent')) || 0;
+        var ceiling = parseFloat(tierGr.getValue('attainment_ceiling_percent'));
+        var rate = parseFloat(tierGr.getValue('commission_rate_percent')) || 0;
+        if (isNaN(ceiling)) {
+            continue;
+        }
+
+        bands.push({
+            tierName: tierGr.getValue('tier_name') || 'Tier',
+            floorPercent: floor,
+            ceilingPercent: ceiling,
+            ratePercent: rate
+        });
+    }
+
+    return bands;
+}
+
+function calculateMarginalEffectiveRate(params) {
+    var amount = Math.abs(parseFloat(params.amount) || 0);
+    if (amount <= 0) {
+        return 0;
+    }
+
+    var baseRate = parseFloat(params.baseRate) || 0;
+    var beforePercent = parseFloat(params.attainedBeforePercent) || 0;
+    var afterPercent = parseFloat(params.attainedAfterPercent) || 0;
+    var totalPercentDelta = afterPercent - beforePercent;
+    if (totalPercentDelta <= 0) {
+        return baseRate;
+    }
+
+    var bands = getTierBandsForDealType(params.planId, params.dealType);
+    if (!bands.length) {
+        return baseRate;
+    }
+
+    var weightedRate = 0;
+    var coveredPercent = 0;
+
+    for (var i = 0; i < bands.length; i++) {
+        var band = bands[i];
+        var overlapStart = Math.max(beforePercent, band.floorPercent);
+        var overlapEnd = Math.min(afterPercent, band.ceilingPercent);
+        var overlap = overlapEnd - overlapStart;
+        if (overlap <= 0) {
+            continue;
+        }
+
+        coveredPercent += overlap;
+        weightedRate += (overlap / totalPercentDelta) * (parseFloat(band.ratePercent) || 0);
+    }
+
+    if (coveredPercent < totalPercentDelta) {
+        weightedRate += ((totalPercentDelta - coveredPercent) / totalPercentDelta) * baseRate;
+    }
+
+    return Math.round(weightedRate * 10000) / 10000;
+}
+
+function calculateMarginalCommissionAmount(params) {
+    var baseAmount = Math.abs(parseFloat(params.baseAmount) || 0);
+    if (baseAmount <= 0) {
+        return 0;
+    }
+
+    var baseRate = parseFloat(params.baseRate) || 0;
+    var beforePercent = parseFloat(params.attainedBeforePercent) || 0;
+    var afterPercent = parseFloat(params.attainedAfterPercent) || 0;
+    var totalPercentDelta = afterPercent - beforePercent;
+    if (totalPercentDelta <= 0) {
+        return Math.round(baseAmount * (baseRate / 100) * 100) / 100;
+    }
+
+    var bands = getTierBandsForDealType(params.planId, params.dealType);
+    if (!bands.length) {
+        return Math.round(baseAmount * (baseRate / 100) * 100) / 100;
+    }
+
+    var commission = 0;
+    var coveredPercent = 0;
+
+    for (var i = 0; i < bands.length; i++) {
+        var band = bands[i];
+        var overlapStart = Math.max(beforePercent, band.floorPercent);
+        var overlapEnd = Math.min(afterPercent, band.ceilingPercent);
+        var overlap = overlapEnd - overlapStart;
+        if (overlap <= 0) {
+            continue;
+        }
+
+        coveredPercent += overlap;
+        var bandBaseAmount = baseAmount * (overlap / totalPercentDelta);
+        commission += bandBaseAmount * ((parseFloat(band.ratePercent) || 0) / 100);
+    }
+
+    if (coveredPercent < totalPercentDelta) {
+        var uncoveredBaseAmount = baseAmount * ((totalPercentDelta - coveredPercent) / totalPercentDelta);
+        commission += uncoveredBaseAmount * (baseRate / 100);
+    }
+
+    return Math.round(commission * 100) / 100;
 }
 
 function getPlanQuotaAmount(planId, plan) {
@@ -679,21 +827,38 @@ function resolveTierForAttainment(planId, attainmentPercent, dealType) {
 }
 
 function normalizeDealTypeKey(value) {
-    var normalized = (value || '').toString().toLowerCase();
-    normalized = normalized.replace(/[\s\-]+/g, '_').replace(/__+/g, '_');
-    normalized = normalized.replace(/^_+|_+$/g, '');
-    return normalized;
+    return normalizeDealTypeCanonical(value, '');
 }
 
-function resolveDealTypeCandidates(rawDealType) {
+function resolveDealTypeCandidates(rawDealType, dealId) {
+    var seen = {};
+    var candidates = [];
+
+    if (dealId) {
+        var classGr = new GlideRecord('x_823178_commissio_deal_classifications');
+        classGr.addQuery('deal', dealId);
+        classGr.addQuery('is_active', true);
+        classGr.orderByDesc('is_primary');
+        classGr.orderBy('priority');
+        classGr.orderBy('sys_created_on');
+        classGr.query();
+
+        while (classGr.next()) {
+            var mapped = normalizeDealTypeKey(classGr.getValue('deal_type'));
+            if (!mapped || seen[mapped]) {
+                continue;
+            }
+            seen[mapped] = true;
+            candidates.push(mapped);
+        }
+    }
+
     var raw = (rawDealType || '').toString();
     if (!raw) {
-        return [];
+        return candidates;
     }
 
     var parts = raw.split(/[;,|]+/);
-    var seen = {};
-    var candidates = [];
 
     for (var i = 0; i < parts.length; i++) {
         var normalized = normalizeDealTypeKey(parts[i]);
@@ -927,6 +1092,7 @@ function resolveBonusPeriod(referenceDate, period, paymentId) {
 
 function getRepWonDealCountForPeriod(salesRep, periodStart, periodEnd, dealTypeScope) {
     var count = 0;
+    var normalizedScope = normalizeBonusDealType(dealTypeScope);
     var dealGr = new GlideRecord('x_823178_commissio_deals');
     dealGr.addQuery('owner_at_close', salesRep);
     dealGr.addQuery('is_won', true);
@@ -938,13 +1104,15 @@ function getRepWonDealCountForPeriod(salesRep, periodStart, periodEnd, dealTypeS
         dealGr.addQuery('close_date', '<=', periodEnd);
     }
 
-    var normalizedDealType = (dealTypeScope || '').toString();
-    if (normalizedDealType && normalizedDealType !== 'any') {
-        dealGr.addQuery('deal_type', normalizedDealType);
-    }
-
     dealGr.query();
     while (dealGr.next()) {
+        if (normalizedScope !== 'any') {
+            var rawDealType = dealGr.getValue('deal_type');
+            var dealTypeCandidates = resolveDealTypeCandidates(rawDealType, dealGr.getUniqueValue());
+            if (!bonusScopeMatches(normalizedScope, rawDealType, dealTypeCandidates)) {
+                continue;
+            }
+        }
         count += 1;
     }
     return count;
@@ -1156,18 +1324,7 @@ function toDateString(dateTime) {
 }
 
 function checkApprovedOverride(recordId, requestType) {
-    var approvalGr = new GlideRecord('x_823178_commissio_exception_approvals');
-    approvalGr.addQuery('reference_record', recordId);
-    approvalGr.addQuery('request_type', requestType);
-    approvalGr.addQuery('status', 'approved');
-    approvalGr.orderByDesc('approval_date');
-    approvalGr.setLimit(1);
-    approvalGr.query();
-    
-    if (approvalGr.next()) {
-        return approvalGr.getValue('business_justification');
-    }
-    return false;
+    return getApprovedOverrideJustification(recordId, requestType);
 }
 
 export function validatePaymentData(current, previous) {

@@ -1,4 +1,5 @@
 import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
+import { createSystemAlert } from '../script-includes/ops-governance-utils.js'
 
 export function reconcileSeedGovernance() {
     var mode = (gs.getProperty('x_823178_commissio.seed_idempotency_mode', 'strict') || 'strict').toLowerCase();
@@ -150,21 +151,6 @@ function getCommissionApplicationId() {
     }
 
     return '';
-}
-
-function createSystemAlert(title, message, severity) {
-    try {
-        var alertGr = new GlideRecord('x_823178_commissio_system_alerts');
-        alertGr.initialize();
-        alertGr.setValue('title', title);
-        alertGr.setValue('message', message);
-        alertGr.setValue('severity', severity || 'medium');
-        alertGr.setValue('alert_date', new GlideDateTime().getDisplayValue());
-        alertGr.setValue('status', 'open');
-        alertGr.insert();
-    } catch (e) {
-        gs.error('Commission Management: Failed to create seed governance alert - ' + e.message);
-    }
 }
 
 function toBool(value) {

@@ -24,7 +24,8 @@ export const x_823178_commissio_plan_tiers = Table({
         attainment_ceiling_percent: DecimalColumn({
             label: 'Attainment Ceiling (%)',
             precision: 6,
-            scale: 2
+            scale: 2,
+            mandatory: true
         }),
         deal_type: StringColumn({
             label: 'Deal Type Scope',

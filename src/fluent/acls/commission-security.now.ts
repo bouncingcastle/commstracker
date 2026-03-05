@@ -178,6 +178,28 @@ Acl({
     description: 'Only commission admins can create/update/deactivate deal type records'
 })
 
+Acl({
+    $id: 'deal_classifications_read_acl',
+    type: 'record',
+    table: 'x_823178_commissio_deal_classifications',
+    operation: 'read',
+    roles: [commissionAdminRole, commissionFinanceRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins and finance can read deal classification mappings'
+})
+
+Acl({
+    $id: 'deal_classifications_write_acl',
+    type: 'record',
+    table: 'x_823178_commissio_deal_classifications',
+    operation: 'write',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can manage deal classification mappings'
+})
+
 // Plan Recognition Policies governance - admin only
 Acl({
     $id: 'plan_recognition_policies_read_acl',
