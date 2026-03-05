@@ -644,6 +644,46 @@ Record({
                 addUserById(planAgg.getValue('sales_rep'));
             }
 
+            if (users.length === 0) {
+                var calcAgg = new GlideAggregate('x_823178_commissio_commission_calculations');
+                if (selectedYear) {
+                    calcAgg.addQuery('calculation_date', '>=', yearStart);
+                    calcAgg.addQuery('calculation_date', '<=', yearEnd);
+                }
+                if (managerScopeIds && managerScopeIds.length > 0) {
+                    calcAgg.addQuery('sales_rep', 'IN', managerScopeIds.join(','));
+                } else if (!isAdmin && !isManager) {
+                    calcAgg.addQuery('sales_rep', viewerId);
+                }
+                calcAgg.groupBy('sales_rep');
+                calcAgg.query();
+
+                while (calcAgg.next()) {
+                    addUserById(calcAgg.getValue('sales_rep'));
+                }
+            }
+
+            if (users.length === 0) {
+                var dealAgg = new GlideAggregate('x_823178_commissio_deals');
+                if (selectedYear) {
+                    this.addDateRangeQuery(dealAgg, 'close_date', yearStart, yearEnd);
+                }
+                if (managerScopeIds && managerScopeIds.length > 0) {
+                    dealAgg.addQuery('current_owner', 'IN', managerScopeIds.join(',')).addOrCondition('owner_at_close', 'IN', managerScopeIds.join(','));
+                } else if (!isAdmin && !isManager) {
+                    dealAgg.addQuery('current_owner', viewerId).addOrCondition('owner_at_close', viewerId);
+                }
+                dealAgg.groupBy('current_owner');
+                dealAgg.query();
+                while (dealAgg.next()) {
+                    addUserById(dealAgg.getValue('current_owner'));
+                }
+            }
+
+            if (users.length === 0 && viewerId) {
+                addUserById(viewerId);
+            }
+
             users.sort(function(a, b) {
                 var an = (a.user_name || '').toLowerCase();
                 var bn = (b.user_name || '').toLowerCase();

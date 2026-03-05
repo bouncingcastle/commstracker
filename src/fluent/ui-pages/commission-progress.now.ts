@@ -856,16 +856,30 @@ UiPage({
             sysparm_year: String(viewingYear)
           }, function(response) {
             if (!response) {
-              select.innerHTML = '<option value="">No representatives with plans</option>';
-              select.disabled = true;
+              select.innerHTML = '<option value="">Select representative...</option>';
+              if (canViewTeamRollup) {
+                select.innerHTML += '<option value="team">My Team</option>';
+              }
+              if (canViewAllUsers) {
+                select.innerHTML += '<option value="all">All users</option>';
+              }
+              ensureCurrentUserOption();
+              select.disabled = !(canViewAllUsers || canViewTeamRollup || !!currentUserId);
               return;
             }
 
             try {
               var payload = typeof response === 'string' ? JSON.parse(response) : response;
               if (!payload || payload.status !== 'success' || !payload.data || !payload.data.length) {
-                select.innerHTML = '<option value="">No representatives with plans</option>';
-                select.disabled = true;
+                select.innerHTML = '<option value="">Select representative...</option>';
+                if (canViewTeamRollup) {
+                  select.innerHTML += '<option value="team">My Team</option>';
+                }
+                if (canViewAllUsers) {
+                  select.innerHTML += '<option value="all">All users</option>';
+                }
+                ensureCurrentUserOption();
+                select.disabled = !(canViewAllUsers || canViewTeamRollup || !!currentUserId);
                 return;
               }
 
@@ -893,8 +907,9 @@ UiPage({
               }
             } catch (e) {
               console.log('User options parse error:', e);
-              select.innerHTML = '<option value="">No representatives with plans</option>';
-              select.disabled = true;
+              select.innerHTML = '<option value="">Select representative...</option>';
+              ensureCurrentUserOption();
+              select.disabled = !(canViewAllUsers || canViewTeamRollup || !!currentUserId);
             }
           });
         }
