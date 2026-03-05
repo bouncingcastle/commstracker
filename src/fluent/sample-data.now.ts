@@ -10,6 +10,8 @@ Record({
         sales_rep: '62826bf03710200044e0bfc8bcbe5df1', // Abel Tuter
         effective_start_date: '2024-01-01',
         is_active: true,
+        lifecycle_state: 'active',
+        plan_version: 1,
         new_business_rate: 8.0,
         renewal_rate: 3.0,
         expansion_rate: 6.0,
@@ -30,6 +32,8 @@ Record({
         sales_rep: '0a826bf03710200044e0bfc8bcbe5d7a', // Adela Cervantsz
         effective_start_date: '2024-01-01',
         is_active: true,
+        lifecycle_state: 'active',
+        plan_version: 1,
         new_business_rate: 10.0,
         renewal_rate: 4.0,
         expansion_rate: 8.0,
