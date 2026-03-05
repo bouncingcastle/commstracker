@@ -1,5 +1,7 @@
 # MVP Use-Case Scenario Suite (Programmatic Architecture Validation)
 
+> **Tracking note (2026-03-05):** This file is execution/test reference only. Canonical backlog, phase status, and release tracking live in [GAP_ASSESSMENT.md](GAP_ASSESSMENT.md).
+
 This suite is derived from current implementation state in [GAP_ASSESSMENT.md](GAP_ASSESSMENT.md), table metadata under `src/fluent/tables`, business rules under `src/server/business-rules`, and deployed UI pages wired in [src/fluent/index.now.ts](src/fluent/index.now.ts).
 
 ## 1) Scope and MVP Definition

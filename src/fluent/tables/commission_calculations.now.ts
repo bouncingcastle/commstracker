@@ -1,5 +1,5 @@
 import '@servicenow/sdk/global'
-import { Table, StringColumn, DateColumn, DecimalColumn, DateTimeColumn, ReferenceColumn, BooleanColumn } from '@servicenow/sdk/core'
+import { Table, StringColumn, DateColumn, DecimalColumn, DateTimeColumn, ReferenceColumn, BooleanColumn, IntegerColumn } from '@servicenow/sdk/core'
 
 // Enhanced Commission Calculations table with web service access
 export const x_823178_commissio_commission_calculations = Table({
@@ -64,10 +64,9 @@ export const x_823178_commissio_commission_calculations = Table({
             label: 'Bonus Amount',
             read_only: true
         }),
-        bonus_earned_count: StringColumn({
+        bonus_earned_count: IntegerColumn({
             label: 'Bonus Earned Count',
-            maxLength: 10,
-            default: '0',
+            default: 0,
             read_only: true
         }),
         base_commission_component: DecimalColumn({
@@ -152,9 +151,9 @@ export const x_823178_commissio_commission_calculations = Table({
             maxLength: 64,
             read_only: true
         }),
-        recalculated_count: StringColumn({ 
+        recalculated_count: IntegerColumn({ 
             label: 'Recalculation Count',
-            default: '0',
+            default: 0,
             read_only: true
         }),
         last_recalculated: DateTimeColumn({ 
@@ -212,6 +211,28 @@ export const x_823178_commissio_commission_calculations = Table({
             read_only: true
         })
     },
+    indexes: [
+        {
+            name: 'idx_calc_payment',
+            fields: ['payment']
+        },
+        {
+            name: 'idx_calc_rep_date_status',
+            fields: ['sales_rep', 'payment_date', 'status']
+        },
+        {
+            name: 'idx_calc_statement_status',
+            fields: ['statement', 'status']
+        },
+        {
+            name: 'idx_calc_deal_close',
+            fields: ['deal', 'deal_close_date']
+        },
+        {
+            name: 'idx_calc_payout_basis',
+            fields: ['recognition_basis_snapshot', 'payout_eligible_date']
+        }
+    ],
     audit: true,
     accessible_from: 'public',
     caller_access: 'tracking',

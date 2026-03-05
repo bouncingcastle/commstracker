@@ -1,5 +1,7 @@
 # MVP Logical Test Results (Architecture Trace)
 
+> **Tracking note (2026-03-05):** This document is logical-validation evidence reference. Canonical delivery status and backlog tracking are maintained in [GAP_ASSESSMENT.md](GAP_ASSESSMENT.md).
+
 Date: 2026-03-04  
 Method: static logical validation of table relationships, runtime business rules, and UI-helper integration paths.
 

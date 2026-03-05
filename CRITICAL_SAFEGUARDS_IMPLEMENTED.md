@@ -1,5 +1,7 @@
 # 🛡️ **CRITICAL SAFEGUARDS IMPLEMENTED - PRODUCTION HARDENED**
 
+> **Tracking note (2026-03-05):** This document is safeguards/hardening reference. Canonical delivery status and backlog tracking are maintained in [GAP_ASSESSMENT.md](GAP_ASSESSMENT.md).
+
 ## **🚨 VULNERABILITIES ADDRESSED & FIXES DEPLOYED**
 
 ### **✅ SNAPSHOT IMMUTABILITY (Fix #1)**

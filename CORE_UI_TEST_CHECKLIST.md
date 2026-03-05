@@ -1,5 +1,7 @@
 # Core UI Test Checklist (Pre-Finance Cockpit)
 
+> **Tracking note (2026-03-05):** This document is test-execution reference. Canonical delivery status and backlog tracking are maintained in [GAP_ASSESSMENT.md](GAP_ASSESSMENT.md).
+
 Use this checklist to validate base relationships and core workflows before building Finance Mission Control.
 
 ## 0) Preconditions

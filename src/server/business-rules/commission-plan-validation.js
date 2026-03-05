@@ -15,6 +15,11 @@ export function validateCommissionPlan(current, previous) {
         current.setAbortAction(true);
         return;
     }
+
+    if (!validateLifecycleAndVersion(current)) {
+        current.setAbortAction(true);
+        return;
+    }
     
     // Validate sales rep is active
     var repGr = new GlideRecord('sys_user');
@@ -40,7 +45,7 @@ export function validateCommissionPlan(current, previous) {
         
         // BUSINESS REQUIREMENT: Allow retroactive end dates with approval
         var today = new GlideDateTime();
-        if (endDate.before(today) && current.getValue('is_active') === 'true') {
+        if (endDate.before(today) && isTruthyBoolean(current.getValue('is_active'))) {
             var approvedRetroactive = checkApprovedOverride(current.sys_id, 'retroactive_change');
             if (!approvedRetroactive) {
                 gs.addErrorMessage('Cannot set active plan with end date in the past without approval');
@@ -192,7 +197,7 @@ export function preventOverlapAndGaps(current, previous) {
     }
     
     // BUSINESS REQUIREMENT: Gap warning but allow for legitimate business reasons
-    if (current.getValue('is_active') === 'true') {
+    if (isTruthyBoolean(current.getValue('is_active'))) {
         checkForGaps(current);
     }
 }
@@ -284,4 +289,71 @@ function createAuditLog(eventType, recordId, details) {
 function isTruthyBoolean(value) {
     var normalized = String(value || '').toLowerCase();
     return normalized === 'true' || normalized === '1';
+}
+
+function validateLifecycleAndVersion(current) {
+    var lifecycleState = (current.getValue('lifecycle_state') || 'active').toString();
+    var supportedStates = {
+        draft: true,
+        active: true,
+        retired: true,
+        superseded: true
+    };
+
+    if (!supportedStates[lifecycleState]) {
+        gs.addErrorMessage('Lifecycle State must be one of: draft, active, retired, superseded.');
+        return false;
+    }
+
+    var version = parseInt(current.getValue('plan_version'), 10);
+    if (isNaN(version) || version <= 0) {
+        gs.addErrorMessage('Plan Version must be a positive integer.');
+        return false;
+    }
+
+    var isActive = isTruthyBoolean(current.getValue('is_active'));
+    if (lifecycleState === 'active' && !isActive) {
+        gs.addErrorMessage('Lifecycle State "active" requires Active = true.');
+        return false;
+    }
+
+    if ((lifecycleState === 'retired' || lifecycleState === 'superseded') && isActive) {
+        gs.addErrorMessage('Retired/Superseded plans must have Active = false.');
+        return false;
+    }
+
+    var supersedesPlan = (current.getValue('supersedes_plan') || '').toString();
+    if (!supersedesPlan) {
+        return true;
+    }
+
+    if (supersedesPlan === current.getUniqueValue()) {
+        gs.addErrorMessage('A plan cannot supersede itself.');
+        return false;
+    }
+
+    var priorPlan = new GlideRecord('x_823178_commissio_commission_plans');
+    if (!priorPlan.get(supersedesPlan)) {
+        gs.addErrorMessage('Supersedes Plan reference is invalid.');
+        return false;
+    }
+
+    if ((priorPlan.getValue('sales_rep') || '') !== (current.getValue('sales_rep') || '')) {
+        gs.addErrorMessage('Superseded plan must belong to the same sales rep.');
+        return false;
+    }
+
+    var priorVersion = parseInt(priorPlan.getValue('plan_version'), 10) || 0;
+    if (version <= priorVersion) {
+        gs.addErrorMessage('Plan Version must be greater than the superseded plan version (' + priorVersion + ').');
+        return false;
+    }
+
+    var priorSupersedes = (priorPlan.getValue('supersedes_plan') || '').toString();
+    if (priorSupersedes && priorSupersedes === current.getUniqueValue()) {
+        gs.addErrorMessage('Invalid supersede chain detected (cycle).');
+        return false;
+    }
+
+    return true;
 }

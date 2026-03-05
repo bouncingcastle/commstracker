@@ -12,6 +12,7 @@ export function enforceStatementApprovalWorkflow(current, previous) {
     if (!current.getValue('submitted_on')) {
         current.setValue('submitted_on', now)
     }
+    setDefaultSlaIfMissing(current)
 
     if (!previous || !previous.sys_id) {
         current.setValue('status', nextStatus || APPROVAL_STATUS.SUBMITTED)
@@ -48,6 +49,21 @@ export function enforceStatementApprovalWorkflow(current, previous) {
     appendWorkflowHistory(current, priorStatus, nextStatus)
 
     syncStatementStatus(current.getValue('statement'), nextStatus)
+}
+
+function setDefaultSlaIfMissing(current) {
+    if (current.getValue('sla_due_on')) {
+        return
+    }
+
+    var slaHours = parseInt(gs.getProperty('x_823178_commissio.statement_approval_sla_hours', '48'), 10)
+    if (isNaN(slaHours) || slaHours <= 0) {
+        slaHours = 48
+    }
+
+    var due = new GlideDateTime()
+    due.addSeconds(slaHours * 3600)
+    current.setValue('sla_due_on', due.getDisplayValue())
 }
 
 function hasReviewerRole() {

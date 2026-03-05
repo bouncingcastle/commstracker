@@ -1,7 +1,7 @@
 import '@servicenow/sdk/global'
 
 // Application Menu and Navigation
-// import './application-menu.now' // Temporarily disabled to prevent duplicate module creation during iterative deploys
+import './application-menu.now'
 
 // Security and role model
 import './roles/commission-roles.now'

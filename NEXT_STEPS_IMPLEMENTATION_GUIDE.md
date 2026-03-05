@@ -1,203 +1,117 @@
-# 🚀 Commission Management - Next Steps Implementation Guide
+# LLM Coding Tracker (Execution Guide)
 
-## 📋 **Current Status: DEPLOYED & CONFIGURED**
+> **Use case:** Primary working tracker for LLM-assisted coding sessions.
+> **Canonical alignment:** Status must always match [GAP_ASSESSMENT.md](GAP_ASSESSMENT.md).
 
-Your Commission Management system is now fully deployed with:
-- ✅ **User Roles Assigned**
-- ✅ **Commission Plans Created**  
-- ✅ **Demo Data Loaded**
-- ✅ **Test Scenarios Ready**
+## 1) Working Rules (Non-Negotiable)
+- Every coding request must map to one or more Function IDs (`F-xx`) in `GAP_ASSESSMENT.md`.
+- No change is “done” without validation evidence.
+- If scope changes, update this tracker first, then code.
+- If this file conflicts with `GAP_ASSESSMENT.md`, update this file immediately.
 
----
+## 2) Current Priority Stack
+1. Stabilize and validate T4 caveat closure (menu reconciliation + role-nav checks)
+2. Execute T5 readiness checks (integration/runbook/monitoring)
+3. Build T6 (Finance cockpit)
+4. Build T7/T8 (dispute/compliance + enterprise scale)
 
-## 👥 **Step 1: User Configuration - COMPLETED** ✅
+## 3) Active LLM Queue
+| Task ID | Title | Function IDs | Track | Status | Acceptance Gate | Evidence |
+|---|---|---|---|---|---|---|
+| LLM-001 | Complete menu remediation M4/M5 | F-14, F-17 | T4 | Ready | Reconcile clean + role-nav smoke pass | Pending |
+| LLM-002 | Operational readiness pack | F-18, F-11, F-17 | T5 | Backlog | Checklist closure + runbook proof | Pending |
+| LLM-003 | Finance cockpit foundation | F-19, F-12, F-13 | T6 | Backlog | Queue workflow and SLA throughput test | Pending |
+| LLM-004 | Dispute domain MVP | F-20, F-21 | T7 | Backlog | open→resolve→reopen + ACL validation | Pending |
+| LLM-005 | Compliance journal/export baseline | F-22 | T7 | Backlog | Immutability checks + export sample accepted | Pending |
+| LLM-006 | Multi-currency architecture baseline | F-23 | T8 | Backlog | FX snapshots + reconciliation scenarios | Pending |
+| LLM-007 | Schema hardening (types + indexes) | F-01, F-04, F-05, F-07, F-08, F-09, F-11, F-17, F-18 | T2/T3 | In Review | Modified-file error scan + runtime regression sanity | Implemented; awaiting broader regression |
+| LLM-008 | Lifecycle/versioning governance uplift | F-01, F-09, F-11, F-12, F-13, F-19 | T2/T6 | In Review | Diagnostics clean + approval flow sanity + queue field readiness | Implemented; validation evidence pending |
+| LLM-009 | Runtime lifecycle validation guards | F-01, F-09, F-12, F-19 | T2/T6 | In Review | Diagnostics clean + negative-case insert/update validation | Implemented in business-rule validators |
+| LLM-010 | AE demo readiness pack (M4/M5) | F-10, F-14, F-17 | T4/T5 | Ready | Role-nav smoke + AE progress page go/no-go checklist complete | Checklist added; execution pending in instance |
 
-### **Role Assignments Active:**
-| User | Email | Role | Purpose |
-|------|-------|------|---------|
-| **Abraham Lincoln** | abraham.lincoln@example.com | Admin + Rep | System Administrator |
-| **Abel Tuter** | abel.tuter@example.com | Rep | Sales Representative |
-| **Adela Cervantsz** | adela.cervantsz@example.com | Rep | Senior Sales Rep |
-| **Aileen Mottern** | aileen.mottern@example.com | Finance | Finance Team |
+Status values: `Backlog` | `Ready` | `In Progress` | `Blocked` | `In Review` | `Done`
 
-### **Commission Plans Active:**
-- **Abel Tuter**: 8% New Business, 3% Renewals
-- **Adela Cervantsz**: 10% New Business, 4% Renewals  
-- **Abraham Lincoln**: 5% New Business, 2% Renewals (test)
+## 4) Task Intake Template (Use Before Coding)
+Copy/paste for each new request:
 
----
-
-## 🧪 **Step 2: Test Commission Calculations - READY TO TEST**
-
-### **Test Scenarios Created:**
-
-#### **Test Case 1: New Business Commission**
-- **Deal**: TechCorp Enterprise License - $75,000
-- **Rep**: Abel Tuter (8% rate)
-- **Expected Commission**: $5,600 (on $70,000 subtotal)
-- **Payment Status**: Ready to process
-
-#### **Test Case 2: Renewal Commission**  
-- **Deal**: GlobalTech Renewal - $120,000
-- **Rep**: Adela Cervantsz (4% rate)
-- **Expected Commission**: $4,400 (on $110,000 subtotal)
-- **Payment Status**: Ready to process
-
-#### **Test Case 3: Refund Processing**
-- **Refund**: -$5,000 on TechCorp deal
-- **Expected**: Negative commission entry
-- **Purpose**: Test refund handling
-
-### **🔧 How to Test:**
-
-1. **View Current Data**:
-   - [Commission Plans](https://dev220282.service-now.com/x_823178_commissio_commission_plans_list.do) - See rate structures
-   - [Deals](https://dev220282.service-now.com/x_823178_commissio_deals_list.do) - See closed deals
-   - [Invoices](https://dev220282.service-now.com/x_823178_commissio_invoices_list.do) - See mapped invoices
-
-2. **Trigger Commission Calculations**:
-   - [Payments](https://dev220282.service-now.com/x_823178_commissio_payments_list.do) - Payments are loaded and ready
-   - **Commission calculations should auto-trigger via business rules**
-
-3. **Verify Results**:
-   - [Commission Calculations](https://dev220282.service-now.com/x_823178_commissio_commission_calculations_list.do) - Check calculated amounts
-   - Expected calculations should appear automatically
-
----
-
-## 🔌 **Step 3: Zoho Integration Testing**
-
-### **API Endpoints Available:**
-```
-POST https://dev220282.service-now.com/api/x_823178_commissio/zoho_commission_sync/v1/deals/sync
-POST https://dev220282.service-now.com/api/x_823178_commissio/zoho_commission_sync/v1/invoices/sync  
-POST https://dev220282.service-now.com/api/x_823178_commissio/zoho_commission_sync/v1/payments/sync
+```md
+### Task Intake: <TASK ID>
+- Request summary:
+- Function IDs impacted (F-xx):
+- Change type: behavioral | data model | workflow | access control | integration | observability
+- Expected effect: no functional change | enhancement | deprecation | breaking
+- Files likely impacted:
+- Required validations (UC/checklist/tests):
+- Gap/track impact (T1–T8):
+- Risks:
+- Definition of done:
 ```
 
-### **Sample Test Payload (Deals):**
-```json
-{
-  "data": [
-    {
-      "bigin_deal_id": "BIGIN_TEST_001",
-      "deal_name": "Test Deal from API",
-      "account_name": "Test Customer",
-      "amount": 50000,
-      "close_date": "2024-12-15",
-      "stage": "closed_won",
-      "deal_type": "new_business",
-      "owner_email": "abel.tuter@example.com"
-    }
-  ]
-}
-```
+## 5) Validation Checklist (Definition of Done)
+- [ ] Code change implemented and scoped correctly
+- [ ] Function IDs confirmed and unchanged/updated in `GAP_ASSESSMENT.md`
+- [ ] Validation run (targeted first, then broader if needed)
+- [ ] Evidence logged in this file (links, outputs, or test notes)
+- [ ] Queue status updated
+- [ ] Any roadmap impact reflected in `GAP_ASSESSMENT.md`
 
-### **Authentication:**
-- Requires ServiceNow user credentials
-- Use Basic Auth or Bearer token
-- Test with Abraham Lincoln (admin) account first
+## 6) Session Log (LLM Run History)
+| Date | Session ID | Tasks | Outcome | Notes |
+|---|---|---|---|---|
+| 2026-03-05 | S-001 | LLM-001 (partial) | In Progress | M3 done (`application-menu` import re-enabled), M4/M5 pending |
+| 2026-03-05 | S-002 | LLM-007 | In Review | Converted `deals.close_date` to `DateColumn`, normalized integer counters, added transactional indexes, hardened Zoho date normalization |
+| 2026-03-05 | S-003 | LLM-008 | In Review | Added plan/policy lifecycle+version fields, queue-oriented statement/approval indexes, and approval SLA due date defaulting |
+| 2026-03-05 | S-004 | LLM-009 | In Review | Added validator guards for lifecycle state ↔ active coherence, positive version enforcement, and supersede-chain integrity checks for plans/policies |
+| 2026-03-05 | S-005 | LLM-010 | Ready | Added AE demo minimum-record contract and role/menu smoke runbook for manual instance execution |
 
----
+## 7) Blockers / Decisions
+| Date | Type | Description | Owner | Resolution Target |
+|---|---|---|---|---|
+| 2026-03-05 | Operational | Need post-deploy navigation reconciliation evidence for M4 | Admin/Ops | Next deploy window |
 
-## 📊 **Step 4: Statement Generation Testing**
+## 8) Handoff Notes (Human ↔ LLM)
+- Always start by updating **Task Intake** and setting queue status.
+- Always end by updating **Validation Checklist** and **Session Log**.
+- Never close a task without evidence.
 
-### **Manual Statement Generation Test:**
-1. Navigate to **System Definition > Scheduled Jobs**
-2. Find "Generate Monthly Commission Statements"
-3. Run manually to test
-4. Check [Commission Statements](https://dev220282.service-now.com/x_823178_commissio_commission_statements_list.do)
+## 9) AE Demo Fast-Path (Manual Data Entry Supported)
 
-### **Expected Behavior:**
-- Creates statements for reps with commission calculations
-- Groups by month/year
-- Status starts as "Draft"
-- Finance can lock and mark as paid
+### 9.1 Minimum Record Contract (per Account Executive)
+Create these records manually for each AE you want to demo:
 
----
+| Required | Table | Minimum fields that must be valid for progress page |
+|---|---|---|
+| Yes | `x_823178_commissio_commission_plans` | `sales_rep`, `is_active=true`, `effective_start_date` (in demo year), optional `effective_end_date`, `plan_name` |
+| Yes | `x_823178_commissio_plan_targets` | At least 1 row linked to the plan with `deal_type`, `annual_target_amount` |
+| Yes | `x_823178_commissio_plan_tiers` | At least 1 baseline tier (floor 0) with `commission_rate_percent`; optional accelerator tiers |
+| Recommended | `x_823178_commissio_plan_bonuses` | Optional but improves explainability/OTE sections |
+| Yes (for attainment) | `x_823178_commissio_deals` | Won deals for the AE in demo year with `amount`, `close_date`, `is_won=true`, owner fields |
+| Yes (for pipeline) | `x_823178_commissio_deals` | Open deals for pipeline with `is_won=false`, stage not `closed_lost`, `amount`, `close_date` |
+| Yes (for earnings cards) | `x_823178_commissio_commission_calculations` | Rows for AE in demo year with `commission_amount`, `status`, `calculation_date`, `deal`, `sales_rep` |
 
-## 🔐 **Step 5: Security Validation**
+Notes:
+- Quota attainment is computed from **won deals vs plan targets**.
+- Earnings/pending/paid cards are computed from **commission calculations**.
+- If no active plan exists for selected year, page shows “No commission plan is assigned.”
 
-### **Role-Based Access Test:**
-1. **Login as Abel Tuter** (rep):
-   - Should see only own deals/calculations
-   - Cannot modify commission plans
-   - Cannot see other reps' data
+### 9.2 M4/M5 Role + Navigation Smoke (Demo Gate)
+Run this once before demo day:
 
-2. **Login as Aileen Mottern** (finance):
-   - Can see all statements
-   - Can lock/unlock statements
-   - Cannot modify commission amounts
+1. Confirm module links exist and open:
+	- `Dashboard` → `x_823178_commissio_dashboard.do`
+	- `My Progress` → `x_823178_commissio_progress.do`
+2. Validate role behavior:
+	- Rep: sees own data only.
+	- Manager: can select team rollup and managed reps.
+	- Finance/Admin: broader selection works.
+3. On progress page, validate for each AE:
+	- Plan card renders.
+	- Quota progress section is populated.
+	- Earned/pending/paid metrics are populated.
+	- Active deals table and pipeline value render.
+4. Capture evidence (screenshots + user role used + AE name).
 
-3. **Login as Abraham Lincoln** (admin):
-   - Full access to all data
-   - Can modify plans and calculations
-   - Can override security restrictions
-
----
-
-## 📈 **Step 6: Dashboard & Reporting Setup**
-
-### **Suggested Reports to Create:**
-1. **Commission Summary by Rep** (Monthly)
-2. **Deal Pipeline vs Commission Forecast**
-3. **Payment Processing Status**
-4. **Exception Report** (Unmapped invoices)
-
-### **Dashboard Views:**
-- Executive commission overview
-- Rep performance metrics  
-- Finance statement processing queue
-
----
-
-## 🎯 **Step 7: Production Readiness Checklist**
-
-### **Before Go-Live:**
-- [ ] Test all commission calculation scenarios
-- [ ] Validate Zoho API integration
-- [ ] Confirm role-based security works
-- [ ] Test monthly statement generation
-- [ ] Create production user accounts
-- [ ] Set up production commission plans
-- [ ] Configure Zoho webhook integration (if needed)
-- [ ] Create operational runbooks
-- [ ] Train end users
-
-### **Go-Live Activities:**
-- [ ] Import historical commission data (if needed)
-- [ ] Set up production Zoho sync schedules
-- [ ] Enable monthly statement automation
-- [ ] Monitor initial commission calculations
-- [ ] Validate first month-end process
-
----
-
-## 🆘 **Support & Troubleshooting**
-
-### **Common Issues:**
-1. **Commission not calculating**: Check deal is closed_won with snapshot
-2. **Access denied**: Verify user has correct commission role
-3. **API authentication**: Ensure proper ServiceNow credentials
-4. **Missing calculations**: Check invoice mapping to deals
-
-### **Monitoring:**
-- Check System Logs for commission calculation errors
-- Monitor API endpoint usage and errors
-- Track statement generation success rates
-
----
-
-## 🎉 **Ready for Production!**
-
-Your Commission Management system is fully configured and ready for testing. All business requirements are implemented:
-
-✅ **Quota credited on Deal Close Date**  
-✅ **Commission paid on Cash Received date**  
-✅ **Commission base = Invoice Subtotal**  
-✅ **Commission owner = AE at Deal Close Date**  
-✅ **Rate by rep's plan at close date**  
-✅ **Invoice mapping via Bigin Deal ID**  
-✅ **Refunds create negative entries**  
-✅ **Exception handling for unmapped data**  
-
-**Start testing with the demo data and then proceed with Zoho integration!** 🚀
+### 9.3 Go / No-Go for Live Demo
+- **Go** when at least 2 AEs pass all checks in 9.2 with expected numbers.
+- **No-Go** if any AE shows missing plan, empty quota progress with existing targets/deals, or role-scope leakage.
+- If No-Go, fix data linkage first (`sales_rep`, plan linkages, year dates), then retest same AE.

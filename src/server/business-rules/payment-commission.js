@@ -1209,7 +1209,7 @@ function createCommissionCalculation(data) {
     commissionGr.setValue('attained_amount_snapshot', data.attainedAmountSnapshot || 0);
     commissionGr.setValue('accelerator_applied', data.acceleratorApplied || false);
     commissionGr.setValue('bonus_amount', data.bonusAmount || 0);
-    commissionGr.setValue('bonus_earned_count', (data.bonusEarnedCount || 0).toString());
+    commissionGr.setValue('bonus_earned_count', data.bonusEarnedCount || 0);
     commissionGr.setValue('base_commission_component', data.baseCommissionComponent || 0);
     commissionGr.setValue('accelerator_delta_component', data.acceleratorDeltaComponent || 0);
     commissionGr.setValue('bonus_component', data.bonusComponent || 0);

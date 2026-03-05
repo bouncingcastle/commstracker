@@ -78,7 +78,7 @@ function updateDealFromBigin(dealGr, dealData) {
     dealGr.setValue('deal_name', dealData.deal_name || '');
     dealGr.setValue('account_name', dealData.account_name || '');
     dealGr.setValue('amount', dealData.amount || 0);
-    dealGr.setValue('close_date', dealData.close_date || '');
+    dealGr.setValue('close_date', normalizeDateValue(dealData.close_date));
     dealGr.setValue('stage', dealData.stage || 'lead');
     dealGr.setValue('deal_type', dealData.deal_type || 'new_business');
     
@@ -171,7 +171,7 @@ function updateInvoiceFromBooks(invoiceGr, invoiceData) {
     invoiceGr.setValue('bigin_deal_id', invoiceData.bigin_deal_id || '');
     invoiceGr.setValue('invoice_number', invoiceData.invoice_number || '');
     invoiceGr.setValue('customer_name', invoiceData.customer_name || '');
-    invoiceGr.setValue('invoice_date', invoiceData.invoice_date || '');
+    invoiceGr.setValue('invoice_date', normalizeDateValue(invoiceData.invoice_date));
     invoiceGr.setValue('subtotal', invoiceData.subtotal || 0);
     invoiceGr.setValue('tax_amount', invoiceData.tax_amount || 0);
     invoiceGr.setValue('total_amount', invoiceData.total_amount || 0);
@@ -253,7 +253,7 @@ export function syncPaymentsFromBooks(request, response) {
 
 function updatePaymentFromBooks(paymentGr, paymentData) {
     paymentGr.setValue('books_payment_id', paymentData.books_payment_id);
-    paymentGr.setValue('payment_date', paymentData.payment_date || '');
+    paymentGr.setValue('payment_date', normalizeDateValue(paymentData.payment_date));
     paymentGr.setValue('payment_amount', paymentData.payment_amount || 0);
     paymentGr.setValue('payment_method', paymentData.payment_method || 'other');
     paymentGr.setValue('payment_type', paymentData.payment_type || 'payment');
@@ -271,4 +271,21 @@ function updatePaymentFromBooks(paymentGr, paymentData) {
             }
         }
     }
+}
+
+function normalizeDateValue(value) {
+    if (!value) {
+        return '';
+    }
+
+    var raw = (value + '').trim();
+    if (!raw) {
+        return '';
+    }
+
+    if (raw.length >= 10) {
+        return raw.substring(0, 10);
+    }
+
+    return raw;
 }
