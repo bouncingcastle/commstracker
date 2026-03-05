@@ -107,7 +107,8 @@ Record({
                     result.data.active_plan = {
                         plan_name: planGr.getValue('plan_name'),
                         plan_target_amount: resolvedPlanTarget,
-                        plan_year: planYear,
+                        plan_year: selectedYear,
+                        plan_effective_year: planYear,
                         sys_id: planId,
                         effective_start_date: planGr.getValue('effective_start_date'),
                         effective_end_date: planGr.getValue('effective_end_date'),
@@ -352,13 +353,17 @@ Record({
                     planTargetFallback = parseFloat(planForTarget.getValue('plan_target_amount')) || 0;
                 }
 
-                if (planTargetFallback > 0) {
-                    var achievedKeys = Object.keys(achieved);
-                    var achievedTotal = 0;
-                    for (var k = 0; k < achievedKeys.length; k++) {
-                        achievedTotal += parseFloat(achieved[achievedKeys[k]] || 0);
-                    }
+                var achievedKeys = Object.keys(achieved);
+                var achievedTotal = 0;
+                for (var k = 0; k < achievedKeys.length; k++) {
+                    achievedTotal += parseFloat(achieved[achievedKeys[k]] || 0);
+                }
 
+                if (planTargetFallback <= 0 && achievedTotal > 0) {
+                    planTargetFallback = achievedTotal;
+                }
+
+                if (planTargetFallback > 0) {
                     if (achievedTotal > 0 && achievedKeys.length > 0) {
                         for (var i = 0; i < achievedKeys.length; i++) {
                             var key = achievedKeys[i];
@@ -368,6 +373,12 @@ Record({
                     } else {
                         targets.new_business = planTargetFallback;
                     }
+                } else if (achievedKeys.length > 0) {
+                    for (var j = 0; j < achievedKeys.length; j++) {
+                        targets[achievedKeys[j]] = 0;
+                    }
+                } else {
+                    targets.new_business = 0;
                 }
             }
 
