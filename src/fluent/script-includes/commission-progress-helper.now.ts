@@ -56,6 +56,7 @@ Record({
                     pipeline_value: 0,
                     breakdown: {},
                     deal_breakdown: {},
+                    won_commissions_by_month: [],
                     recent_calculations: [],
                     active_deals: [],
                     active_plan: null
@@ -100,9 +101,12 @@ Record({
                     var compDetails = this.getCompensationPlanDetails(planId);
                     var baseRate = compDetails.base_rate;
                     var totalQuota = compDetails.total_quota;
-                    var oTE100 = totalQuota > 0 ? (totalQuota * baseRate / 100) : 0;
-                    var oteWithBonuses = oTE100 + compDetails.total_bonus_potential;
                     var resolvedPlanTarget = totalQuota > 0 ? totalQuota : (parseFloat(planGr.getValue('plan_target_amount')) || 0);
+                    var oTE100 = parseFloat(compDetails.ote_at_100_percent || 0);
+                    if (oTE100 <= 0 && resolvedPlanTarget > 0 && baseRate > 0) {
+                        oTE100 = resolvedPlanTarget * baseRate / 100;
+                    }
+                    var oteWithBonuses = oTE100 + compDetails.total_bonus_potential;
                     
                     result.data.active_plan = {
                         plan_name: planGr.getValue('plan_name'),
@@ -153,6 +157,7 @@ Record({
             var totalAcceleratorDelta = 0;
             var totalBonusComponent = 0;
             var breakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
+            var wonCommissionsByMonthMap = {};
             var recentCalcs = [];
 
             while (calcGr.next()) {
@@ -168,6 +173,22 @@ Record({
                     pendingCount++;
                 }
                 totalEarned += commAmount;
+
+                if (commAmount > 0 && status !== 'error') {
+                    var wonDate = calcGr.getValue('payment_date') || calcGr.getValue('calculation_date') || '';
+                    var wonMonth = this.getMonthKey(wonDate);
+                    if (wonMonth && wonMonth !== 'unknown') {
+                        if (!wonCommissionsByMonthMap[wonMonth]) {
+                            wonCommissionsByMonthMap[wonMonth] = {
+                                month: wonMonth,
+                                total_commission: 0,
+                                calculation_count: 0
+                            };
+                        }
+                        wonCommissionsByMonthMap[wonMonth].total_commission += commAmount;
+                        wonCommissionsByMonthMap[wonMonth].calculation_count += 1;
+                    }
+                }
 
                 var explainability = this.getExplainabilityComponentsFromCalc(calcGr);
                 totalBaseComponent += explainability.base_component;
@@ -231,6 +252,7 @@ Record({
                 unexplained_delta: totalEarned - (totalBaseComponent + totalAcceleratorDelta + totalBonusComponent)
             };
             result.data.breakdown = breakdown;
+            result.data.won_commissions_by_month = this.toSortedWonCommissionSeries(wonCommissionsByMonthMap);
             result.data.recent_calculations = recentCalcs;
 
             var dealGr = new GlideRecord('x_823178_commissio_deals');
@@ -845,10 +867,26 @@ Record({
                 bonuses: [],
                 total_quota: 0,
                 base_rate: 0,
+                rate_card: {
+                    new_business: 0,
+                    renewal: 0,
+                    expansion: 0,
+                    upsell: 0
+                },
+                ote_at_100_percent: 0,
                 total_bonus_potential: 0
             };
 
             if (!planId) return details;
+
+            var planGr = new GlideRecord('x_823178_commissio_commission_plans');
+            if (planGr.get(planId)) {
+                details.base_rate = parseFloat(planGr.getValue('base_rate')) || 0;
+                details.rate_card.new_business = parseFloat(planGr.getValue('new_business_rate')) || 0;
+                details.rate_card.renewal = parseFloat(planGr.getValue('renewal_rate')) || 0;
+                details.rate_card.expansion = parseFloat(planGr.getValue('expansion_rate')) || 0;
+                details.rate_card.upsell = parseFloat(planGr.getValue('upsell_rate')) || 0;
+            }
 
             var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
             targetGr.addQuery('commission_plan', planId);
@@ -897,10 +935,41 @@ Record({
                 });
             }
 
+            var oteAtTarget = 0;
+            var targetTypes = Object.keys(details.targets || {});
+            for (var i = 0; i < targetTypes.length; i++) {
+                var targetDealType = this.normalizeDealType(targetTypes[i]);
+                var targetAmount = parseFloat(details.targets[targetTypes[i]] || 0);
+                var targetRate = 0;
+
+                if (targetDealType === 'new_business') targetRate = parseFloat(details.rate_card.new_business || 0);
+                else if (targetDealType === 'renewal') targetRate = parseFloat(details.rate_card.renewal || 0);
+                else if (targetDealType === 'expansion') targetRate = parseFloat(details.rate_card.expansion || 0);
+                else if (targetDealType === 'upsell') targetRate = parseFloat(details.rate_card.upsell || 0);
+
+                if (targetRate <= 0) targetRate = parseFloat(details.base_rate || 0);
+                oteAtTarget += targetAmount * (targetRate / 100);
+            }
+
+            if (oteAtTarget <= 0 && details.total_quota > 0 && details.base_rate > 0) {
+                oteAtTarget = details.total_quota * (details.base_rate / 100);
+            }
+
+            details.ote_at_100_percent = this.round2(oteAtTarget);
+
             return details;
         } catch (e) {
             gs.error('CommissionProgressDataService.getCompensationPlanDetails error: ' + e.getMessage());
-            return { targets: {}, tiers: [], bonuses: [], total_quota: 0, base_rate: 0, total_bonus_potential: 0 };
+            return {
+                targets: {},
+                tiers: [],
+                bonuses: [],
+                total_quota: 0,
+                base_rate: 0,
+                rate_card: { new_business: 0, renewal: 0, expansion: 0, upsell: 0 },
+                ote_at_100_percent: 0,
+                total_bonus_potential: 0
+            };
         }
     },
 
@@ -1464,6 +1533,23 @@ Record({
             });
         }
         return timeline;
+    },
+
+    toSortedWonCommissionSeries: function(map) {
+        var series = [];
+        var keys = Object.keys(map || {});
+        keys.sort();
+
+        for (var i = 0; i < keys.length; i++) {
+            var row = map[keys[i]];
+            series.push({
+                month: row.month,
+                total_commission: this.round2(row.total_commission),
+                calculation_count: parseInt(row.calculation_count, 10) || 0
+            });
+        }
+
+        return series;
     },
 
     resolveDominantRecognitionBasis: function(basisCounts) {

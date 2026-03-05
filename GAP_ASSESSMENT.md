@@ -282,6 +282,45 @@ For every proposed change, record this in this file before implementation:
 | SoT Sections Updated | Function Impact Record Log |
 | Decision | Approved for implementation |
 
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-012 |
+| Date | 2026-03-05 |
+| Summary | Added monthly won-commissions trend representation to commission progress dashboard (selected-year, representative-scoped) |
+| Impacted Functions | F-05, F-10, F-14, F-17 |
+| Change Type | workflow, observability |
+| Expected Effect | enhancement (new reporting visualization; no commission calculation behavior changes) |
+| Required Validation | Diagnostics clean; selected-year dashboard shows month-by-month won commission totals; empty-state renders cleanly when no data |
+| Gap Impact | Advances T4 usability and strengthens AE demo evidence quality for progress-page comprehension |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-013 |
+| Date | 2026-03-05 |
+| Summary | Commission progress UI cleanup: remove redundant top summary card, promote quota/OTE cards, and ensure quota-progress renders all plan-applicable deal types |
+| Impacted Functions | F-01, F-10, F-14 |
+| Change Type | workflow, observability |
+| Expected Effect | enhancement (layout clarity and complete quota-type visibility; no payout behavior changes) |
+| Required Validation | Diagnostics clean; top summary card removed; quota/OTE appears in top row; quota progress includes all active plan target deal types |
+| Gap Impact | Improves T4 usability and demo readability for AE workflows |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-014 |
+| Date | 2026-03-05 |
+| Summary | Dead-code elimination in commission progress UI script after card-layout simplification (remove obsolete plan-card renderer and now-unreferenced helpers) |
+| Impacted Functions | F-10, F-14 |
+| Change Type | workflow |
+| Expected Effect | enhancement (maintainability improvement; no runtime behavior change intended) |
+| Required Validation | Diagnostics clean; no references remain to removed functions/elements; dashboard loads without JS errors |
+| Gap Impact | Supports T4 stability by reducing UI script drift and maintenance risk |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
 ## KPIs
 - Reproducible calculations from persisted snapshots: target 100%
 - Core UI checklist critical pass rate: target 100%

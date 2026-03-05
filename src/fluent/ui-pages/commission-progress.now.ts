@@ -216,49 +216,6 @@ UiPage({
       background:rgba(110,168,255,.8);
     }
 
-    .plan-card{
-      background:linear-gradient(135deg, rgba(110,168,255,.15), rgba(40,209,124,.08));
-      border:1px solid var(--border);border-radius:var(--radius);
-      padding:24px;margin-bottom:24px;
-    }
-    .plan-header{
-      display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;
-    }
-    .plan-title{
-      font-size:18px;font-weight:700;
-    }
-    .plan-year{
-      font-size:12px;color:var(--muted);background:rgba(255,255,255,.06);
-      padding:4px 8px;border-radius:4px;
-    }
-    .plan-rows{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px;
-    }
-    .plan-item{
-      display:flex;flex-direction:column;
-    }
-    .plan-item-label{
-      font-size:11px;color:var(--muted);text-transform:uppercase;
-      margin-bottom:4px;letter-spacing:.3px;
-    }
-    .plan-item-value{
-      font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;
-    }
-    .plan-progress{
-      background:rgba(255,255,255,.06);padding:16px;border-radius:8px;
-    }
-    .plan-progress-label{
-      font-size:12px;color:var(--muted);margin-bottom:12px;
-      display:flex;justify-content:space-between;
-    }
-    .plan-progress-bar{
-      width:100%;height:12px;background:rgba(255,255,255,.04);
-      border-radius:6px;overflow:hidden;margin-bottom:8px;
-    }
-    .plan-progress-fill{
-      height:100%;background:linear-gradient(90deg, var(--brand), var(--good));
-      border-radius:6px;transition:width 300ms ease;
-    }
     .plan-progress-markers{
       position:relative;height:16px;margin-top:8px;
     }
@@ -270,13 +227,6 @@ UiPage({
     .plan-progress-marker-line{
       width:1px;height:8px;background:rgba(255,255,255,.45);
     }
-    .plan-progress-tier{
-      margin-top:6px;font-size:12px;color:var(--muted);
-    }
-    .plan-progress-percentage{
-      font-size:13px;color:var(--good);font-weight:600;text-align:right;
-    }
-
     .ote-container{
       display:grid;grid-template-columns:1fr 1fr;gap:20px;
     }
@@ -384,9 +334,27 @@ UiPage({
       </div>
     </div>
 
-    <!-- Plan Progress Card -->
-    <div class="plan-card" id="planCard">
-      <div class="loading">Loading plan details...</div>
+    <!-- Compensation & OTE Section -->
+    <div class="big-grid" id="compensationSection" style="display:none;">
+      <div class="big-card">
+        <div class="card-title">
+          <span class="icon">🎯</span>
+          Quota Targets by Deal Type
+        </div>
+        <div class="breakdown" id="quotaTargets">
+          <div class="loading">Loading targets...</div>
+        </div>
+      </div>
+
+      <div class="big-card">
+        <div class="card-title">
+          <span class="icon">💵</span>
+          On-Target Earnings (OTE)
+        </div>
+        <div id="oteDisplay" style="padding:16px;">
+          <div class="loading">Loading earnings model...</div>
+        </div>
+      </div>
     </div>
 
     <!-- KPI Cards -->
@@ -437,29 +405,6 @@ UiPage({
           <div class="loading">Loading pipeline...</div>
         </div>
     </div>
-    </div>
-
-    <!-- Compensation & OTE Section -->
-    <div class="big-grid" id="compensationSection" style="display:none;">
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">🎯</span>
-          Quota Targets by Deal Type
-        </div>
-        <div class="breakdown" id="quotaTargets">
-          <div class="loading">Loading targets...</div>
-        </div>
-      </div>
-
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">💵</span>
-          On-Target Earnings (OTE)
-        </div>
-        <div id="oteDisplay" style="padding:16px;">
-          <div class="loading">Loading earnings model...</div>
-        </div>
-      </div>
     </div>
 
     <!-- Commission Tiers & Bonuses -->
@@ -528,6 +473,16 @@ UiPage({
       </div>
       <div class="breakdown" id="quotaProgress">
         <div class="loading">No quota progress available for the selected year</div>
+      </div>
+    </div>
+
+    <div class="big-card" style="margin-top:16px;">
+      <div class="card-title">
+        <span class="icon">📊</span>
+        Won Commissions Over Time (Monthly)
+      </div>
+      <div class="breakdown" id="wonCommissionTrend">
+        <div class="loading">Loading monthly won commissions...</div>
       </div>
     </div>
 
@@ -1052,7 +1007,6 @@ UiPage({
                   var responseYear = parseInt(data.data.report_year, 10) || targetYear;
                   updatePeriodInfo(responseYear, responseYear === new Date().getFullYear());
 
-                  updatePlanCard(data.data);
                   updateMetrics(data.data);
                   loadForecastAndPriorities(userId, responseYear);
                   updateCalculationsTable(data.data.recent_calculations || []);
@@ -1074,11 +1028,6 @@ UiPage({
 
         function showGlobalLoadError(message) {
           var msg = message || 'Commission performance data is currently unavailable.';
-
-          var planCard = document.getElementById('planCard');
-          if (planCard) {
-            planCard.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>' + msg + '</div>';
-          }
 
           var metricIds = ['totalEarned', 'pendingAmount', 'paidAmount', 'activeDeals'];
           for (var i = 0; i < metricIds.length; i++) {
@@ -1104,6 +1053,9 @@ UiPage({
           var quotaProgress = document.getElementById('quotaProgress');
           if (quotaProgress) quotaProgress.innerHTML = '<div class="break-item">Quota progress is unavailable</div>';
 
+          var wonTrend = document.getElementById('wonCommissionTrend');
+          if (wonTrend) wonTrend.innerHTML = '<div class="break-item">Monthly won-commission trend is unavailable</div>';
+
           var calcBody = document.getElementById('calcTableBody');
           if (calcBody) {
             calcBody.innerHTML = '<tr><td colspan="8" class="empty">Commission calculation records are unavailable</td></tr>';
@@ -1121,91 +1073,6 @@ UiPage({
 
           var lastUpEl = document.getElementById('lastUpdate');
           if (lastUpEl) lastUpEl.textContent = 'Error';
-        }
-
-        function updatePlanCard(data) {
-          var planCard = document.getElementById('planCard');
-          if (!planCard) return;
-
-          if (!data.active_plan) {
-            planCard.innerHTML = '<div class="empty"><div class="empty-icon">📋</div>No commission plan is assigned for the selected year</div>';
-            return;
-          }
-
-          var plan = data.active_plan;
-          var planYear = plan.plan_year || new Date().getFullYear();
-          var targetAmount = parseFloat(plan.total_quota || plan.plan_target_amount || 0);
-          var earnedAmount = parseFloat(data.total_earned || 0);
-          var quotaSummary = summarizeQuotaProgress(data.quota_progress || null);
-          var attainedAmount = quotaSummary && quotaSummary.target_amount > 0 ? quotaSummary.achieved_amount : earnedAmount;
-          var progressPercent = quotaSummary && quotaSummary.target_amount > 0
-            ? quotaSummary.attainment_percent
-            : (targetAmount > 0 ? ((earnedAmount / targetAmount) * 100) : 0);
-          var remainingAmount = (quotaSummary && quotaSummary.target_amount > 0)
-            ? quotaSummary.remaining_amount
-            : (targetAmount - attainedAmount);
-          var progressBarPercent = Math.min(Math.max(progressPercent, 0), 100);
-          var sortedTiers = getSortedTiers(plan.tiers || []);
-          var currentTier = resolveTierByPercent(sortedTiers, progressPercent);
-          var currentTierLabel = currentTier
-            ? (currentTier.tier_name || 'Tier') + ' @ ' + (parseFloat(currentTier.rate_percent || 0)).toFixed(2) + '%'
-            : (sortedTiers.length ? 'No matching tier' : 'No active tiers configured');
-          var progressLabel = quotaSummary && quotaSummary.target_amount > 0 ? 'Quota Attainment' : 'Progress';
-          var tierMarkers = renderTierMarkers(sortedTiers);
-
-          planCard.innerHTML = 
-            '<div class="plan-header">' +
-              '<div class="plan-title">📈 ' + (plan.plan_name || 'Active Plan') + '</div>' +
-              '<div class="plan-year">' + planYear + '</div>' +
-            '</div>' +
-            '<div class="plan-rows">' +
-              '<div class="plan-item">' +
-                '<div class="plan-item-label">Plan Target</div>' +
-                '<div class="plan-item-value">$' + targetAmount.toFixed(2) + '</div>' +
-              '</div>' +
-              '<div class="plan-item">' +
-                '<div class="plan-item-label">' + (quotaSummary && quotaSummary.target_amount > 0 ? 'Attained to Date' : 'Earned to Date') + '</div>' +
-                '<div class="plan-item-value good">$' + attainedAmount.toFixed(2) + '</div>' +
-              '</div>' +
-              '<div class="plan-item">' +
-                '<div class="plan-item-label">Remaining</div>' +
-                '<div class="plan-item-value ' + (remainingAmount > 0 ? 'warn' : 'good') + '">$' + remainingAmount.toFixed(2) + '</div>' +
-              '</div>' +
-            '</div>' +
-            '<div class="plan-progress">' +
-              '<div class="plan-progress-label">' +
-                '<span>' + progressLabel + '</span>' +
-                '<span class="plan-progress-percentage">' + progressPercent.toFixed(1) + '%</span>' +
-              '</div>' +
-              '<div class="plan-progress-bar">' +
-                '<div class="plan-progress-fill" style="width:' + progressBarPercent + '%;"></div>' +
-              '</div>' +
-              tierMarkers +
-              '<div class="plan-progress-tier">Current Tier: <strong>' + currentTierLabel + '</strong></div>' +
-            '</div>';
-        }
-
-        function summarizeQuotaProgress(quotaProgress) {
-          if (!quotaProgress || typeof quotaProgress !== 'object') return null;
-
-          var target = 0;
-          var achieved = 0;
-
-          Object.keys(quotaProgress).forEach(function(dealType) {
-            var p = quotaProgress[dealType] || {};
-            target += parseFloat(p.target_amount || 0);
-            achieved += parseFloat(p.achieved_amount || 0);
-          });
-
-          if (target <= 0) return null;
-
-          var attainment = (achieved / target) * 100;
-          return {
-            target_amount: target,
-            achieved_amount: achieved,
-            remaining_amount: target - achieved,
-            attainment_percent: attainment
-          };
         }
 
         function getSortedTiers(tiers) {
@@ -1372,10 +1239,9 @@ UiPage({
           }
 
           // Update quota progress tracker
-          var quotaProgressPayload = (data.quota_progress && Object.keys(data.quota_progress).length > 0)
-            ? data.quota_progress
-            : buildQuotaProgressFromTargets(data.active_plan || null);
+          var quotaProgressPayload = mergeQuotaProgressWithTargets(data.quota_progress || {}, data.active_plan || null);
           updateQuotaProgress(quotaProgressPayload, data.active_plan && data.active_plan.tiers ? data.active_plan.tiers : []);
+          updateWonCommissionTrend(data.won_commissions_by_month || []);
 
           // Update timestamp
           var lastUpEl = document.getElementById('lastUpdate');
@@ -1452,6 +1318,55 @@ UiPage({
             
             container.appendChild(item);
           });
+        }
+
+        function updateWonCommissionTrend(monthlySeries) {
+          var container = document.getElementById('wonCommissionTrend');
+          if (!container) return;
+
+          container.innerHTML = '';
+          if (!monthlySeries || monthlySeries.length === 0) {
+            container.innerHTML = '<div class="break-item">No won commissions are available for the selected year.</div>';
+            return;
+          }
+
+          var maxValue = 0;
+          monthlySeries.forEach(function(row) {
+            maxValue = Math.max(maxValue, parseFloat(row.total_commission || 0));
+          });
+          if (maxValue <= 0) maxValue = 1;
+
+          monthlySeries.forEach(function(row) {
+            var amount = parseFloat(row.total_commission || 0);
+            var count = parseInt(row.calculation_count || 0, 10) || 0;
+            var widthPct = Math.max(2, Math.min(100, (amount / maxValue) * 100));
+
+            var item = document.createElement('div');
+            item.className = 'break-item';
+            item.style.display = 'block';
+            item.style.padding = '8px 0';
+            item.innerHTML =
+              '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+                '<span class="break-label" style="font-weight:600;">' + formatMonthKey(row.month) + '</span>' +
+                '<span class="break-value">$' + amount.toFixed(2) + '</span>' +
+              '</div>' +
+              '<div style="width:100%;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;">' +
+                '<div style="height:100%;background:linear-gradient(90deg,var(--brand),var(--good));width:' + widthPct + '%;border-radius:4px;"></div>' +
+              '</div>' +
+              '<div style="margin-top:6px;font-size:12px;color:var(--muted);">' + count + ' winning commission calculation' + (count === 1 ? '' : 's') + '</div>';
+            container.appendChild(item);
+          });
+        }
+
+        function formatMonthKey(monthKey) {
+          if (!monthKey || monthKey.length < 7) return monthKey || 'Unknown Month';
+          var parts = monthKey.split('-');
+          if (parts.length < 2) return monthKey;
+          var year = parts[0];
+          var monthIdx = parseInt(parts[1], 10) - 1;
+          var labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          var monthLabel = (monthIdx >= 0 && monthIdx < 12) ? labels[monthIdx] : parts[1];
+          return monthLabel + ' ' + year;
         }
 
         function updateQuotaTargets(plan) {
@@ -1683,6 +1598,38 @@ UiPage({
           });
 
           return fallback;
+        }
+
+        function mergeQuotaProgressWithTargets(quotaProgress, activePlan) {
+          var merged = buildQuotaProgressFromTargets(activePlan);
+          var incoming = quotaProgress && typeof quotaProgress === 'object' ? quotaProgress : {};
+
+          Object.keys(incoming).forEach(function(dealType) {
+            var existing = merged[dealType] || {
+              target_amount: 0,
+              achieved_amount: 0,
+              remaining_amount: 0,
+              attainment_percent: 0,
+              is_over_quota: false,
+              applied_tier_name: '',
+              applied_rate_percent: 0,
+              accelerator_active: false
+            };
+
+            var progress = incoming[dealType] || {};
+            merged[dealType] = {
+              target_amount: parseFloat(progress.target_amount || existing.target_amount || 0),
+              achieved_amount: parseFloat(progress.achieved_amount || existing.achieved_amount || 0),
+              remaining_amount: parseFloat(progress.remaining_amount || existing.remaining_amount || 0),
+              attainment_percent: parseFloat(progress.attainment_percent || existing.attainment_percent || 0),
+              is_over_quota: !!progress.is_over_quota,
+              applied_tier_name: progress.applied_tier_name || existing.applied_tier_name || '',
+              applied_rate_percent: parseFloat(progress.applied_rate_percent || existing.applied_rate_percent || 0),
+              accelerator_active: !!progress.accelerator_active
+            };
+          });
+
+          return merged;
         }
 
         function resolveNextTier(tiers, attainmentPercent) {
