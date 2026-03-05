@@ -643,22 +643,6 @@ UiPage({
           estimateCloseDateInput.value = new Date().toISOString().split('T')[0];
         }
 
-        function hasRole(roleName) {
-          try {
-            if (window.g_user && typeof window.g_user.hasRole === 'function') {
-              return !!window.g_user.hasRole(roleName);
-            }
-            if (window.NOW && NOW.user) {
-              var roles = NOW.user.roles || NOW.user.role || '';
-              if (Array.isArray(roles)) return roles.indexOf(roleName) !== -1;
-              return String(roles).indexOf(roleName) !== -1;
-            }
-          } catch (e) {
-            console.log('Role check error:', e);
-          }
-          return false;
-        }
-
         function getCurrentUserContext() {
           try {
             if (window.g_user && typeof window.g_user.getID === 'function') {
@@ -781,29 +765,6 @@ UiPage({
         // Role chips
         var chips = document.getElementById('roleChips');
         var canSelectUsers = false;
-        if (chips) {
-          var roles = [];
-          if (hasRole('x_823178_commissio.admin') || hasRole('admin')) {
-            roles.push('Admin');
-            canSelectUsers = true;
-          }
-          if (hasRole('x_823178_commissio.manager')) {
-            roles.push('Manager');
-            canSelectUsers = true;
-          }
-          if (hasRole('x_823178_commissio.finance')) {
-            roles.push('Finance');
-          }
-          if (hasRole('x_823178_commissio.rep')) roles.push('Rep');
-          if (roles.length === 0) roles.push('User');
-
-          for (var i = 0; i < roles.length; i++) {
-            var s = document.createElement('span');
-            s.className = 'chip';
-            s.textContent = roles[i];
-            chips.appendChild(s);
-          }
-        }
 
         // Show user selector
         var selector = document.getElementById('userSelector');
@@ -831,36 +792,21 @@ UiPage({
                 canSelectUsers = !!payload.data.can_select_users;
                 canViewAllUsers = !!payload.data.can_view_all_users;
                 canViewTeamRollup = !!payload.data.can_view_team_rollup;
-                if (chips && payload.data.roles && payload.data.roles.admin) {
-                  var hasAdminChip = false;
-                  var chipNodes = chips.querySelectorAll('.chip');
-                  for (var i = 0; i < chipNodes.length; i++) {
-                    if ((chipNodes[i].textContent || '').toLowerCase() === 'admin') {
-                      hasAdminChip = true;
-                      break;
-                    }
-                  }
-                  if (!hasAdminChip) {
-                    var adminChip = document.createElement('span');
-                    adminChip.className = 'chip';
-                    adminChip.textContent = 'Admin';
-                    chips.insertBefore(adminChip, chips.firstChild);
-                  }
-                }
-                if (chips && payload.data.roles && payload.data.roles.manager) {
-                  var hasManagerChip = false;
-                  var mgrChipNodes = chips.querySelectorAll('.chip');
-                  for (var m = 0; m < mgrChipNodes.length; m++) {
-                    if ((mgrChipNodes[m].textContent || '').toLowerCase() === 'manager') {
-                      hasManagerChip = true;
-                      break;
-                    }
-                  }
-                  if (!hasManagerChip) {
-                    var managerChip = document.createElement('span');
-                    managerChip.className = 'chip';
-                    managerChip.textContent = 'Manager';
-                    chips.insertBefore(managerChip, chips.firstChild);
+                if (chips) {
+                  chips.innerHTML = '';
+                  var resolvedRoles = [];
+                  var roleMap = payload.data.roles || {};
+                  if (roleMap.admin) resolvedRoles.push('Admin');
+                  if (roleMap.manager) resolvedRoles.push('Manager');
+                  if (roleMap.finance) resolvedRoles.push('Finance');
+                  if (roleMap.rep) resolvedRoles.push('Rep');
+                  if (resolvedRoles.length === 0) resolvedRoles.push('User');
+
+                  for (var i = 0; i < resolvedRoles.length; i++) {
+                    var roleChip = document.createElement('span');
+                    roleChip.className = 'chip';
+                    roleChip.textContent = resolvedRoles[i];
+                    chips.appendChild(roleChip);
                   }
                 }
               }
@@ -1986,8 +1932,6 @@ UiPage({
   `,
   serverScript: `
     var processor = this;
-
-    // This is a placeholder. We'll implement CommissionProgressHelper as a Script Include
-    // that handles the AJAX calls and returns the metrics data.
+    // Data loading is handled client-side via GlideAjax to x_823178_commissio.CommissionProgressDataService.
   `
 })

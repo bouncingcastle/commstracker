@@ -1,4 +1,5 @@
 import { gs } from '@servicenow/glide'
+import { normalizeBonusScope } from '../script-includes/deal-type-normalizer.js'
 
 export function validatePlanBonusConfiguration(current, previous) {
     if (!current.getValue('commission_plan')) {
@@ -88,7 +89,7 @@ function normalizePeriod(value) {
 }
 
 function normalizeDealType(value) {
-    return (value || '').toString().trim() || 'any';
+    return normalizeBonusScope(value);
 }
 
 function isSupportedMetric(metric) {

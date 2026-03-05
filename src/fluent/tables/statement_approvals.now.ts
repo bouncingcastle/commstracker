@@ -1,5 +1,5 @@
 import '@servicenow/sdk/global'
-import { Table, StringColumn, DateTimeColumn, ReferenceColumn } from '@servicenow/sdk/core'
+import { Table, StringColumn, DateTimeColumn, ReferenceColumn, IntegerColumn } from '@servicenow/sdk/core'
 
 export const x_823178_commissio_statement_approvals = Table({
     name: 'x_823178_commissio_statement_approvals',
@@ -49,6 +49,16 @@ export const x_823178_commissio_statement_approvals = Table({
         reviewed_on: DateTimeColumn({
             label: 'Reviewed On'
         }),
+        sla_due_on: DateTimeColumn({
+            label: 'SLA Due On'
+        }),
+        escalated_on: DateTimeColumn({
+            label: 'Escalated On'
+        }),
+        escalation_level: IntegerColumn({
+            label: 'Escalation Level',
+            default: 0
+        }),
         decision_notes: StringColumn({
             label: 'Decision Notes',
             maxLength: 2000
@@ -62,6 +72,18 @@ export const x_823178_commissio_statement_approvals = Table({
         {
             name: 'idx_stmt_approval_stmt',
             fields: ['statement', 'status']
+        },
+        {
+            name: 'idx_stmt_approval_queue',
+            fields: ['status', 'current_step', 'submitted_on']
+        },
+        {
+            name: 'idx_stmt_approval_sla',
+            fields: ['status', 'sla_due_on']
+        },
+        {
+            name: 'idx_stmt_approval_reviewer',
+            fields: ['reviewed_by', 'reviewed_on']
         }
     ],
     audit: true,

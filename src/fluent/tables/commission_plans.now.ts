@@ -1,5 +1,5 @@
 import '@servicenow/sdk/global'
-import { Table, StringColumn, DecimalColumn, DateColumn, ReferenceColumn, BooleanColumn } from '@servicenow/sdk/core'
+import { Table, StringColumn, DecimalColumn, DateColumn, ReferenceColumn, BooleanColumn, IntegerColumn } from '@servicenow/sdk/core'
 
 export const x_823178_commissio_commission_plans = Table({
     name: 'x_823178_commissio_commission_plans',
@@ -26,6 +26,31 @@ export const x_823178_commissio_commission_plans = Table({
             label: 'Active',
             mandatory: true,
             defaultValue: true
+        }),
+        lifecycle_state: StringColumn({
+            label: 'Lifecycle State',
+            choices: {
+                draft: { label: 'Draft', sequence: 0 },
+                active: { label: 'Active', sequence: 1 },
+                retired: { label: 'Retired', sequence: 2 },
+                superseded: { label: 'Superseded', sequence: 3 }
+            },
+            defaultValue: 'active',
+            mandatory: true
+        }),
+        plan_version: IntegerColumn({
+            label: 'Plan Version',
+            mandatory: true,
+            default: 1
+        }),
+        supersedes_plan: ReferenceColumn({
+            label: 'Supersedes Plan',
+            referenceTable: 'x_823178_commissio_commission_plans'
+        }),
+        superseded_by_plan: ReferenceColumn({
+            label: 'Superseded By Plan',
+            referenceTable: 'x_823178_commissio_commission_plans',
+            read_only: true
         }),
         deal_type: StringColumn({
             label: 'Legacy Deal Type (Unused)',
@@ -97,6 +122,22 @@ export const x_823178_commissio_commission_plans = Table({
         {
             name: 'idx_sales_rep_effective_dates',
             fields: ['sales_rep', 'effective_start_date', 'effective_end_date']
+        },
+        {
+            name: 'idx_plan_rep_active_effective',
+            fields: ['sales_rep', 'is_active', 'effective_start_date']
+        },
+        {
+            name: 'idx_plan_lifecycle_active',
+            fields: ['lifecycle_state', 'is_active']
+        },
+        {
+            name: 'idx_plan_rep_version',
+            fields: ['sales_rep', 'plan_version']
+        },
+        {
+            name: 'idx_plan_supersedes',
+            fields: ['supersedes_plan']
         }
     ]
 })

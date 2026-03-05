@@ -1,5 +1,7 @@
 # Commission Management System - MVP Documentation
 
+> **Tracking note (2026-03-05):** This document describes MVP scope/capabilities. Canonical project tracking and backlog state are maintained in [GAP_ASSESSMENT.md](GAP_ASSESSMENT.md).
+
 ## 🎯 **Application Overview**
 
 A comprehensive commission management system that integrates with **Zoho Bigin** (deals) and **Zoho Books** (invoices/payments) to automate commission calculations, tracking, and statement generation.

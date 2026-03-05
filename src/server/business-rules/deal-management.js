@@ -1,4 +1,5 @@
 import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
+import { getApprovedOverrideJustification, createOverrideAuditLog } from '../script-includes/ops-governance-utils.js'
 
 export function snapshotDealOnClose(current, previous) {
     // BUSINESS REQUIREMENT: Preserve ability to correct legitimate snapshot errors
@@ -127,31 +128,9 @@ export function validateDealMapping(current, previous) {
 }
 
 function checkApprovedOverride(recordId, requestType) {
-    var approvalGr = new GlideRecord('x_823178_commissio_exception_approvals');
-    approvalGr.addQuery('reference_record', recordId);
-    approvalGr.addQuery('request_type', requestType);
-    approvalGr.addQuery('status', 'approved');
-    approvalGr.orderByDesc('approval_date');
-    approvalGr.setLimit(1);
-    approvalGr.query();
-    
-    if (approvalGr.next()) {
-        return approvalGr.getValue('business_justification');
-    }
-    return false;
+    return getApprovedOverrideJustification(recordId, requestType);
 }
 
 function createAuditLog(eventType, recordId, details) {
-    try {
-        var auditGr = new GlideRecord('x_823178_commissio_system_alerts');
-        auditGr.initialize();
-        auditGr.setValue('title', 'Approved Override: ' + eventType);
-        auditGr.setValue('message', details);
-        auditGr.setValue('severity', 'medium');
-        auditGr.setValue('alert_date', new GlideDateTime().getDisplayValue());
-        auditGr.setValue('status', 'resolved');
-        auditGr.insert();
-    } catch (e) {
-        gs.error('Commission Management: Failed to create audit log - ' + e.message);
-    }
+    createOverrideAuditLog(eventType, details, 'medium');
 }

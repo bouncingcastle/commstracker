@@ -1,4 +1,6 @@
 // Test/Verification: Commission Progress Dashboard Data Verification
+// Tracking note (2026-03-05): This file is verification reference only.
+// Canonical delivery status and backlog tracking are maintained in [GAP_ASSESSMENT.md](GAP_ASSESSMENT.md).
 // This file documents the expected data structure for testing
 
 // DEMO DATA CREATED:

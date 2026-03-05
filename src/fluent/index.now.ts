@@ -1,7 +1,7 @@
 import '@servicenow/sdk/global'
 
 // Application Menu and Navigation
-// import './application-menu.now' // Temporarily disabled to prevent duplicate module creation during iterative deploys
+import './application-menu.now'
 
 // Security and role model
 import './roles/commission-roles.now'
@@ -24,7 +24,11 @@ import './ui-pages/commission-progress.now'
 import './scheduled-scripts/monthly-statements.now'
 import './scheduled-scripts/daily-reconciliation.now'
 import './scheduled-scripts/backfill-payout-eligibility.now'
+import './scheduled-scripts/backfill-tier-and-deal-classifications.now'
 import './scheduled-scripts/seed-governance-reconcile.now'
+import './scheduled-scripts/architecture-integrity-check.now'
+import './scheduled-scripts/production-mvp-readiness-check.now'
+import './scheduled-scripts/month-end-readiness-audit.now'
 import './scheduled-scripts/seed-bonus-scenarios.now'
 
 // Business rules
@@ -34,6 +38,7 @@ import './business-rules/payment-commission.now'
 import './business-rules/commission-plan-validation.now'
 import './business-rules/plan-tier-validation.now'
 import './business-rules/deal-type-validation.now'
+import './business-rules/deal-classification-validation.now'
 import './business-rules/deal-type-governance.now'
 import './business-rules/plan-recognition-policy-validation.now'
 import './business-rules/bulk-plan-assignment.now'
@@ -53,6 +58,7 @@ import './tables/invoices.now'
 import './tables/payments.now'
 import './tables/commission_plans.now'
 import './tables/deal_types.now'
+import './tables/deal_classifications.now'
 import './tables/plan_recognition_policies.now'
 import './tables/commission_calculations.now'
 import './tables/commission_statements.now'
@@ -71,6 +77,7 @@ import './tables/plan_bonuses.now'
 // Form UX (single-flow plan setup)
 import './form-related-lists.now'
 import './plan-form-actions.now'
+import './plan-tier-form-layout.now'
 
 // Configuration seed data
 import './deal-types-data.now'

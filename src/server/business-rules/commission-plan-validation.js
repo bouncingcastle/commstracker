@@ -1,4 +1,6 @@
 import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
+import { getApprovedOverrideDetails, createSystemAlert, createOverrideAuditLog } from '../script-includes/ops-governance-utils.js'
+import { CALC_STATUS } from '../script-includes/status-model.js'
 
 export function validateCommissionPlan(current, previous) {
     // Validate required fields
@@ -10,6 +12,11 @@ export function validateCommissionPlan(current, previous) {
     
     if (!current.getValue('effective_start_date')) {
         gs.addErrorMessage('Effective start date is required');
+        current.setAbortAction(true);
+        return;
+    }
+
+    if (!validateLifecycleAndVersion(current)) {
         current.setAbortAction(true);
         return;
     }
@@ -38,7 +45,7 @@ export function validateCommissionPlan(current, previous) {
         
         // BUSINESS REQUIREMENT: Allow retroactive end dates with approval
         var today = new GlideDateTime();
-        if (endDate.before(today) && current.getValue('is_active') === 'true') {
+        if (endDate.before(today) && isTruthyBoolean(current.getValue('is_active'))) {
             var approvedRetroactive = checkApprovedOverride(current.sys_id, 'retroactive_change');
             if (!approvedRetroactive) {
                 gs.addErrorMessage('Cannot set active plan with end date in the past without approval');
@@ -84,7 +91,7 @@ export function validateCommissionPlan(current, previous) {
     if (previous && previous.sys_id) {
         var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
         calcGr.addQuery('commission_plan', current.sys_id);
-        calcGr.addQuery('status', '!=', 'draft');
+        calcGr.addQuery('status', '!=', CALC_STATUS.DRAFT);
         calcGr.setLimit(1);
         calcGr.query();
         
@@ -190,7 +197,7 @@ export function preventOverlapAndGaps(current, previous) {
     }
     
     // BUSINESS REQUIREMENT: Gap warning but allow for legitimate business reasons
-    if (current.getValue('is_active') === 'true') {
+    if (isTruthyBoolean(current.getValue('is_active'))) {
         checkForGaps(current);
     }
 }
@@ -244,40 +251,18 @@ function checkForGaps(current) {
 }
 
 function createGapException(endingPlan, startingPlan, salesRep) {
-    try {
-        var alertGr = new GlideRecord('x_823178_commissio_system_alerts');
-        alertGr.initialize();
-        alertGr.setValue('title', 'Commission Plan Gap Detected');
-        alertGr.setValue('message', 'Gap detected between plan "' + endingPlan.planName + 
-            '" (ends ' + endingPlan.endDate + ') and plan "' + startingPlan.planName + 
-            '" (starts ' + startingPlan.startDate + ') for sales rep: ' + salesRep);
-        alertGr.setValue('severity', 'medium');
-        alertGr.setValue('alert_date', new GlideDateTime().getDisplayValue());
-        alertGr.setValue('status', 'open');
-        alertGr.insert();
-    } catch (e) {
-        gs.error('Commission Management: Failed to create gap exception - ' + e.message);
-    }
+    createSystemAlert(
+        'Commission Plan Gap Detected',
+        'Gap detected between plan "' + endingPlan.planName +
+            '" (ends ' + endingPlan.endDate + ') and plan "' + startingPlan.planName +
+            '" (starts ' + startingPlan.startDate + ') for sales rep: ' + salesRep,
+        'medium',
+        'open'
+    );
 }
 
 function checkApprovedOverride(recordId, requestType) {
-    var approvalGr = new GlideRecord('x_823178_commissio_exception_approvals');
-    approvalGr.addQuery('reference_record', recordId);
-    approvalGr.addQuery('request_type', requestType);
-    approvalGr.addQuery('status', 'approved');
-    approvalGr.orderByDesc('approval_date');
-    approvalGr.setLimit(1);
-    approvalGr.query();
-    
-    if (approvalGr.next()) {
-        return {
-            approval_id: approvalGr.getUniqueValue(),
-            approved_by: approvalGr.getValue('approved_by') || '',
-            approval_date: approvalGr.getValue('approval_date') || '',
-            business_justification: approvalGr.getValue('business_justification') || ''
-        };
-    }
-    return false;
+    return getApprovedOverrideDetails(recordId, requestType) || false;
 }
 
 function applyOverlapApprovalMetadata(current, approval) {
@@ -298,21 +283,77 @@ function applyOverlapApprovalMetadata(current, approval) {
 }
 
 function createAuditLog(eventType, recordId, details) {
-    try {
-        var auditGr = new GlideRecord('x_823178_commissio_system_alerts');
-        auditGr.initialize();
-        auditGr.setValue('title', 'Approved Override: ' + eventType);
-        auditGr.setValue('message', details);
-        auditGr.setValue('severity', 'low');
-        auditGr.setValue('alert_date', new GlideDateTime().getDisplayValue());
-        auditGr.setValue('status', 'resolved');
-        auditGr.insert();
-    } catch (e) {
-        gs.error('Commission Management: Failed to create audit log - ' + e.message);
-    }
+    createOverrideAuditLog(eventType, details, 'low');
 }
 
 function isTruthyBoolean(value) {
     var normalized = String(value || '').toLowerCase();
     return normalized === 'true' || normalized === '1';
+}
+
+function validateLifecycleAndVersion(current) {
+    var lifecycleState = (current.getValue('lifecycle_state') || 'active').toString();
+    var supportedStates = {
+        draft: true,
+        active: true,
+        retired: true,
+        superseded: true
+    };
+
+    if (!supportedStates[lifecycleState]) {
+        gs.addErrorMessage('Lifecycle State must be one of: draft, active, retired, superseded.');
+        return false;
+    }
+
+    var version = parseInt(current.getValue('plan_version'), 10);
+    if (isNaN(version) || version <= 0) {
+        gs.addErrorMessage('Plan Version must be a positive integer.');
+        return false;
+    }
+
+    var isActive = isTruthyBoolean(current.getValue('is_active'));
+    if (lifecycleState === 'active' && !isActive) {
+        gs.addErrorMessage('Lifecycle State "active" requires Active = true.');
+        return false;
+    }
+
+    if ((lifecycleState === 'retired' || lifecycleState === 'superseded') && isActive) {
+        gs.addErrorMessage('Retired/Superseded plans must have Active = false.');
+        return false;
+    }
+
+    var supersedesPlan = (current.getValue('supersedes_plan') || '').toString();
+    if (!supersedesPlan) {
+        return true;
+    }
+
+    if (supersedesPlan === current.getUniqueValue()) {
+        gs.addErrorMessage('A plan cannot supersede itself.');
+        return false;
+    }
+
+    var priorPlan = new GlideRecord('x_823178_commissio_commission_plans');
+    if (!priorPlan.get(supersedesPlan)) {
+        gs.addErrorMessage('Supersedes Plan reference is invalid.');
+        return false;
+    }
+
+    if ((priorPlan.getValue('sales_rep') || '') !== (current.getValue('sales_rep') || '')) {
+        gs.addErrorMessage('Superseded plan must belong to the same sales rep.');
+        return false;
+    }
+
+    var priorVersion = parseInt(priorPlan.getValue('plan_version'), 10) || 0;
+    if (version <= priorVersion) {
+        gs.addErrorMessage('Plan Version must be greater than the superseded plan version (' + priorVersion + ').');
+        return false;
+    }
+
+    var priorSupersedes = (priorPlan.getValue('supersedes_plan') || '').toString();
+    if (priorSupersedes && priorSupersedes === current.getUniqueValue()) {
+        gs.addErrorMessage('Invalid supersede chain detected (cycle).');
+        return false;
+    }
+
+    return true;
 }

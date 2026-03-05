@@ -1,8 +1,10 @@
 import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
+import { APPROVAL_STATUS, STATEMENT_STATUS, isApprovalTransitionAllowed } from '../script-includes/status-model.js'
+import { hasStatementReviewerAccess } from '../script-includes/role-access-model.js'
 
 export function enforceStatementApprovalWorkflow(current, previous) {
     var now = new GlideDateTime().getDisplayValue()
-    var nextStatus = current.getValue('status') || 'submitted'
+    var nextStatus = current.getValue('status') || APPROVAL_STATUS.SUBMITTED
 
     if (!current.getValue('submitted_by')) {
         current.setValue('submitted_by', gs.getUserID())
@@ -10,26 +12,27 @@ export function enforceStatementApprovalWorkflow(current, previous) {
     if (!current.getValue('submitted_on')) {
         current.setValue('submitted_on', now)
     }
+    setDefaultSlaIfMissing(current)
 
     if (!previous || !previous.sys_id) {
-        current.setValue('status', nextStatus || 'submitted')
-        current.setValue('current_step', getStepForStatus(nextStatus || 'submitted'))
-        appendWorkflowHistory(current, 'created', nextStatus || 'submitted')
+        current.setValue('status', nextStatus || APPROVAL_STATUS.SUBMITTED)
+        current.setValue('current_step', getStepForStatus(nextStatus || APPROVAL_STATUS.SUBMITTED))
+        appendWorkflowHistory(current, 'created', nextStatus || APPROVAL_STATUS.SUBMITTED)
         return
     }
 
-    var priorStatus = previous.getValue('status') || 'submitted'
+    var priorStatus = previous.getValue('status') || APPROVAL_STATUS.SUBMITTED
     if (priorStatus === nextStatus) {
         return
     }
 
-    if (!isTransitionAllowed(priorStatus, nextStatus)) {
+    if (!isApprovalTransitionAllowed(priorStatus, nextStatus)) {
         gs.addErrorMessage('Invalid statement approval transition: ' + priorStatus + ' → ' + nextStatus)
         current.setAbortAction(true)
         return
     }
 
-    if (nextStatus === 'in_review' || nextStatus === 'approved' || nextStatus === 'rejected') {
+    if (nextStatus === APPROVAL_STATUS.IN_REVIEW || nextStatus === APPROVAL_STATUS.APPROVED || nextStatus === APPROVAL_STATUS.REJECTED) {
         if (!hasReviewerRole()) {
             gs.addErrorMessage('Only finance or admin can move approvals into review/decision states')
             current.setAbortAction(true)
@@ -37,7 +40,7 @@ export function enforceStatementApprovalWorkflow(current, previous) {
         }
     }
 
-    if (nextStatus === 'approved' || nextStatus === 'rejected') {
+    if (nextStatus === APPROVAL_STATUS.APPROVED || nextStatus === APPROVAL_STATUS.REJECTED) {
         current.setValue('reviewed_by', gs.getUserID())
         current.setValue('reviewed_on', now)
     }
@@ -48,27 +51,29 @@ export function enforceStatementApprovalWorkflow(current, previous) {
     syncStatementStatus(current.getValue('statement'), nextStatus)
 }
 
-function hasReviewerRole() {
-    var user = gs.getUser()
-    return user.hasRole('admin') || user.hasRole('x_823178_commissio.admin') || user.hasRole('x_823178_commissio.finance')
-}
-
-function isTransitionAllowed(fromStatus, toStatus) {
-    var transitions = {
-        submitted: { in_review: true, cancelled: true },
-        in_review: { approved: true, rejected: true, cancelled: true },
-        rejected: { in_review: true, cancelled: true },
-        approved: {},
-        cancelled: {}
+function setDefaultSlaIfMissing(current) {
+    if (current.getValue('sla_due_on')) {
+        return
     }
 
-    return !!(transitions[fromStatus] && transitions[fromStatus][toStatus])
+    var slaHours = parseInt(gs.getProperty('x_823178_commissio.statement_approval_sla_hours', '48'), 10)
+    if (isNaN(slaHours) || slaHours <= 0) {
+        slaHours = 48
+    }
+
+    var due = new GlideDateTime()
+    due.addSeconds(slaHours * 3600)
+    current.setValue('sla_due_on', due.getDisplayValue())
+}
+
+function hasReviewerRole() {
+    return hasStatementReviewerAccess(gs.getUser())
 }
 
 function getStepForStatus(status) {
-    if (status === 'submitted') return 'submission'
-    if (status === 'in_review') return 'finance_review'
-    if (status === 'approved' || status === 'rejected') return 'decision'
+    if (status === APPROVAL_STATUS.SUBMITTED) return 'submission'
+    if (status === APPROVAL_STATUS.IN_REVIEW) return 'finance_review'
+    if (status === APPROVAL_STATUS.APPROVED || status === APPROVAL_STATUS.REJECTED) return 'decision'
     return 'submission'
 }
 
@@ -86,16 +91,16 @@ function syncStatementStatus(statementId, approvalStatus) {
     var statementGr = new GlideRecord('x_823178_commissio_commission_statements')
     if (!statementGr.get(statementId)) return
 
-    if (approvalStatus === 'approved') {
-        statementGr.setValue('status', 'locked')
+    if (approvalStatus === APPROVAL_STATUS.APPROVED) {
+        statementGr.setValue('status', STATEMENT_STATUS.LOCKED)
         statementGr.setValue('locked_by', gs.getUserID())
         statementGr.setValue('locked_date', new GlideDateTime().getDisplayValue())
         statementGr.update()
         return
     }
 
-    if (approvalStatus === 'rejected' || approvalStatus === 'cancelled') {
-        statementGr.setValue('status', 'draft')
+    if (approvalStatus === APPROVAL_STATUS.REJECTED || approvalStatus === APPROVAL_STATUS.CANCELLED) {
+        statementGr.setValue('status', STATEMENT_STATUS.DRAFT)
         statementGr.update()
     }
 }
