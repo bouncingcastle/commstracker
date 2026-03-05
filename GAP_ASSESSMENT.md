@@ -269,6 +269,19 @@ For every proposed change, record this in this file before implementation:
 | SoT Sections Updated | Production MVP Exit Checklist, Function Impact Record Log |
 | Decision | Approved and implemented (instance run pending) |
 
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-011 |
+| Date | 2026-03-05 |
+| Summary | Commission progress dashboard reliability uplift: selected-year alignment for plan header, quota-progress fallback resilience, and accelerator/sub-target visibility improvements |
+| Impacted Functions | F-01, F-02, F-07, F-10, F-14 |
+| Change Type | workflow, observability |
+| Expected Effect | enhancement (UX/data-alignment fixes without core payout math changes) |
+| Required Validation | Diagnostics clean on modified UI/script-include files; verify selected-year display, quota rows render for target/fallback paths, and tier-progress context shows current/next accelerator cues |
+| Gap Impact | Advances T4 usability and improves AE demo gate reliability for progress page evidence |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
 ## KPIs
 - Reproducible calculations from persisted snapshots: target 100%
 - Core UI checklist critical pass rate: target 100%

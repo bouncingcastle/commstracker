@@ -1359,7 +1359,7 @@ UiPage({
           }
 
           // Update compensation sections if data available
-          if (data.active_plan && data.active_plan.targets && Object.keys(data.active_plan.targets).length > 0) {
+          if (data.active_plan) {
             document.getElementById('compensationSection').style.display = '';
             updateQuotaTargets(data.active_plan);
             updateOTE(data.active_plan);
@@ -1374,7 +1374,7 @@ UiPage({
           // Update quota progress tracker
           var quotaProgressPayload = (data.quota_progress && Object.keys(data.quota_progress).length > 0)
             ? data.quota_progress
-            : buildQuotaProgressFromTargets(data.active_plan && data.active_plan.targets ? data.active_plan.targets : null);
+            : buildQuotaProgressFromTargets(data.active_plan || null);
           updateQuotaProgress(quotaProgressPayload, data.active_plan && data.active_plan.tiers ? data.active_plan.tiers : []);
 
           // Update timestamp
@@ -1409,6 +1409,10 @@ UiPage({
                   rate_percent: parseFloat(progress.applied_rate_percent || 0)
                 }
               : resolveTierByPercent(scopedTiers, attainment);
+            var nextTier = resolveNextTier(scopedTiers, attainment);
+            var amountToNextTier = target > 0 && nextTier
+              ? Math.max(0, (parseFloat(nextTier.floor_percent || 0) - attainment) / 100 * target)
+              : 0;
             var tierMarkers = renderTierMarkers(scopedTiers);
 
             var item = document.createElement('div');
@@ -1443,6 +1447,7 @@ UiPage({
                 '<strong>$' + remaining.toFixed(0) + '</strong> remaining' +
                 (progress.accelerator_active ? '<span style="margin-left:8px;color:var(--good);font-weight:600;">Accelerator Active</span>' : '') +
                 (resolvedTier ? '<span style="margin-left:8px;color:var(--brand);">Current Tier: ' + (resolvedTier.tier_name || 'Tier') + ' @ ' + (parseFloat(resolvedTier.rate_percent || 0)).toFixed(2) + '%</span>' : '') +
+                (nextTier ? '<span style="margin-left:8px;color:var(--warn);">Next Accelerator: ' + (nextTier.tier_name || 'Tier') + ' at ' + (parseFloat(nextTier.floor_percent || 0)).toFixed(0) + '% (' + (target > 0 ? ('$' + amountToNextTier.toFixed(0) + ' to go') : 'target required') + ')</span>' : '') +
               '</div>';
             
             container.appendChild(item);
@@ -1452,15 +1457,26 @@ UiPage({
         function updateQuotaTargets(plan) {
           var container = document.getElementById('quotaTargets');
           container.innerHTML = '';
-          
-          if (!plan.targets || Object.keys(plan.targets).length === 0) {
+
+          var targets = plan && plan.targets && Object.keys(plan.targets).length > 0
+            ? plan.targets
+            : null;
+
+          if (!targets) {
+            var planLevelTarget = parseFloat((plan && (plan.plan_target_amount || plan.total_quota)) || 0);
+            if (planLevelTarget > 0) {
+              targets = { new_business: planLevelTarget };
+            }
+          }
+
+          if (!targets) {
             container.innerHTML = '<div class="break-item">No quota targets are configured for this plan</div>';
             return;
           }
 
           var total = 0;
-          Object.keys(plan.targets).forEach(function(dealType) {
-            var amount = plan.targets[dealType];
+          Object.keys(targets).forEach(function(dealType) {
+            var amount = targets[dealType];
             total += amount;
             var item = document.createElement('div');
             item.className = 'quota-item';
@@ -1635,8 +1651,21 @@ UiPage({
           }
         }
 
-        function buildQuotaProgressFromTargets(targets) {
-          if (!targets || typeof targets !== 'object') return {};
+        function buildQuotaProgressFromTargets(activePlan) {
+          if (!activePlan || typeof activePlan !== 'object') return {};
+
+          var targets = activePlan.targets && typeof activePlan.targets === 'object'
+            ? activePlan.targets
+            : {};
+
+          if (Object.keys(targets).length === 0) {
+            var planTargetAmount = parseFloat(activePlan.plan_target_amount || activePlan.total_quota || 0);
+            if (planTargetAmount > 0) {
+              targets = { new_business: planTargetAmount };
+            }
+          }
+
+          if (Object.keys(targets).length === 0) return {};
 
           var fallback = {};
           Object.keys(targets).forEach(function(dealType) {
@@ -1654,6 +1683,19 @@ UiPage({
           });
 
           return fallback;
+        }
+
+        function resolveNextTier(tiers, attainmentPercent) {
+          if (!tiers || !tiers.length) return null;
+
+          var next = null;
+          for (var i = 0; i < tiers.length; i++) {
+            var floor = parseFloat(tiers[i].floor_percent || 0);
+            if (floor > attainmentPercent && (!next || floor < parseFloat(next.floor_percent || 0))) {
+              next = tiers[i];
+            }
+          }
+          return next;
         }
 
         function renderForecastSummary(summary) {
