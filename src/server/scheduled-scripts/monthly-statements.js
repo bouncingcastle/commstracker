@@ -1,4 +1,6 @@
 import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
+import { createSystemAlert } from '../script-includes/ops-governance-utils.js'
+import { CALC_STATUS, STATEMENT_STATUS } from '../script-includes/status-model.js'
 
 export function generateMonthlyStatements() {
     gs.info('Commission Management: Starting monthly statement generation');
@@ -28,7 +30,7 @@ export function generateMonthlyStatements() {
         // BUSINESS REQUIREMENT: Only include approved calculations
         var repQuery = new GlideRecord('x_823178_commissio_commission_calculations');
         addPayoutEligibilityFilter(repQuery, year, monthNumber);
-        repQuery.addQuery('status', 'IN', 'draft,locked'); // Include draft and locked, exclude disputed/error
+        repQuery.addQuery('status', 'IN', CALC_STATUS.DRAFT + ',' + CALC_STATUS.LOCKED); // Include draft and locked, exclude disputed/error
         repQuery.addNullQuery('requires_approval').addOrCondition('requires_approval', false)
             .addOrCondition('approved', true); // Only approved high-value calculations
         repQuery.groupBy('sales_rep');
@@ -81,7 +83,7 @@ function generateStatementForRep(salesRep, year, month) {
         var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
         calcGr.addQuery('sales_rep', salesRep);
         addPayoutEligibilityFilter(calcGr, year, month);
-        calcGr.addQuery('status', 'IN', 'draft,locked');
+        calcGr.addQuery('status', 'IN', CALC_STATUS.DRAFT + ',' + CALC_STATUS.LOCKED);
         
         // BUSINESS REQUIREMENT: Only include approved calculations
         calcGr.addNullQuery('requires_approval').addOrCondition('requires_approval', false)
@@ -146,7 +148,7 @@ function generateStatementForRep(salesRep, year, month) {
         statementGr.setValue('total_accelerator_delta', totalAcceleratorDelta);
         statementGr.setValue('total_bonus_amount', totalBonusAmount);
         statementGr.setValue('total_payments_processed', totalPayments);
-        statementGr.setValue('status', 'draft');
+        statementGr.setValue('status', STATEMENT_STATUS.DRAFT);
         statementGr.setValue('generated_date', new GlideDateTime().getDisplayValue());
         statementGr.setValue('is_auto_generated', true);
         
@@ -177,7 +179,7 @@ function generateStatementForRep(salesRep, year, month) {
                 var commissionGr = new GlideRecord('x_823178_commissio_commission_calculations');
                 if (commissionGr.get(commissionIds[i])) {
                     commissionGr.setValue('statement', statementId);
-                    commissionGr.setValue('status', 'locked'); // Lock calculations when added to statement
+                    commissionGr.setValue('status', CALC_STATUS.LOCKED); // Lock calculations when added to statement
                     commissionGr.update();
                     linkedCount++;
                 }
@@ -257,21 +259,6 @@ function createGenerationSummary(generated, skipped, year, month) {
         summaryGr.insert();
     } catch (e) {
         gs.error('Commission Management: Failed to create generation summary - ' + e.message);
-    }
-}
-
-function createSystemAlert(title, message, severity) {
-    try {
-        var alertGr = new GlideRecord('x_823178_commissio_system_alerts');
-        alertGr.initialize();
-        alertGr.setValue('title', title);
-        alertGr.setValue('message', message);
-        alertGr.setValue('severity', severity);
-        alertGr.setValue('alert_date', new GlideDateTime().getDisplayValue());
-        alertGr.setValue('status', 'open');
-        alertGr.insert();
-    } catch (e) {
-        gs.error('Commission Management: Failed to create system alert - ' + e.message);
     }
 }
 

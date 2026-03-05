@@ -1,4 +1,5 @@
 import { gs, GlideRecord } from '@servicenow/glide'
+import { normalizeTierScope } from '../script-includes/deal-type-normalizer.js'
 
 export function validatePlanTierConfiguration(current, previous) {
     var floor = parseFloat(current.getValue('attainment_floor_percent')) || 0;
@@ -20,7 +21,13 @@ export function validatePlanTierConfiguration(current, previous) {
         return;
     }
 
-    if (hasCeiling && ceiling <= floor) {
+    if (!hasCeiling) {
+        gs.addErrorMessage('Tier ceiling is required. Define explicit non-overlapping floor/ceiling bands.');
+        current.setAbortAction(true);
+        return;
+    }
+
+    if (ceiling <= floor) {
         gs.addErrorMessage('Tier ceiling must be greater than tier floor');
         current.setAbortAction(true);
         return;
@@ -33,7 +40,7 @@ export function validatePlanTierConfiguration(current, previous) {
     }
 
     if (!isAllowedDealType(dealType)) {
-        gs.addErrorMessage('Tier deal type scope must be one of: all, new_business, renewal, expansion, upsell');
+        gs.addErrorMessage('Tier deal type scope must be one of: all, new_business/seller_sourced, renewal/referral, expansion, upsell');
         current.setAbortAction(true);
         return;
     }
@@ -67,11 +74,15 @@ export function validatePlanTierConfiguration(current, previous) {
             return;
         }
     }
+
+    if (!validateContiguousCoverage(current, dealType, floor, ceiling)) {
+        current.setAbortAction(true);
+        return;
+    }
 }
 
 function normalizeDealType(value) {
-    var normalized = (value || '').toString();
-    return normalized ? normalized : 'all';
+    return normalizeTierScope(value);
 }
 
 function isAllowedDealType(dealType) {
@@ -92,4 +103,53 @@ function tierRangeOverlaps(leftFloor, leftCeiling, rightFloor, rightCeiling) {
 
     // Half-open interval overlap: [floor, ceiling)
     return leftFloor < rightHigh && rightFloor < leftHigh;
+}
+
+function validateContiguousCoverage(current, dealType, currentFloor, currentCeiling) {
+    var ranges = [];
+
+    var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
+    tierGr.addQuery('commission_plan', current.getValue('commission_plan'));
+    tierGr.addQuery('is_active', true);
+    tierGr.addQuery('sys_id', '!=', current.sys_id);
+    tierGr.query();
+
+    while (tierGr.next()) {
+        var scope = normalizeDealType(tierGr.getValue('deal_type'));
+        if (scope !== dealType) {
+            continue;
+        }
+
+        var floor = parseFloat(tierGr.getValue('attainment_floor_percent')) || 0;
+        var ceiling = parseFloat(tierGr.getValue('attainment_ceiling_percent'));
+        if (isNaN(ceiling) || ceiling <= floor) {
+            gs.addErrorMessage('All active tiers in a scope must have valid floor/ceiling ranges before saving.');
+            return false;
+        }
+
+        ranges.push({ floor: floor, ceiling: ceiling });
+    }
+
+    ranges.push({ floor: currentFloor, ceiling: currentCeiling });
+    ranges.sort(function(a, b) { return a.floor - b.floor; });
+
+    if (!ranges.length) {
+        return true;
+    }
+
+    if (Math.abs((ranges[0].floor || 0) - 0) > 0.0001) {
+        gs.addErrorMessage('Tier bands must start at 0% attainment for each deal type scope.');
+        return false;
+    }
+
+    for (var i = 1; i < ranges.length; i++) {
+        var prev = ranges[i - 1];
+        var next = ranges[i];
+        if (Math.abs((prev.ceiling || 0) - (next.floor || 0)) > 0.0001) {
+            gs.addErrorMessage('Tier bands must be contiguous with no gaps for each scope (previous ceiling must equal next floor).');
+            return false;
+        }
+    }
+
+    return true;
 }

@@ -1,4 +1,5 @@
 import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
+import { createSystemAlert } from '../script-includes/ops-governance-utils.js'
 
 export function dailyReconciliationCheck() {
     gs.info('Commission Management: Starting daily reconciliation check');
@@ -228,21 +229,6 @@ function generateReconciliationReport(results) {
     // Send notification if significant issues found
     if (results.errors > 0 || results.significantVariances > 0) {
         sendReconciliationAlert(results);
-    }
-}
-
-function createSystemAlert(title, message, severity) {
-    try {
-        var alertGr = new GlideRecord('x_823178_commissio_system_alerts');
-        alertGr.initialize();
-        alertGr.setValue('title', title);
-        alertGr.setValue('message', message);
-        alertGr.setValue('severity', severity);
-        alertGr.setValue('alert_date', new GlideDateTime().getDisplayValue());
-        alertGr.setValue('status', 'open');
-        alertGr.insert();
-    } catch (e) {
-        gs.error('Commission Management: Failed to create system alert - ' + e.message);
     }
 }
 

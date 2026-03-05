@@ -1,4 +1,5 @@
 import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
+import { CALC_STATUS } from '../script-includes/status-model.js'
 
 export function validatePlanRecognitionPolicy(current, previous) {
     if (!current.getValue('commission_plan')) {
@@ -10,6 +11,11 @@ export function validatePlanRecognitionPolicy(current, previous) {
     var basis = (current.getValue('recognition_basis') || '').toString().trim();
     if (!isSupportedRecognitionBasis(basis)) {
         gs.addErrorMessage('Recognition basis must be one of: cash_received, invoice_issued, booking, milestone.');
+        current.setAbortAction(true);
+        return;
+    }
+
+    if (!validatePolicyLifecycleAndVersion(current)) {
         current.setAbortAction(true);
         return;
     }
@@ -144,7 +150,7 @@ function hasFrozenCalculationImpact(current, previous) {
 
     var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
     calcGr.addQuery('commission_plan', current.getValue('commission_plan'));
-    calcGr.addQuery('status', '!=', 'draft');
+    calcGr.addQuery('status', '!=', CALC_STATUS.DRAFT);
     calcGr.setLimit(1);
     calcGr.query();
 
@@ -160,4 +166,81 @@ function hasApprovedOverride(recordId, requestType) {
     approvalGr.setLimit(1);
     approvalGr.query();
     return approvalGr.next();
+}
+
+function isTruthyBoolean(value) {
+    var normalized = String(value || '').toLowerCase();
+    return normalized === 'true' || normalized === '1';
+}
+
+function validatePolicyLifecycleAndVersion(current) {
+    var policyState = (current.getValue('policy_state') || 'active').toString();
+    var supportedStates = {
+        draft: true,
+        active: true,
+        retired: true,
+        superseded: true
+    };
+
+    if (!supportedStates[policyState]) {
+        gs.addErrorMessage('Policy State must be one of: draft, active, retired, superseded.');
+        return false;
+    }
+
+    var version = parseInt(current.getValue('version_number'), 10);
+    if (isNaN(version) || version <= 0) {
+        gs.addErrorMessage('Policy Version must be a positive integer.');
+        return false;
+    }
+
+    var isActive = isTruthyBoolean(current.getValue('is_active'));
+    if (policyState === 'active' && !isActive) {
+        gs.addErrorMessage('Policy State "active" requires Active = true.');
+        return false;
+    }
+
+    if ((policyState === 'retired' || policyState === 'superseded') && isActive) {
+        gs.addErrorMessage('Retired/Superseded policies must have Active = false.');
+        return false;
+    }
+
+    var supersedesPolicy = (current.getValue('supersedes_policy') || '').toString();
+    if (!supersedesPolicy) {
+        return true;
+    }
+
+    if (supersedesPolicy === current.getUniqueValue()) {
+        gs.addErrorMessage('A policy cannot supersede itself.');
+        return false;
+    }
+
+    var priorPolicy = new GlideRecord('x_823178_commissio_plan_recognition_policies');
+    if (!priorPolicy.get(supersedesPolicy)) {
+        gs.addErrorMessage('Supersedes Policy reference is invalid.');
+        return false;
+    }
+
+    if ((priorPolicy.getValue('commission_plan') || '') !== (current.getValue('commission_plan') || '')) {
+        gs.addErrorMessage('Superseded policy must belong to the same commission plan.');
+        return false;
+    }
+
+    if ((priorPolicy.getValue('recognition_basis') || '') !== (current.getValue('recognition_basis') || '')) {
+        gs.addErrorMessage('Superseded policy must use the same recognition basis.');
+        return false;
+    }
+
+    var priorVersion = parseInt(priorPolicy.getValue('version_number'), 10) || 0;
+    if (version <= priorVersion) {
+        gs.addErrorMessage('Policy Version must be greater than the superseded policy version (' + priorVersion + ').');
+        return false;
+    }
+
+    var priorSupersedes = (priorPolicy.getValue('supersedes_policy') || '').toString();
+    if (priorSupersedes && priorSupersedes === current.getUniqueValue()) {
+        gs.addErrorMessage('Invalid policy supersede chain detected (cycle).');
+        return false;
+    }
+
+    return true;
 }

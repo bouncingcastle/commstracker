@@ -316,6 +316,42 @@ Record({
 })
 
 Record({
+    $id: 'statement_approval_sla_hours_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.statement_approval_sla_hours',
+        value: '48',
+        description: 'SLA in hours for statement approval workflow due date calculation (default: 48)',
+        type: 'integer',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: 'audit_target_year_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.audit_target_year',
+        value: '',
+        description: 'Optional override year for month-end readiness audit target period (blank = previous month from current date)',
+        type: 'string',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
+    $id: 'audit_target_month_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.audit_target_month',
+        value: '',
+        description: 'Optional override month (1-12) for month-end readiness audit target period (blank = previous month)',
+        type: 'string',
+        suffix: 'Commission Management'
+    }
+})
+
+Record({
     $id: 'forecast_invoice_issue_days_prop',
     table: 'sys_properties',
     data: {

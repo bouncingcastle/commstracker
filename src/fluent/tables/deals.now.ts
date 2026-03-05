@@ -1,5 +1,5 @@
 import '@servicenow/sdk/global'
-import { Table, StringColumn, DecimalColumn, DateTimeColumn, ReferenceColumn, BooleanColumn } from '@servicenow/sdk/core'
+import { Table, StringColumn, DecimalColumn, DateColumn, DateTimeColumn, ReferenceColumn, BooleanColumn, IntegerColumn } from '@servicenow/sdk/core'
 
 // Enhanced Deals table with web service access and audit controls
 export const x_823178_commissio_deals = Table({
@@ -30,9 +30,8 @@ export const x_823178_commissio_deals = Table({
         amount: DecimalColumn({ 
             label: 'Deal Amount'
         }),
-        close_date: StringColumn({ 
+        close_date: DateColumn({ 
             label: 'Close Date',
-            maxLength: 10
         }),
         stage: StringColumn({ 
             label: 'Stage',
@@ -71,10 +70,10 @@ export const x_823178_commissio_deals = Table({
             label: 'Owner Change Reason',
             maxLength: 500
         }),
-        commission_calculations_count: StringColumn({ 
+        commission_calculations_count: IntegerColumn({ 
             label: 'Commission Calculations Count',
             read_only: true,
-            default: '0'
+            default: 0
         }),
         last_sync: DateTimeColumn({ 
             label: 'Last Sync from Bigin'
@@ -108,6 +107,24 @@ export const x_823178_commissio_deals = Table({
             label: 'Finance Approval Date'
         })
     },
+    indexes: [
+        {
+            name: 'idx_deals_bigin_id',
+            fields: ['bigin_deal_id']
+        },
+        {
+            name: 'idx_deals_owner_close_stage',
+            fields: ['owner_at_close', 'close_date', 'stage']
+        },
+        {
+            name: 'idx_deals_current_owner_stage',
+            fields: ['current_owner', 'stage', 'is_won']
+        },
+        {
+            name: 'idx_deals_sync_status',
+            fields: ['sync_status', 'last_sync']
+        }
+    ],
     audit: true,
     accessible_from: 'public',
     caller_access: 'tracking',

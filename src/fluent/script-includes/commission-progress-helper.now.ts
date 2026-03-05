@@ -1,5 +1,10 @@
 import '@servicenow/sdk/global'
 import { Record } from '@servicenow/sdk/core'
+import { normalizeDealType as normalizeDealTypeCanonical } from '../../server/script-includes/deal-type-normalizer.js'
+import { resolveCommissionRoleAccess } from '../../server/script-includes/role-access-model.js'
+
+const normalizeDealTypeCanonicalSource = normalizeDealTypeCanonical.toString()
+const resolveCommissionRoleAccessSource = resolveCommissionRoleAccess.toString()
 
 Record({
     $id: Now.ID['commission_progress_helper_script_include'],
@@ -10,6 +15,7 @@ Record({
         client_callable: true,
         access: 'public',
         script: `
+    var resolveCommissionRoleAccess = ${resolveCommissionRoleAccessSource};
     var CommissionProgressDataService = Class.create();
     CommissionProgressDataService.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     
@@ -235,10 +241,11 @@ Record({
             var pipelineValue = 0;
             var dealBreakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
             var dealCount = 0;
+            var activeDealTypeCache = {};
 
             while (dealGr.next() && dealCount < 50) {
                 var dealAmount = parseFloat(dealGr.getValue('amount')) || 0;
-                var dealType2 = dealGr.getValue('deal_type') || 'other';
+                var dealType2 = this.resolvePrimaryDealTypeForDeal(dealGr, activeDealTypeCache);
 
                 pipelineValue += dealAmount;
 
@@ -298,7 +305,7 @@ Record({
 
             var targets = {};
             while (targetGr.next()) {
-                var dt = targetGr.getValue('deal_type');
+                var dt = this.normalizeDealType(targetGr.getValue('deal_type'));
                 targets[dt] = parseFloat(targetGr.getValue('annual_target_amount')) || 0;
             }
 
@@ -320,8 +327,9 @@ Record({
             dealGr.query();
 
             var achieved = {};
+            var dealTypeCache = {};
             while (dealGr.next()) {
-                var dt2 = dealGr.getValue('deal_type') || 'other';
+                var dt2 = this.resolvePrimaryDealTypeForDeal(dealGr, dealTypeCache);
                 var amount = parseFloat(dealGr.getValue('amount')) || 0;
                 if (!achieved[dt2]) achieved[dt2] = 0;
                 achieved[dt2] += amount;
@@ -367,17 +375,20 @@ Record({
         this.addDateRangeQuery(dealGr, 'close_date', yearStart, yearEnd);
         dealGr.query();
 
+        var dealTypeCache = {};
+
         while (dealGr.next()) {
-            var dt = dealGr.getValue('deal_type') || 'other';
+            var dt = this.resolvePrimaryDealTypeForDeal(dealGr, dealTypeCache);
             var amount = parseFloat(dealGr.getValue('amount')) || 0;
             achieved[dt] = (achieved[dt] || 0) + amount;
         }
 
         Object.keys(targets || {}).forEach(function(dealType) {
+            var normalizedDealType = this.normalizeDealType(dealType);
             var target = parseFloat(targets[dealType]) || 0;
-            var achievedAmount = achieved[dealType] || 0;
+            var achievedAmount = achieved[normalizedDealType] || 0;
             var attainment = target > 0 ? (achievedAmount / target) * 100 : 0;
-            progress[dealType] = {
+            progress[normalizedDealType] = {
                 target_amount: target,
                 achieved_amount: achievedAmount,
                 remaining_amount: target - achievedAmount,
@@ -387,7 +398,7 @@ Record({
                 applied_rate_percent: 0,
                 accelerator_active: attainment >= 100
             };
-        });
+        }, this);
 
         return progress;
     },
@@ -409,25 +420,16 @@ Record({
 
     getViewerAccess: function() {
         try {
-            var user = gs.getUser();
-            var isAdmin = this.isAdminViewer();
-            var isManager = this.isManagerViewer();
-            var isFinance = user.hasRole('x_823178_commissio.finance');
-            var isRep = user.hasRole('x_823178_commissio.rep');
+            var access = this.getRoleAccessContext();
 
             return JSON.stringify({
                 status: 'success',
                 data: {
-                    can_select_users: !!(isAdmin || isManager),
-                    can_view_all_users: !!isAdmin,
-                    can_view_team_rollup: !!(isAdmin || isManager),
-                    manager_scope_count: isManager ? this.getManagedUserIds(gs.getUserID(), false).length : 0,
-                    roles: {
-                        admin: !!isAdmin,
-                        manager: !!isManager,
-                        finance: !!isFinance,
-                        rep: !!isRep
-                    }
+                    can_select_users: !!access.canSelectUsers,
+                    can_view_all_users: !!access.canViewAllUsers,
+                    can_view_team_rollup: !!access.canViewTeamRollup,
+                    manager_scope_count: access.roles.manager ? this.getManagedUserIds(gs.getUserID(), false).length : 0,
+                    roles: access.roles
                 }
             });
         } catch (e) {
@@ -807,7 +809,7 @@ Record({
             targetGr.query();
 
             while (targetGr.next()) {
-                var dealType = targetGr.getValue('deal_type');
+                var dealType = this.normalizeDealType(targetGr.getValue('deal_type'));
                 var amount = parseFloat(targetGr.getValue('annual_target_amount')) || 0;
                 details.total_quota += amount;
                 details.targets[dealType] = amount;
@@ -826,7 +828,7 @@ Record({
                     tier_name: tierGr.getValue('tier_name'),
                     floor_percent: floor,
                     rate_percent: rate,
-                    deal_type: tierGr.getValue('deal_type') || 'all'
+                    deal_type: this.normalizeDealType(tierGr.getValue('deal_type') || 'all')
                 });
             }
 
@@ -843,7 +845,7 @@ Record({
                     name: bonusGr.getValue('bonus_name'),
                     amount: bonusAmount,
                     trigger: bonusGr.getValue('bonus_trigger'),
-                    deal_type: bonusGr.getValue('deal_type'),
+                    deal_type: this.normalizeDealType(bonusGr.getValue('deal_type') || 'any'),
                     is_discretionary: bonusGr.getValue('is_discretionary') === '1' || bonusGr.getValue('is_discretionary') === true
                 });
             }
@@ -896,10 +898,11 @@ Record({
             dealsGr.addQuery('is_won', false);
             dealsGr.addQuery('stage', '!=', 'closed_lost');
             dealsGr.query();
+            var forecastDealTypeCache = {};
 
             while (dealsGr.next()) {
                 var amount = parseFloat(dealsGr.getValue('amount')) || 0;
-                var dealType = dealsGr.getValue('deal_type') || 'new_business';
+                var dealType = this.resolvePrimaryDealTypeForDeal(dealsGr, forecastDealTypeCache);
                 var stage = dealsGr.getValue('stage') || 'lead';
                 var rate = this.resolveForecastRate(rateCard, dealType);
                 var probability = (stageProbability[stage] || 0.3) * winRateMultiplier;
@@ -1122,10 +1125,11 @@ Record({
         dealsGr.addQuery('is_won', false);
         dealsGr.addQuery('stage', '!=', 'closed_lost');
         dealsGr.query();
+        var summaryDealTypeCache = {};
 
         while (dealsGr.next()) {
             var amount = parseFloat(dealsGr.getValue('amount')) || 0;
-            var dealType = dealsGr.getValue('deal_type') || 'new_business';
+            var dealType = this.resolvePrimaryDealTypeForDeal(dealsGr, summaryDealTypeCache);
             var stage = dealsGr.getValue('stage') || 'lead';
             var rate = this.resolveForecastRate(rateCard, dealType);
             var probability = (stageProbability[stage] || 0.3) * winRateMultiplier;
@@ -1241,10 +1245,11 @@ Record({
     },
 
     resolveForecastRate: function(rateCard, dealType) {
-        if (dealType === 'new_business') return rateCard.new_business || rateCard.base_rate;
-        if (dealType === 'renewal') return rateCard.renewal || rateCard.base_rate;
-        if (dealType === 'expansion') return rateCard.expansion || rateCard.base_rate;
-        if (dealType === 'upsell') return rateCard.upsell || rateCard.base_rate;
+        var normalized = this.normalizeDealType(dealType);
+        if (normalized === 'new_business') return rateCard.new_business || rateCard.base_rate;
+        if (normalized === 'renewal') return rateCard.renewal || rateCard.base_rate;
+        if (normalized === 'expansion') return rateCard.expansion || rateCard.base_rate;
+        if (normalized === 'upsell') return rateCard.upsell || rateCard.base_rate;
         return rateCard.base_rate;
     },
 
@@ -1508,18 +1513,19 @@ Record({
     },
 
     isAdminViewer: function() {
-        var user = gs.getUser();
-        return !!(user.hasRole('x_823178_commissio.admin') || user.hasRole('admin'));
+        return !!this.getRoleAccessContext().roles.admin;
     },
 
     isManagerViewer: function() {
-        var user = gs.getUser();
-        return !!user.hasRole('x_823178_commissio.manager');
+        return !!this.getRoleAccessContext().roles.manager;
     },
 
     isFinanceViewer: function() {
-        var user = gs.getUser();
-        return !!user.hasRole('x_823178_commissio.finance');
+        return !!this.getRoleAccessContext().roles.finance;
+    },
+
+    getRoleAccessContext: function() {
+        return resolveCommissionRoleAccess(gs.getUser());
     },
 
     canViewUser: function(targetUserId) {
@@ -1680,21 +1686,57 @@ Record({
                 tier_name: tierGr.getValue('tier_name') || 'Tier',
                 floor_percent: parseFloat(tierGr.getValue('attainment_floor_percent')) || 0,
                 rate_percent: parseFloat(tierGr.getValue('commission_rate_percent')) || 0,
-                deal_type: tierGr.getValue('deal_type') || 'all'
+                deal_type: this.normalizeDealType(tierGr.getValue('deal_type'))
             });
         }
         return tiers;
     },
 
+    resolvePrimaryDealTypeForDeal: function(dealGr, cache) {
+        var dealId = dealGr ? dealGr.getUniqueValue() : '';
+        var fallback = this.normalizeDealType(dealGr ? dealGr.getValue('deal_type') : 'other');
+        if (!dealId) {
+            return fallback || 'other';
+        }
+
+        var key = dealId;
+        if (cache && cache[key]) {
+            return cache[key];
+        }
+
+        var classificationGr = new GlideRecord('x_823178_commissio_deal_classifications');
+        classificationGr.addQuery('deal', dealId);
+        classificationGr.addQuery('is_active', true);
+        classificationGr.orderByDesc('is_primary');
+        classificationGr.orderBy('priority');
+        classificationGr.orderBy('sys_created_on');
+        classificationGr.setLimit(1);
+        classificationGr.query();
+
+        var resolved = fallback || 'other';
+        if (classificationGr.next()) {
+            resolved = this.normalizeDealType(classificationGr.getValue('deal_type')) || resolved;
+        }
+
+        if (cache) {
+            cache[key] = resolved;
+        }
+        return resolved;
+    },
+
+    normalizeDealType: function(value) {
+        return (${normalizeDealTypeCanonicalSource})(value, 'other');
+    },
+
     filterTiersForDealType: function(tiers, dealType) {
         if (!tiers || tiers.length === 0) return [];
 
-        var normalizedDealType = String(dealType || '').toLowerCase();
+        var normalizedDealType = this.normalizeDealType(dealType);
         var scoped = [];
 
         for (var i = 0; i < tiers.length; i++) {
             var tier = tiers[i] || {};
-            var tierDealType = String(tier.deal_type || 'all').toLowerCase();
+            var tierDealType = this.normalizeDealType(tier.deal_type || 'all');
             if (tierDealType === 'all' || tierDealType === '' || tierDealType === normalizedDealType) {
                 scoped.push(tier);
             }

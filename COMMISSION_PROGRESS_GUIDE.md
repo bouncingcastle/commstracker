@@ -1,5 +1,7 @@
 # Commission Progress Dashboard - Complete Implementation Guide
 
+> **Tracking note (2026-03-05):** This document is progress-dashboard implementation/testing reference. Canonical delivery status and backlog tracking are maintained in [GAP_ASSESSMENT.md](GAP_ASSESSMENT.md).
+
 ## What Was Created
 
 ### 1. **Enhanced Commission Plans Table** 

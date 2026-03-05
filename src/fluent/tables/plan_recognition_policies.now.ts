@@ -14,6 +14,26 @@ export const x_823178_commissio_plan_recognition_policies = Table({
             label: 'Policy Version',
             mandatory: true
         }),
+        policy_state: StringColumn({
+            label: 'Policy State',
+            choices: {
+                draft: { label: 'Draft', sequence: 0 },
+                active: { label: 'Active', sequence: 1 },
+                retired: { label: 'Retired', sequence: 2 },
+                superseded: { label: 'Superseded', sequence: 3 }
+            },
+            default: 'active',
+            mandatory: true
+        }),
+        supersedes_policy: ReferenceColumn({
+            label: 'Supersedes Policy',
+            referenceTable: 'x_823178_commissio_plan_recognition_policies'
+        }),
+        superseded_by_policy: ReferenceColumn({
+            label: 'Superseded By Policy',
+            referenceTable: 'x_823178_commissio_plan_recognition_policies',
+            read_only: true
+        }),
         recognition_basis: StringColumn({
             label: 'Recognition Basis',
             choices: {
@@ -49,6 +69,18 @@ export const x_823178_commissio_plan_recognition_policies = Table({
         {
             name: 'idx_plan_recognition_policy_effective_dates',
             fields: ['commission_plan', 'effective_start_date', 'effective_end_date']
+        },
+        {
+            name: 'idx_plan_recognition_policy_active_basis',
+            fields: ['commission_plan', 'is_active', 'recognition_basis']
+        },
+        {
+            name: 'idx_plan_recognition_policy_state',
+            fields: ['policy_state', 'is_active']
+        },
+        {
+            name: 'idx_plan_recognition_policy_supersedes',
+            fields: ['supersedes_policy']
         }
     ],
     audit: true,

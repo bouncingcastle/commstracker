@@ -85,6 +85,24 @@ export const x_823178_commissio_commission_statements = Table({
             maxLength: 1000
         })
     },
+    indexes: [
+        {
+            name: 'idx_stmt_rep_period',
+            fields: ['sales_rep', 'statement_year', 'statement_month']
+        },
+        {
+            name: 'idx_stmt_status_period',
+            fields: ['status', 'statement_year', 'statement_month']
+        },
+        {
+            name: 'idx_stmt_generated_date',
+            fields: ['generated_date', 'status']
+        },
+        {
+            name: 'idx_stmt_number',
+            fields: ['statement_number']
+        }
+    ],
     audit: true,
     accessible_from: 'public',
     caller_access: 'tracking',
