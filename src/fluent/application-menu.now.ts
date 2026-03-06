@@ -268,7 +268,7 @@ Record({
         title: 'Plan Setup Form (Shortcut)',
         application: commissionApp.$id,
         link_type: 'DIRECT',
-        query: 'x_823178_commissio_commission_plans.do?sys_id=-1',
+        query: 'x_823178_commissio_commission_plans.do?sys_id=-1&sysparm_view=default',
         hint: 'Shortcut to create a new plan and configure related lists from the plan form',
         order: 34,
         active: true
