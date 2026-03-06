@@ -1715,7 +1715,44 @@ Record({
     },
 
     getRoleAccessContext: function() {
-        return resolveCommissionRoleAccess(gs.getUser());
+        var hasRole = function(roleName) {
+            try {
+                if (!roleName) {
+                    return false;
+                }
+
+                if (typeof gs.hasRole === 'function' && gs.hasRole(roleName)) {
+                    return true;
+                }
+
+                var user = gs.getUser();
+                if (user && typeof user.hasRole === 'function') {
+                    return !!user.hasRole(roleName);
+                }
+            } catch (e) {
+                // Ignore and return false.
+            }
+            return false;
+        };
+
+        var roles = {
+            admin: hasRole('x_823178_commissio.admin') || hasRole('admin'),
+            manager: hasRole('x_823178_commissio.manager'),
+            finance: hasRole('x_823178_commissio.finance'),
+            rep: hasRole('x_823178_commissio.rep')
+        };
+
+        if (roles.admin || roles.manager || roles.finance) {
+            roles.rep = true;
+        }
+
+        return {
+            roles: roles,
+            canSelectUsers: !!(roles.admin || roles.manager || roles.finance),
+            canViewAllUsers: !!(roles.admin || roles.finance),
+            canViewTeamRollup: !!(roles.admin || roles.manager),
+            canReviewStatements: !!(roles.admin || roles.finance)
+        };
     },
 
     canViewUser: function(targetUserId) {
