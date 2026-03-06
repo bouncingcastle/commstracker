@@ -2,19 +2,17 @@ import '@servicenow/sdk/global'
 import { UiPage } from '@servicenow/sdk/core'
 
 UiPage({
-  $id: Now.ID['commission_dashboard_page'],
-  endpoint: 'x_823178_commissio_dashboard.do',
-  description: 'Commission Management Dashboard - Operational',
-  category: 'general',
-  html: `
-<!DOCTYPE html>
+    $id: Now.ID['commission_dashboard_page'],
+    endpoint: 'x_823178_commissio_dashboard.do',
+    description: 'Commission Management Dashboard - Operational',
+    category: 'general',
+    html: `
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Commission Management</title>
-  <style>
-    :root{
+  <head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <title>Commission Management</title>
+    <style>:root{
       --bg:#0b1020;
       --panel:#101a33;
       --panel2:#0f1830;
@@ -126,192 +124,183 @@ UiPage({
       .big-grid{
         grid-template-columns:1fr;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1 class="title">Commission Operations</h1>
-      <p class="subtitle">Operational dashboard for plans, calculations, statements, and source-system synchronization.</p>
-    </div>
-
-    <!-- Key Metrics -->
-    <div class="grid">
-      <div class="card metric" data-kpi="statements" title="Open statements list">
-        <div class="metric-label">Total Statements</div>
-        <div class="metric-value" id="kpiStatements">—</div>
+    }</style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 class="title">Commission Operations</h1>
+        <p class="subtitle">Operational dashboard for plans, calculations, statements, and source-system synchronization.</p>
       </div>
-
-      <div class="card metric" data-kpi="exceptions" title="Open pending exceptions list">
-        <div class="metric-label">Pending Exceptions</div>
-        <div class="metric-value" id="kpiExceptions">—</div>
-      </div>
-
-      <div class="card metric" data-kpi="deals" title="Open active deals list">
-        <div class="metric-label">Active Deals</div>
-        <div class="metric-value" id="kpiDeals">—</div>
-      </div>
-
-      <div class="card metric" data-kpi="alerts" title="Open system alerts list">
-        <div class="metric-label">Open Alerts</div>
-        <div class="metric-value" id="kpiAlerts">—</div>
-      </div>
-    </div>
-
-    <!-- Navigation Sections -->
-    <div class="big-grid">
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">👤</span>
-          Sales Rep
+      <!-- Key Metrics -->
+      <div class="grid">
+        <div class="card metric" data-kpi="statements" title="Open statements list">
+          <div class="metric-label">Total Statements</div>
+          <div class="metric-value" id="kpiStatements">—</div>
         </div>
-        <div class="nav-group">
-          <a class="nav-item" href="/x_823178_commissio_progress.do">
-            <span>Performance Dashboard</span>
-            <span>→</span>
-          </a>
-          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Review representative earnings, targets, and pipeline performance by year.</p>
+        <div class="card metric" data-kpi="exceptions" title="Open pending exceptions list">
+          <div class="metric-label">Pending Exceptions</div>
+          <div class="metric-value" id="kpiExceptions">—</div>
+        </div>
+        <div class="card metric" data-kpi="deals" title="Open active deals list">
+          <div class="metric-label">Active Deals</div>
+          <div class="metric-value" id="kpiDeals">—</div>
+        </div>
+        <div class="card metric" data-kpi="alerts" title="Open system alerts list">
+          <div class="metric-label">Open Alerts</div>
+          <div class="metric-value" id="kpiAlerts">—</div>
         </div>
       </div>
-
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">📊</span>
-          Data Tables
+      <!-- Navigation Sections -->
+      <div class="big-grid">
+        <div class="big-card">
+          <div class="card-title">
+            
+            <span class="icon">👤</span>
+            Sales Rep
+          </div>
+          <div class="nav-group">
+            <a class="nav-item" href="/x_823178_commissio_progress.do">
+              <span>Performance Dashboard</span>
+              <span>→</span>
+            </a>
+            <p style="font-size:12px;color:var(--muted);margin-top:8px;">Review representative earnings, targets, and pipeline performance by year.</p>
+          </div>
         </div>
-        <div class="nav-group">
-          <a class="nav-item" href="/x_823178_commissio_deals_list.do">
-            <span>Deals</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_invoices_list.do">
-            <span>Invoices</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_payments_list.do">
-            <span>Payments</span>
-            <span>→</span>
-          </a>
-          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Review source records synchronized from Zoho Bigin and Zoho Books.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="big-grid">
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">💵</span>
-          Commission Workflow
-        </div>
-        <div class="nav-group">
-          <a class="nav-item" href="/x_823178_commissio_commission_plans_list.do">
-            <span>Commission Plans</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_commission_plans.do?sys_id=-1&sysparm_view=default">
-            <span>Plan Setup Form (New)</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_commission_plans_list.do?sysparm_query=is_active=true^ORDERBYsales_rep^ORDERBYDESCeffective_start_date">
-            <span>Plan Structure Reference (By Rep)</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_plan_hierarchy.do">
-            <span>Plan Hierarchy View</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_plan_targets_list.do">
-            <span>Plan Targets</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_plan_tiers_list.do">
-            <span>Plan Tiers</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_plan_bonuses_list.do">
-            <span>Plan Bonuses</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_bonus_earnings_list.do">
-            <span>Bonus Earnings</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_deal_types_list.do">
-            <span>Deal Types</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_plan_recognition_policies_list.do">
-            <span>Plan Recognition Policies</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_commission_calculations_list.do">
-            <span>Calculations</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_commission_statements_list.do">
-            <span>Statements</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_forecast_scenarios_list.do">
-            <span>Forecast Scenarios</span>
-            <span>→</span>
-          </a>
-          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Use Plan Setup Form for new plans. Use Plan Structure Reference to open an individual rep plan and review full structure via related lists.</p>
+        <div class="big-card">
+          <div class="card-title">
+            
+            <span class="icon">📊</span>
+            Data Tables
+          </div>
+          <div class="nav-group">
+            <a class="nav-item" href="/x_823178_commissio_deals_list.do">
+              <span>Deals</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_invoices_list.do">
+              <span>Invoices</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_payments_list.do">
+              <span>Payments</span>
+              <span>→</span>
+            </a>
+            <p style="font-size:12px;color:var(--muted);margin-top:8px;">Review source records synchronized from Zoho Bigin and Zoho Books.</p>
+          </div>
         </div>
       </div>
-
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">⚙️</span>
-          Administration & Audit
+      <div class="big-grid">
+        <div class="big-card">
+          <div class="card-title">
+            
+            <span class="icon">💵</span>
+            Commission Workflow
+          </div>
+          <div class="nav-group">
+            <a class="nav-item" href="/x_823178_commissio_commission_plans_list.do">
+              <span>Commission Plans</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_commission_plans.do?sys_id=-1$[AMP]sysparm_view=default">
+              <span>Plan Setup Form (New)</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_commission_plans_list.do?sysparm_query=is_active=true^ORDERBYsales_rep^ORDERBYDESCeffective_start_date">
+              <span>Plan Structure Reference (By Rep)</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_plan_hierarchy.do">
+              <span>Plan Hierarchy View</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_plan_targets_list.do">
+              <span>Plan Targets</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_plan_tiers_list.do">
+              <span>Plan Tiers</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_plan_bonuses_list.do">
+              <span>Plan Bonuses</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_bonus_earnings_list.do">
+              <span>Bonus Earnings</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_deal_types_list.do">
+              <span>Deal Types</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_plan_recognition_policies_list.do">
+              <span>Plan Recognition Policies</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_commission_calculations_list.do">
+              <span>Calculations</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_commission_statements_list.do">
+              <span>Statements</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_forecast_scenarios_list.do">
+              <span>Forecast Scenarios</span>
+              <span>→</span>
+            </a>
+            <p style="font-size:12px;color:var(--muted);margin-top:8px;">Use Plan Setup Form for new plans. Use Plan Structure Reference to open an individual rep plan and review full structure via related lists.</p>
+          </div>
         </div>
-        <div class="nav-group">
-          <a class="nav-item" href="/x_823178_commissio_exception_approvals_list.do">
-            <span>Exception Approvals</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_statement_approvals_list.do">
-            <span>Statement Approvals</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_bulk_plan_assignment_runs_list.do">
-            <span>Bulk Plan Assignments</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_manager_team_memberships_list.do">
-            <span>Manager Team Governance</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_reconciliation_log_list.do">
-            <span>Reconciliation Log</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/x_823178_commissio_system_alerts_list.do">
-            <span>System Alerts</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/sys_properties_list.do?sysparm_query=nameSTARTSWITHx_823178_commissio.">
-            <span>System Preferences</span>
-            <span>→</span>
-          </a>
-          <a class="nav-item" href="/sysauto_script_list.do?sysparm_query=name=Commission%20Bonus%20Scenario%20Seed">
-            <span>Run Bonus Scenario Seed</span>
-            <span>→</span>
-          </a>
-          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Oversee exceptions, reconciliation outcomes, and operational alerts.</p>
+        <div class="big-card">
+          <div class="card-title">
+            
+            <span class="icon">⚙️</span>
+            Administration $[AMP] Audit
+          </div>
+          <div class="nav-group">
+            <a class="nav-item" href="/x_823178_commissio_exception_approvals_list.do">
+              <span>Exception Approvals</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_statement_approvals_list.do">
+              <span>Statement Approvals</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_bulk_plan_assignment_runs_list.do">
+              <span>Bulk Plan Assignments</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_manager_team_memberships_list.do">
+              <span>Manager Team Governance</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_reconciliation_log_list.do">
+              <span>Reconciliation Log</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/x_823178_commissio_system_alerts_list.do">
+              <span>System Alerts</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/sys_properties_list.do?sysparm_query=nameSTARTSWITHx_823178_commissio.">
+              <span>System Preferences</span>
+              <span>→</span>
+            </a>
+            <a class="nav-item" href="/sysauto_script_list.do?sysparm_query=name=Commission%20Bonus%20Scenario%20Seed">
+              <span>Run Bonus Scenario Seed</span>
+              <span>→</span>
+            </a>
+            <p style="font-size:12px;color:var(--muted);margin-top:8px;">Oversee exceptions, reconciliation outcomes, and operational alerts.</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="footer">
-    Commission Management · Synchronized with Zoho Bigin and Zoho Books
-  </div>
-</body>
-</html>
-  `,
-  clientScript: `
+    <div class="footer">Commission Management · Synchronized with Zoho Bigin and Zoho Books</div>
+  </body>
+</html>`,
+    clientScript: `
     (function () {
       try {
         console.log('Commission dashboard loaded');
@@ -479,5 +468,5 @@ UiPage({
         console.log('Dashboard error:', err);
       }
     })();
-  `
+  `,
 })

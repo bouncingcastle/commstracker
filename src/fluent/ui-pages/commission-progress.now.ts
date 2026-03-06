@@ -2,19 +2,17 @@ import '@servicenow/sdk/global'
 import { UiPage } from '@servicenow/sdk/core'
 
 UiPage({
-  $id: Now.ID['commission_progress_page'],
-  endpoint: 'x_823178_commissio_progress.do',
-  description: 'Sales Rep Commission Progress - Personal Earnings & Pipeline',
-  category: 'general',
-  html: `
-<!DOCTYPE html>
+    $id: Now.ID['commission_progress_page'],
+    endpoint: 'x_823178_commissio_progress.do',
+    description: 'Sales Rep Commission Progress - Personal Earnings & Pipeline',
+    category: 'general',
+    html: `
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Commission Progress</title>
-  <style>
-    :root{
+  <head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <title>My Commission Progress</title>
+    <style>:root{
       --bg:#0b1020;
       --panel:#101a33;
       --panel2:#0f1830;
@@ -307,261 +305,257 @@ UiPage({
       .big-grid{
         grid-template-columns:1fr;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1 class="title">Commission Performance</h1>
-      <p class="subtitle">Track earned commissions, pending exposure, targets, and pipeline performance.</p>
-
-      <!-- User Selector -->
-      <div class="user-selector" id="userSelector">
-        <div class="selector-label">View As</div>
-        <div class="selector-field">
-          <div class="selector-stack">
-            <div class="selector-sub">Representative</div>
-            <select id="userSelect">
-              <option value="">Select representative...</option>
-            </select>
+    }</style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 class="title">Commission Performance</h1>
+        <p class="subtitle">Track earned commissions, pending exposure, targets, and pipeline performance.</p>
+        <!-- User Selector -->
+        <div class="user-selector" id="userSelector">
+          <div class="selector-label">View As</div>
+          <div class="selector-field">
+            <div class="selector-stack">
+              <div class="selector-sub">Representative</div>
+              <select id="userSelect">
+                <option value="">Select representative...</option>
+              </select>
+            </div>
+            <div class="selector-stack">
+              <div class="selector-sub">Plan Year</div>
+              <select id="yearSelect"></select>
+            </div>
           </div>
-          <div class="selector-stack">
-            <div class="selector-sub">Plan Year</div>
-            <select id="yearSelect"></select>
+        </div>
+      </div>
+      <!-- Compensation & OTE Section -->
+      <div class="big-grid" id="compensationSection" style="display:none;">
+        <div class="big-card">
+          <div class="card-title">
+            
+            <span class="icon">🎯</span>
+            Quota Targets by Deal Type
+          </div>
+          <div class="breakdown" id="quotaTargets">
+            <div class="loading">Loading targets...</div>
+          </div>
+        </div>
+        <div class="big-card">
+          <div class="card-title">
+            
+            <span class="icon">💵</span>
+            On-Target Earnings (OTE)
+          </div>
+          <div id="oteDisplay" style="padding:16px;">
+            <div class="loading">Loading earnings model...</div>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Compensation & OTE Section -->
-    <div class="big-grid" id="compensationSection" style="display:none;">
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">🎯</span>
-          Quota Targets by Deal Type
+      <!-- KPI Cards -->
+      <div class="grid">
+        <div class="card metric">
+          <div class="metric-label">Total Commissions</div>
+          <div class="metric-value" id="totalEarned">$0.00</div>
+          <div class="metric-sub" id="earnedPeriod">Selected Year</div>
         </div>
-        <div class="breakdown" id="quotaTargets">
-          <div class="loading">Loading targets...</div>
+        <div class="card metric">
+          <div class="metric-label">Pending Commissions</div>
+          <div class="metric-value" id="pendingAmount">$0.00</div>
+          <div class="metric-sub" id="pendingCount">0 pending calculations</div>
         </div>
-      </div>
-
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">💵</span>
-          On-Target Earnings (OTE)
+        <div class="card metric">
+          <div class="metric-label">Finalized Commissions</div>
+          <div class="metric-value" id="paidAmount">$0.00</div>
+          <div class="metric-sub" id="paidCount">0 finalized entries</div>
         </div>
-        <div id="oteDisplay" style="padding:16px;">
-          <div class="loading">Loading earnings model...</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- KPI Cards -->
-    <div class="grid">
-      <div class="card metric">
-        <div class="metric-label">Total Commissions</div>
-        <div class="metric-value" id="totalEarned">$0.00</div>
-        <div class="metric-sub" id="earnedPeriod">Selected Year</div>
-      </div>
-
-      <div class="card metric">
-        <div class="metric-label">Pending Commissions</div>
-        <div class="metric-value" id="pendingAmount">$0.00</div>
-        <div class="metric-sub" id="pendingCount">0 pending calculations</div>
-      </div>
-
-      <div class="card metric">
-        <div class="metric-label">Finalized Commissions</div>
-        <div class="metric-value" id="paidAmount">$0.00</div>
-        <div class="metric-sub" id="paidCount">0 finalized entries</div>
-      </div>
-
-      <div class="card metric">
-        <div class="metric-label">Open Deals</div>
-        <div class="metric-value" id="activeDeals">0</div>
-        <div class="metric-sub" id="dealPipeline">Pipeline value</div>
-      </div>
-    </div>
-
-    <!-- Commission Breakdown & Pipeline -->
-    <div class="big-grid">
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">📊</span>
-          Commission Summary
-        </div>
-        <div class="breakdown" id="commissionBreakdown">
-          <div class="loading">Loading summary...</div>
+        <div class="card metric">
+          <div class="metric-label">Open Deals</div>
+          <div class="metric-value" id="activeDeals">0</div>
+          <div class="metric-sub" id="dealPipeline">Pipeline value</div>
         </div>
       </div>
-
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">💼</span>
-          Deal Pipeline by Type
+      <!-- Commission Breakdown & Pipeline -->
+      <div class="big-grid">
+        <div class="big-card">
+          <div class="card-title">
+            
+            <span class="icon">📊</span>
+            Commission Summary
+          </div>
+          <div class="breakdown" id="commissionBreakdown">
+            <div class="loading">Loading summary...</div>
+          </div>
         </div>
-        <div class="breakdown" id="dealBreakdown">
-          <div class="loading">Loading pipeline...</div>
-        </div>
-    </div>
-    </div>
-
-    <!-- Commission Tiers & Bonuses -->
-    <div class="big-grid" id="bonusSection" style="display:none;">
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">📈</span>
-          Commission Tier Structure
-        </div>
-        <div class="breakdown" id="tierDisplay">
-          <div class="loading">Loading tiers...</div>
-        </div>
-      </div>
-
-      <div class="big-card">
-        <div class="card-title">
-          <span class="icon">🎁</span>
-          Active Bonuses
-        </div>
-        <div class="breakdown" id="bonusDisplay">
-          <div class="loading">Loading bonuses...</div>
+        <div class="big-card">
+          <div class="card-title">
+            
+            <span class="icon">💼</span>
+            Deal Pipeline by Type
+          </div>
+          <div class="breakdown" id="dealBreakdown">
+            <div class="loading">Loading pipeline...</div>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Forecast simulator is intentionally hidden in the dashboard UI. -->
-    <div id="forecastSection" style="display:none;">
-      <select id="scenarioSelect">
-        <option value="">Live view (no saved scenario)</option>
-      </select>
-      <input id="winRateMultiplier" type="number" min="0.1" step="0.05" value="1" />
-      <input id="pipelineMultiplier" type="number" min="0.1" step="0.05" value="1" />
-      <div class="breakdown" id="forecastSummary"></div>
-      <div class="breakdown" id="forecastTimeline"></div>
-    </div>
-
-    <div class="big-card" style="margin-bottom:16px;">
-      <div class="card-title">
-        <span class="icon">🏁</span>
-        Prioritized Opportunities by Projected Commission
+      <!-- Commission Tiers & Bonuses -->
+      <div class="big-grid" id="bonusSection" style="display:none;">
+        <div class="big-card">
+          <div class="card-title">
+            
+            <span class="icon">📈</span>
+            Commission Tier Structure
+          </div>
+          <div class="breakdown" id="tierDisplay">
+            <div class="loading">Loading tiers...</div>
+          </div>
+        </div>
+        <div class="big-card">
+          <div class="card-title">
+            
+            <span class="icon">🎁</span>
+            Active Bonuses
+          </div>
+          <div class="breakdown" id="bonusDisplay">
+            <div class="loading">Loading bonuses...</div>
+          </div>
+        </div>
       </div>
-      <table class="list-table" id="priorityTable">
-        <thead>
-          <tr>
-            <th>Deal</th>
-            <th>Type</th>
-            <th>Stage</th>
-            <th>Amount</th>
-            <th>Probability</th>
-            <th>Rate</th>
-            <th>Expected Commission</th>
-          </tr>
-        </thead>
-        <tbody id="priorityTableBody">
-          <tr><td colspan="7" class="empty">Loading prioritized opportunities...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-
-    <!-- Recent Calculations -->
-    <div class="big-card">
-      <div class="card-title">
-        <span class="icon">🎯</span>
-        Quota Progress by Deal Type
-      </div>
-      <div class="breakdown" id="quotaProgress">
-        <div class="loading">No quota progress available for the selected year</div>
-      </div>
-    </div>
-
-    <div class="big-card" style="margin-top:16px;">
-      <div class="card-title">
-        <span class="icon">📊</span>
-        Won Commissions Over Time (Monthly)
-      </div>
-      <div class="breakdown" id="wonCommissionTrend">
-        <div class="loading">Loading monthly won commissions...</div>
-      </div>
-    </div>
-
-    <!-- Recent Calculations -->
-    <div class="big-card">
-      <div class="card-title">
-        <span class="icon">📈</span>
-        Recent Commission Calculations
-      </div>
-      <table class="list-table" id="calculationsTable">
-        <thead>
-          <tr>
-            <th>Deal</th>
-            <th>Type</th>
-            <th>Base Amount</th>
-            <th>Rate</th>
-            <th>Explainability</th>
-            <th>Commission</th>
-            <th>Payment Date</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="calcTableBody">
-          <tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Active Deals -->
-    <div class="big-card" style="margin-top:16px;">
-      <div class="card-title">
-        <span class="icon">🎯</span>
-        Open Deals (Not Won/Lost)
-      </div>
-      <table class="list-table" id="dealsTable">
-        <thead>
-          <tr>
-            <th>Deal Name</th>
-            <th>Account</th>
-            <th>Amount</th>
-            <th>Type</th>
-            <th>Stage</th>
-            <th>Close Date</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="dealsTableBody">
-          <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="big-card" style="margin-top:16px;">
-      <div class="card-title">
-        <span class="icon">🧮</span>
-        Commission Estimator
-      </div>
-      <div class="selector-field" style="margin-bottom:12px;">
-        <input id="estimateAmount" type="number" min="0" step="100" placeholder="Deal amount" />
-        <select id="estimateDealType">
-          <option value="">Select Deal Type</option>
+      <!-- Forecast simulator is intentionally hidden in the dashboard UI. -->
+      <div id="forecastSection" style="display:none;">
+        <select id="scenarioSelect">
+          <option value="">Live view (no saved scenario)</option>
         </select>
-        <input id="estimateCloseDate" type="date" />
-        <button onclick="runCommissionEstimate()">Estimate</button>
+        <input id="winRateMultiplier" type="number" min="0.1" step="0.05" value="1"></input>
+        <input id="pipelineMultiplier" type="number" min="0.1" step="0.05" value="1"></input>
+        <div class="breakdown" id="forecastSummary"></div>
+        <div class="breakdown" id="forecastTimeline"></div>
       </div>
-      <div class="breakdown" id="estimatorResult">
-        <div class="break-item">Run an estimate to view projected payout for a deal scenario.</div>
+      <div class="big-card" style="margin-bottom:16px;">
+        <div class="card-title">
+          
+          <span class="icon">🏁</span>
+          Prioritized Opportunities by Projected Commission
+        </div>
+        <table class="list-table" id="priorityTable">
+          <thead>
+            <tr>
+              <th>Deal</th>
+              <th>Type</th>
+              <th>Stage</th>
+              <th>Amount</th>
+              <th>Probability</th>
+              <th>Rate</th>
+              <th>Expected Commission</th>
+            </tr>
+          </thead>
+          <tbody id="priorityTableBody">
+            <tr>
+              <td colspan="7" class="empty">Loading prioritized opportunities...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Recent Calculations -->
+      <div class="big-card">
+        <div class="card-title">
+          
+          <span class="icon">🎯</span>
+          Quota Progress by Deal Type
+        </div>
+        <div class="breakdown" id="quotaProgress">
+          <div class="loading">No quota progress available for the selected year</div>
+        </div>
+      </div>
+      <div class="big-card" style="margin-top:16px;">
+        <div class="card-title">
+          
+          <span class="icon">📊</span>
+          Won Commissions Over Time (Monthly)
+        </div>
+        <div class="breakdown" id="wonCommissionTrend">
+          <div class="loading">Loading monthly won commissions...</div>
+        </div>
+      </div>
+      <!-- Recent Calculations -->
+      <div class="big-card">
+        <div class="card-title">
+          
+          <span class="icon">📈</span>
+          Recent Commission Calculations
+        </div>
+        <table class="list-table" id="calculationsTable">
+          <thead>
+            <tr>
+              <th>Deal</th>
+              <th>Type</th>
+              <th>Base Amount</th>
+              <th>Rate</th>
+              <th>Explainability</th>
+              <th>Commission</th>
+              <th>Payment Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="calcTableBody">
+            <tr>
+              <td colspan="8" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Active Deals -->
+      <div class="big-card" style="margin-top:16px;">
+        <div class="card-title">
+          
+          <span class="icon">🎯</span>
+          Open Deals (Not Won/Lost)
+        </div>
+        <table class="list-table" id="dealsTable">
+          <thead>
+            <tr>
+              <th>Deal Name</th>
+              <th>Account</th>
+              <th>Amount</th>
+              <th>Type</th>
+              <th>Stage</th>
+              <th>Close Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="dealsTableBody">
+            <tr>
+              <td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="big-card" style="margin-top:16px;">
+        <div class="card-title">
+          
+          <span class="icon">🧮</span>
+          Commission Estimator
+        </div>
+        <div class="selector-field" style="margin-bottom:12px;">
+          <input id="estimateAmount" type="number" min="0" step="100" placeholder="Deal amount"></input>
+          <select id="estimateDealType">
+            <option value="">Select Deal Type</option>
+          </select>
+          <input id="estimateCloseDate" type="date"></input>
+          <button onclick="runCommissionEstimate()">Estimate</button>
+        </div>
+        <div class="breakdown" id="estimatorResult">
+          <div class="break-item">Run an estimate to view projected payout for a deal scenario.</div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="foot">
-    Data reflects commission calculations and deal records.
-    Last refreshed: <span id="lastUpdate">now</span>
-  </div>
-</body>
-</html>
-  `,
-  clientScript: `
+    <div class="foot">Data reflects commission calculations and deal records.
+    Last refreshed:
+      <span id="lastUpdate">now</span>
+    </div>
+  </body>
+</html>`,
+    clientScript: `
     (function () {
       try {
         console.log('Commission progress page loaded');
@@ -1198,7 +1192,7 @@ UiPage({
 
           var divider = document.createElement('div');
           divider.className = 'break-item';
-          divider.innerHTML = '<span class="break-label"><strong>Earnings Explainability</strong></span><span class="break-value">&nbsp;</span>';
+          divider.innerHTML = '<span class="break-label"><strong>Earnings Explainability</strong></span><span class="break-value">&amp;nbsp;</span>';
           breakdown.appendChild(divider);
 
           var explainRows = [
@@ -1964,8 +1958,4 @@ UiPage({
       }
     })();
   `,
-  serverScript: `
-    var processor = this;
-    // Data loading is handled client-side via GlideAjax to x_823178_commissio.CommissionProgressDataService.
-  `
 })

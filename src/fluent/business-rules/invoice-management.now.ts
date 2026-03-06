@@ -7,12 +7,12 @@ BusinessRule({
     $id: Now.ID['invoice_mapping'],
     name: 'Invoice to Deal Mapping',
     table: 'x_823178_commissio_invoices',
-    action: ['insert', 'update'],
+    action: ['update', 'insert'],
     when: 'before',
     script: mapInvoiceToDeal,
     active: true,
     order: 100,
-    description: 'Maps invoices to deals using Bigin Deal ID'
+    description: 'Maps invoices to deals using Bigin Deal ID',
 })
 
 // Business rule to validate invoice data
@@ -20,10 +20,10 @@ BusinessRule({
     $id: Now.ID['invoice_validation'],
     name: 'Invoice Validation',
     table: 'x_823178_commissio_invoices',
-    action: ['insert', 'update'],
+    action: ['update', 'insert'],
     when: 'before',
     script: validateInvoiceData,
     active: true,
     order: 50,
-    description: 'Validates invoice data integrity'
+    description: 'Validates invoice data integrity',
 })

@@ -1,8 +1,12 @@
 import '@servicenow/sdk/global'
 import { Record } from '@servicenow/sdk/core'
 
+const SECTION_DEFAULT_VIEW = 'a8c31b2f9f464f6c8f2a10b4d3e98711'
+const SECTION_DEFAULT_LOWER = 'b91d4c3a7e5f4d1ca2b398760d4e2f23'
+const SECTION_BASE = 'c24e5d6f8a9b4c1dbe20394756f1a834'
+
 Record({
-    $id: 'plan_targets_default_section',
+    $id: SECTION_DEFAULT_VIEW,
     table: 'sys_ui_section',
     data: {
         header: false,
@@ -15,7 +19,7 @@ Record({
 })
 
 Record({
-    $id: 'plan_targets_default_lower_section',
+    $id: SECTION_DEFAULT_LOWER,
     table: 'sys_ui_section',
     data: {
         header: false,
@@ -28,7 +32,7 @@ Record({
 })
 
 Record({
-    $id: 'plan_targets_base_section',
+    $id: SECTION_BASE,
     table: 'sys_ui_section',
     data: {
         header: false,
@@ -41,181 +45,181 @@ Record({
 })
 
 Record({
-    $id: 'plan_targets_field_commission_plan',
+    $id: 'd1000000000000000000000000000001',
     table: 'sys_ui_element',
     data: {
         element: 'commission_plan',
         position: 0,
-        sys_ui_section: 'plan_targets_default_section'
+        sys_ui_section: SECTION_DEFAULT_VIEW
     }
 })
 
 Record({
-    $id: 'plan_targets_field_deal_type_ref',
+    $id: 'd1000000000000000000000000000002',
     table: 'sys_ui_element',
     data: {
         element: 'deal_type_ref',
         position: 1,
-        sys_ui_section: 'plan_targets_default_section'
+        sys_ui_section: SECTION_DEFAULT_VIEW
     }
 })
 
 Record({
-    $id: 'plan_targets_field_commission_rate_percent',
+    $id: 'd1000000000000000000000000000003',
     table: 'sys_ui_element',
     data: {
         element: 'commission_rate_percent',
         position: 2,
-        sys_ui_section: 'plan_targets_default_section'
+        sys_ui_section: SECTION_DEFAULT_VIEW
     }
 })
 
 Record({
-    $id: 'plan_targets_field_annual_target_amount',
+    $id: 'd1000000000000000000000000000004',
     table: 'sys_ui_element',
     data: {
         element: 'annual_target_amount',
         position: 3,
-        sys_ui_section: 'plan_targets_default_section'
+        sys_ui_section: SECTION_DEFAULT_VIEW
     }
 })
 
 Record({
-    $id: 'plan_targets_field_is_active',
+    $id: 'd1000000000000000000000000000005',
     table: 'sys_ui_element',
     data: {
         element: 'is_active',
         position: 4,
-        sys_ui_section: 'plan_targets_default_section'
+        sys_ui_section: SECTION_DEFAULT_VIEW
     }
 })
 
 Record({
-    $id: 'plan_targets_field_description',
+    $id: 'd1000000000000000000000000000006',
     table: 'sys_ui_element',
     data: {
         element: 'description',
         position: 5,
-        sys_ui_section: 'plan_targets_default_section'
+        sys_ui_section: SECTION_DEFAULT_VIEW
     }
 })
 
 Record({
-    $id: 'plan_targets_default_lower_field_commission_plan',
+    $id: 'd2000000000000000000000000000001',
     table: 'sys_ui_element',
     data: {
         element: 'commission_plan',
         position: 0,
-        sys_ui_section: 'plan_targets_default_lower_section'
+        sys_ui_section: SECTION_DEFAULT_LOWER
     }
 })
 
 Record({
-    $id: 'plan_targets_default_lower_field_deal_type_ref',
+    $id: 'd2000000000000000000000000000002',
     table: 'sys_ui_element',
     data: {
         element: 'deal_type_ref',
         position: 1,
-        sys_ui_section: 'plan_targets_default_lower_section'
+        sys_ui_section: SECTION_DEFAULT_LOWER
     }
 })
 
 Record({
-    $id: 'plan_targets_default_lower_field_commission_rate_percent',
+    $id: 'd2000000000000000000000000000003',
     table: 'sys_ui_element',
     data: {
         element: 'commission_rate_percent',
         position: 2,
-        sys_ui_section: 'plan_targets_default_lower_section'
+        sys_ui_section: SECTION_DEFAULT_LOWER
     }
 })
 
 Record({
-    $id: 'plan_targets_default_lower_field_annual_target_amount',
+    $id: 'd2000000000000000000000000000004',
     table: 'sys_ui_element',
     data: {
         element: 'annual_target_amount',
         position: 3,
-        sys_ui_section: 'plan_targets_default_lower_section'
+        sys_ui_section: SECTION_DEFAULT_LOWER
     }
 })
 
 Record({
-    $id: 'plan_targets_default_lower_field_is_active',
+    $id: 'd2000000000000000000000000000005',
     table: 'sys_ui_element',
     data: {
         element: 'is_active',
         position: 4,
-        sys_ui_section: 'plan_targets_default_lower_section'
+        sys_ui_section: SECTION_DEFAULT_LOWER
     }
 })
 
 Record({
-    $id: 'plan_targets_default_lower_field_description',
+    $id: 'd2000000000000000000000000000006',
     table: 'sys_ui_element',
     data: {
         element: 'description',
         position: 5,
-        sys_ui_section: 'plan_targets_default_lower_section'
+        sys_ui_section: SECTION_DEFAULT_LOWER
     }
 })
 
 Record({
-    $id: 'plan_targets_base_field_commission_plan',
+    $id: 'd3000000000000000000000000000001',
     table: 'sys_ui_element',
     data: {
         element: 'commission_plan',
         position: 0,
-        sys_ui_section: 'plan_targets_base_section'
+        sys_ui_section: SECTION_BASE
     }
 })
 
 Record({
-    $id: 'plan_targets_base_field_deal_type_ref',
+    $id: 'd3000000000000000000000000000002',
     table: 'sys_ui_element',
     data: {
         element: 'deal_type_ref',
         position: 1,
-        sys_ui_section: 'plan_targets_base_section'
+        sys_ui_section: SECTION_BASE
     }
 })
 
 Record({
-    $id: 'plan_targets_base_field_commission_rate_percent',
+    $id: 'd3000000000000000000000000000003',
     table: 'sys_ui_element',
     data: {
         element: 'commission_rate_percent',
         position: 2,
-        sys_ui_section: 'plan_targets_base_section'
+        sys_ui_section: SECTION_BASE
     }
 })
 
 Record({
-    $id: 'plan_targets_base_field_annual_target_amount',
+    $id: 'd3000000000000000000000000000004',
     table: 'sys_ui_element',
     data: {
         element: 'annual_target_amount',
         position: 3,
-        sys_ui_section: 'plan_targets_base_section'
+        sys_ui_section: SECTION_BASE
     }
 })
 
 Record({
-    $id: 'plan_targets_base_field_is_active',
+    $id: 'd3000000000000000000000000000005',
     table: 'sys_ui_element',
     data: {
         element: 'is_active',
         position: 4,
-        sys_ui_section: 'plan_targets_base_section'
+        sys_ui_section: SECTION_BASE
     }
 })
 
 Record({
-    $id: 'plan_targets_base_field_description',
+    $id: 'd3000000000000000000000000000006',
     table: 'sys_ui_element',
     data: {
         element: 'description',
         position: 5,
-        sys_ui_section: 'plan_targets_base_section'
+        sys_ui_section: SECTION_BASE
     }
 })

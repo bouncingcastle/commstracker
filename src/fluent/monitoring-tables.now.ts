@@ -6,46 +6,47 @@ export const x_823178_commissio_reconciliation_log = Table({
     name: 'x_823178_commissio_reconciliation_log',
     label: 'Reconciliation Log',
     schema: {
-        reconciliation_date: DateTimeColumn({ 
+        reconciliation_date: DateTimeColumn({
             label: 'Reconciliation Date',
-            mandatory: true
+            mandatory: true,
         }),
-        records_checked: IntegerColumn({ 
-            label: 'Records Checked'
+        records_checked: IntegerColumn({
+            label: 'Records Checked',
         }),
-        total_variances: IntegerColumn({ 
-            label: 'Total Variances'
+        total_variances: IntegerColumn({
+            label: 'Total Variances',
         }),
-        significant_variances: IntegerColumn({ 
-            label: 'Significant Variances'
+        significant_variances: IntegerColumn({
+            label: 'Significant Variances',
         }),
-        errors_found: IntegerColumn({ 
-            label: 'Errors Found'
+        errors_found: IntegerColumn({
+            label: 'Errors Found',
         }),
-        warnings_found: IntegerColumn({ 
-            label: 'Warnings Found'
+        warnings_found: IntegerColumn({
+            label: 'Warnings Found',
         }),
-        status: StringColumn({ 
+        status: StringColumn({
             label: 'Status',
             choices: {
                 passed: { label: 'Passed', sequence: 0 },
                 warning: { label: 'Warning', sequence: 1 },
-                failed: { label: 'Failed', sequence: 2 }
-            }
+                failed: { label: 'Failed', sequence: 2 },
+            },
+            dropdown: 'dropdown_with_none',
         }),
-        processing_time_seconds: IntegerColumn({ 
-            label: 'Processing Time (Seconds)'
+        processing_time_seconds: IntegerColumn({
+            label: 'Processing Time (Seconds)',
         }),
-        details: StringColumn({ 
+        details: StringColumn({
             label: 'Details',
-            maxLength: 4000
-        })
+            maxLength: 4000,
+        }),
     },
     audit: true,
-    accessible_from: 'public',
-    caller_access: 'tracking',
-    actions: ['create', 'read', 'update', 'delete'],
-    allow_web_service_access: true
+    accessibleFrom: 'public',
+    callerAccess: 'tracking',
+    actions: ['read', 'update', 'delete', 'create'],
+    allowWebServiceAccess: true,
 })
 
 // System Alerts table with web service access
@@ -53,59 +54,61 @@ export const x_823178_commissio_system_alerts = Table({
     name: 'x_823178_commissio_system_alerts',
     label: 'System Alerts',
     schema: {
-        title: StringColumn({ 
+        title: StringColumn({
             label: 'Alert Title',
             mandatory: true,
-            maxLength: 255
+            maxLength: 255,
         }),
-        message: StringColumn({ 
+        message: StringColumn({
             label: 'Alert Message',
-            maxLength: 4000
+            maxLength: 4000,
         }),
-        severity: StringColumn({ 
+        severity: StringColumn({
             label: 'Severity',
             choices: {
                 low: { label: 'Low', sequence: 0 },
                 medium: { label: 'Medium', sequence: 1 },
                 high: { label: 'High', sequence: 2 },
-                critical: { label: 'Critical', sequence: 3 }
-            }
+                critical: { label: 'Critical', sequence: 3 },
+            },
+            dropdown: 'dropdown_with_none',
         }),
-        alert_date: DateTimeColumn({ 
+        alert_date: DateTimeColumn({
             label: 'Alert Date',
-            mandatory: true
+            mandatory: true,
         }),
-        status: StringColumn({ 
+        status: StringColumn({
             label: 'Status',
             choices: {
                 open: { label: 'Open', sequence: 0 },
                 acknowledged: { label: 'Acknowledged', sequence: 1 },
-                resolved: { label: 'Resolved', sequence: 2 }
+                resolved: { label: 'Resolved', sequence: 2 },
             },
-            default: 'open'
+            default: 'open',
+            dropdown: 'dropdown_with_none',
         }),
-        acknowledged_by: StringColumn({ 
+        acknowledged_by: StringColumn({
             label: 'Acknowledged By',
-            maxLength: 100
+            maxLength: 100,
         }),
-        acknowledged_date: DateTimeColumn({ 
-            label: 'Acknowledged Date'
+        acknowledged_date: DateTimeColumn({
+            label: 'Acknowledged Date',
         }),
-        resolved_by: StringColumn({ 
+        resolved_by: StringColumn({
             label: 'Resolved By',
-            maxLength: 100
+            maxLength: 100,
         }),
-        resolved_date: DateTimeColumn({ 
-            label: 'Resolved Date'
+        resolved_date: DateTimeColumn({
+            label: 'Resolved Date',
         }),
-        resolution_notes: StringColumn({ 
+        resolution_notes: StringColumn({
             label: 'Resolution Notes',
-            maxLength: 1000
-        })
+            maxLength: 1000,
+        }),
     },
     audit: true,
-    accessible_from: 'public',
-    caller_access: 'tracking',
-    actions: ['create', 'read', 'update', 'delete'],
-    allow_web_service_access: true
+    accessibleFrom: 'public',
+    callerAccess: 'tracking',
+    actions: ['read', 'update', 'delete', 'create'],
+    allowWebServiceAccess: true,
 })

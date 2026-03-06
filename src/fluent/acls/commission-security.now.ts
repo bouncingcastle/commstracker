@@ -1,6 +1,11 @@
 import '@servicenow/sdk/global'
 import { Acl } from '@servicenow/sdk/core'
-import { commissionRepRole, commissionAdminRole, commissionFinanceRole, commissionManagerRole } from '../roles/commission-roles.now'
+import {
+    commissionRepRole,
+    commissionAdminRole,
+    commissionFinanceRole,
+    commissionManagerRole,
+} from '../roles/commission-roles.now'
 
 // Commission Plans - Admin only
 Acl({
@@ -10,8 +15,8 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
-    description: 'Only commission admins can read commission plans'
+    adminOverrides: true,
+    description: 'Only commission admins can read commission plans',
 })
 
 Acl({
@@ -21,8 +26,8 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
-    description: 'Only commission admins can modify commission plans'
+    adminOverrides: true,
+    description: 'Only commission admins can modify commission plans',
 })
 
 // Deals - Admin and Rep (own records)
@@ -33,7 +38,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole, commissionRepRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     script: `
         // Reps can only see their own deals
         if (gs.hasRole('x_823178_commissio.rep') && !gs.hasRole('x_823178_commissio.admin')) {
@@ -42,7 +47,7 @@ Acl({
             answer = true;
         }
     `,
-    description: 'Reps can read their own deals, admins can read all'
+    description: 'Reps can read their own deals, admins can read all',
 })
 
 Acl({
@@ -52,8 +57,8 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
-    description: 'Only admins can modify deals (sync process)'
+    adminOverrides: true,
+    description: 'Only admins can modify deals (sync process)',
 })
 
 // Commission Calculations - Admin and Rep (own records)
@@ -64,7 +69,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole, commissionRepRole, commissionFinanceRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     script: `
         // Reps can only see their own commission calculations
         if (gs.hasRole('x_823178_commissio.rep') && !gs.hasRole('x_823178_commissio.admin') && !gs.hasRole('x_823178_commissio.finance')) {
@@ -73,7 +78,7 @@ Acl({
             answer = true;
         }
     `,
-    description: 'Reps can read their own calculations, admins and finance can read all'
+    description: 'Reps can read their own calculations, admins and finance can read all',
 })
 
 Acl({
@@ -83,8 +88,8 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
-    description: 'Only admins can modify commission calculations'
+    adminOverrides: true,
+    description: 'Only admins can modify commission calculations',
 })
 
 // Commission Statements - Admin, Finance, and Rep (own records)
@@ -95,7 +100,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole, commissionRepRole, commissionFinanceRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     script: `
         // Reps can only see their own statements
         if (gs.hasRole('x_823178_commissio.rep') && !gs.hasRole('x_823178_commissio.admin') && !gs.hasRole('x_823178_commissio.finance')) {
@@ -104,7 +109,7 @@ Acl({
             answer = true;
         }
     `,
-    description: 'Reps can read their own statements, admins and finance can read all'
+    description: 'Reps can read their own statements, admins and finance can read all',
 })
 
 Acl({
@@ -114,7 +119,7 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole, commissionFinanceRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     script: `
         // Finance can only change status fields (lock/pay)
         if (gs.hasRole('x_823178_commissio.finance') && !gs.hasRole('x_823178_commissio.admin')) {
@@ -129,7 +134,7 @@ Acl({
             answer = true; // Admins can modify everything
         }
     `,
-    description: 'Admins can modify all fields, finance can only update payment status'
+    description: 'Admins can modify all fields, finance can only update payment status',
 })
 
 // Invoices and Payments - Admin only (system sync)
@@ -140,8 +145,8 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
-    description: 'Only admins can read invoices'
+    adminOverrides: true,
+    description: 'Only admins can read invoices',
 })
 
 Acl({
@@ -151,8 +156,8 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
-    description: 'Only admins can read payments'
+    adminOverrides: true,
+    description: 'Only admins can read payments',
 })
 
 // Deal Types governance - admin only
@@ -164,7 +169,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can read governed deal type records'
+    description: 'Only commission admins can read governed deal type records',
 })
 
 Acl({
@@ -175,7 +180,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can create/update/deactivate deal type records'
+    description: 'Only commission admins can create/update/deactivate deal type records',
 })
 
 Acl({
@@ -186,7 +191,7 @@ Acl({
     roles: [commissionAdminRole, commissionFinanceRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins and finance can read deal classification mappings'
+    description: 'Only commission admins and finance can read deal classification mappings',
 })
 
 Acl({
@@ -197,7 +202,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can manage deal classification mappings'
+    description: 'Only commission admins can manage deal classification mappings',
 })
 
 // Plan Recognition Policies governance - admin only
@@ -209,7 +214,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can read plan recognition policy records'
+    description: 'Only commission admins can read plan recognition policy records',
 })
 
 Acl({
@@ -220,7 +225,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can create/update recognition basis policies'
+    description: 'Only commission admins can create/update recognition basis policies',
 })
 
 // Plan setup hierarchy children - admin only
@@ -232,7 +237,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can read plan target records'
+    description: 'Only commission admins can read plan target records',
 })
 
 Acl({
@@ -243,7 +248,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can create/update plan target records'
+    description: 'Only commission admins can create/update plan target records',
 })
 
 Acl({
@@ -254,7 +259,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can read plan tier records'
+    description: 'Only commission admins can read plan tier records',
 })
 
 Acl({
@@ -265,7 +270,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can create/update plan tier records'
+    description: 'Only commission admins can create/update plan tier records',
 })
 
 Acl({
@@ -276,7 +281,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can read plan bonus records'
+    description: 'Only commission admins can read plan bonus records',
 })
 
 Acl({
@@ -287,7 +292,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can create/update plan bonus records'
+    description: 'Only commission admins can create/update plan bonus records',
 })
 
 // Bulk plan assignment runs - admin only
@@ -299,7 +304,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can read bulk plan assignment run records'
+    description: 'Only commission admins can read bulk plan assignment run records',
 })
 
 Acl({
@@ -310,7 +315,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can execute bulk plan assignment runs'
+    description: 'Only commission admins can execute bulk plan assignment runs',
 })
 
 // Manager Team Memberships governance
@@ -329,7 +334,7 @@ Acl({
             answer = true;
         }
     `,
-    description: 'Admins can read all manager-team governance rows; managers can read their own scope'
+    description: 'Admins can read all manager-team governance rows; managers can read their own scope',
 })
 
 Acl({
@@ -340,7 +345,7 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can create/update manager-team governance rows'
+    description: 'Only commission admins can create/update manager-team governance rows',
 })
 
 // Bonus earnings - Admin/Finance and Rep (own records)
@@ -359,7 +364,7 @@ Acl({
             answer = true;
         }
     `,
-    description: 'Reps can read their own bonus earnings; admins and finance can read all'
+    description: 'Reps can read their own bonus earnings; admins and finance can read all',
 })
 
 Acl({
@@ -370,5 +375,5 @@ Acl({
     roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can modify bonus earnings records'
+    description: 'Only commission admins can modify bonus earnings records',
 })

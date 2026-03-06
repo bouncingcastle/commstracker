@@ -1,0 +1,20 @@
+import { Record } from '@servicenow/sdk/core'
+
+Record({
+    $id: Now.ID['7c76f523db9a4a75a62977f2db9b27b5'],
+    table: 'sys_app_module',
+    data: {
+        active: true,
+        application: '9f26a2fe5dcd472493e2947fc9afad2c',
+        hint: 'Configure discretionary and performance bonuses',
+        link_type: 'LIST',
+        name: 'x_823178_commissio_plan_bonuses',
+        order: 32.3,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        title: 'Plan Bonuses',
+        uncancelable: false,
+    },
+})

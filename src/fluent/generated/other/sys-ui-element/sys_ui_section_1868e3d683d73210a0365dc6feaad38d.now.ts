@@ -97,6 +97,7 @@ Record({
         element: 'plan_overlap_approved_on',
         position: 10,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
+        type: '.end_split',
     },
 })
 Record({
@@ -115,5 +116,6 @@ Record({
         element: 'description',
         position: 12,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
+        type: '.begin_split',
     },
 })

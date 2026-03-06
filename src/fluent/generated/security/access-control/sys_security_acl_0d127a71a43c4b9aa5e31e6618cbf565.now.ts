@@ -1,0 +1,10 @@
+import { Acl } from '@servicenow/sdk/core'
+
+Acl({
+    $id: Now.ID['0d127a71a43c4b9aa5e31e6618cbf565'],
+    description: 'Only commission admins can read plan recognition policy records',
+    type: 'record',
+    operation: 'read',
+    roles: ['x_823178_commissio.admin'],
+    table: 'x_823178_commissio_plan_recognition_policies',
+})

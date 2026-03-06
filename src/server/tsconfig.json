@@ -12,6 +12,7 @@
     "noUnusedLocals": false
   },
   "include": [
+    "./**/*.js",
     "./**/*.ts"
   ],
   "exclude": [

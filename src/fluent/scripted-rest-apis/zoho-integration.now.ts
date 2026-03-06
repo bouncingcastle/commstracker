@@ -1,12 +1,16 @@
 import '@servicenow/sdk/global'
 import { RestApi } from '@servicenow/sdk/core'
-import { syncDealsFromBigin, syncInvoicesFromBooks, syncPaymentsFromBooks } from '../../server/rest-apis/zoho-integration.js'
+import {
+    syncDealsFromBigin,
+    syncInvoicesFromBooks,
+    syncPaymentsFromBooks,
+} from '../../server/rest-apis/zoho-integration.js'
 
 RestApi({
     $id: Now.ID['zoho_integration_api'],
     name: 'Zoho Integration API',
-    service_id: 'zoho_commission_sync',
-    short_description: 'API endpoints for syncing data from Zoho Bigin and Books',
+    serviceId: 'zoho_commission_sync',
+    shortDescription: 'API endpoints for syncing data from Zoho Bigin and Books',
     consumes: 'application/json',
     produces: 'application/json',
     routes: [
@@ -16,10 +20,12 @@ RestApi({
             path: '/deals/sync',
             method: 'POST',
             script: syncDealsFromBigin,
-            short_description: 'Sync deals data from Zoho Bigin',
+            shortDescription: 'Sync deals data from Zoho Bigin',
             authorization: true,
             authentication: true,
-            version: 1
+            version: 1,
+            consumes: 'application/json',
+            produces: 'application/json',
         },
         {
             $id: Now.ID['sync_invoices_route'],
@@ -27,10 +33,12 @@ RestApi({
             path: '/invoices/sync',
             method: 'POST',
             script: syncInvoicesFromBooks,
-            short_description: 'Sync invoice data from Zoho Books',
+            shortDescription: 'Sync invoice data from Zoho Books',
             authorization: true,
             authentication: true,
-            version: 1
+            version: 1,
+            consumes: 'application/json',
+            produces: 'application/json',
         },
         {
             $id: Now.ID['sync_payments_route'],
@@ -38,16 +46,18 @@ RestApi({
             path: '/payments/sync',
             method: 'POST',
             script: syncPaymentsFromBooks,
-            short_description: 'Sync payment data from Zoho Books',
+            shortDescription: 'Sync payment data from Zoho Books',
             authorization: true,
             authentication: true,
-            version: 1
-        }
+            version: 1,
+            consumes: 'application/json',
+            produces: 'application/json',
+        },
     ],
     versions: [
         {
             $id: Now.ID['api_v1'],
-            version: 1
-        }
-    ]
+            version: 1,
+        },
+    ],
 })

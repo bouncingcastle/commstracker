@@ -8,73 +8,83 @@ export const x_823178_commissio_forecast_scenarios = Table({
         scenario_name: StringColumn({
             label: 'Scenario Name',
             maxLength: 120,
-            mandatory: true
+            mandatory: true,
         }),
         sales_rep: ReferenceColumn({
             label: 'Sales Rep',
             referenceTable: 'sys_user',
-            mandatory: true
+            mandatory: true,
+            attributes: {
+                encode_utf8: false,
+            },
         }),
         commission_plan: ReferenceColumn({
             label: 'Commission Plan',
-            referenceTable: 'x_823178_commissio_commission_plans'
+            referenceTable: 'x_823178_commissio_commission_plans',
+            attributes: {
+                encode_utf8: false,
+            },
         }),
         scenario_year: IntegerColumn({
             label: 'Scenario Year',
-            mandatory: true
+            mandatory: true,
         }),
         win_rate_multiplier: DecimalColumn({
             label: 'Win Rate Multiplier',
-            precision: 6,
-            scale: 2
+            scale: 2,
         }),
         pipeline_multiplier: DecimalColumn({
             label: 'Pipeline Multiplier',
-            precision: 6,
-            scale: 2
+            scale: 2,
         }),
         projected_revenue: DecimalColumn({
-            label: 'Projected Revenue'
+            label: 'Projected Revenue',
         }),
         projected_commission: DecimalColumn({
-            label: 'Projected Commission'
+            label: 'Projected Commission',
         }),
         projected_attainment_percent: DecimalColumn({
             label: 'Projected Attainment (%)',
-            precision: 6,
-            scale: 2
+            scale: 2,
         }),
         assumptions_json: StringColumn({
             label: 'Assumptions (JSON)',
-            maxLength: 4000
+            maxLength: 4000,
         }),
         status: StringColumn({
             label: 'Status',
             choices: {
                 draft: { label: 'Draft', sequence: 0 },
                 published: { label: 'Published', sequence: 1 },
-                archived: { label: 'Archived', sequence: 2 }
+                archived: { label: 'Archived', sequence: 2 },
             },
-            default: 'draft'
+            default: 'draft',
+            dropdown: 'dropdown_with_none',
         }),
         is_active: BooleanColumn({
             label: 'Active',
-            default: true
+            default: true,
         }),
         notes: StringColumn({
             label: 'Notes',
-            maxLength: 1000
-        })
+            maxLength: 1000,
+        }),
     },
-    indexes: [
-        {
-            name: 'idx_forecast_rep_year',
-            fields: ['sales_rep', 'scenario_year']
-        }
-    ],
     audit: true,
-    accessible_from: 'public',
-    caller_access: 'tracking',
-    actions: ['create', 'read', 'update', 'delete'],
-    allow_web_service_access: true
+    accessibleFrom: 'public',
+    callerAccess: 'tracking',
+    actions: ['read', 'update', 'delete', 'create'],
+    allowWebServiceAccess: true,
+    index: [
+        {
+            name: 'index',
+            unique: false,
+            element: 'commission_plan',
+        },
+        {
+            name: 'index2',
+            unique: false,
+            element: 'sales_rep',
+        },
+    ],
 })

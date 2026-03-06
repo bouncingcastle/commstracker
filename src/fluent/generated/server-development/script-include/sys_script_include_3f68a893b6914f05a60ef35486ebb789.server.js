@@ -1,0 +1,1023 @@
+
+    var CommissionProgressDataService = Class.create();
+    CommissionProgressDataService.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+    
+    getRepProgress: function() {
+        var userId = this.getParameter('sysparm_user_id') || this.getParameter('user_id');
+        var includeAllUsers = String(userId) === 'all';
+        
+        if (!userId) {
+            return this.getErrorJSON('No user ID provided');
+        }
+
+        if (includeAllUsers && !this.isAdminViewer()) {
+            return this.getErrorJSON('Only admins can view all users');
+        }
+
+        try {
+            var result = {
+                status: 'success',
+                data: {
+                    report_year: 0,
+                    total_earned: 0,
+                    pending_amount: 0,
+                    pending_count: 0,
+                    paid_amount: 0,
+                    paid_count: 0,
+                    active_deals_count: 0,
+                    pipeline_value: 0,
+                    breakdown: {},
+                    deal_breakdown: {},
+                    recent_calculations: [],
+                    active_deals: [],
+                    active_plan: null
+                }
+            };
+
+            var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
+            var today = new GlideDateTime();
+            var currentYear = parseInt(today.getYearLocalTime(), 10);
+            var selectedYear = (!isNaN(requestedYear) && requestedYear >= 2000 && requestedYear <= 2100) ? requestedYear : currentYear;
+            var yearStart = selectedYear + '-01-01';
+            var yearEnd = selectedYear + '-12-31';
+            result.data.report_year = selectedYear;
+
+            var selectedUserIds = [];
+            if (includeAllUsers) {
+                var userSet = {};
+                var planUsersAgg = new GlideAggregate('x_823178_commissio_commission_plans');
+                planUsersAgg.addQuery('is_active', true);
+                planUsersAgg.addQuery('effective_start_date', '<=', yearEnd);
+                planUsersAgg.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
+                planUsersAgg.groupBy('sales_rep');
+                planUsersAgg.query();
+                while (planUsersAgg.next()) {
+                    var repId = planUsersAgg.getValue('sales_rep');
+                    if (repId && !userSet[repId]) {
+                        userSet[repId] = true;
+                        selectedUserIds.push(repId);
+                    }
+                }
+                result.data.view_mode = 'all_users';
+                result.data.selected_user_count = selectedUserIds.length;
+            }
+
+            var planId = '';
+            if (!includeAllUsers) {
+                var planGr = new GlideRecord('x_823178_commissio_commission_plans');
+                planGr.addQuery('sales_rep', userId);
+                planGr.addQuery('is_active', true);
+                planGr.addQuery('effective_start_date', '<=', yearEnd);
+                planGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
+                planGr.orderByDesc('effective_start_date');
+                planGr.query();
+
+                if (planGr.next()) {
+                    var planYearStr = planGr.getValue('effective_start_date');
+                    var planYear = planYearStr ? new GlideDateTime(planYearStr).getYearLocalTime() : selectedYear;
+                    planId = planGr.getValue('sys_id');
+                    
+                    var compDetails = this.getCompensationPlanDetails(planId);
+                    var baseRate = compDetails.base_rate;
+                    var totalQuota = compDetails.total_quota;
+                    var oTE100 = totalQuota > 0 ? (totalQuota * baseRate / 100) : 0;
+                    var oteWithBonuses = oTE100 + compDetails.total_bonus_potential;
+                    
+                    result.data.active_plan = {
+                        plan_name: planGr.getValue('plan_name'),
+                        plan_target_amount: planGr.getValue('plan_target_amount'),
+                        plan_year: planYear,
+                        sys_id: planId,
+                        effective_start_date: planGr.getValue('effective_start_date'),
+                        effective_end_date: planGr.getValue('effective_end_date'),
+                        targets: compDetails.targets,
+                        tiers: compDetails.tiers,
+                        bonuses: compDetails.bonuses,
+                        total_quota: compDetails.total_quota,
+                        base_rate: baseRate,
+                        ote_at_100_percent: oTE100,
+                        ote_with_bonuses: oteWithBonuses,
+                        total_bonus_potential: compDetails.total_bonus_potential
+                    };
+                }
+            }
+
+            var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
+            if (includeAllUsers) {
+                if (selectedUserIds.length === 0) {
+                    calcGr.addQuery('sys_id', '');
+                } else {
+                    calcGr.addQuery('sales_rep', 'IN', selectedUserIds.join(','));
+                }
+            } else {
+                calcGr.addQuery('sales_rep', userId);
+            }
+            calcGr.addQuery('calculation_date', '>=', yearStart);
+            calcGr.addQuery('calculation_date', '<=', yearEnd);
+            calcGr.orderBy('-calculation_date');
+            calcGr.query();
+
+            var totalEarned = 0;
+            var pendingAmount = 0;
+            var pendingCount = 0;
+            var paidAmount = 0;
+            var paidCount = 0;
+            var breakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
+            var recentCalcs = [];
+
+            while (calcGr.next()) {
+                var commAmount = parseFloat(calcGr.getValue('commission_amount')) || 0;
+                var status = calcGr.getValue('status') || 'draft';
+                var dealType = calcGr.getValue('deal_type') || 'other';
+
+                if (status === 'paid' || status === 'locked') {
+                    paidAmount += commAmount;
+                    paidCount++;
+                } else if (status === 'draft') {
+                    pendingAmount += commAmount;
+                    pendingCount++;
+                }
+                totalEarned += commAmount;
+
+                if (breakdown.hasOwnProperty(dealType)) {
+                    breakdown[dealType] += commAmount;
+                } else {
+                    breakdown.other += commAmount;
+                }
+
+                if (recentCalcs.length < 10) {
+                    var calcDealGr = new GlideRecord('x_823178_commissio_deals');
+                    calcDealGr.get(calcGr.getValue('deal'));
+
+                    var repName = '';
+                    if (includeAllUsers) {
+                        var repGr = new GlideRecord('sys_user');
+                        if (repGr.get(calcGr.getValue('sales_rep'))) {
+                            repName = repGr.getDisplayValue('name') || '';
+                        }
+                    }
+                    
+                    recentCalcs.push({
+                        sales_rep_name: repName,
+                        deal_name: calcDealGr.getDisplayValue('deal_name'),
+                        deal_type: calcGr.getValue('deal_type'),
+                        commission_base_amount: calcGr.getValue('commission_base_amount'),
+                        commission_rate: calcGr.getValue('commission_rate'),
+                        commission_amount: calcGr.getValue('commission_amount'),
+                        payment_date: calcGr.getValue('payment_date'),
+                        status: status
+                    });
+                }
+            }
+
+            result.data.total_earned = totalEarned;
+            result.data.pending_amount = pendingAmount;
+            result.data.pending_count = pendingCount;
+            result.data.paid_amount = paidAmount;
+            result.data.paid_count = paidCount;
+            result.data.breakdown = breakdown;
+            result.data.recent_calculations = recentCalcs;
+
+            var dealGr = new GlideRecord('x_823178_commissio_deals');
+            if (includeAllUsers) {
+                if (selectedUserIds.length === 0) {
+                    dealGr.addQuery('sys_id', '');
+                } else {
+                    dealGr.addQuery('current_owner', 'IN', selectedUserIds.join(',')).addOrCondition('owner_at_close', 'IN', selectedUserIds.join(','));
+                }
+            } else {
+                dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+            }
+            dealGr.addQuery('is_won', false);
+            dealGr.addQuery('stage', '!=', 'closed_lost');
+            dealGr.orderBy('close_date');
+            dealGr.query();
+
+            var activeDeals = [];
+            var pipelineValue = 0;
+            var dealBreakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
+            var dealCount = 0;
+
+            while (dealGr.next() && dealCount < 50) {
+                var dealAmount = parseFloat(dealGr.getValue('amount')) || 0;
+                var dealType2 = dealGr.getValue('deal_type') || 'other';
+
+                pipelineValue += dealAmount;
+
+                if (dealBreakdown.hasOwnProperty(dealType2)) {
+                    dealBreakdown[dealType2] += dealAmount;
+                } else {
+                    dealBreakdown.other += dealAmount;
+                }
+
+                if (activeDeals.length < 20) {
+                    activeDeals.push({
+                        deal_name: dealGr.getValue('deal_name'),
+                        account_name: dealGr.getValue('account_name'),
+                        amount: dealAmount,
+                        deal_type: dealType2,
+                        stage: dealGr.getValue('stage'),
+                        close_date: dealGr.getValue('close_date')
+                    });
+                }
+                dealCount++;
+            }
+
+            result.data.active_deals_count = dealCount;
+            result.data.pipeline_value = pipelineValue;
+            result.data.deal_breakdown = dealBreakdown;
+            result.data.active_deals = activeDeals;
+
+            if (planId) {
+                try {
+                    result.data.quota_progress = this.getQuotaProgress(userId, planId, selectedYear);
+                } catch (quotaErr) {
+                    gs.log('CommissionProgressDataService quota fetch warning: ' + quotaErr.getMessage(), 'CommissionProgressDataService');
+                }
+            }
+
+            return JSON.stringify(result);
+
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getRepProgress error: ' + e.getMessage());
+            return this.getErrorJSON('Error fetching commission progress: ' + e.getMessage());
+        }
+    },
+
+    getQuotaProgress: function(userId, planId, reportYear) {
+        try {
+            var progress = {};
+
+            var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+            targetGr.addQuery('commission_plan', planId);
+            targetGr.query();
+
+            var targets = {};
+            while (targetGr.next()) {
+                var dt = targetGr.getValue('deal_type');
+                targets[dt] = parseFloat(targetGr.getValue('annual_target_amount')) || 0;
+            }
+
+            var today = new GlideDateTime();
+            var currentYear = parseInt(today.getYearLocalTime(), 10);
+            var selectedYear = parseInt(reportYear, 10);
+            if (isNaN(selectedYear) || selectedYear < 2000 || selectedYear > 2100) {
+                selectedYear = currentYear;
+            }
+            var yearStart = selectedYear + '-01-01';
+            var yearEnd = selectedYear + '-12-31';
+
+            var dealGr = new GlideRecord('x_823178_commissio_deals');
+            dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+            dealGr.addQuery('is_won', true);
+            dealGr.addQuery('close_date', '>=', yearStart);
+            dealGr.addQuery('close_date', '<=', yearEnd);
+            dealGr.query();
+
+            var achieved = {};
+            while (dealGr.next()) {
+                var dt2 = dealGr.getValue('deal_type') || 'other';
+                var amount = parseFloat(dealGr.getValue('amount')) || 0;
+                if (!achieved[dt2]) achieved[dt2] = 0;
+                achieved[dt2] += amount;
+            }
+
+            Object.keys(targets).forEach(function(dealType) {
+                var target = targets[dealType];
+                var achievedAmount = achieved[dealType] || 0;
+                var attainment = target > 0 ? (achievedAmount / target) * 100 : 0;
+                progress[dealType] = {
+                    target_amount: target,
+                    achieved_amount: achievedAmount,
+                    remaining_amount: Math.max(target - achievedAmount, 0),
+                    attainment_percent: Math.min(attainment, 100),
+                    is_over_quota: achievedAmount >= target
+                };
+            });
+
+            return progress;
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getQuotaProgress error: ' + e.getMessage());
+            return {};
+        }
+    },
+
+    getCurrentUser: function() {
+        try {
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    user_id: gs.getUserID(),
+                    user_name: gs.getUserDisplayName()
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getCurrentUser error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to resolve current user: ' + e.getMessage());
+        }
+    },
+
+    getViewerAccess: function() {
+        try {
+            var user = gs.getUser();
+            var isAdmin = this.isAdminViewer();
+            var isFinance = user.hasRole('x_823178_commissio.finance');
+            var isRep = user.hasRole('x_823178_commissio.rep');
+
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    can_select_users: !!isAdmin,
+                    roles: {
+                        admin: !!isAdmin,
+                        finance: !!isFinance,
+                        rep: !!isRep
+                    }
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getViewerAccess error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to resolve viewer access: ' + e.getMessage());
+        }
+    },
+
+    getYearContext: function() {
+        try {
+            var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
+            var requestedWindow = parseInt(this.getParameter('sysparm_year_window') || this.getParameter('year_window'), 10);
+            var windowSize = (!isNaN(requestedWindow) && requestedWindow >= 1 && requestedWindow <= 5) ? requestedWindow : 2;
+
+            var today = new GlideDateTime();
+            var currentYear = parseInt(today.getYearLocalTime(), 10);
+            var defaultYear = (!isNaN(requestedYear) && requestedYear >= 2000 && requestedYear <= 2100) ? requestedYear : currentYear;
+
+            var years = [];
+            for (var year = currentYear + windowSize; year >= currentYear - windowSize; year--) {
+                years.push(year);
+            }
+
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    current_year: currentYear,
+                    default_year: defaultYear,
+                    years: years
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getYearContext error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to resolve year context: ' + e.getMessage());
+        }
+    },
+
+    getDashboardMetrics: function() {
+        try {
+            var requestedYearRaw = this.getParameter('sysparm_year') || this.getParameter('year') || '';
+            var isAllYears = String(requestedYearRaw).toLowerCase() === 'all';
+            var requestedYear = parseInt(requestedYearRaw, 10);
+            var today = new GlideDateTime();
+            var currentYear = parseInt(today.getYearLocalTime(), 10);
+            var selectedYear = (!isNaN(requestedYear) && requestedYear >= 2000 && requestedYear <= 2100) ? requestedYear : currentYear;
+            var yearStart = selectedYear + '-01-01';
+            var yearEnd = selectedYear + '-12-31';
+
+            var statements = new GlideAggregate('x_823178_commissio_commission_statements');
+            if (!isAllYears) {
+                statements.addQuery('statement_year', selectedYear);
+            }
+            statements.addAggregate('COUNT');
+            statements.query();
+            var totalStatements = statements.next() ? parseInt(statements.getAggregate('COUNT'), 10) : 0;
+
+            var pending = new GlideAggregate('x_823178_commissio_exception_approvals');
+            pending.addQuery('status', 'pending');
+            if (!isAllYears) {
+                pending.addQuery('request_date', '>=', yearStart + ' 00:00:00');
+                pending.addQuery('request_date', '<=', yearEnd + ' 23:59:59');
+            }
+            pending.addAggregate('COUNT');
+            pending.query();
+            var pendingReviews = pending.next() ? parseInt(pending.getAggregate('COUNT'), 10) : 0;
+
+            var deals = new GlideAggregate('x_823178_commissio_deals');
+            deals.addQuery('is_won', false);
+            deals.addQuery('stage', '!=', 'closed_lost');
+            deals.addAggregate('COUNT');
+            deals.query();
+            var activeDeals = deals.next() ? parseInt(deals.getAggregate('COUNT'), 10) : 0;
+
+            var alerts = new GlideAggregate('x_823178_commissio_system_alerts');
+            alerts.addQuery('status', 'IN', 'open,acknowledged');
+            if (!isAllYears) {
+                alerts.addQuery('alert_date', '>=', yearStart + ' 00:00:00');
+                alerts.addQuery('alert_date', '<=', yearEnd + ' 23:59:59');
+            }
+            alerts.addAggregate('COUNT');
+            alerts.query();
+            var openAlerts = alerts.next() ? parseInt(alerts.getAggregate('COUNT'), 10) : 0;
+
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    report_year: isAllYears ? 'all' : selectedYear,
+                    total_statements: totalStatements,
+                    pending_reviews: pendingReviews,
+                    active_deals: activeDeals,
+                    open_alerts: openAlerts
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getDashboardMetrics error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to load dashboard metrics: ' + e.getMessage());
+        }
+    },
+
+    listUsersWithData: function() {
+        try {
+            var users = [];
+            var seen = {};
+            var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
+            var selectedYear = (!isNaN(requestedYear) && requestedYear >= 2000 && requestedYear <= 2100) ? requestedYear : null;
+            var yearStart = selectedYear ? (selectedYear + '-01-01') : '';
+            var yearEnd = selectedYear ? (selectedYear + '-12-31') : '';
+
+            var addUserById = function(repId) {
+                if (!repId || seen[repId]) return;
+                var repGr = new GlideRecord('sys_user');
+                repGr.addQuery('sys_id', repId);
+                repGr.addActiveQuery();
+                repGr.query();
+                if (repGr.next()) {
+                    users.push({
+                        user_id: repId,
+                        user_name: repGr.getDisplayValue('name') || repGr.getDisplayValue()
+                    });
+                    seen[repId] = true;
+                }
+            };
+
+            var planAgg = new GlideAggregate('x_823178_commissio_commission_plans');
+            planAgg.addQuery('is_active', true);
+            if (selectedYear) {
+                planAgg.addQuery('effective_start_date', '<=', yearEnd);
+                planAgg.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
+            }
+            planAgg.groupBy('sales_rep');
+            planAgg.query();
+
+            while (planAgg.next()) {
+                addUserById(planAgg.getValue('sales_rep'));
+            }
+
+            users.sort(function(a, b) {
+                var an = (a.user_name || '').toLowerCase();
+                var bn = (b.user_name || '').toLowerCase();
+                if (an < bn) return -1;
+                if (an > bn) return 1;
+                return 0;
+            });
+
+            return JSON.stringify({
+                status: 'success',
+                data: users
+            });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.listUsersWithData error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to load users: ' + e.getMessage());
+        }
+    },
+
+    searchUsers: function() {
+        var searchTerm = this.getParameter('sysparm_search_term') || this.getParameter('search_term') || '';
+
+        if (!searchTerm || searchTerm.length < 2) {
+            return this.getErrorJSON('Search term must be at least 2 characters');
+        }
+
+        try {
+            var userGr = new GlideRecord('sys_user');
+            userGr.addActiveQuery();
+
+            if (searchTerm.length === 32) {
+                userGr.addQuery('sys_id', searchTerm);
+                userGr.query();
+                if (userGr.next()) {
+                    return JSON.stringify({
+                        status: 'success',
+                        data: {
+                            user_id: userGr.getUniqueValue(),
+                            user_name: userGr.getDisplayValue('name')
+                        }
+                    });
+                }
+            }
+
+            var qc = userGr.addQuery('name', 'LIKE', searchTerm);
+            qc.addOrCondition('first_name', 'LIKE', searchTerm);
+            qc.addOrCondition('last_name', 'LIKE', searchTerm);
+            userGr.setLimit(1);
+            userGr.query();
+
+            if (userGr.next()) {
+                return JSON.stringify({
+                    status: 'success',
+                    data: {
+                        user_id: userGr.getUniqueValue(),
+                        user_name: userGr.getDisplayValue('name')
+                    }
+                });
+            }
+
+            return this.getErrorJSON('No user found matching: ' + searchTerm);
+        } catch (e) {
+            gs.error('CommissionProgressDataService.searchUsers error: ' + e.getMessage());
+            return this.getErrorJSON('Error searching users: ' + e.getMessage());
+        }
+    },
+
+    getCompensationPlanDetails: function(planId) {
+        try {
+            var details = {
+                targets: {},
+                tiers: [],
+                bonuses: [],
+                total_quota: 0,
+                base_rate: 0,
+                total_bonus_potential: 0
+            };
+
+            if (!planId) return details;
+
+            var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+            targetGr.addQuery('commission_plan', planId);
+            targetGr.orderBy('deal_type');
+            targetGr.query();
+
+            while (targetGr.next()) {
+                var dealType = targetGr.getValue('deal_type');
+                var amount = parseFloat(targetGr.getValue('annual_target_amount')) || 0;
+                details.total_quota += amount;
+                details.targets[dealType] = amount;
+            }
+
+            var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
+            tierGr.addQuery('commission_plan', planId);
+            tierGr.orderBy('attainment_floor_percent');
+            tierGr.query();
+
+            while (tierGr.next()) {
+                var floor = parseFloat(tierGr.getValue('attainment_floor_percent')) || 0;
+                var rate = parseFloat(tierGr.getValue('commission_rate_percent')) || 0;
+                if (floor === 0) details.base_rate = rate;
+                details.tiers.push({
+                    tier_name: tierGr.getValue('tier_name'),
+                    floor_percent: floor,
+                    rate_percent: rate
+                });
+            }
+
+            var bonusGr = new GlideRecord('x_823178_commissio_plan_bonuses');
+            bonusGr.addQuery('commission_plan', planId);
+            bonusGr.addQuery('is_active', true);
+            bonusGr.orderBy('bonus_name');
+            bonusGr.query();
+
+            while (bonusGr.next()) {
+                var bonusAmount = parseFloat(bonusGr.getValue('bonus_amount')) || 0;
+                details.total_bonus_potential += bonusAmount;
+                details.bonuses.push({
+                    name: bonusGr.getValue('bonus_name'),
+                    amount: bonusAmount,
+                    trigger: bonusGr.getValue('bonus_trigger'),
+                    deal_type: bonusGr.getValue('deal_type'),
+                    is_discretionary: bonusGr.getValue('is_discretionary') === '1' || bonusGr.getValue('is_discretionary') === true
+                });
+            }
+
+            return details;
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getCompensationPlanDetails error: ' + e.getMessage());
+            return { targets: {}, tiers: [], bonuses: [], total_quota: 0, base_rate: 0, total_bonus_potential: 0 };
+        }
+    },
+
+    getForecastAndPriorities: function() {
+        var userId = this.getParameter('sysparm_user_id') || gs.getUserID();
+        var selectedYear = this.getValidYear(this.getParameter('sysparm_year'));
+        var scenarioId = this.getParameter('sysparm_scenario_id') || '';
+
+        try {
+            var plan = this.getForecastPlan(userId, selectedYear);
+            var quota = this.getForecastTotalQuota(plan ? plan.sys_id : '');
+            var rateCard = this.getForecastRateCard(plan);
+            var scenario = this.getForecastScenario(scenarioId, userId, selectedYear);
+
+            var overrideWin = parseFloat(this.getParameter('sysparm_win_rate_multiplier') || '');
+            var overridePipeline = parseFloat(this.getParameter('sysparm_pipeline_multiplier') || '');
+
+            var winRateMultiplier = this.normalizeMultiplier(!isNaN(overrideWin) ? overrideWin : scenario.win_rate_multiplier);
+            var pipelineMultiplier = this.normalizeMultiplier(!isNaN(overridePipeline) ? overridePipeline : scenario.pipeline_multiplier);
+
+            var prioritized = [];
+            var totals = {
+                expected_revenue: 0,
+                expected_commission: 0,
+                active_deals: 0,
+                won_revenue_ytd: this.getWonRevenueYtd(userId, selectedYear),
+                total_quota: quota
+            };
+
+            var stageProbability = {
+                lead: 0.2,
+                qualified: 0.4,
+                proposal: 0.6,
+                negotiation: 0.8,
+                closed_won: 1
+            };
+
+            var dealsGr = new GlideRecord('x_823178_commissio_deals');
+            dealsGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+            dealsGr.addQuery('is_won', false);
+            dealsGr.addQuery('stage', '!=', 'closed_lost');
+            dealsGr.query();
+
+            while (dealsGr.next()) {
+                var amount = parseFloat(dealsGr.getValue('amount')) || 0;
+                var dealType = dealsGr.getValue('deal_type') || 'new_business';
+                var stage = dealsGr.getValue('stage') || 'lead';
+                var rate = this.resolveForecastRate(rateCard, dealType);
+                var probability = (stageProbability[stage] || 0.3) * winRateMultiplier;
+                if (probability > 1) probability = 1;
+
+                var adjustedAmount = amount * pipelineMultiplier;
+                var expectedRevenue = adjustedAmount * probability;
+                var expectedCommission = expectedRevenue * (rate / 100);
+                var urgencyBoost = this.getForecastUrgencyBoost(dealsGr.getValue('close_date'));
+                var score = expectedCommission * (1 + urgencyBoost);
+
+                totals.active_deals++;
+                totals.expected_revenue += expectedRevenue;
+                totals.expected_commission += expectedCommission;
+
+                prioritized.push({
+                    deal_id: dealsGr.getUniqueValue(),
+                    deal_name: dealsGr.getValue('deal_name'),
+                    account_name: dealsGr.getValue('account_name'),
+                    deal_type: dealType,
+                    stage: stage,
+                    close_date: dealsGr.getValue('close_date'),
+                    amount: amount,
+                    probability: probability,
+                    commission_rate: rate,
+                    expected_commission: expectedCommission,
+                    priority_score: score
+                });
+            }
+
+            prioritized.sort(function(a, b) {
+                return b.priority_score - a.priority_score;
+            });
+
+            var projectedRevenue = totals.won_revenue_ytd + totals.expected_revenue;
+            var projectedAttainment = totals.total_quota > 0 ? (projectedRevenue / totals.total_quota) * 100 : 0;
+
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    summary: {
+                        report_year: selectedYear,
+                        active_scenario_id: scenario.scenario_id || '',
+                        active_scenario_name: scenario.scenario_name || '',
+                        win_rate_multiplier: winRateMultiplier,
+                        pipeline_multiplier: pipelineMultiplier,
+                        active_deals: totals.active_deals,
+                        won_revenue_ytd: this.round2(totals.won_revenue_ytd),
+                        expected_revenue: this.round2(totals.expected_revenue),
+                        expected_commission: this.round2(totals.expected_commission),
+                        total_quota: this.round2(totals.total_quota),
+                        projected_attainment_percent: this.round2(projectedAttainment)
+                    },
+                    prioritized_deals: prioritized.slice(0, 10),
+                    scenarios: this.listForecastScenariosInternal(userId, selectedYear)
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getForecastAndPriorities error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to calculate forecast insights');
+        }
+    },
+
+    estimateCommission: function() {
+        var userId = this.getParameter('sysparm_user_id') || gs.getUserID();
+        var selectedYear = this.getValidYear(this.getParameter('sysparm_year'));
+        var dealType = this.getParameter('sysparm_deal_type') || 'new_business';
+        var stage = this.getParameter('sysparm_stage') || 'qualified';
+        var amount = parseFloat(this.getParameter('sysparm_amount') || '0');
+        var scenarioId = this.getParameter('sysparm_scenario_id') || '';
+
+        if (!amount || amount <= 0) {
+            return this.getErrorJSON('Enter an amount greater than 0 for the estimator');
+        }
+
+        try {
+            var plan = this.getForecastPlan(userId, selectedYear);
+            var rateCard = this.getForecastRateCard(plan);
+            var rate = this.resolveForecastRate(rateCard, dealType);
+            var scenario = this.getForecastScenario(scenarioId, userId, selectedYear);
+
+            var probabilityByStage = {
+                lead: 0.2,
+                qualified: 0.4,
+                proposal: 0.6,
+                negotiation: 0.8,
+                closed_won: 1
+            };
+
+            var probability = (probabilityByStage[stage] || 0.4) * this.normalizeMultiplier(scenario.win_rate_multiplier);
+            if (probability > 1) probability = 1;
+
+            var adjustedAmount = amount * this.normalizeMultiplier(scenario.pipeline_multiplier);
+            var expectedCommission = adjustedAmount * probability * (rate / 100);
+
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    amount: this.round2(amount),
+                    adjusted_amount: this.round2(adjustedAmount),
+                    commission_rate_percent: this.round2(rate),
+                    probability: this.round4(probability),
+                    expected_commission: this.round2(expectedCommission),
+                    scenario_name: scenario.scenario_name || ''
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.estimateCommission error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to run commission estimate');
+        }
+    },
+
+    saveForecastScenario: function() {
+        var userId = this.getParameter('sysparm_user_id') || gs.getUserID();
+        var selectedYear = this.getValidYear(this.getParameter('sysparm_year'));
+        var scenarioName = this.getParameter('sysparm_scenario_name') || ('Scenario ' + selectedYear);
+        var winRateMultiplier = this.normalizeMultiplier(parseFloat(this.getParameter('sysparm_win_rate_multiplier') || '1'));
+        var pipelineMultiplier = this.normalizeMultiplier(parseFloat(this.getParameter('sysparm_pipeline_multiplier') || '1'));
+
+        try {
+            var forecast = this.getForecastSummaryValues(userId, selectedYear, winRateMultiplier, pipelineMultiplier);
+            var plan = this.getForecastPlan(userId, selectedYear);
+
+            var scenarioGr = new GlideRecord('x_823178_commissio_forecast_scenarios');
+            scenarioGr.initialize();
+            scenarioGr.setValue('scenario_name', scenarioName);
+            scenarioGr.setValue('sales_rep', userId);
+            scenarioGr.setValue('scenario_year', selectedYear);
+            if (plan && plan.sys_id) {
+                scenarioGr.setValue('commission_plan', plan.sys_id);
+            }
+            scenarioGr.setValue('win_rate_multiplier', winRateMultiplier);
+            scenarioGr.setValue('pipeline_multiplier', pipelineMultiplier);
+            scenarioGr.setValue('projected_revenue', forecast.projected_revenue);
+            scenarioGr.setValue('projected_commission', forecast.expected_commission);
+            scenarioGr.setValue('projected_attainment_percent', forecast.projected_attainment_percent);
+            scenarioGr.setValue('assumptions_json', JSON.stringify({
+                win_rate_multiplier: winRateMultiplier,
+                pipeline_multiplier: pipelineMultiplier,
+                captured_on: new GlideDateTime().getDisplayValue()
+            }));
+            scenarioGr.setValue('status', 'draft');
+            scenarioGr.setValue('is_active', true);
+
+            var scenarioId = scenarioGr.insert();
+            return JSON.stringify({
+                status: 'success',
+                data: {
+                    scenario_id: scenarioId,
+                    scenario_name: scenarioName,
+                    projected_commission: this.round2(forecast.expected_commission),
+                    projected_attainment_percent: this.round2(forecast.projected_attainment_percent)
+                }
+            });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.saveForecastScenario error: ' + e.getMessage());
+            return this.getErrorJSON('Unable to save scenario');
+        }
+    },
+
+    getForecastSummaryValues: function(userId, selectedYear, winRateMultiplier, pipelineMultiplier) {
+        var plan = this.getForecastPlan(userId, selectedYear);
+        var quota = this.getForecastTotalQuota(plan ? plan.sys_id : '');
+        var rateCard = this.getForecastRateCard(plan);
+
+        var stageProbability = {
+            lead: 0.2,
+            qualified: 0.4,
+            proposal: 0.6,
+            negotiation: 0.8,
+            closed_won: 1
+        };
+
+        var expectedRevenue = 0;
+        var expectedCommission = 0;
+
+        var dealsGr = new GlideRecord('x_823178_commissio_deals');
+        dealsGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+        dealsGr.addQuery('is_won', false);
+        dealsGr.addQuery('stage', '!=', 'closed_lost');
+        dealsGr.query();
+
+        while (dealsGr.next()) {
+            var amount = parseFloat(dealsGr.getValue('amount')) || 0;
+            var dealType = dealsGr.getValue('deal_type') || 'new_business';
+            var stage = dealsGr.getValue('stage') || 'lead';
+            var rate = this.resolveForecastRate(rateCard, dealType);
+            var probability = (stageProbability[stage] || 0.3) * winRateMultiplier;
+            if (probability > 1) probability = 1;
+
+            var adjustedAmount = amount * pipelineMultiplier;
+            var rev = adjustedAmount * probability;
+            expectedRevenue += rev;
+            expectedCommission += rev * (rate / 100);
+        }
+
+        var wonRevenue = this.getWonRevenueYtd(userId, selectedYear);
+        var projectedRevenue = wonRevenue + expectedRevenue;
+        var projectedAttainment = quota > 0 ? (projectedRevenue / quota) * 100 : 0;
+
+        return {
+            won_revenue_ytd: this.round2(wonRevenue),
+            expected_revenue: this.round2(expectedRevenue),
+            expected_commission: this.round2(expectedCommission),
+            projected_revenue: this.round2(projectedRevenue),
+            projected_attainment_percent: this.round2(projectedAttainment)
+        };
+    },
+
+    listForecastScenariosInternal: function(userId, selectedYear) {
+        var scenarios = [];
+        var scenarioGr = new GlideRecord('x_823178_commissio_forecast_scenarios');
+        scenarioGr.addQuery('sales_rep', userId);
+        scenarioGr.addQuery('scenario_year', selectedYear);
+        scenarioGr.addQuery('is_active', true);
+        scenarioGr.orderByDesc('sys_updated_on');
+        scenarioGr.query();
+
+        while (scenarioGr.next()) {
+            scenarios.push({
+                scenario_id: scenarioGr.getUniqueValue(),
+                scenario_name: scenarioGr.getValue('scenario_name'),
+                status: scenarioGr.getValue('status') || 'draft',
+                win_rate_multiplier: parseFloat(scenarioGr.getValue('win_rate_multiplier')) || 1,
+                pipeline_multiplier: parseFloat(scenarioGr.getValue('pipeline_multiplier')) || 1,
+                projected_revenue: parseFloat(scenarioGr.getValue('projected_revenue')) || 0,
+                projected_commission: parseFloat(scenarioGr.getValue('projected_commission')) || 0,
+                projected_attainment_percent: parseFloat(scenarioGr.getValue('projected_attainment_percent')) || 0
+            });
+        }
+
+        return scenarios;
+    },
+
+    getForecastScenario: function(scenarioId, userId, selectedYear) {
+        var fallback = {
+            scenario_id: '',
+            scenario_name: '',
+            win_rate_multiplier: 1,
+            pipeline_multiplier: 1
+        };
+        if (!scenarioId) return fallback;
+
+        var scenarioGr = new GlideRecord('x_823178_commissio_forecast_scenarios');
+        if (!scenarioGr.get(scenarioId)) return fallback;
+
+        if (scenarioGr.getValue('sales_rep') !== userId || parseInt(scenarioGr.getValue('scenario_year'), 10) !== selectedYear) {
+            return fallback;
+        }
+
+        return {
+            scenario_id: scenarioGr.getUniqueValue(),
+            scenario_name: scenarioGr.getValue('scenario_name') || '',
+            win_rate_multiplier: parseFloat(scenarioGr.getValue('win_rate_multiplier')) || 1,
+            pipeline_multiplier: parseFloat(scenarioGr.getValue('pipeline_multiplier')) || 1
+        };
+    },
+
+    getForecastPlan: function(userId, selectedYear) {
+        var yearStart = selectedYear + '-01-01';
+        var yearEnd = selectedYear + '-12-31';
+        var planGr = new GlideRecord('x_823178_commissio_commission_plans');
+        planGr.addQuery('sales_rep', userId);
+        planGr.addQuery('is_active', true);
+        planGr.addQuery('effective_start_date', '<=', yearEnd);
+        planGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
+        planGr.orderByDesc('effective_start_date');
+        planGr.setLimit(1);
+        planGr.query();
+        if (!planGr.next()) return null;
+        return planGr;
+    },
+
+    getForecastTotalQuota: function(planId) {
+        if (!planId) return 0;
+        var total = 0;
+        var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+        targetGr.addQuery('commission_plan', planId);
+        targetGr.addQuery('is_active', true);
+        targetGr.query();
+        while (targetGr.next()) {
+            total += parseFloat(targetGr.getValue('annual_target_amount')) || 0;
+        }
+        return total;
+    },
+
+    getForecastRateCard: function(planGr) {
+        if (!planGr) {
+            return { base_rate: 0, new_business: 0, renewal: 0, expansion: 0, upsell: 0 };
+        }
+        return {
+            base_rate: parseFloat(planGr.getValue('base_rate')) || 0,
+            new_business: parseFloat(planGr.getValue('new_business_rate')) || 0,
+            renewal: parseFloat(planGr.getValue('renewal_rate')) || 0,
+            expansion: parseFloat(planGr.getValue('expansion_rate')) || 0,
+            upsell: parseFloat(planGr.getValue('upsell_rate')) || 0
+        };
+    },
+
+    resolveForecastRate: function(rateCard, dealType) {
+        if (dealType === 'new_business') return rateCard.new_business || rateCard.base_rate;
+        if (dealType === 'renewal') return rateCard.renewal || rateCard.base_rate;
+        if (dealType === 'expansion') return rateCard.expansion || rateCard.base_rate;
+        if (dealType === 'upsell') return rateCard.upsell || rateCard.base_rate;
+        return rateCard.base_rate;
+    },
+
+    getWonRevenueYtd: function(userId, selectedYear) {
+        var yearStart = selectedYear + '-01-01';
+        var yearEnd = selectedYear + '-12-31';
+        var total = 0;
+        var dealGr = new GlideRecord('x_823178_commissio_deals');
+        dealGr.addQuery('current_owner', userId).addOrCondition('owner_at_close', userId);
+        dealGr.addQuery('is_won', true);
+        dealGr.addQuery('close_date', '>=', yearStart);
+        dealGr.addQuery('close_date', '<=', yearEnd);
+        dealGr.query();
+        while (dealGr.next()) {
+            total += parseFloat(dealGr.getValue('amount')) || 0;
+        }
+        return total;
+    },
+
+    getForecastUrgencyBoost: function(closeDateValue) {
+        if (!closeDateValue) return 0;
+        try {
+            var today = new GlideDateTime();
+            var closeDate = new GlideDateTime();
+            closeDate.setValue(closeDateValue + ' 00:00:00');
+            var millisDiff = closeDate.getNumericValue() - today.getNumericValue();
+            var days = Math.floor(millisDiff / 86400000);
+            if (days <= 30) return 0.3;
+            if (days <= 60) return 0.15;
+            return 0;
+        } catch (e) {
+            return 0;
+        }
+    },
+
+    getValidYear: function(yearRaw) {
+        var parsed = parseInt(yearRaw, 10);
+        var currentYear = parseInt(new GlideDateTime().getYearLocalTime(), 10);
+        if (!isNaN(parsed) && parsed >= 2000 && parsed <= 2100) {
+            return parsed;
+        }
+        return currentYear;
+    },
+
+    isAdminViewer: function() {
+        var user = gs.getUser();
+        return !!(user.hasRole('x_823178_commissio.admin') || user.hasRole('admin'));
+    },
+
+    normalizeMultiplier: function(value) {
+        var num = parseFloat(value);
+        if (isNaN(num) || num <= 0) return 1;
+        return num;
+    },
+
+    round2: function(value) {
+        return Math.round((parseFloat(value) || 0) * 100) / 100;
+    },
+
+    round4: function(value) {
+        return Math.round((parseFloat(value) || 0) * 10000) / 10000;
+    },
+
+    getErrorJSON: function(msg) {
+        return JSON.stringify({
+            status: 'error',
+            message: msg
+        });
+    },
+
+    type: 'CommissionProgressDataService'
+});
+        

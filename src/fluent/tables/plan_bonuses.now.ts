@@ -8,18 +8,20 @@ export const x_823178_commissio_plan_bonuses = Table({
         commission_plan: ReferenceColumn({
             label: 'Commission Plan',
             referenceTable: 'x_823178_commissio_commission_plans',
-            mandatory: true
+            mandatory: true,
+            attributes: {
+                encode_utf8: false,
+            },
         }),
         bonus_name: StringColumn({
             label: 'Bonus Name',
             maxLength: 120,
-            mandatory: true
+            mandatory: true,
         }),
         bonus_amount: DecimalColumn({
             label: 'Bonus Amount',
-            precision: 14,
             scale: 2,
-            mandatory: true
+            mandatory: true,
         }),
         qualification_metric: StringColumn({
             label: 'Qualification Metric',
@@ -27,26 +29,27 @@ export const x_823178_commissio_plan_bonuses = Table({
                 quota_attainment_percent: { label: 'Quota Attainment (%)', sequence: 0 },
                 deal_amount: { label: 'Deal Amount', sequence: 1 },
                 deal_count: { label: 'Deal Count', sequence: 2 },
-                base_commission_amount: { label: 'Base Commission Amount', sequence: 3 }
+                base_commission_amount: { label: 'Base Commission Amount', sequence: 3 },
             },
             default: 'quota_attainment_percent',
-            mandatory: true
+            mandatory: true,
+            dropdown: 'dropdown_with_none',
         }),
         qualification_operator: StringColumn({
             label: 'Qualification Operator',
             choices: {
                 gte: { label: '>=', sequence: 0 },
                 gt: { label: '>', sequence: 1 },
-                eq: { label: '=', sequence: 2 }
+                eq: { label: '=', sequence: 2 },
             },
             default: 'gte',
-            mandatory: true
+            mandatory: true,
+            dropdown: 'dropdown_with_none',
         }),
         qualification_threshold: DecimalColumn({
             label: 'Qualification Threshold',
-            precision: 14,
             scale: 2,
-            mandatory: true
+            mandatory: true,
         }),
         evaluation_period: StringColumn({
             label: 'Evaluation Period',
@@ -54,68 +57,102 @@ export const x_823178_commissio_plan_bonuses = Table({
                 calculation: { label: 'Per Calculation', sequence: 0 },
                 monthly: { label: 'Monthly', sequence: 1 },
                 quarterly: { label: 'Quarterly', sequence: 2 },
-                annual: { label: 'Annual', sequence: 3 }
+                annual: { label: 'Annual', sequence: 3 },
             },
             default: 'calculation',
-            mandatory: true
+            mandatory: true,
+            dropdown: 'dropdown_with_none',
         }),
         one_time_per_period: BooleanColumn({
             label: 'One Time Per Period',
-            default: false
+            default: false,
         }),
         condition_summary: StringColumn({
             label: 'Condition Summary',
             maxLength: 500,
-            read_only: true
+            readOnly: true,
         }),
         deal_type_ref: ReferenceColumn({
             label: 'Deal Type',
-            referenceTable: 'x_823178_commissio_deal_types'
+            referenceTable: 'x_823178_commissio_deal_types',
+            attributes: {
+                encode_utf8: false,
+            },
         }),
         is_discretionary: BooleanColumn({
             label: 'Discretionary',
-            default: false
+            default: false,
         }),
         payout_frequency: StringColumn({
             label: 'Payout Frequency',
             choices: {
                 info_only: { label: 'Info Only (No Auto-Payout)', sequence: 0 },
                 quarterly: { label: 'Quarterly', sequence: 1 },
-                annual: { label: 'Annual', sequence: 2 }
+                annual: { label: 'Annual', sequence: 2 },
             },
-            default: 'info_only'
+            default: 'info_only',
+            dropdown: 'dropdown_with_none',
         }),
         auto_payout: BooleanColumn({
             label: 'Auto Payout',
-            default: false
+            default: false,
         }),
         bonus_trigger: StringColumn({
-            label: 'Legacy Bonus Trigger (Deprecated)',
+            label: 'Bonus Trigger',
             maxLength: 500,
-            read_only: true
+            readOnly: false,
         }),
         is_active: BooleanColumn({
             label: 'Active',
-            default: true
+            default: true,
         }),
         description: StringColumn({
             label: 'Description',
-            maxLength: 500
-        })
+            maxLength: 500,
+        }),
+        deal_type: StringColumn({
+            default: 'any',
+            choices: {
+                new_business: {
+                    label: 'New Business',
+                    sequence: 1,
+                },
+                renewal: {
+                    label: 'Renewal',
+                    sequence: 2,
+                },
+                expansion: {
+                    label: 'Expansion',
+                    sequence: 3,
+                },
+                any: {
+                    label: 'Any',
+                    sequence: 0,
+                },
+                upsell: {
+                    label: 'Upsell',
+                    sequence: 4,
+                },
+            },
+            dropdown: 'dropdown_with_none',
+            label: 'Deal Type',
+        }),
     },
-    indexes: [
+    audit: true,
+    accessibleFrom: 'public',
+    callerAccess: 'tracking',
+    actions: ['read', 'update', 'delete', 'create'],
+    allowWebServiceAccess: true,
+    index: [
         {
-            name: 'idx_plan_bonus_plan_name',
-            fields: ['commission_plan', 'bonus_name']
+            name: 'index',
+            unique: false,
+            element: 'commission_plan',
         },
         {
-            name: 'idx_plan_bonus_deal_type_ref',
-            fields: ['deal_type_ref']
-        }
+            name: 'index2',
+            unique: false,
+            element: 'deal_type_ref',
+        },
     ],
-    audit: true,
-    accessible_from: 'public',
-    caller_access: 'tracking',
-    actions: ['create', 'read', 'update', 'delete'],
-    allow_web_service_access: true
 })

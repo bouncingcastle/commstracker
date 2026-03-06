@@ -12,7 +12,7 @@ BusinessRule({
     script: snapshotDealOnClose,
     active: true,
     order: 100,
-    description: 'Snapshots the deal owner when a deal is marked as closed won'
+    description: 'Snapshots the deal owner when a deal is marked as closed won',
 })
 
 // Business rule to validate deal data integrity
@@ -20,10 +20,10 @@ BusinessRule({
     $id: Now.ID['deal_validation'],
     name: 'Deal Validation',
     table: 'x_823178_commissio_deals',
-    action: ['insert', 'update'],
+    action: ['update', 'insert'],
     when: 'before',
     script: validateDealMapping,
     active: true,
     order: 50,
-    description: 'Validates deal data integrity and prevents duplicates'
+    description: 'Validates deal data integrity and prevents duplicates',
 })

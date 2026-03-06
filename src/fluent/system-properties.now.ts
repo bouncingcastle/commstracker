@@ -10,8 +10,10 @@ Record({
         value: '50000',
         description: 'Maximum commission amount allowed per single payment (default: $50,000)',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -22,8 +24,10 @@ Record({
         value: '10000000',
         description: 'Maximum deal amount without manual approval (default: $10,000,000)',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -34,8 +38,10 @@ Record({
         value: '10000',
         description: 'Commission amount requiring finance approval (default: $10,000)',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -46,8 +52,10 @@ Record({
         value: '100',
         description: 'Reconciliation variance amount triggering alert (default: $100)',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -58,8 +66,10 @@ Record({
         value: '5',
         description: 'Timeout for commission calculation locks (default: 5 minutes)',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -70,8 +80,10 @@ Record({
         value: '24',
         description: 'Hours before statement generation when data changes are frozen (default: 24)',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -82,8 +94,10 @@ Record({
         value: '5000000',
         description: 'Maximum payment amount allowed (default: $5,000,000)',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -94,8 +108,10 @@ Record({
         value: 'true',
         description: 'Enable enhanced audit mode with detailed logging (default: true)',
         type: 'boolean',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -106,8 +122,10 @@ Record({
         value: 'false',
         description: 'Allow changes to closed deals and calculated commissions (default: false)',
         type: 'boolean',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -118,8 +136,10 @@ Record({
         value: 'true',
         description: 'Enable duplicate detection and prevention (default: true)',
         type: 'boolean',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 // BUSINESS REQUIREMENT: Emergency override capabilities
@@ -131,8 +151,10 @@ Record({
         value: 'false',
         description: 'Emergency override for statement generation during freeze period (default: false)',
         type: 'boolean',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -143,8 +165,10 @@ Record({
         value: 'false',
         description: 'Automatically approve high-value transactions (default: false - requires manual approval)',
         type: 'boolean',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -155,8 +179,10 @@ Record({
         value: '48',
         description: 'SLA for resolving exception queue items (default: 48 hours)',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -167,8 +193,10 @@ Record({
         value: 'true',
         description: 'Enable business override capabilities for legitimate exceptions (default: true)',
         type: 'boolean',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+        ignore_cache: false,
+        is_private: false,
+    },
 })
 
 Record({
@@ -179,8 +207,8 @@ Record({
         value: 'cycle',
         description: 'Commission payout scheduling mode: cycle (pay-cycle based) or days (fixed delay)',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -191,8 +219,8 @@ Record({
         value: '14',
         description: 'Length of payroll cycle in days for cycle payout mode (default: 14)',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -203,8 +231,8 @@ Record({
         value: '2',
         description: 'Number of pay cycles after payment before commission becomes payout-eligible (default: 2)',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -215,8 +243,8 @@ Record({
         value: '2026-01-01',
         description: 'Anchor date for pay-cycle boundaries in cycle payout mode (YYYY-MM-DD)',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -225,10 +253,11 @@ Record({
     data: {
         name: 'x_823178_commissio.default_recognition_basis',
         value: 'cash_received',
-        description: 'Default commission recognition basis for new plan recognition policies (cash_received, invoice_issued, booking, milestone)',
+        description:
+            'Default commission recognition basis for new plan recognition policies (cash_received, invoice_issued, booking, milestone)',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -239,8 +268,8 @@ Record({
         value: '28',
         description: 'Fixed wait days after payment in days payout mode (default: 28)',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -251,8 +280,8 @@ Record({
         value: '5000',
         description: 'Maximum commission calculations updated per backfill run (default: 5000)',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -261,10 +290,11 @@ Record({
     data: {
         name: 'x_823178_commissio.payout_backfill_recompute_existing',
         value: 'false',
-        description: 'When true, backfill recalculates payout eligibility for rows that already have payout_eligible_date',
+        description:
+            'When true, backfill recalculates payout eligibility for rows that already have payout_eligible_date',
         type: 'boolean',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -273,10 +303,11 @@ Record({
     data: {
         name: 'x_823178_commissio.seed_navigation_enabled',
         value: 'false',
-        description: 'Controls whether navigation/module seed scripts are allowed in deployment workflows (default: false)',
+        description:
+            'Controls whether navigation/module seed scripts are allowed in deployment workflows (default: false)',
         type: 'boolean',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -285,10 +316,11 @@ Record({
     data: {
         name: 'x_823178_commissio.seed_demo_data_enabled',
         value: 'false',
-        description: 'Controls whether demo/test data seed scripts are allowed in deployment workflows (default: false)',
+        description:
+            'Controls whether demo/test data seed scripts are allowed in deployment workflows (default: false)',
         type: 'boolean',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -297,10 +329,11 @@ Record({
     data: {
         name: 'x_823178_commissio.seed_bonus_scenarios_enabled',
         value: 'false',
-        description: 'Controls whether bonus scenario seed script can insert/update click-test plan bonuses (default: false)',
+        description:
+            'Controls whether bonus scenario seed script can insert/update click-test plan bonuses (default: false)',
         type: 'boolean',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -311,8 +344,8 @@ Record({
         value: 'strict',
         description: 'Seed deployment idempotency mode (strict|audit_only). strict blocks non-controlled seed runs.',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -323,8 +356,8 @@ Record({
         value: '48',
         description: 'SLA in hours for statement approval workflow due date calculation (default: 48)',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -333,10 +366,11 @@ Record({
     data: {
         name: 'x_823178_commissio.audit_target_year',
         value: '',
-        description: 'Optional override year for month-end readiness audit target period (blank = previous month from current date)',
+        description:
+            'Optional override year for month-end readiness audit target period (blank = previous month from current date)',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -345,10 +379,11 @@ Record({
     data: {
         name: 'x_823178_commissio.audit_target_month',
         value: '',
-        description: 'Optional override month (1-12) for month-end readiness audit target period (blank = previous month)',
+        description:
+            'Optional override month (1-12) for month-end readiness audit target period (blank = previous month)',
         type: 'string',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -359,8 +394,8 @@ Record({
         value: '7',
         description: 'Forecast assumption: days from close to invoice issue for invoice_issued recognition basis',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -371,8 +406,8 @@ Record({
         value: '30',
         description: 'Forecast assumption: days from close to cash receipt for cash_received recognition basis',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })
 
 Record({
@@ -383,6 +418,6 @@ Record({
         value: '14',
         description: 'Forecast assumption: days from close to milestone event for milestone recognition basis',
         type: 'integer',
-        suffix: 'Commission Management'
-    }
+        suffix: 'Commission Management',
+    },
 })

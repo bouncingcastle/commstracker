@@ -8,38 +8,32 @@ export const x_823178_commissio_deal_types = Table({
         code: StringColumn({
             label: 'Code',
             maxLength: 40,
-            mandatory: true
+            mandatory: true,
         }),
         name: StringColumn({
             label: 'Name',
             maxLength: 100,
-            mandatory: true
+            mandatory: true,
         }),
         description: StringColumn({
             label: 'Description',
-            maxLength: 500
+            maxLength: 500,
         }),
         sort_order: IntegerColumn({
-            label: 'Sort Order'
+            label: 'Sort Order',
         }),
         is_active: BooleanColumn({
             label: 'Active',
-            default: true
+            default: true,
         }),
         is_system: BooleanColumn({
             label: 'System Record',
-            default: false
-        })
+            default: false,
+        }),
     },
-    indexes: [
-        {
-            name: 'idx_deal_type_code',
-            fields: ['code']
-        }
-    ],
     audit: true,
-    accessible_from: 'public',
-    caller_access: 'tracking',
-    actions: ['create', 'read', 'update', 'delete'],
-    allow_web_service_access: true
+    accessibleFrom: 'public',
+    callerAccess: 'tracking',
+    actions: ['read', 'update', 'delete', 'create'],
+    allowWebServiceAccess: true,
 })

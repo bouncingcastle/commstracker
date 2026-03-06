@@ -6,7 +6,8 @@ const commissionApp = ApplicationMenu({
     $id: 'commission_app',
     title: 'Commission Management',
     hint: 'Comprehensive commission tracking and management system',
-    order: 100
+    order: 100,
+    category: '',
 })
 
 // Dashboard Module - Main Landing Page
@@ -20,8 +21,13 @@ Record({
         query: 'x_823178_commissio_dashboard.do',
         hint: 'Commission management dashboard and overview',
         order: 5,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // My Progress Module - Sales Rep Personal View
@@ -35,8 +41,13 @@ Record({
         query: 'x_823178_commissio_progress.do',
         hint: 'Track your earnings, pending amounts, and deal pipeline',
         order: 7,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // Data Management Separator
@@ -48,8 +59,13 @@ Record({
         application: commissionApp.$id,
         link_type: 'SEPARATOR',
         order: 20,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // Deals Module
@@ -63,11 +79,16 @@ Record({
         name: 'x_823178_commissio_deals',
         hint: 'View and manage deals from Zoho Bigin',
         order: 21,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
-// Invoices Module  
+// Invoices Module
 Record({
     $id: 'invoices_module',
     table: 'sys_app_module',
@@ -78,8 +99,13 @@ Record({
         name: 'x_823178_commissio_invoices',
         hint: 'View invoices from Zoho Books',
         order: 22,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // Payments Module
@@ -93,8 +119,13 @@ Record({
         name: 'x_823178_commissio_payments',
         hint: 'View payments from Zoho Books',
         order: 23,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // Commission Management Separator
@@ -106,8 +137,13 @@ Record({
         application: commissionApp.$id,
         link_type: 'SEPARATOR',
         order: 30,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // Commission Calculations Module
@@ -121,8 +157,13 @@ Record({
         name: 'x_823178_commissio_commission_calculations',
         hint: 'View commission calculations and earnings',
         order: 31,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // Commission Plans Module
@@ -136,8 +177,13 @@ Record({
         name: 'x_823178_commissio_commission_plans',
         hint: 'Manage commission plans and rates',
         order: 32,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // Plan Targets Module - Quota targets by deal type
@@ -151,8 +197,8 @@ Record({
         name: 'x_823178_commissio_plan_targets',
         hint: 'Configure annual quota targets per deal type',
         order: 32.1,
-        active: true
-    }
+        active: true,
+    },
 })
 
 // Plan Tiers Module - Commission acceleration structure
@@ -166,8 +212,8 @@ Record({
         name: 'x_823178_commissio_plan_tiers',
         hint: 'Configure commission rate acceleration by quota attainment',
         order: 32.2,
-        active: true
-    }
+        active: true,
+    },
 })
 
 // Plan Bonuses Module - Performance bonuses
@@ -181,8 +227,8 @@ Record({
         name: 'x_823178_commissio_plan_bonuses',
         hint: 'Configure discretionary and performance bonuses',
         order: 32.3,
-        active: true
-    }
+        active: true,
+    },
 })
 
 // Deal Types Module - Governed taxonomy for plan/deal configuration
@@ -196,8 +242,8 @@ Record({
         name: 'x_823178_commissio_deal_types',
         hint: 'Manage governed deal type taxonomy, lifecycle, and definitions',
         order: 32.35,
-        active: true
-    }
+        active: true,
+    },
 })
 
 // Plan Recognition Policies Module - Versioned recognition basis policy by plan
@@ -211,8 +257,8 @@ Record({
         name: 'x_823178_commissio_plan_recognition_policies',
         hint: 'Manage versioned recognition basis policies per commission plan',
         order: 32.4,
-        active: true
-    }
+        active: true,
+    },
 })
 
 // Commission Statements Module
@@ -226,8 +272,13 @@ Record({
         name: 'x_823178_commissio_commission_statements',
         hint: 'View monthly commission statements',
         order: 33,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // Forecast Scenarios Module
@@ -241,8 +292,8 @@ Record({
         name: 'x_823178_commissio_forecast_scenarios',
         hint: 'Create and compare saved forecast scenarios',
         order: 33.5,
-        active: true
-    }
+        active: true,
+    },
 })
 
 // Statement Approvals Module
@@ -256,8 +307,8 @@ Record({
         name: 'x_823178_commissio_statement_approvals',
         hint: 'Manage statement approval workflow transitions',
         order: 33.6,
-        active: true
-    }
+        active: true,
+    },
 })
 
 // Rep Compensation Management Module
@@ -271,8 +322,8 @@ Record({
         query: 'x_823178_commissio_commission_plans.do?sys_id=-1&sysparm_view=default',
         hint: 'Shortcut to create a new plan and configure related lists from the plan form',
         order: 34,
-        active: true
-    }
+        active: true,
+    },
 })
 
 Record({
@@ -285,8 +336,8 @@ Record({
         query: 'x_823178_commissio_commission_plans_list.do?sysparm_query=is_active=true^ORDERBYsales_rep^ORDERBYDESCeffective_start_date',
         hint: 'Open individual active plans by rep and review full plan structure via related lists',
         order: 34.1,
-        active: true
-    }
+        active: true,
+    },
 })
 
 // Bulk Plan Assignment Runs Module
@@ -300,8 +351,8 @@ Record({
         name: 'x_823178_commissio_bulk_plan_assignment_runs',
         hint: 'Run preview/apply/rollback bulk plan assignments with overlap safeguards',
         order: 34.2,
-        active: true
-    }
+        active: true,
+    },
 })
 
 // Manager Team Governance Module
@@ -315,8 +366,8 @@ Record({
         name: 'x_823178_commissio_manager_team_memberships',
         hint: 'Define manager-to-rep governance scope and effective windows for team rollups',
         order: 34.3,
-        active: true
-    }
+        active: true,
+    },
 })
 
 // Administration Separator
@@ -328,8 +379,13 @@ Record({
         application: commissionApp.$id,
         link_type: 'SEPARATOR',
         order: 40,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // Exception Approvals Module
@@ -343,8 +399,13 @@ Record({
         name: 'x_823178_commissio_exception_approvals',
         hint: 'Review and approve exception requests',
         order: 41,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // System Alerts Module
@@ -358,8 +419,13 @@ Record({
         name: 'x_823178_commissio_system_alerts',
         hint: 'View system alerts and notifications',
         order: 42,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // Reconciliation Log Module
@@ -373,8 +439,13 @@ Record({
         name: 'x_823178_commissio_reconciliation_log',
         hint: 'View daily reconciliation and audit logs',
         order: 43,
-        active: true
-    }
+        active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
+    },
 })
 
 // System Preferences Module
@@ -388,6 +459,6 @@ Record({
         query: 'sys_properties_list.do?sysparm_query=nameSTARTSWITHx_823178_commissio.',
         hint: 'Manage Commission Management system properties and operational settings',
         order: 44,
-        active: true
-    }
+        active: true,
+    },
 })

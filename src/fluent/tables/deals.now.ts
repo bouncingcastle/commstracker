@@ -1,39 +1,53 @@
 import '@servicenow/sdk/global'
-import { Table, StringColumn, DecimalColumn, DateColumn, DateTimeColumn, ReferenceColumn, BooleanColumn, IntegerColumn } from '@servicenow/sdk/core'
+import {
+    Table,
+    StringColumn,
+    DecimalColumn,
+    DateColumn,
+    DateTimeColumn,
+    ReferenceColumn,
+    BooleanColumn,
+} from '@servicenow/sdk/core'
 
 // Enhanced Deals table with web service access and audit controls
 export const x_823178_commissio_deals = Table({
     name: 'x_823178_commissio_deals',
     label: 'Deals',
     schema: {
-        bigin_deal_id: StringColumn({ 
+        bigin_deal_id: StringColumn({
             label: 'Bigin Deal ID',
             mandatory: true,
-            maxLength: 100
+            maxLength: 100,
         }),
-        deal_name: StringColumn({ 
+        deal_name: StringColumn({
             label: 'Deal Name',
-            maxLength: 255
+            maxLength: 255,
         }),
-        account_name: StringColumn({ 
+        account_name: StringColumn({
             label: 'Account Name',
-            maxLength: 255
+            maxLength: 255,
         }),
-        owner_at_close: ReferenceColumn({ 
+        owner_at_close: ReferenceColumn({
             label: 'Owner at Close (Snapshot)',
-            referenceTable: 'sys_user'
+            referenceTable: 'sys_user',
+            attributes: {
+                encode_utf8: false,
+            },
         }),
-        current_owner: ReferenceColumn({ 
+        current_owner: ReferenceColumn({
             label: 'Current Owner',
-            referenceTable: 'sys_user'
+            referenceTable: 'sys_user',
+            attributes: {
+                encode_utf8: false,
+            },
         }),
-        amount: DecimalColumn({ 
-            label: 'Deal Amount'
+        amount: DecimalColumn({
+            label: 'Deal Amount',
         }),
-        close_date: DateColumn({ 
+        close_date: DateColumn({
             label: 'Close Date',
         }),
-        stage: StringColumn({ 
+        stage: StringColumn({
             label: 'Stage',
             choices: {
                 lead: { label: 'Lead', sequence: 0 },
@@ -41,98 +55,128 @@ export const x_823178_commissio_deals = Table({
                 proposal: { label: 'Proposal', sequence: 2 },
                 negotiation: { label: 'Negotiation', sequence: 3 },
                 closed_won: { label: 'Closed Won', sequence: 4 },
-                closed_lost: { label: 'Closed Lost', sequence: 5 }
-            }
+                closed_lost: { label: 'Closed Lost', sequence: 5 },
+            },
+            dropdown: 'dropdown_with_none',
         }),
         deal_type_ref: ReferenceColumn({
             label: 'Primary Deal Type',
             referenceTable: 'x_823178_commissio_deal_types',
-            mandatory: true
+            mandatory: true,
+            attributes: {
+                encode_utf8: false,
+            },
         }),
-        is_won: BooleanColumn({ 
-            label: 'Is Won'
+        is_won: BooleanColumn({
+            label: 'Is Won',
         }),
-        snapshot_taken: BooleanColumn({ 
-            label: 'Snapshot Taken'
+        snapshot_taken: BooleanColumn({
+            label: 'Snapshot Taken',
         }),
-        snapshot_timestamp: DateTimeColumn({ 
+        snapshot_timestamp: DateTimeColumn({
             label: 'Snapshot Timestamp',
-            read_only: true
+            readOnly: true,
         }),
-        snapshot_immutable: BooleanColumn({ 
+        snapshot_immutable: BooleanColumn({
             label: 'Snapshot Immutable',
             default: false,
-            read_only: true
+            readOnly: true,
         }),
-        last_owner_change: DateTimeColumn({ 
-            label: 'Last Owner Change'
+        last_owner_change: DateTimeColumn({
+            label: 'Last Owner Change',
         }),
-        owner_change_reason: StringColumn({ 
+        owner_change_reason: StringColumn({
             label: 'Owner Change Reason',
-            maxLength: 500
+            maxLength: 500,
         }),
-        commission_calculations_count: IntegerColumn({ 
+        commission_calculations_count: StringColumn({
             label: 'Commission Calculations Count',
-            read_only: true,
-            default: 0
+            readOnly: true,
+            default: '0',
         }),
-        last_sync: DateTimeColumn({ 
-            label: 'Last Sync from Bigin'
+        last_sync: DateTimeColumn({
+            label: 'Last Sync from Bigin',
         }),
-        sync_status: StringColumn({ 
+        sync_status: StringColumn({
             label: 'Sync Status',
             choices: {
                 synced: { label: 'Synced', sequence: 0 },
                 error: { label: 'Error', sequence: 1 },
-                pending: { label: 'Pending', sequence: 2 }
+                pending: { label: 'Pending', sequence: 2 },
             },
-            default: 'pending'
+            default: 'pending',
+            dropdown: 'dropdown_with_none',
         }),
-        sync_error_details: StringColumn({ 
+        sync_error_details: StringColumn({
             label: 'Sync Error Details',
-            maxLength: 1000
+            maxLength: 1000,
         }),
-        requires_finance_approval: BooleanColumn({ 
+        requires_finance_approval: BooleanColumn({
             label: 'Requires Finance Approval',
-            default: false
+            default: false,
         }),
-        finance_approved: BooleanColumn({ 
+        finance_approved: BooleanColumn({
             label: 'Finance Approved',
-            default: false
+            default: false,
         }),
-        finance_approved_by: ReferenceColumn({ 
+        finance_approved_by: ReferenceColumn({
             label: 'Finance Approved By',
-            referenceTable: 'sys_user'
+            referenceTable: 'sys_user',
+            attributes: {
+                encode_utf8: false,
+            },
         }),
-        finance_approval_date: DateTimeColumn({ 
-            label: 'Finance Approval Date'
-        })
+        finance_approval_date: DateTimeColumn({
+            label: 'Finance Approval Date',
+        }),
+        deal_type: StringColumn({
+            choices: {
+                upsell: {
+                    label: 'Upsell',
+                    sequence: 3,
+                },
+                new_business: {
+                    label: 'New Business',
+                    sequence: 0,
+                },
+                renewal: {
+                    label: 'Renewal',
+                    sequence: 1,
+                },
+                expansion: {
+                    label: 'Expansion',
+                    sequence: 2,
+                },
+            },
+            dropdown: 'dropdown_with_none',
+            label: 'Deal Type',
+        }),
     },
-    indexes: [
-        {
-            name: 'idx_deals_bigin_id',
-            fields: ['bigin_deal_id']
-        },
-        {
-            name: 'idx_deals_owner_close_stage',
-            fields: ['owner_at_close', 'close_date', 'stage']
-        },
-        {
-            name: 'idx_deals_current_owner_stage',
-            fields: ['current_owner', 'stage', 'is_won']
-        },
-        {
-            name: 'idx_deals_type_ref_close',
-            fields: ['deal_type_ref', 'close_date']
-        },
-        {
-            name: 'idx_deals_sync_status',
-            fields: ['sync_status', 'last_sync']
-        }
-    ],
     audit: true,
-    accessible_from: 'public',
-    caller_access: 'tracking',
-    actions: ['create', 'read', 'update', 'delete'],
-    allow_web_service_access: true
+    accessibleFrom: 'public',
+    callerAccess: 'tracking',
+    actions: ['read', 'update', 'delete', 'create'],
+    allowWebServiceAccess: true,
+    index: [
+        {
+            name: 'index',
+            unique: false,
+            element: 'current_owner',
+        },
+        {
+            name: 'index2',
+            unique: false,
+            element: 'finance_approved_by',
+        },
+        {
+            name: 'index3',
+            unique: false,
+            element: 'owner_at_close',
+        },
+        {
+            name: 'index4',
+            unique: false,
+            element: 'deal_type_ref',
+        },
+    ],
 })

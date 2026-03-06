@@ -12,6 +12,7 @@ Record({
     data: {
         commission_plan: Now.ID['abel_plan_2026'],
         deal_type_ref: Now.ID['deal_type_new_business'],
+        deal_type: 'new_business',
         commission_rate_percent: 8.0,
         annual_target_amount: 800000,
         description: 'New Business quota for Abel Tuter'
@@ -24,6 +25,7 @@ Record({
     data: {
         commission_plan: Now.ID['abel_plan_2026'],
         deal_type_ref: Now.ID['deal_type_expansion'],
+        deal_type: 'expansion',
         commission_rate_percent: 6.0,
         annual_target_amount: 200000,
         description: 'Expansion quota for Abel Tuter'
@@ -36,6 +38,7 @@ Record({
     data: {
         commission_plan: Now.ID['abel_plan_2026'],
         deal_type_ref: Now.ID['deal_type_renewal'],
+        deal_type: 'renewal',
         commission_rate_percent: 3.0,
         annual_target_amount: 300000,
         description: 'Renewal quota for Abel Tuter'
@@ -49,6 +52,7 @@ Record({
     data: {
         commission_plan: Now.ID['adela_plan_2026'],
         deal_type_ref: Now.ID['deal_type_new_business'],
+        deal_type: 'new_business',
         commission_rate_percent: 10.0,
         annual_target_amount: 1500000,
         description: 'New Business quota for Adela Cervantsz'
@@ -61,6 +65,7 @@ Record({
     data: {
         commission_plan: Now.ID['adela_plan_2026'],
         deal_type_ref: Now.ID['deal_type_expansion'],
+        deal_type: 'expansion',
         commission_rate_percent: 8.0,
         annual_target_amount: 1000000,
         description: 'Expansion quota for Adela Cervantsz'
@@ -73,6 +78,7 @@ Record({
     data: {
         commission_plan: Now.ID['adela_plan_2026'],
         deal_type_ref: Now.ID['deal_type_renewal'],
+        deal_type: 'renewal',
         commission_rate_percent: 4.0,
         annual_target_amount: 500000,
         description: 'Renewal quota for Adela Cervantsz'
@@ -86,6 +92,7 @@ Record({
     data: {
         commission_plan: Now.ID['abraham_plan_2026'],
         deal_type_ref: Now.ID['deal_type_new_business'],
+        deal_type: 'new_business',
         commission_rate_percent: 5.0,
         annual_target_amount: 500000,
         description: 'New Business quota for Abraham Lincoln'
@@ -98,6 +105,7 @@ Record({
     data: {
         commission_plan: Now.ID['abraham_plan_2026'],
         deal_type_ref: Now.ID['deal_type_expansion'],
+        deal_type: 'expansion',
         commission_rate_percent: 4.0,
         annual_target_amount: 300000,
         description: 'Expansion quota for Abraham Lincoln'

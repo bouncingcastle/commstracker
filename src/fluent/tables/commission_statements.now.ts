@@ -1,111 +1,129 @@
 import '@servicenow/sdk/global'
-import { Table, StringColumn, DateColumn, DecimalColumn, DateTimeColumn, ReferenceColumn, IntegerColumn, BooleanColumn } from '@servicenow/sdk/core'
+import {
+    Table,
+    StringColumn,
+    DateColumn,
+    DecimalColumn,
+    DateTimeColumn,
+    ReferenceColumn,
+    IntegerColumn,
+    BooleanColumn,
+} from '@servicenow/sdk/core'
 
 // Commission Statements table with web service access
 export const x_823178_commissio_commission_statements = Table({
     name: 'x_823178_commissio_commission_statements',
     label: 'Commission Statements',
     schema: {
-        statement_number: StringColumn({ 
+        statement_number: StringColumn({
             label: 'Statement Number',
             maxLength: 50,
-            mandatory: true
+            mandatory: true,
         }),
-        sales_rep: ReferenceColumn({ 
+        sales_rep: ReferenceColumn({
             label: 'Sales Rep',
             referenceTable: 'sys_user',
-            mandatory: true
+            mandatory: true,
+            attributes: {
+                encode_utf8: false,
+            },
         }),
-        statement_month: IntegerColumn({ 
+        statement_month: IntegerColumn({
             label: 'Statement Month (1-12)',
-            mandatory: true
+            mandatory: true,
         }),
-        statement_year: IntegerColumn({ 
+        statement_year: IntegerColumn({
             label: 'Statement Year',
-            mandatory: true
+            mandatory: true,
         }),
-        period_start_date: DateColumn({ 
-            label: 'Period Start Date'
+        period_start_date: DateColumn({
+            label: 'Period Start Date',
         }),
-        period_end_date: DateColumn({ 
-            label: 'Period End Date'
+        period_end_date: DateColumn({
+            label: 'Period End Date',
         }),
-        total_commission_amount: DecimalColumn({ 
-            label: 'Total Commission Amount'
+        total_commission_amount: DecimalColumn({
+            label: 'Total Commission Amount',
         }),
         total_base_commission: DecimalColumn({
-            label: 'Total Base Commission'
+            label: 'Total Base Commission',
         }),
         total_accelerator_delta: DecimalColumn({
-            label: 'Total Accelerator Delta'
+            label: 'Total Accelerator Delta',
         }),
         total_bonus_amount: DecimalColumn({
-            label: 'Total Bonus Amount'
+            label: 'Total Bonus Amount',
         }),
-        total_payments_processed: IntegerColumn({ 
-            label: 'Total Payments Processed'
+        total_payments_processed: IntegerColumn({
+            label: 'Total Payments Processed',
         }),
-        status: StringColumn({ 
+        status: StringColumn({
             label: 'Status',
             choices: {
                 draft: { label: 'Draft', sequence: 0 },
                 locked: { label: 'Locked', sequence: 1 },
                 paid: { label: 'Paid', sequence: 2 },
-                disputed: { label: 'Disputed', sequence: 3 }
+                disputed: { label: 'Disputed', sequence: 3 },
             },
-            default: 'draft'
+            default: 'draft',
+            dropdown: 'dropdown_with_none',
         }),
-        generated_date: DateTimeColumn({ 
-            label: 'Generated Date'
+        generated_date: DateTimeColumn({
+            label: 'Generated Date',
         }),
-        locked_date: DateTimeColumn({ 
-            label: 'Locked Date'
+        locked_date: DateTimeColumn({
+            label: 'Locked Date',
         }),
-        locked_by: ReferenceColumn({ 
+        locked_by: ReferenceColumn({
             label: 'Locked By',
-            referenceTable: 'sys_user'
+            referenceTable: 'sys_user',
+            attributes: {
+                encode_utf8: false,
+            },
         }),
-        paid_date: DateTimeColumn({ 
-            label: 'Paid Date'
+        paid_date: DateTimeColumn({
+            label: 'Paid Date',
         }),
-        paid_by: ReferenceColumn({ 
+        paid_by: ReferenceColumn({
             label: 'Paid By',
-            referenceTable: 'sys_user'
+            referenceTable: 'sys_user',
+            attributes: {
+                encode_utf8: false,
+            },
         }),
-        payment_reference: StringColumn({ 
+        payment_reference: StringColumn({
             label: 'Payment Reference',
-            maxLength: 100
+            maxLength: 100,
         }),
-        is_auto_generated: BooleanColumn({ 
+        is_auto_generated: BooleanColumn({
             label: 'Auto Generated',
-            default: true
+            default: true,
         }),
-        notes: StringColumn({ 
+        notes: StringColumn({
             label: 'Notes',
-            maxLength: 1000
-        })
+            maxLength: 1000,
+        }),
     },
-    indexes: [
-        {
-            name: 'idx_stmt_rep_period',
-            fields: ['sales_rep', 'statement_year', 'statement_month']
-        },
-        {
-            name: 'idx_stmt_status_period',
-            fields: ['status', 'statement_year', 'statement_month']
-        },
-        {
-            name: 'idx_stmt_generated_date',
-            fields: ['generated_date', 'status']
-        },
-        {
-            name: 'idx_stmt_number',
-            fields: ['statement_number']
-        }
-    ],
     audit: true,
-    accessible_from: 'public',
-    caller_access: 'tracking',
-    actions: ['create', 'read', 'update', 'delete'],
-    allow_web_service_access: true
+    accessibleFrom: 'public',
+    callerAccess: 'tracking',
+    actions: ['read', 'update', 'delete', 'create'],
+    allowWebServiceAccess: true,
+    index: [
+        {
+            name: 'index',
+            unique: false,
+            element: 'locked_by',
+        },
+        {
+            name: 'index2',
+            unique: false,
+            element: 'paid_by',
+        },
+        {
+            name: 'index3',
+            unique: false,
+            element: 'sales_rep',
+        },
+    ],
 })

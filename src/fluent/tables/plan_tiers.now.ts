@@ -8,61 +8,70 @@ export const x_823178_commissio_plan_tiers = Table({
         commission_plan: ReferenceColumn({
             label: 'Commission Plan',
             referenceTable: 'x_823178_commissio_commission_plans',
-            mandatory: true
+            mandatory: true,
+            attributes: {
+                encode_utf8: false,
+            },
         }),
         plan_target: ReferenceColumn({
             label: 'Plan Target',
             referenceTable: 'x_823178_commissio_plan_targets',
-            mandatory: true
+            mandatory: true,
+            attributes: {
+                encode_utf8: false,
+            },
         }),
         tier_name: StringColumn({
             label: 'Tier Name',
             maxLength: 100,
-            mandatory: true
+            mandatory: true,
         }),
         attainment_floor_percent: DecimalColumn({
             label: 'Attainment Floor (%)',
-            precision: 6,
             scale: 2,
-            mandatory: true
+            mandatory: true,
         }),
         attainment_ceiling_percent: DecimalColumn({
             label: 'Attainment Ceiling (%)',
-            precision: 6,
             scale: 2,
-            mandatory: true
+            mandatory: false,
         }),
         commission_rate_percent: DecimalColumn({
             label: 'Commission Rate (%)',
-            precision: 6,
             scale: 2,
-            mandatory: true
+            mandatory: true,
         }),
         sort_order: IntegerColumn({
-            label: 'Sort Order'
+            label: 'Sort Order',
         }),
         is_active: BooleanColumn({
             label: 'Active',
-            default: true
+            default: true,
         }),
         description: StringColumn({
             label: 'Description',
-            maxLength: 500
-        })
+            maxLength: 500,
+        }),
+        deal_type: StringColumn({
+            default: 'all',
+            label: 'Deal Type Scope',
+        }),
     },
-    indexes: [
+    audit: true,
+    accessibleFrom: 'public',
+    callerAccess: 'tracking',
+    actions: ['read', 'update', 'delete', 'create'],
+    allowWebServiceAccess: true,
+    index: [
         {
-            name: 'idx_plan_tier_plan_order',
-            fields: ['commission_plan', 'sort_order']
+            name: 'index',
+            unique: false,
+            element: 'commission_plan',
         },
         {
-            name: 'idx_plan_tier_target_floor',
-            fields: ['plan_target', 'attainment_floor_percent']
-        }
+            name: 'index2',
+            unique: false,
+            element: 'plan_target',
+        },
     ],
-    audit: true,
-    accessible_from: 'public',
-    caller_access: 'tracking',
-    actions: ['create', 'read', 'update', 'delete'],
-    allow_web_service_access: true
 })

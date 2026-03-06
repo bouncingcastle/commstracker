@@ -11,7 +11,10 @@ Record({
         active: true,
         run_type: 'monthly',
         run_dayofmonth: 1,
-        run_time: '02:00:00',
-        description: 'Automatically generates commission statements for all reps on the 1st of each month'
-    }
+        run_time: '2026-03-06 03:47:29',
+        description: 'Automatically generates commission statements for all reps on the 1st of each month',
+        advanced: 'false',
+        conditional: 'false',
+        upgrade_safe: 'false',
+    },
 })

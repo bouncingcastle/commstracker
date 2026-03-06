@@ -15,7 +15,7 @@ export function validateDealClassification(current, previous) {
     }
 
     var dealTypeGr = new GlideRecord('x_823178_commissio_deal_types');
-    if (!dealTypeGr.get(dealTypeRef) || (dealTypeGr.getValue('is_active') !== 'true' && dealTypeGr.getValue('is_active') !== true)) {
+    if (!dealTypeGr.get(dealTypeRef) || !isActiveFlag(dealTypeGr.getValue('is_active'))) {
         gs.addErrorMessage('Deal classification must reference an active governed Deal Type.');
         current.setAbortAction(true);
         return;
@@ -69,4 +69,13 @@ function hasAnyPrimary(dealId, currentSysId, currentIsPrimary) {
     primaryGr.query();
 
     return primaryGr.hasNext();
+}
+
+function isActiveFlag(value) {
+    if (value === true || value === 1) {
+        return true;
+    }
+
+    var normalized = (value || '').toString().toLowerCase();
+    return normalized === 'true' || normalized === '1';
 }

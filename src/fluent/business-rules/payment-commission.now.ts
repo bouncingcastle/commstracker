@@ -7,12 +7,12 @@ BusinessRule({
     $id: Now.ID['payment_commission_calc'],
     name: 'Commission Calculation on Payment',
     table: 'x_823178_commissio_payments',
-    action: ['insert', 'update'],
+    action: ['update', 'insert'],
     when: 'after',
     script: calculateCommissionOnPayment,
     active: true,
     order: 200,
-    description: 'Calculates commission when payment is received'
+    description: 'Calculates commission when payment is received',
 })
 
 // Business rule to validate payment data
@@ -20,10 +20,10 @@ BusinessRule({
     $id: Now.ID['payment_validation'],
     name: 'Payment Validation',
     table: 'x_823178_commissio_payments',
-    action: ['insert', 'update'],
+    action: ['update', 'insert'],
     when: 'before',
     script: validatePaymentData,
     active: true,
     order: 50,
-    description: 'Validates payment data integrity'
+    description: 'Validates payment data integrity',
 })
