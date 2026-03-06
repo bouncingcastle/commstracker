@@ -75,7 +75,7 @@ function getActiveDealTypeById(sysId) {
         return null;
     }
 
-    if (typeGr.getValue('is_active') !== 'true' && typeGr.getValue('is_active') !== true) {
+    if (!isActiveFlag(typeGr.getValue('is_active'))) {
         return null;
     }
 
@@ -83,5 +83,14 @@ function getActiveDealTypeById(sysId) {
         id: typeGr.getUniqueValue(),
         code: (typeGr.getValue('code') || '').toString()
     };
+}
+
+function isActiveFlag(value) {
+    if (value === true || value === 1) {
+        return true;
+    }
+
+    var normalized = (value || '').toString().toLowerCase();
+    return normalized === 'true' || normalized === '1';
 }
 
