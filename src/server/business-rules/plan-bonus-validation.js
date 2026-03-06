@@ -112,11 +112,20 @@ function resolveDealTypeScope(refId) {
         return { valid: false, code: '' };
     }
 
-    if (typeGr.getValue('is_active') !== 'true' && typeGr.getValue('is_active') !== true) {
+    if (!isActiveFlag(typeGr.getValue('is_active'))) {
         return { valid: false, code: '' };
     }
 
     return { valid: true, code: (typeGr.getValue('code') || '').toString() || 'any' };
+}
+
+function isActiveFlag(value) {
+    if (value === true || value === 1) {
+        return true;
+    }
+
+    var normalized = (value || '').toString().toLowerCase();
+    return normalized === 'true' || normalized === '1';
 }
 
 function buildConditionSummary(metric, operator, threshold, period, dealType, oneTime) {

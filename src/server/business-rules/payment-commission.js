@@ -1334,7 +1334,7 @@ function resolveDealTypeCodeFromReference(refId) {
         return '';
     }
 
-    if (typeGr.getValue('is_active') !== 'true' && typeGr.getValue('is_active') !== true) {
+    if (!isActiveFlag(typeGr.getValue('is_active'))) {
         return '';
     }
 
@@ -1357,6 +1357,15 @@ function resolveDealTypeReferenceByCodeRequired(code) {
     }
 
     return typeGr.getUniqueValue();
+}
+
+function isActiveFlag(value) {
+    if (value === true || value === 1) {
+        return true;
+    }
+
+    var normalized = (value || '').toString().toLowerCase();
+    return normalized === 'true' || normalized === '1';
 }
 
 function getPayoutSchedule(paymentDateValue, recognitionBasis) {
