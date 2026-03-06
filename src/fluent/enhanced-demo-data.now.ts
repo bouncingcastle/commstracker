@@ -79,7 +79,7 @@ Record({
         amount: 60000,
         close_date: '2026-01-20',
         stage: 'closed_won',
-        deal_type: 'new_business',
+        deal_type_ref: Now.ID['deal_type_new_business'],
         is_won: true,
         snapshot_taken: true,
         sync_status: 'synced',
@@ -172,7 +172,7 @@ Record({
         amount: 35000,
         close_date: '2026-02-10',
         stage: 'closed_won',
-        deal_type: 'expansion',
+        deal_type_ref: Now.ID['deal_type_expansion'],
         is_won: true,
         snapshot_taken: true,
         sync_status: 'synced'
@@ -263,7 +263,7 @@ Record({
         amount: 150000,
         close_date: '2026-01-15',
         stage: 'closed_won',
-        deal_type: 'renewal',
+        deal_type_ref: Now.ID['deal_type_renewal'],
         is_won: true,
         snapshot_taken: true,
         sync_status: 'synced'
@@ -354,7 +354,7 @@ Record({
         amount: 95000,
         close_date: '2026-02-05',
         stage: 'closed_won',
-        deal_type: 'new_business',
+        deal_type_ref: Now.ID['deal_type_new_business'],
         is_won: true,
         snapshot_taken: true,
         sync_status: 'synced'
@@ -422,7 +422,7 @@ Record({
         payment_date: '2026-02-20',
         deal_close_date: '2026-02-05',
         calculation_date: '2026-02-20 09:30:00',
-        deal_type: 'new_business',
+        deal_type_ref: Now.ID['deal_type_new_business'],
         is_negative: false,
         status: 'draft',
         requires_approval: false
@@ -444,7 +444,7 @@ Record({
         amount: 120000,
         close_date: '2026-04-30',
         stage: 'proposal',
-        deal_type: 'new_business',
+        deal_type_ref: Now.ID['deal_type_new_business'],
         is_won: false,
         snapshot_taken: false,
         sync_status: 'synced'
@@ -466,7 +466,7 @@ Record({
         amount: 250000,
         close_date: '2026-05-15',
         stage: 'negotiation',
-        deal_type: 'expansion',
+        deal_type_ref: Now.ID['deal_type_expansion'],
         is_won: false,
         snapshot_taken: false,
         sync_status: 'synced'

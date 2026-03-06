@@ -53,7 +53,7 @@ Record({
         amount: 50000,
         close_date: '2024-06-15',
         stage: 'closed_won',
-        deal_type: 'new_business',
+        deal_type_ref: Now.ID['deal_type_new_business'],
         is_won: true,
         snapshot_taken: true,
         sync_status: 'synced'
