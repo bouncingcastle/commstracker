@@ -1,10 +1,52 @@
 import '@servicenow/sdk/global'
 import { Record } from '@servicenow/sdk/core'
 import { normalizeDealType as normalizeDealTypeCanonical } from '../../server/script-includes/deal-type-normalizer.js'
-import { resolveCommissionRoleAccess } from '../../server/script-includes/role-access-model.js'
 
 const normalizeDealTypeCanonicalSource = normalizeDealTypeCanonical.toString()
-const resolveCommissionRoleAccessSource = resolveCommissionRoleAccess.toString()
+const resolveCommissionRoleAccessSource = `
+function resolveCommissionRoleAccess(user) {
+    var subject = user || gs.getUser();
+
+    function hasRole(roleName) {
+        try {
+            if (!roleName) {
+                return false;
+            }
+
+            if (typeof gs.hasRole === 'function' && gs.hasRole(roleName)) {
+                return true;
+            }
+
+            if (!subject || typeof subject.hasRole !== 'function') {
+                return false;
+            }
+
+            return !!subject.hasRole(roleName);
+        } catch (e) {
+            return false;
+        }
+    }
+
+    var roles = {
+        admin: hasRole('x_823178_commissio.admin') || hasRole('admin'),
+        manager: hasRole('x_823178_commissio.manager'),
+        finance: hasRole('x_823178_commissio.finance'),
+        rep: hasRole('x_823178_commissio.rep')
+    };
+
+    if (roles.admin || roles.manager || roles.finance) {
+        roles.rep = true;
+    }
+
+    return {
+        roles: roles,
+        canSelectUsers: !!(roles.admin || roles.manager || roles.finance),
+        canViewAllUsers: !!(roles.admin || roles.finance),
+        canViewTeamRollup: !!(roles.admin || roles.manager),
+        canReviewStatements: !!(roles.admin || roles.finance)
+    };
+}
+`
 
 Record({
     $id: Now.ID['commission_progress_helper_script_include'],
@@ -307,21 +349,21 @@ Record({
                 try {
                     result.data.quota_progress = this.getQuotaProgress(userId, planId, selectedYear);
                 } catch (quotaErr) {
-                    gs.log('CommissionProgressDataService quota fetch warning: ' + quotaErr.getMessage(), 'CommissionProgressDataService');
+                    gs.log('CommissionProgressDataService quota fetch warning: ' + this.getErrorMessage(quotaErr), 'CommissionProgressDataService');
                 }
             } else if ((includeAllUsers || includeTeamUsers) && result.data.active_plan && result.data.active_plan.targets) {
                 try {
                     result.data.quota_progress = this.getAggregateQuotaProgress(selectedUserIds, result.data.active_plan.targets, selectedYear);
                 } catch (aggregateQuotaErr) {
-                    gs.log('CommissionProgressDataService aggregate quota warning: ' + aggregateQuotaErr.getMessage(), 'CommissionProgressDataService');
+                    gs.log('CommissionProgressDataService aggregate quota warning: ' + this.getErrorMessage(aggregateQuotaErr), 'CommissionProgressDataService');
                 }
             }
 
             return JSON.stringify(result);
 
         } catch (e) {
-            gs.error('CommissionProgressDataService.getRepProgress error: ' + e.getMessage());
-            return this.getErrorJSON('Error fetching commission progress: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getRepProgress error: ' + this.getErrorMessage(e));
+            return this.getErrorJSON('Error fetching commission progress: ' + this.getErrorMessage(e));
         }
     },
 
@@ -396,7 +438,7 @@ Record({
 
             return progress;
         } catch (e) {
-            gs.error('CommissionProgressDataService.getQuotaProgress error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getQuotaProgress error: ' + this.getErrorMessage(e));
             return {};
         }
     },
@@ -454,28 +496,44 @@ Record({
                 }
             });
         } catch (e) {
-            gs.error('CommissionProgressDataService.getCurrentUser error: ' + e.getMessage());
-            return this.getErrorJSON('Unable to resolve current user: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getCurrentUser error: ' + this.getErrorMessage(e));
+            return this.getErrorJSON('Unable to resolve current user: ' + this.getErrorMessage(e));
         }
     },
 
     getViewerAccess: function() {
         try {
             var access = this.getRoleAccessContext();
+            var roleMap = access && access.roles ? access.roles : {};
+            var roles = {
+                admin: !!roleMap.admin,
+                manager: !!roleMap.manager,
+                finance: !!roleMap.finance,
+                rep: true
+            };
+
+            var managerScopeCount = 0;
+            if (roles.manager) {
+                try {
+                    managerScopeCount = this.getManagedUserIds(gs.getUserID(), false).length;
+                } catch (ignored) {
+                    managerScopeCount = 0;
+                }
+            }
 
             return JSON.stringify({
                 status: 'success',
                 data: {
-                    can_select_users: !!access.canSelectUsers,
-                    can_view_all_users: !!access.canViewAllUsers,
-                    can_view_team_rollup: !!access.canViewTeamRollup,
-                    manager_scope_count: access.roles.manager ? this.getManagedUserIds(gs.getUserID(), false).length : 0,
-                    roles: access.roles
+                    can_select_users: !!(roles.admin || roles.manager || roles.finance),
+                    can_view_all_users: !!(roles.admin || roles.finance),
+                    can_view_team_rollup: !!(roles.admin || roles.manager),
+                    manager_scope_count: managerScopeCount,
+                    roles: roles
                 }
             });
         } catch (e) {
-            gs.error('CommissionProgressDataService.getViewerAccess error: ' + e.getMessage());
-            return this.getErrorJSON('Unable to resolve viewer access: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getViewerAccess error: ' + this.getErrorMessage(e));
+            return this.getErrorJSON('Unable to resolve viewer access: ' + this.getErrorMessage(e));
         }
     },
 
@@ -503,8 +561,8 @@ Record({
                 }
             });
         } catch (e) {
-            gs.error('CommissionProgressDataService.getYearContext error: ' + e.getMessage());
-            return this.getErrorJSON('Unable to resolve year context: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getYearContext error: ' + this.getErrorMessage(e));
+            return this.getErrorJSON('Unable to resolve year context: ' + this.getErrorMessage(e));
         }
     },
 
@@ -565,8 +623,8 @@ Record({
                 }
             });
         } catch (e) {
-            gs.error('CommissionProgressDataService.getDashboardMetrics error: ' + e.getMessage());
-            return this.getErrorJSON('Unable to load dashboard metrics: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getDashboardMetrics error: ' + this.getErrorMessage(e));
+            return this.getErrorJSON('Unable to load dashboard metrics: ' + this.getErrorMessage(e));
         }
     },
 
@@ -672,8 +730,8 @@ Record({
                 data: users
             });
         } catch (e) {
-            gs.error('CommissionProgressDataService.listUsersWithData error: ' + e.getMessage());
-            return this.getErrorJSON('Unable to load users: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.listUsersWithData error: ' + this.getErrorMessage(e));
+            return this.getErrorJSON('Unable to load users: ' + this.getErrorMessage(e));
         }
     },
 
@@ -720,8 +778,8 @@ Record({
 
             return this.getErrorJSON('No user found matching: ' + searchTerm);
         } catch (e) {
-            gs.error('CommissionProgressDataService.searchUsers error: ' + e.getMessage());
-            return this.getErrorJSON('Error searching users: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.searchUsers error: ' + this.getErrorMessage(e));
+            return this.getErrorJSON('Error searching users: ' + this.getErrorMessage(e));
         }
     },
 
@@ -769,8 +827,8 @@ Record({
             var payload = this.buildStatementExplainabilityPayload(statementGr);
             return JSON.stringify({ status: 'success', data: payload });
         } catch (e) {
-            gs.error('CommissionProgressDataService.getStatementExplainability error: ' + e.getMessage());
-            return this.getErrorJSON('Unable to load statement explainability: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getStatementExplainability error: ' + this.getErrorMessage(e));
+            return this.getErrorJSON('Unable to load statement explainability: ' + this.getErrorMessage(e));
         }
     },
 
@@ -965,7 +1023,7 @@ Record({
 
             return details;
         } catch (e) {
-            gs.error('CommissionProgressDataService.getCompensationPlanDetails error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getCompensationPlanDetails error: ' + this.getErrorMessage(e));
             return {
                 targets: {},
                 tiers: [],
@@ -1106,7 +1164,7 @@ Record({
                 }
             });
         } catch (e) {
-            gs.error('CommissionProgressDataService.getForecastAndPriorities error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.getForecastAndPriorities error: ' + this.getErrorMessage(e));
             return this.getErrorJSON('Unable to calculate forecast insights');
         }
     },
@@ -1222,7 +1280,7 @@ Record({
                 }
             });
         } catch (e) {
-            gs.error('CommissionProgressDataService.estimateCommission error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.estimateCommission error: ' + this.getErrorMessage(e));
             return this.getErrorJSON('Unable to run commission estimate');
         }
     },
@@ -1270,7 +1328,7 @@ Record({
                 }
             });
         } catch (e) {
-            gs.error('CommissionProgressDataService.saveForecastScenario error: ' + e.getMessage());
+            gs.error('CommissionProgressDataService.saveForecastScenario error: ' + this.getErrorMessage(e));
             return this.getErrorJSON('Unable to save scenario');
         }
     },
@@ -1713,19 +1771,82 @@ Record({
     },
 
     isAdminViewer: function() {
+        try {
+            if (typeof gs.hasRole === 'function') {
+                if (gs.hasRole('x_823178_commissio.admin') || gs.hasRole('admin')) {
+                    return true;
+                }
+            }
+        } catch (e) {
+            // Ignore and fall back.
+        }
+
         return !!this.getRoleAccessContext().roles.admin;
     },
 
     isManagerViewer: function() {
+        try {
+            if (typeof gs.hasRole === 'function' && gs.hasRole('x_823178_commissio.manager')) {
+                return true;
+            }
+        } catch (e) {
+            // Ignore and fall back.
+        }
+
         return !!this.getRoleAccessContext().roles.manager;
     },
 
     isFinanceViewer: function() {
+        try {
+            if (typeof gs.hasRole === 'function' && gs.hasRole('x_823178_commissio.finance')) {
+                return true;
+            }
+        } catch (e) {
+            // Ignore and fall back.
+        }
+
         return !!this.getRoleAccessContext().roles.finance;
     },
 
     getRoleAccessContext: function() {
-        return resolveCommissionRoleAccess(gs.getUser());
+        var hasRole = function(roleName) {
+            try {
+                if (!roleName) {
+                    return false;
+                }
+
+                if (typeof gs.hasRole === 'function' && gs.hasRole(roleName)) {
+                    return true;
+                }
+
+                var user = gs.getUser();
+                if (user && typeof user.hasRole === 'function') {
+                    return !!user.hasRole(roleName);
+                }
+            } catch (e) {
+                // Ignore and return false.
+            }
+            return false;
+        };
+
+        var roles = {
+            admin: hasRole('x_823178_commissio.admin') || hasRole('admin'),
+            manager: hasRole('x_823178_commissio.manager'),
+            finance: hasRole('x_823178_commissio.finance'),
+            rep: hasRole('x_823178_commissio.rep')
+        };
+
+        if (roles.admin || roles.manager || roles.finance) {
+            roles.rep = true;
+        }
+
+        return {
+            roles: roles,
+            canSelectUsers: !!(roles.admin || roles.manager || roles.finance),
+            canViewAllUsers: !!(roles.admin || roles.finance),
+            canViewTeamRollup: !!(roles.admin || roles.manager),
+            canReviewStatements: !!(roles.admin || roles.finance)
+        };
     },
 
     canViewUser: function(targetUserId) {
@@ -2051,6 +2172,26 @@ Record({
             accelerator_component: calculatedAccelerator,
             bonus_component: calculatedBonus
         };
+    },
+
+    getErrorMessage: function(err) {
+        if (!err) {
+            return 'Unknown error';
+        }
+
+        try {
+            if (typeof err.getMessage === 'function') {
+                return String(err.getMessage());
+            }
+        } catch (ignoreGetMessage) {
+            // Fall through to other formats.
+        }
+
+        if (err.message) {
+            return String(err.message);
+        }
+
+        return String(err);
     },
 
     getErrorJSON: function(msg) {

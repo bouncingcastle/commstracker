@@ -36,9 +36,19 @@ export function hasStatementReviewerAccess(user) {
 
 function hasRole(user, roleName) {
     try {
-        if (!user || !roleName || typeof user.hasRole !== 'function') {
+        if (!roleName) {
             return false
         }
+
+        // Prefer gs.hasRole for the current session user in scoped runtime.
+        if (typeof gs.hasRole === 'function' && gs.hasRole(roleName)) {
+            return true
+        }
+
+        if (!user || typeof user.hasRole !== 'function') {
+            return false
+        }
+
         return !!user.hasRole(roleName)
     } catch (e) {
         return false
