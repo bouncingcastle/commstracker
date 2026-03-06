@@ -30,12 +30,9 @@ export function validatePlanTierConfiguration(current, previous) {
         return;
     }
 
-    if (!planFromTier) {
+    if (!planFromTier || planFromTier !== planFromTarget) {
+        // Normalize to target-derived parent plan so user can select referential target without manual plan correction.
         current.setValue('commission_plan', planFromTarget);
-    } else if (planFromTier !== planFromTarget) {
-        gs.addErrorMessage('Tier Commission Plan must match the selected Plan Target Commission Plan.');
-        current.setAbortAction(true);
-        return;
     }
 
     if (!validateLinkedTargetDealType(linkedTarget)) {

@@ -15,21 +15,11 @@ Record({
 })
 
 Record({
-    $id: 'plan_tiers_field_commission_plan',
-    table: 'sys_ui_element',
-    data: {
-        element: 'commission_plan',
-        position: 0,
-        sys_ui_section: 'plan_tiers_default_section'
-    }
-})
-
-Record({
     $id: 'plan_tiers_field_tier_name',
     table: 'sys_ui_element',
     data: {
         element: 'tier_name',
-        position: 1,
+        position: 0,
         sys_ui_section: 'plan_tiers_default_section'
     }
 })
@@ -39,7 +29,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'plan_target',
-        position: 2,
+        position: 1,
         sys_ui_section: 'plan_tiers_default_section'
     }
 })
@@ -49,7 +39,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'attainment_floor_percent',
-        position: 3,
+        position: 2,
         sys_ui_section: 'plan_tiers_default_section'
     }
 })
@@ -59,7 +49,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'attainment_ceiling_percent',
-        position: 4,
+        position: 3,
         sys_ui_section: 'plan_tiers_default_section'
     }
 })
@@ -69,7 +59,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'commission_rate_percent',
-        position: 5,
+        position: 4,
         sys_ui_section: 'plan_tiers_default_section'
     }
 })
@@ -79,7 +69,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'sort_order',
-        position: 6,
+        position: 5,
         sys_ui_section: 'plan_tiers_default_section'
     }
 })
@@ -89,7 +79,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'is_active',
-        position: 7,
+        position: 6,
         sys_ui_section: 'plan_tiers_default_section'
     }
 })
@@ -99,7 +89,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'description',
-        position: 8,
+        position: 7,
         sys_ui_section: 'plan_tiers_default_section'
     }
 })

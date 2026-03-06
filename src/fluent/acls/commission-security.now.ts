@@ -223,6 +223,73 @@ Acl({
     description: 'Only commission admins can create/update recognition basis policies'
 })
 
+// Plan setup hierarchy children - admin only
+Acl({
+    $id: 'plan_targets_read_acl',
+    type: 'record',
+    table: 'x_823178_commissio_plan_targets',
+    operation: 'read',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can read plan target records'
+})
+
+Acl({
+    $id: 'plan_targets_write_acl',
+    type: 'record',
+    table: 'x_823178_commissio_plan_targets',
+    operation: 'write',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can create/update plan target records'
+})
+
+Acl({
+    $id: 'plan_tiers_read_acl',
+    type: 'record',
+    table: 'x_823178_commissio_plan_tiers',
+    operation: 'read',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can read plan tier records'
+})
+
+Acl({
+    $id: 'plan_tiers_write_acl',
+    type: 'record',
+    table: 'x_823178_commissio_plan_tiers',
+    operation: 'write',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can create/update plan tier records'
+})
+
+Acl({
+    $id: 'plan_bonuses_read_acl',
+    type: 'record',
+    table: 'x_823178_commissio_plan_bonuses',
+    operation: 'read',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can read plan bonus records'
+})
+
+Acl({
+    $id: 'plan_bonuses_write_acl',
+    type: 'record',
+    table: 'x_823178_commissio_plan_bonuses',
+    operation: 'write',
+    roles: [commissionAdminRole],
+    active: true,
+    admin_overrides: true,
+    description: 'Only commission admins can create/update plan bonus records'
+})
+
 // Bulk plan assignment runs - admin only
 Acl({
     $id: 'bulk_plan_assignment_runs_read_acl',

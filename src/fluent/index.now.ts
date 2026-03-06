@@ -78,7 +78,12 @@ import './tables/plan_bonuses.now'
 // Form UX (single-flow plan setup)
 import './form-related-lists.now'
 import './plan-form-actions.now'
+import './commission-plan-form-layout.now'
+import './commission-calculation-form-layout.now'
+import './plan-target-form-layout.now'
 import './plan-tier-form-layout.now'
+import './plan-bonus-form-layout.now'
+import './plan-recognition-policy-form-layout.now'
 
 // Configuration seed data
 import './deal-types-data.now'

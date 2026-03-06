@@ -62,3 +62,13 @@ Record({
         view_name: 'default'
     }
 })
+
+Record({
+    $id: 'plan_target_tiers_related_list',
+    table: 'sys_ui_related_list',
+    data: {
+        name: 'x_823178_commissio_plan_targets',
+        related_list: 'x_823178_commissio_plan_tiers.plan_target',
+        view_name: 'default'
+    }
+})
