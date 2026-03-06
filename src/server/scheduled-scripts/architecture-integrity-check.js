@@ -53,12 +53,36 @@ export function runArchitectureIntegrityCheck() {
         { title: 'My Progress', query: 'x_823178_commissio_progress.do' }
     ];
 
+    var requiredFieldMap = {
+        x_823178_commissio_plan_targets: [
+            'commission_plan',
+            'deal_type_ref',
+            'commission_rate_percent',
+            'annual_target_amount',
+            'is_active',
+            'description'
+        ],
+        x_823178_commissio_plan_tiers: [
+            'commission_plan',
+            'plan_target',
+            'commission_rate_percent',
+            'attainment_floor_percent'
+        ],
+        x_823178_commissio_deals: [
+            'deal_type_ref'
+        ],
+        x_823178_commissio_commission_calculations: [
+            'deal_type_ref'
+        ]
+    };
+
     recordsChecked += validateNamedRecords('sys_db_object', 'name', requiredTables, 'table', missing);
     recordsChecked += validateNamedRecords('sys_user_role', 'name', requiredRoles, 'role', missing);
     recordsChecked += validateNamedRecords('sys_properties', 'name', requiredProperties, 'property', missing);
     recordsChecked += validateNamedRecords('sysauto_script', 'name', requiredJobs, 'job', missing);
 
     recordsChecked += validateModuleRecords(appId, requiredModules, missing);
+    recordsChecked += validateRequiredFields(requiredFieldMap, missing);
 
     var strictMode = (gs.getProperty('x_823178_commissio.seed_idempotency_mode', 'strict') || 'strict').toLowerCase();
     var navSeedEnabled = toBool(gs.getProperty('x_823178_commissio.seed_navigation_enabled', 'false'));
@@ -170,6 +194,33 @@ function validateModuleRecords(appId, requiredModules, missing) {
 
         if (!moduleGr.next()) {
             missing.push('module: ' + requiredModules[i].title + ' (' + requiredModules[i].query + ')');
+        }
+    }
+
+    return checked;
+}
+
+function validateRequiredFields(requiredFieldMap, missing) {
+    var checked = 0;
+    var tables = Object.keys(requiredFieldMap || {});
+
+    for (var i = 0; i < tables.length; i++) {
+        var table = tables[i];
+        var fields = requiredFieldMap[table] || [];
+
+        for (var j = 0; j < fields.length; j++) {
+            var element = fields[j];
+            checked++;
+
+            var dictGr = new GlideRecord('sys_dictionary');
+            dictGr.addQuery('name', table);
+            dictGr.addQuery('element', element);
+            dictGr.setLimit(1);
+            dictGr.query();
+
+            if (!dictGr.next()) {
+                missing.push('dictionary: ' + table + '.' + element);
+            }
         }
     }
 
