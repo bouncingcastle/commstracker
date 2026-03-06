@@ -872,14 +872,7 @@ UiPage({
             }
           }
 
-          if (!canSelectUsers) {
-            select.innerHTML = '<option value="">Select representative...</option>';
-            ensureCurrentUserOption();
-            select.disabled = true;
-            return;
-          }
-
-          select.disabled = false;
+          select.disabled = true;
 
           invokeHelper('listUsersWithData', {
             sysparm_year: String(viewingYear)
@@ -893,7 +886,7 @@ UiPage({
                 select.innerHTML += '<option value="all">All users</option>';
               }
               ensureCurrentUserOption();
-              select.disabled = !(canViewAllUsers || canViewTeamRollup || !!currentUserId);
+              select.disabled = !(canSelectUsers || canViewAllUsers || canViewTeamRollup || !!currentUserId);
               return;
             }
 
@@ -908,7 +901,7 @@ UiPage({
                   select.innerHTML += '<option value="all">All users</option>';
                 }
                 ensureCurrentUserOption();
-                select.disabled = !(canViewAllUsers || canViewTeamRollup || !!currentUserId);
+                select.disabled = !(canSelectUsers || canViewAllUsers || canViewTeamRollup || !!currentUserId);
                 return;
               }
 
@@ -934,11 +927,24 @@ UiPage({
               if (!select.value && currentUserId) {
                 select.value = currentUserId;
               }
+
+              var repCount = 0;
+              for (var idx = 0; idx < select.options.length; idx++) {
+                var val = String(select.options[idx].value || '');
+                if (!val || val === 'all' || val === 'team') continue;
+                repCount++;
+              }
+
+              // If server returns multiple reps, allow selector even if viewer-access probe was conservative.
+              if (repCount > 1) {
+                canSelectUsers = true;
+              }
+              select.disabled = !(canSelectUsers || canViewAllUsers || canViewTeamRollup || repCount > 1);
             } catch (e) {
               console.log('User options parse error:', e);
               select.innerHTML = '<option value="">Select representative...</option>';
               ensureCurrentUserOption();
-              select.disabled = !(canViewAllUsers || canViewTeamRollup || !!currentUserId);
+              select.disabled = !(canSelectUsers || canViewAllUsers || canViewTeamRollup || !!currentUserId);
             }
           });
         }
