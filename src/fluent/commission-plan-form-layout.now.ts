@@ -85,31 +85,11 @@ Record({
 })
 
 Record({
-    $id: 'commission_plans_field_base_rate',
-    table: 'sys_ui_element',
-    data: {
-        element: 'base_rate',
-        position: 7,
-        sys_ui_section: 'commission_plans_default_section'
-    }
-})
-
-Record({
-    $id: 'commission_plans_field_upsell_rate',
-    table: 'sys_ui_element',
-    data: {
-        element: 'upsell_rate',
-        position: 8,
-        sys_ui_section: 'commission_plans_default_section'
-    }
-})
-
-Record({
     $id: 'commission_plans_field_supersedes_plan',
     table: 'sys_ui_element',
     data: {
         element: 'supersedes_plan',
-        position: 9,
+        position: 7,
         sys_ui_section: 'commission_plans_default_section'
     }
 })
@@ -119,7 +99,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'superseded_by_plan',
-        position: 10,
+        position: 8,
         sys_ui_section: 'commission_plans_default_section'
     }
 })
@@ -129,7 +109,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'plan_overlap_approved_by',
-        position: 11,
+        position: 9,
         sys_ui_section: 'commission_plans_default_section'
     }
 })
@@ -139,7 +119,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'plan_overlap_approved_on',
-        position: 12,
+        position: 10,
         sys_ui_section: 'commission_plans_default_section'
     }
 })
@@ -149,7 +129,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'plan_overlap_reason',
-        position: 13,
+        position: 11,
         sys_ui_section: 'commission_plans_default_section'
     }
 })
@@ -159,7 +139,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'description',
-        position: 14,
+        position: 12,
         sys_ui_section: 'commission_plans_default_section'
     }
 })

@@ -64,29 +64,11 @@ Record({
     },
 })
 Record({
-    $id: Now.ID['106867d683d73210a0365dc6feaad302'],
-    table: 'sys_ui_element',
-    data: {
-        element: 'base_rate',
-        position: 7,
-        sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
-    },
-})
-Record({
-    $id: Now.ID['d86867d683d73210a0365dc6feaad302'],
-    table: 'sys_ui_element',
-    data: {
-        element: 'upsell_rate',
-        position: 8,
-        sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
-    },
-})
-Record({
     $id: Now.ID['946867d683d73210a0365dc6feaad303'],
     table: 'sys_ui_element',
     data: {
         element: 'supersedes_plan',
-        position: 9,
+        position: 7,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
 })
@@ -95,7 +77,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'superseded_by_plan',
-        position: 10,
+        position: 8,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
 })
@@ -104,7 +86,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'plan_overlap_approved_by',
-        position: 11,
+        position: 9,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
 })
@@ -113,7 +95,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'plan_overlap_approved_on',
-        position: 12,
+        position: 10,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
 })
@@ -122,7 +104,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'plan_overlap_reason',
-        position: 13,
+        position: 11,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
 })
@@ -131,7 +113,7 @@ Record({
     table: 'sys_ui_element',
     data: {
         element: 'description',
-        position: 14,
+        position: 12,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
 })

@@ -3,7 +3,7 @@ import { ApplicationMenu, Record } from '@servicenow/sdk/core'
 
 // Create the main Commission Management application menu
 const commissionApp = ApplicationMenu({
-    $id: Now.ID['commission_app'],
+    $id: 'commission_app',
     title: 'Commission Management',
     hint: 'Comprehensive commission tracking and management system',
     order: 100
@@ -11,7 +11,7 @@ const commissionApp = ApplicationMenu({
 
 // Dashboard Module - Main Landing Page
 Record({
-    $id: Now.ID['dashboard_module'],
+    $id: 'dashboard_module',
     table: 'sys_app_module',
     data: {
         title: 'Dashboard',
@@ -26,7 +26,7 @@ Record({
 
 // My Progress Module - Sales Rep Personal View
 Record({
-    $id: Now.ID['progress_module'],
+    $id: 'progress_module',
     table: 'sys_app_module',
     data: {
         title: 'My Progress',
@@ -41,7 +41,7 @@ Record({
 
 // Data Management Separator
 Record({
-    $id: Now.ID['data_separator'],
+    $id: 'data_separator',
     table: 'sys_app_module',
     data: {
         title: 'Data Management',
@@ -54,7 +54,7 @@ Record({
 
 // Deals Module
 Record({
-    $id: Now.ID['deals_module'],
+    $id: 'deals_module',
     table: 'sys_app_module',
     data: {
         title: 'Deals',
@@ -69,7 +69,7 @@ Record({
 
 // Invoices Module  
 Record({
-    $id: Now.ID['invoices_module'],
+    $id: 'invoices_module',
     table: 'sys_app_module',
     data: {
         title: 'Invoices',
@@ -84,7 +84,7 @@ Record({
 
 // Payments Module
 Record({
-    $id: Now.ID['payments_module'],
+    $id: 'payments_module',
     table: 'sys_app_module',
     data: {
         title: 'Payments',
@@ -99,7 +99,7 @@ Record({
 
 // Commission Management Separator
 Record({
-    $id: Now.ID['commission_separator'],
+    $id: 'commission_separator',
     table: 'sys_app_module',
     data: {
         title: 'Commission Management',
@@ -112,7 +112,7 @@ Record({
 
 // Commission Calculations Module
 Record({
-    $id: Now.ID['calculations_module'],
+    $id: 'calculations_module',
     table: 'sys_app_module',
     data: {
         title: 'Commission Calculations',
@@ -127,7 +127,7 @@ Record({
 
 // Commission Plans Module
 Record({
-    $id: Now.ID['plans_module'],
+    $id: 'plans_module',
     table: 'sys_app_module',
     data: {
         title: 'Commission Plans',
@@ -142,7 +142,7 @@ Record({
 
 // Plan Targets Module - Quota targets by deal type
 Record({
-    $id: Now.ID['plan_targets_module'],
+    $id: 'plan_targets_module',
     table: 'sys_app_module',
     data: {
         title: 'Plan Targets',
@@ -157,7 +157,7 @@ Record({
 
 // Plan Tiers Module - Commission acceleration structure
 Record({
-    $id: Now.ID['plan_tiers_module'],
+    $id: 'plan_tiers_module',
     table: 'sys_app_module',
     data: {
         title: 'Plan Tiers',
@@ -172,7 +172,7 @@ Record({
 
 // Plan Bonuses Module - Performance bonuses
 Record({
-    $id: Now.ID['plan_bonuses_module'],
+    $id: 'plan_bonuses_module',
     table: 'sys_app_module',
     data: {
         title: 'Plan Bonuses',
@@ -217,7 +217,7 @@ Record({
 
 // Commission Statements Module
 Record({
-    $id: Now.ID['statements_module'],
+    $id: 'statements_module',
     table: 'sys_app_module',
     data: {
         title: 'Commission Statements',
@@ -232,7 +232,7 @@ Record({
 
 // Forecast Scenarios Module
 Record({
-    $id: Now.ID['forecast_scenarios_module'],
+    $id: 'forecast_scenarios_module',
     table: 'sys_app_module',
     data: {
         title: 'Forecast Scenarios',
@@ -247,7 +247,7 @@ Record({
 
 // Statement Approvals Module
 Record({
-    $id: Now.ID['statement_approvals_module'],
+    $id: 'statement_approvals_module',
     table: 'sys_app_module',
     data: {
         title: 'Statement Approvals',
@@ -262,7 +262,7 @@ Record({
 
 // Rep Compensation Management Module
 Record({
-    $id: Now.ID['compensation_management_module'],
+    $id: 'compensation_management_module',
     table: 'sys_app_module',
     data: {
         title: 'Plan Setup Form (Shortcut)',
@@ -321,7 +321,7 @@ Record({
 
 // Administration Separator
 Record({
-    $id: Now.ID['admin_separator'],
+    $id: 'admin_separator',
     table: 'sys_app_module',
     data: {
         title: 'Administration',
@@ -334,7 +334,7 @@ Record({
 
 // Exception Approvals Module
 Record({
-    $id: Now.ID['exceptions_module'],
+    $id: 'exceptions_module',
     table: 'sys_app_module',
     data: {
         title: 'Exception Approvals',
@@ -349,7 +349,7 @@ Record({
 
 // System Alerts Module
 Record({
-    $id: Now.ID['alerts_module'],
+    $id: 'alerts_module',
     table: 'sys_app_module',
     data: {
         title: 'System Alerts',
@@ -364,7 +364,7 @@ Record({
 
 // Reconciliation Log Module
 Record({
-    $id: Now.ID['reconciliation_module'],
+    $id: 'reconciliation_module',
     table: 'sys_app_module',
     data: {
         title: 'Reconciliation Log',

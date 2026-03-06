@@ -56,13 +56,13 @@ export const x_823178_commissio_commission_plans = Table({
             label: 'Upsell Rate (%)',
             precision: 5,
             scale: 2,
-            mandatory: true
+            default: 0
         }),
         base_rate: DecimalColumn({ 
             label: 'Base Rate (%)',
             precision: 5,
             scale: 2,
-            mandatory: true
+            default: 0
         }),
         description: StringColumn({ 
             label: 'Description',
