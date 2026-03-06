@@ -503,16 +503,25 @@ Record({
 
     getViewerAccess: function() {
         try {
+            var isAdmin = this.isAdminViewer();
+            var isManager = this.isManagerViewer();
+            var isFinance = this.isFinanceViewer();
             var access = this.getRoleAccessContext();
+            var roles = {
+                admin: !!(isAdmin || (access.roles && access.roles.admin)),
+                manager: !!(isManager || (access.roles && access.roles.manager)),
+                finance: !!(isFinance || (access.roles && access.roles.finance)),
+                rep: true
+            };
 
             return JSON.stringify({
                 status: 'success',
                 data: {
-                    can_select_users: !!access.canSelectUsers,
-                    can_view_all_users: !!access.canViewAllUsers,
-                    can_view_team_rollup: !!access.canViewTeamRollup,
-                    manager_scope_count: access.roles.manager ? this.getManagedUserIds(gs.getUserID(), false).length : 0,
-                    roles: access.roles
+                    can_select_users: !!(roles.admin || roles.manager || roles.finance),
+                    can_view_all_users: !!(roles.admin || roles.finance),
+                    can_view_team_rollup: !!(roles.admin || roles.manager),
+                    manager_scope_count: roles.manager ? this.getManagedUserIds(gs.getUserID(), false).length : 0,
+                    roles: roles
                 }
             });
         } catch (e) {
@@ -1703,14 +1712,40 @@ Record({
     },
 
     isAdminViewer: function() {
+        try {
+            if (typeof gs.hasRole === 'function') {
+                if (gs.hasRole('x_823178_commissio.admin') || gs.hasRole('admin')) {
+                    return true;
+                }
+            }
+        } catch (e) {
+            // Ignore and fall back.
+        }
+
         return !!this.getRoleAccessContext().roles.admin;
     },
 
     isManagerViewer: function() {
+        try {
+            if (typeof gs.hasRole === 'function' && gs.hasRole('x_823178_commissio.manager')) {
+                return true;
+            }
+        } catch (e) {
+            // Ignore and fall back.
+        }
+
         return !!this.getRoleAccessContext().roles.manager;
     },
 
     isFinanceViewer: function() {
+        try {
+            if (typeof gs.hasRole === 'function' && gs.hasRole('x_823178_commissio.finance')) {
+                return true;
+            }
+        } catch (e) {
+            // Ignore and fall back.
+        }
+
         return !!this.getRoleAccessContext().roles.finance;
     },
 
