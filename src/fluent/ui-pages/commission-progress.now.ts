@@ -566,6 +566,7 @@ UiPage({
         var activeScenarioId = '';
         var canViewAllUsers = false;
         var canViewTeamRollup = false;
+        var estimatorDealTypeCatalog = [];
 
         var estimateCloseDateInput = document.getElementById('estimateCloseDate');
         if (estimateCloseDateInput && !estimateCloseDateInput.value) {
@@ -834,14 +835,7 @@ UiPage({
             }
           }
 
-          if (!canSelectUsers) {
-            select.innerHTML = '<option value="">Select representative...</option>';
-            ensureCurrentUserOption();
-            select.disabled = true;
-            return;
-          }
-
-          select.disabled = false;
+          select.disabled = true;
 
           invokeHelper('listUsersWithData', {
             sysparm_year: String(viewingYear)
@@ -855,7 +849,7 @@ UiPage({
                 select.innerHTML += '<option value="all">All users</option>';
               }
               ensureCurrentUserOption();
-              select.disabled = !(canViewAllUsers || canViewTeamRollup || !!currentUserId);
+              select.disabled = !(canSelectUsers || canViewAllUsers || canViewTeamRollup || !!currentUserId);
               return;
             }
 
@@ -870,7 +864,7 @@ UiPage({
                   select.innerHTML += '<option value="all">All users</option>';
                 }
                 ensureCurrentUserOption();
-                select.disabled = !(canViewAllUsers || canViewTeamRollup || !!currentUserId);
+                select.disabled = !(canSelectUsers || canViewAllUsers || canViewTeamRollup || !!currentUserId);
                 return;
               }
 
@@ -896,12 +890,82 @@ UiPage({
               if (!select.value && currentUserId) {
                 select.value = currentUserId;
               }
+
+              var repCount = 0;
+              for (var idx = 0; idx < select.options.length; idx++) {
+                var val = String(select.options[idx].value || '');
+                if (!val || val === 'all' || val === 'team') continue;
+                repCount++;
+              }
+
+              // If server returns multiple reps, allow selector even if viewer-access probe was conservative.
+              if (repCount > 1) {
+                canSelectUsers = true;
+              }
+              select.disabled = !(canSelectUsers || canViewAllUsers || canViewTeamRollup || repCount > 1);
             } catch (e) {
               console.log('User options parse error:', e);
               select.innerHTML = '<option value="">Select representative...</option>';
               ensureCurrentUserOption();
-              select.disabled = !(canViewAllUsers || canViewTeamRollup || !!currentUserId);
+              select.disabled = !(canSelectUsers || canViewAllUsers || canViewTeamRollup || !!currentUserId);
             }
+          });
+        }
+
+        function normalizeDealTypeKey(value) {
+          var key = String(value || '').toLowerCase().trim();
+          if (!key) return '';
+          key = key.replace(/[\\s-]+/g, '_');
+          return key;
+        }
+
+        function mergeEstimatorDealTypes(activePlan) {
+          var merged = [];
+          var seen = {};
+
+          function add(value) {
+            var normalized = normalizeDealTypeKey(value);
+            if (!normalized || seen[normalized]) return;
+            seen[normalized] = true;
+            merged.push(normalized);
+          }
+
+          if (activePlan && activePlan.targets && typeof activePlan.targets === 'object') {
+            Object.keys(activePlan.targets).forEach(function(key) {
+              add(key);
+            });
+          }
+
+          if (estimatorDealTypeCatalog && estimatorDealTypeCatalog.length > 0) {
+            estimatorDealTypeCatalog.forEach(function(key) {
+              add(key);
+            });
+          }
+
+          if (merged.length === 0) {
+            ['new_business', 'renewal', 'expansion', 'upsell'].forEach(add);
+          }
+
+          return merged;
+        }
+
+        function loadEstimatorDealTypes(onComplete) {
+          invokeHelper('getEstimatorDealTypes', {}, function(response) {
+            if (response) {
+              try {
+                var payload = typeof response === 'string' ? JSON.parse(response) : response;
+                if (payload && payload.status === 'success' && payload.data && payload.data.length) {
+                  estimatorDealTypeCatalog = payload.data.map(normalizeDealTypeKey).filter(function(item) {
+                    return !!item;
+                  });
+                }
+              } catch (e) {
+                console.log('Estimator deal type parse error:', e);
+              }
+            }
+
+            syncEstimatorDealTypeOptions(null);
+            if (onComplete) onComplete();
           });
         }
 
@@ -982,6 +1046,7 @@ UiPage({
         resolveViewerAccess(function() {
           bindSelectorAutoApply();
           loadUserOptions();
+          loadEstimatorDealTypes();
           initializeYearContext(function() {
             loadUserOptions();
             loadInitialData();
@@ -1510,12 +1575,7 @@ UiPage({
           if (!select) return;
 
           var current = select.value || '';
-          var targets = activePlan && activePlan.targets && typeof activePlan.targets === 'object' ? activePlan.targets : {};
-          var keys = Object.keys(targets);
-
-          if (keys.length === 0) {
-            keys = ['new_business'];
-          }
+          var keys = mergeEstimatorDealTypes(activePlan);
 
           select.innerHTML = '';
           for (var i = 0; i < keys.length; i++) {
