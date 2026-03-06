@@ -503,16 +503,23 @@ Record({
 
     getViewerAccess: function() {
         try {
-            var isAdmin = this.isAdminViewer();
-            var isManager = this.isManagerViewer();
-            var isFinance = this.isFinanceViewer();
             var access = this.getRoleAccessContext();
+            var roleMap = access && access.roles ? access.roles : {};
             var roles = {
-                admin: !!(isAdmin || (access.roles && access.roles.admin)),
-                manager: !!(isManager || (access.roles && access.roles.manager)),
-                finance: !!(isFinance || (access.roles && access.roles.finance)),
+                admin: !!roleMap.admin,
+                manager: !!roleMap.manager,
+                finance: !!roleMap.finance,
                 rep: true
             };
+
+            var managerScopeCount = 0;
+            if (roles.manager) {
+                try {
+                    managerScopeCount = this.getManagedUserIds(gs.getUserID(), false).length;
+                } catch (ignored) {
+                    managerScopeCount = 0;
+                }
+            }
 
             return JSON.stringify({
                 status: 'success',
@@ -520,7 +527,7 @@ Record({
                     can_select_users: !!(roles.admin || roles.manager || roles.finance),
                     can_view_all_users: !!(roles.admin || roles.finance),
                     can_view_team_rollup: !!(roles.admin || roles.manager),
-                    manager_scope_count: roles.manager ? this.getManagedUserIds(gs.getUserID(), false).length : 0,
+                    manager_scope_count: managerScopeCount,
                     roles: roles
                 }
             });
@@ -625,8 +632,10 @@ Record({
         try {
             var users = [];
             var seen = {};
-            var isAdmin = this.isAdminViewer();
-            var isManager = this.isManagerViewer();
+            var access = this.getRoleAccessContext();
+            var roleMap = access && access.roles ? access.roles : {};
+            var isAdmin = !!roleMap.admin;
+            var isManager = !!roleMap.manager;
             var viewerId = gs.getUserID();
             var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
             var selectedYear = (!isNaN(requestedYear) && requestedYear >= 2000 && requestedYear <= 2100) ? requestedYear : null;
@@ -651,8 +660,9 @@ Record({
 
             var planAgg = new GlideAggregate('x_823178_commissio_commission_plans');
             planAgg.addQuery('is_active', true);
-            if (selectedYear) {
-                planAgg.addQuery('effective_start_date', '<=', yearEnd);
+            // Admin dropdown should include all active plans, not only date-overlapping plans.
+            if (selectedYear && !isAdmin) {
+                planAgg.addNullQuery('effective_start_date').addOrCondition('effective_start_date', '<=', yearEnd);
                 planAgg.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
             }
             if (managerScopeIds && managerScopeIds.length > 0) {
