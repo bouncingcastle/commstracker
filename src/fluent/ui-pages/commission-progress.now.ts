@@ -572,6 +572,7 @@ UiPage({
         var activeScenarioId = '';
         var canViewAllUsers = false;
         var canViewTeamRollup = false;
+        var estimatorDealTypeCatalog = [];
 
         function hasClientRole(roleName) {
           try {
@@ -942,6 +943,63 @@ UiPage({
           });
         }
 
+        function normalizeDealTypeKey(value) {
+          var key = String(value || '').toLowerCase().trim();
+          if (!key) return '';
+          key = key.replace(/[\\s-]+/g, '_');
+          return key;
+        }
+
+        function mergeEstimatorDealTypes(activePlan) {
+          var merged = [];
+          var seen = {};
+
+          function add(value) {
+            var normalized = normalizeDealTypeKey(value);
+            if (!normalized || seen[normalized]) return;
+            seen[normalized] = true;
+            merged.push(normalized);
+          }
+
+          if (activePlan && activePlan.targets && typeof activePlan.targets === 'object') {
+            Object.keys(activePlan.targets).forEach(function(key) {
+              add(key);
+            });
+          }
+
+          if (estimatorDealTypeCatalog && estimatorDealTypeCatalog.length > 0) {
+            estimatorDealTypeCatalog.forEach(function(key) {
+              add(key);
+            });
+          }
+
+          if (merged.length === 0) {
+            ['new_business', 'renewal', 'expansion', 'upsell'].forEach(add);
+          }
+
+          return merged;
+        }
+
+        function loadEstimatorDealTypes(onComplete) {
+          invokeHelper('getEstimatorDealTypes', {}, function(response) {
+            if (response) {
+              try {
+                var payload = typeof response === 'string' ? JSON.parse(response) : response;
+                if (payload && payload.status === 'success' && payload.data && payload.data.length) {
+                  estimatorDealTypeCatalog = payload.data.map(normalizeDealTypeKey).filter(function(item) {
+                    return !!item;
+                  });
+                }
+              } catch (e) {
+                console.log('Estimator deal type parse error:', e);
+              }
+            }
+
+            syncEstimatorDealTypeOptions(null);
+            if (onComplete) onComplete();
+          });
+        }
+
         function applySelectedUserAndYear() {
           var select = document.getElementById('userSelect');
           var yearSelect = document.getElementById('yearSelect');
@@ -1019,6 +1077,7 @@ UiPage({
         resolveViewerAccess(function() {
           bindSelectorAutoApply();
           loadUserOptions();
+          loadEstimatorDealTypes();
           initializeYearContext(function() {
             loadUserOptions();
             loadInitialData();
@@ -1547,12 +1606,7 @@ UiPage({
           if (!select) return;
 
           var current = select.value || '';
-          var targets = activePlan && activePlan.targets && typeof activePlan.targets === 'object' ? activePlan.targets : {};
-          var keys = Object.keys(targets);
-
-          if (keys.length === 0) {
-            keys = ['new_business'];
-          }
+          var keys = mergeEstimatorDealTypes(activePlan);
 
           select.innerHTML = '';
           for (var i = 0; i < keys.length; i++) {

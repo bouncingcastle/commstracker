@@ -1159,6 +1159,55 @@ Record({
         }
     },
 
+    getEstimatorDealTypes: function() {
+        try {
+            var canonicalOrder = ['new_business', 'renewal', 'expansion', 'upsell', 'other'];
+            var typeMap = {};
+            var typeGr = new GlideRecord('x_823178_commissio_deal_types');
+            typeGr.addEncodedQuery('is_active=true^ORis_active=1');
+            typeGr.orderBy('display_order');
+            typeGr.orderBy('name');
+            typeGr.query();
+
+            while (typeGr.next()) {
+                var rawCode = typeGr.getValue('code') || '';
+                var code = this.normalizeDealType(rawCode);
+                if (!code || typeMap[code]) {
+                    continue;
+                }
+                typeMap[code] = true;
+            }
+
+            var options = [];
+            for (var i = 0; i < canonicalOrder.length; i++) {
+                var candidate = canonicalOrder[i];
+                if (typeMap[candidate]) {
+                    options.push(candidate);
+                    delete typeMap[candidate];
+                }
+            }
+
+            // Keep any additional custom deal types available to the estimator.
+            for (var key in typeMap) {
+                if (typeMap.hasOwnProperty(key)) {
+                    options.push(this.normalizeDealType(key));
+                }
+            }
+
+            if (options.length === 0) {
+                options = canonicalOrder.slice(0, 4);
+            }
+
+            return JSON.stringify({
+                status: 'success',
+                data: options
+            });
+        } catch (e) {
+            gs.error('CommissionProgressDataService.getEstimatorDealTypes error: ' + this.getErrorMessage(e));
+            return this.getErrorJSON('Unable to load estimator deal types');
+        }
+    },
+
     estimateCommission: function() {
         var userId = this.getParameter('sysparm_user_id') || gs.getUserID();
         var selectedYear = this.getValidYear(this.getParameter('sysparm_year'));
