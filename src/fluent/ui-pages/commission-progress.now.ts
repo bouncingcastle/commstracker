@@ -573,6 +573,34 @@ UiPage({
         var canViewAllUsers = false;
         var canViewTeamRollup = false;
 
+        function hasClientRole(roleName) {
+          try {
+            if (!roleName) return false;
+            if (window.g_user && typeof window.g_user.hasRole === 'function') {
+              return !!window.g_user.hasRole(roleName);
+            }
+          } catch (e) {
+            // Ignore and treat as not present.
+          }
+          return false;
+        }
+
+        function getClientRoleFallback() {
+          var admin = hasClientRole('x_823178_commissio.admin') || hasClientRole('admin');
+          var manager = hasClientRole('x_823178_commissio.manager');
+          var finance = hasClientRole('x_823178_commissio.finance');
+          var rep = hasClientRole('x_823178_commissio.rep') || admin || manager || finance;
+          return {
+            admin: admin,
+            manager: manager,
+            finance: finance,
+            rep: rep,
+            canSelectUsers: !!(admin || manager || finance),
+            canViewAllUsers: !!(admin || finance),
+            canViewTeamRollup: !!(admin || manager)
+          };
+        }
+
         var estimateCloseDateInput = document.getElementById('estimateCloseDate');
         if (estimateCloseDateInput && !estimateCloseDateInput.value) {
           estimateCloseDateInput.value = new Date().toISOString().split('T')[0];
@@ -699,7 +727,10 @@ UiPage({
 
         // Role chips
         var chips = document.getElementById('roleChips');
-        var canSelectUsers = false;
+        var clientRoleFallback = getClientRoleFallback();
+        var canSelectUsers = !!clientRoleFallback.canSelectUsers;
+        canViewAllUsers = !!clientRoleFallback.canViewAllUsers;
+        canViewTeamRollup = !!clientRoleFallback.canViewTeamRollup;
 
         // Show user selector
         var selector = document.getElementById('userSelector');
@@ -724,9 +755,9 @@ UiPage({
             try {
               var payload = typeof response === 'string' ? JSON.parse(response) : response;
               if (payload && payload.status === 'success' && payload.data) {
-                canSelectUsers = !!payload.data.can_select_users;
-                canViewAllUsers = !!payload.data.can_view_all_users;
-                canViewTeamRollup = !!payload.data.can_view_team_rollup;
+                canSelectUsers = canSelectUsers || !!payload.data.can_select_users;
+                canViewAllUsers = canViewAllUsers || !!payload.data.can_view_all_users;
+                canViewTeamRollup = canViewTeamRollup || !!payload.data.can_view_team_rollup;
                 if (chips) {
                   chips.innerHTML = '';
                   var resolvedRoles = [];
