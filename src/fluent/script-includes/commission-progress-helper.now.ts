@@ -9,9 +9,18 @@ function resolveCommissionRoleAccess(user) {
 
     function hasRole(roleName) {
         try {
-            if (!subject || !roleName || typeof subject.hasRole !== 'function') {
+            if (!roleName) {
                 return false;
             }
+
+            if (typeof gs.hasRole === 'function' && gs.hasRole(roleName)) {
+                return true;
+            }
+
+            if (!subject || typeof subject.hasRole !== 'function') {
+                return false;
+            }
+
             return !!subject.hasRole(roleName);
         } catch (e) {
             return false;
