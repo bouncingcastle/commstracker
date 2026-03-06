@@ -660,11 +660,7 @@ Record({
 
             var planAgg = new GlideAggregate('x_823178_commissio_commission_plans');
             planAgg.addQuery('is_active', true);
-            // Admin dropdown should include all active plans, not only date-overlapping plans.
-            if (selectedYear && !isAdmin) {
-                planAgg.addNullQuery('effective_start_date').addOrCondition('effective_start_date', '<=', yearEnd);
-                planAgg.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
-            }
+            // Representative selector should reflect active assignments, regardless of selected report year.
             if (managerScopeIds && managerScopeIds.length > 0) {
                 planAgg.addQuery('sales_rep', 'IN', managerScopeIds.join(','));
             } else if (!isAdmin && !isManager) {
@@ -1925,14 +1921,11 @@ Record({
     },
 
     listUserIdsWithActivePlansForYear: function(selectedYear, allowedUserIds) {
-        var yearStart = selectedYear + '-01-01';
-        var yearEnd = selectedYear + '-12-31';
         var userIds = [];
 
         var agg = new GlideAggregate('x_823178_commissio_commission_plans');
         agg.addQuery('is_active', true);
-        agg.addQuery('effective_start_date', '<=', yearEnd);
-        agg.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
+        // Keep rollup user scope aligned with selector behavior: active assignments, not year overlap.
         if (allowedUserIds && allowedUserIds.length > 0) {
             agg.addQuery('sales_rep', 'IN', allowedUserIds.join(','));
         } else if (allowedUserIds && allowedUserIds.length === 0) {
