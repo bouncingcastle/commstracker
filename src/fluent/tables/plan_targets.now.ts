@@ -10,10 +10,16 @@ export const x_823178_commissio_plan_targets = Table({
             referenceTable: 'x_823178_commissio_commission_plans',
             mandatory: true
         }),
-        deal_type: StringColumn({
+        deal_type_ref: ReferenceColumn({
             label: 'Deal Type',
-            mandatory: true,
-            maxLength: 40
+            referenceTable: 'x_823178_commissio_deal_types',
+            mandatory: true
+        }),
+        commission_rate_percent: DecimalColumn({
+            label: 'Commission Rate (%)',
+            precision: 6,
+            scale: 2,
+            mandatory: true
         }),
         annual_target_amount: DecimalColumn({
             label: 'Annual Target Amount',
@@ -32,8 +38,8 @@ export const x_823178_commissio_plan_targets = Table({
     },
     indexes: [
         {
-            name: 'idx_plan_target_plan_type',
-            fields: ['commission_plan', 'deal_type']
+            name: 'idx_plan_target_plan_type_ref',
+            fields: ['commission_plan', 'deal_type_ref']
         }
     ],
     audit: true,

@@ -44,9 +44,10 @@ export const x_823178_commissio_deals = Table({
                 closed_lost: { label: 'Closed Lost', sequence: 5 }
             }
         }),
-        deal_type: StringColumn({ 
-            label: 'Deal Type',
-            maxLength: 40
+        deal_type_ref: ReferenceColumn({
+            label: 'Primary Deal Type',
+            referenceTable: 'x_823178_commissio_deal_types',
+            mandatory: true
         }),
         is_won: BooleanColumn({ 
             label: 'Is Won'
@@ -119,6 +120,10 @@ export const x_823178_commissio_deals = Table({
         {
             name: 'idx_deals_current_owner_stage',
             fields: ['current_owner', 'stage', 'is_won']
+        },
+        {
+            name: 'idx_deals_type_ref_close',
+            fields: ['deal_type_ref', 'close_date']
         },
         {
             name: 'idx_deals_sync_status',

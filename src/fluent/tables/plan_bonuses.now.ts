@@ -68,10 +68,9 @@ export const x_823178_commissio_plan_bonuses = Table({
             maxLength: 500,
             read_only: true
         }),
-        deal_type: StringColumn({
+        deal_type_ref: ReferenceColumn({
             label: 'Deal Type',
-            maxLength: 40,
-            default: 'any'
+            referenceTable: 'x_823178_commissio_deal_types'
         }),
         is_discretionary: BooleanColumn({
             label: 'Discretionary',
@@ -108,6 +107,10 @@ export const x_823178_commissio_plan_bonuses = Table({
         {
             name: 'idx_plan_bonus_plan_name',
             fields: ['commission_plan', 'bonus_name']
+        },
+        {
+            name: 'idx_plan_bonus_deal_type_ref',
+            fields: ['deal_type_ref']
         }
     ],
     audit: true,

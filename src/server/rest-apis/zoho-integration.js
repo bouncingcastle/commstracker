@@ -74,13 +74,18 @@ export function syncDealsFromBigin(request, response) {
 }
 
 function updateDealFromBigin(dealGr, dealData) {
+    var dealTypeRef = resolveDealTypeRefFromCode(dealData.deal_type || 'new_business');
+    if (!dealTypeRef) {
+        throw new Error('Deal type could not be resolved to an active Deal Type reference for code: ' + (dealData.deal_type || 'new_business'));
+    }
+
     dealGr.setValue('bigin_deal_id', dealData.bigin_deal_id);
     dealGr.setValue('deal_name', dealData.deal_name || '');
     dealGr.setValue('account_name', dealData.account_name || '');
     dealGr.setValue('amount', dealData.amount || 0);
     dealGr.setValue('close_date', normalizeDateValue(dealData.close_date));
     dealGr.setValue('stage', dealData.stage || 'lead');
-    dealGr.setValue('deal_type', dealData.deal_type || 'new_business');
+    dealGr.setValue('deal_type_ref', dealTypeRef);
     
     // Map owner by email if provided
     if (dealData.owner_email) {
@@ -288,4 +293,25 @@ function normalizeDateValue(value) {
     }
 
     return raw;
+}
+
+function resolveDealTypeRefFromCode(code) {
+    var normalized = normalizeDealTypeCode(code || 'new_business');
+    var typeGr = new GlideRecord('x_823178_commissio_deal_types');
+    typeGr.addQuery('code', normalized);
+    typeGr.addQuery('is_active', true);
+    typeGr.setLimit(1);
+    typeGr.query();
+    if (typeGr.next()) {
+        return typeGr.getUniqueValue();
+    }
+    return '';
+}
+
+function normalizeDealTypeCode(value) {
+    var normalized = (value || '').toString().trim().toLowerCase();
+    if (!normalized) return 'new_business';
+    if (normalized === 'new business') return 'new_business';
+    if (normalized === 'existing_business') return 'renewal';
+    return normalized.replace(/[^a-z0-9_]/g, '_');
 }

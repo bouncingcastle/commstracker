@@ -122,7 +122,7 @@ function reconcileDemoConfiguration(results, enforceCleanup) {
     var sets = [
         {
             table: 'x_823178_commissio_plan_targets',
-            fields: ['commission_plan', 'deal_type', 'annual_target_amount', 'description'],
+            fields: ['commission_plan', 'deal_type_ref', 'annual_target_amount', 'description'],
             encodedQuery: 'descriptionCONTAINSquota'
         },
         {

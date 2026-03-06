@@ -10,9 +10,9 @@ export const x_823178_commissio_deal_classifications = Table({
             referenceTable: 'x_823178_commissio_deals',
             mandatory: true
         }),
-        deal_type: StringColumn({
-            label: 'Classification Code',
-            maxLength: 40,
+        deal_type_ref: ReferenceColumn({
+            label: 'Classification Deal Type',
+            referenceTable: 'x_823178_commissio_deal_types',
             mandatory: true
         }),
         priority: IntegerColumn({
@@ -44,8 +44,8 @@ export const x_823178_commissio_deal_classifications = Table({
             fields: ['deal', 'is_active', 'priority']
         },
         {
-            name: 'idx_deal_classifications_type',
-            fields: ['deal_type']
+            name: 'idx_deal_classifications_type_ref',
+            fields: ['deal_type_ref']
         }
     ],
     audit: true,

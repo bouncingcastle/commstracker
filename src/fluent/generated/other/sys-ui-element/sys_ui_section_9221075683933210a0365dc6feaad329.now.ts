@@ -134,7 +134,7 @@ Record({
     $id: Now.ID['9e21475683933210a0365dc6feaad3f9'],
     table: 'sys_ui_element',
     data: {
-        element: 'deal_type',
+        element: 'deal_type_ref',
         position: 14,
         sys_ui_section: '9221075683933210a0365dc6feaad329',
     },

@@ -116,12 +116,13 @@ export const x_823178_commissio_commission_calculations = Table({
         deal_close_date: DateColumn({ 
             label: 'Deal Close Date (Snapshot)'
         }),
+        deal_type_ref: ReferenceColumn({
+            label: 'Deal Type (Reference)',
+            referenceTable: 'x_823178_commissio_deal_types',
+            read_only: true
+        }),
         calculation_date: DateTimeColumn({ 
             label: 'Calculation Date'
-        }),
-        deal_type: StringColumn({ 
-            label: 'Deal Type',
-            maxLength: 40
         }),
         is_negative: BooleanColumn({ 
             label: 'Is Refund/Negative Entry'
@@ -227,6 +228,10 @@ export const x_823178_commissio_commission_calculations = Table({
         {
             name: 'idx_calc_deal_close',
             fields: ['deal', 'deal_close_date']
+        },
+        {
+            name: 'idx_calc_deal_type_ref',
+            fields: ['deal_type_ref', 'payment_date']
         },
         {
             name: 'idx_calc_payout_basis',

@@ -179,16 +179,14 @@ function clonePlanForUser(sourcePlan, userId, effectiveStart, effectiveEnd) {
             planGr.setValue('effective_end_date', effectiveEnd || sourcePlan.effectiveEndDate);
         }
         planGr.setValue('is_active', true);
-        planGr.setValue('new_business_rate', sourcePlan.newBusinessRate);
-        planGr.setValue('renewal_rate', sourcePlan.renewalRate);
-        planGr.setValue('expansion_rate', sourcePlan.expansionRate);
-        planGr.setValue('upsell_rate', sourcePlan.upsellRate);
-        planGr.setValue('base_rate', sourcePlan.baseRate);
-        if (sourcePlan.planTargetAmount) {
-            planGr.setValue('plan_target_amount', sourcePlan.planTargetAmount);
-        }
         planGr.setValue('description', appendBulkDescription(sourcePlan.description));
-        return planGr.insert();
+        var newPlanId = planGr.insert();
+        if (!newPlanId) {
+            return '';
+        }
+
+        clonePlanHierarchy(sourcePlan.planId, newPlanId);
+        return newPlanId;
     } catch (e) {
         gs.error('Commission Management: Failed to clone plan for user ' + userId + ' - ' + e.message);
         return '';
@@ -205,6 +203,89 @@ function appendBulkDescription(sourceDescription) {
         return base;
     }
     return base + suffix;
+}
+
+function clonePlanHierarchy(sourcePlanId, targetPlanId) {
+    var targetMap = clonePlanTargets(sourcePlanId, targetPlanId);
+    clonePlanTiers(sourcePlanId, targetPlanId, targetMap);
+    clonePlanBonuses(sourcePlanId, targetPlanId);
+}
+
+function clonePlanTargets(sourcePlanId, targetPlanId) {
+    var map = {};
+    var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+    targetGr.addQuery('commission_plan', sourcePlanId);
+    targetGr.query();
+
+    while (targetGr.next()) {
+        var newTargetGr = new GlideRecord('x_823178_commissio_plan_targets');
+        newTargetGr.initialize();
+        newTargetGr.setValue('commission_plan', targetPlanId);
+        newTargetGr.setValue('deal_type_ref', targetGr.getValue('deal_type_ref'));
+        newTargetGr.setValue('commission_rate_percent', targetGr.getValue('commission_rate_percent'));
+        newTargetGr.setValue('annual_target_amount', targetGr.getValue('annual_target_amount'));
+        newTargetGr.setValue('is_active', targetGr.getValue('is_active'));
+        newTargetGr.setValue('description', targetGr.getValue('description'));
+        var newTargetId = newTargetGr.insert();
+        if (newTargetId) {
+            map[targetGr.getUniqueValue()] = newTargetId;
+        }
+    }
+
+    return map;
+}
+
+function clonePlanTiers(sourcePlanId, targetPlanId, targetMap) {
+    var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
+    tierGr.addQuery('commission_plan', sourcePlanId);
+    tierGr.query();
+
+    while (tierGr.next()) {
+        var sourceTargetId = (tierGr.getValue('plan_target') || '').toString();
+        var mappedTargetId = targetMap[sourceTargetId] || '';
+        if (!mappedTargetId) {
+            continue;
+        }
+
+        var newTierGr = new GlideRecord('x_823178_commissio_plan_tiers');
+        newTierGr.initialize();
+        newTierGr.setValue('commission_plan', targetPlanId);
+        newTierGr.setValue('plan_target', mappedTargetId);
+        newTierGr.setValue('tier_name', tierGr.getValue('tier_name'));
+        newTierGr.setValue('attainment_floor_percent', tierGr.getValue('attainment_floor_percent'));
+        newTierGr.setValue('attainment_ceiling_percent', tierGr.getValue('attainment_ceiling_percent'));
+        newTierGr.setValue('commission_rate_percent', tierGr.getValue('commission_rate_percent'));
+        newTierGr.setValue('sort_order', tierGr.getValue('sort_order'));
+        newTierGr.setValue('is_active', tierGr.getValue('is_active'));
+        newTierGr.setValue('description', tierGr.getValue('description'));
+        newTierGr.insert();
+    }
+}
+
+function clonePlanBonuses(sourcePlanId, targetPlanId) {
+    var bonusGr = new GlideRecord('x_823178_commissio_plan_bonuses');
+    bonusGr.addQuery('commission_plan', sourcePlanId);
+    bonusGr.query();
+
+    while (bonusGr.next()) {
+        var newBonusGr = new GlideRecord('x_823178_commissio_plan_bonuses');
+        newBonusGr.initialize();
+        newBonusGr.setValue('commission_plan', targetPlanId);
+        newBonusGr.setValue('bonus_name', bonusGr.getValue('bonus_name'));
+        newBonusGr.setValue('bonus_amount', bonusGr.getValue('bonus_amount'));
+        newBonusGr.setValue('qualification_metric', bonusGr.getValue('qualification_metric'));
+        newBonusGr.setValue('qualification_operator', bonusGr.getValue('qualification_operator'));
+        newBonusGr.setValue('qualification_threshold', bonusGr.getValue('qualification_threshold'));
+        newBonusGr.setValue('evaluation_period', bonusGr.getValue('evaluation_period'));
+        newBonusGr.setValue('one_time_per_period', bonusGr.getValue('one_time_per_period'));
+        newBonusGr.setValue('deal_type_ref', bonusGr.getValue('deal_type_ref'));
+        newBonusGr.setValue('is_discretionary', bonusGr.getValue('is_discretionary'));
+        newBonusGr.setValue('payout_frequency', bonusGr.getValue('payout_frequency'));
+        newBonusGr.setValue('auto_payout', bonusGr.getValue('auto_payout'));
+        newBonusGr.setValue('is_active', bonusGr.getValue('is_active'));
+        newBonusGr.setValue('description', bonusGr.getValue('description'));
+        newBonusGr.insert();
+    }
 }
 
 function hasOverlappingPlan(userId, startDate, endDate, excludePlanId) {
@@ -262,12 +343,6 @@ function getSourcePlan(planId) {
         planName: gr.getValue('plan_name') || 'Commission Plan',
         effectiveStartDate: gr.getValue('effective_start_date'),
         effectiveEndDate: gr.getValue('effective_end_date'),
-        newBusinessRate: gr.getValue('new_business_rate'),
-        renewalRate: gr.getValue('renewal_rate'),
-        expansionRate: gr.getValue('expansion_rate'),
-        upsellRate: gr.getValue('upsell_rate'),
-        baseRate: gr.getValue('base_rate'),
-        planTargetAmount: gr.getValue('plan_target_amount'),
         description: gr.getValue('description')
     };
 }

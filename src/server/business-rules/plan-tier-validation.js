@@ -1,5 +1,4 @@
 import { gs, GlideRecord } from '@servicenow/glide'
-import { normalizeTierScope } from '../script-includes/deal-type-normalizer.js'
 
 export function validatePlanTierConfiguration(current, previous) {
     var floor = parseFloat(current.getValue('attainment_floor_percent')) || 0;
@@ -7,7 +6,42 @@ export function validatePlanTierConfiguration(current, previous) {
     var hasCeiling = !isNaN(ceilingRaw) && ceilingRaw > 0;
     var ceiling = hasCeiling ? ceilingRaw : null;
     var rate = parseFloat(current.getValue('commission_rate_percent')) || 0;
-    var dealType = normalizeDealType(current.getValue('deal_type'));
+    var planTargetId = (current.getValue('plan_target') || '').toString();
+    var linkedTarget = null;
+
+    if (!planTargetId) {
+        gs.addErrorMessage('Plan Target is required. Tiers must be attached to a specific target in the referential hierarchy.');
+        current.setAbortAction(true);
+        return;
+    }
+
+    linkedTarget = new GlideRecord('x_823178_commissio_plan_targets');
+    if (!linkedTarget.get(planTargetId)) {
+        gs.addErrorMessage('Selected Plan Target is invalid.');
+        current.setAbortAction(true);
+        return;
+    }
+
+    var planFromTarget = (linkedTarget.getValue('commission_plan') || '').toString();
+    var planFromTier = (current.getValue('commission_plan') || '').toString();
+    if (!planFromTarget) {
+        gs.addErrorMessage('Plan Target must reference a Commission Plan.');
+        current.setAbortAction(true);
+        return;
+    }
+
+    if (!planFromTier) {
+        current.setValue('commission_plan', planFromTarget);
+    } else if (planFromTier !== planFromTarget) {
+        gs.addErrorMessage('Tier Commission Plan must match the selected Plan Target Commission Plan.');
+        current.setAbortAction(true);
+        return;
+    }
+
+    if (!validateLinkedTargetDealType(linkedTarget)) {
+        current.setAbortAction(true);
+        return;
+    }
 
     if (!current.getValue('commission_plan')) {
         gs.addErrorMessage('Commission plan is required for tier configuration');
@@ -39,29 +73,18 @@ export function validatePlanTierConfiguration(current, previous) {
         return;
     }
 
-    if (!isAllowedDealType(dealType)) {
-        gs.addErrorMessage('Tier deal type scope must be one of: all, new_business/seller_sourced, renewal/referral, expansion, upsell');
-        current.setAbortAction(true);
-        return;
-    }
-
     // Only enforce overlap validation for active tiers.
     if (current.getValue('is_active') === 'false') {
         return;
     }
 
     var overlapGr = new GlideRecord('x_823178_commissio_plan_tiers');
-    overlapGr.addQuery('commission_plan', current.getValue('commission_plan'));
+    overlapGr.addQuery('plan_target', planTargetId);
     overlapGr.addQuery('is_active', true);
     overlapGr.addQuery('sys_id', '!=', current.sys_id);
     overlapGr.query();
 
     while (overlapGr.next()) {
-        var otherDealType = normalizeDealType(overlapGr.getValue('deal_type'));
-        if (!scopeOverlaps(dealType, otherDealType)) {
-            continue;
-        }
-
         var otherFloor = parseFloat(overlapGr.getValue('attainment_floor_percent')) || 0;
         var otherCeilingRaw = parseFloat(overlapGr.getValue('attainment_ceiling_percent'));
         var otherHasCeiling = !isNaN(otherCeilingRaw) && otherCeilingRaw > 0;
@@ -75,26 +98,10 @@ export function validatePlanTierConfiguration(current, previous) {
         }
     }
 
-    if (!validateContiguousCoverage(current, dealType, floor, ceiling)) {
+    if (!validateContiguousCoverage(current, floor, ceiling, planTargetId)) {
         current.setAbortAction(true);
         return;
     }
-}
-
-function normalizeDealType(value) {
-    return normalizeTierScope(value);
-}
-
-function isAllowedDealType(dealType) {
-    return dealType === 'all' ||
-        dealType === 'new_business' ||
-        dealType === 'renewal' ||
-        dealType === 'expansion' ||
-        dealType === 'upsell';
-}
-
-function scopeOverlaps(left, right) {
-    return left === 'all' || right === 'all' || left === right;
 }
 
 function tierRangeOverlaps(leftFloor, leftCeiling, rightFloor, rightCeiling) {
@@ -105,21 +112,16 @@ function tierRangeOverlaps(leftFloor, leftCeiling, rightFloor, rightCeiling) {
     return leftFloor < rightHigh && rightFloor < leftHigh;
 }
 
-function validateContiguousCoverage(current, dealType, currentFloor, currentCeiling) {
+function validateContiguousCoverage(current, currentFloor, currentCeiling, planTargetId) {
     var ranges = [];
 
     var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
-    tierGr.addQuery('commission_plan', current.getValue('commission_plan'));
+    tierGr.addQuery('plan_target', planTargetId);
     tierGr.addQuery('is_active', true);
     tierGr.addQuery('sys_id', '!=', current.sys_id);
     tierGr.query();
 
     while (tierGr.next()) {
-        var scope = normalizeDealType(tierGr.getValue('deal_type'));
-        if (scope !== dealType) {
-            continue;
-        }
-
         var floor = parseFloat(tierGr.getValue('attainment_floor_percent')) || 0;
         var ceiling = parseFloat(tierGr.getValue('attainment_ceiling_percent'));
         if (isNaN(ceiling) || ceiling <= floor) {
@@ -152,4 +154,36 @@ function validateContiguousCoverage(current, dealType, currentFloor, currentCeil
     }
 
     return true;
+}
+
+function validateLinkedTargetDealType(linkedTarget) {
+    var targetRef = linkedTarget ? (linkedTarget.getValue('deal_type_ref') || '').toString() : '';
+    if (!targetRef) {
+        gs.addErrorMessage('Plan Target must define an active Deal Type reference before tiers can be saved.');
+        return false;
+    }
+
+    if (!getActiveDealTypeById(targetRef)) {
+        gs.addErrorMessage('Plan Target Deal Type reference must point to an active governed Deal Type.');
+        return false;
+    }
+
+    return true;
+}
+
+function getActiveDealTypeById(sysId) {
+    if (!sysId) {
+        return null;
+    }
+    var typeGr = new GlideRecord('x_823178_commissio_deal_types');
+    if (!typeGr.get(sysId)) {
+        return null;
+    }
+    if (typeGr.getValue('is_active') !== 'true' && typeGr.getValue('is_active') !== true) {
+        return null;
+    }
+    return {
+        id: typeGr.getUniqueValue(),
+        code: (typeGr.getValue('code') || '').toString()
+    };
 }

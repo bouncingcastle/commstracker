@@ -80,7 +80,7 @@ Record({
     $id: Now.ID['d06827d683d73210a0365dc6feaad3fd'],
     table: 'sys_ui_element',
     data: {
-        element: 'new_business_rate',
+        element: 'lifecycle_state',
         position: 8,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
@@ -117,7 +117,7 @@ Record({
     $id: Now.ID['dc6827d683d73210a0365dc6feaad3ff'],
     table: 'sys_ui_element',
     data: {
-        element: 'renewal_rate',
+        element: 'plan_version',
         position: 12,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },
@@ -164,7 +164,7 @@ Record({
     $id: Now.ID['946867d683d73210a0365dc6feaad303'],
     table: 'sys_ui_element',
     data: {
-        element: 'expansion_rate',
+        element: 'supersedes_plan',
         position: 17,
         sys_ui_section: '1868e3d683d73210a0365dc6feaad38d',
     },

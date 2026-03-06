@@ -1,5 +1,4 @@
-import { gs } from '@servicenow/glide'
-import { normalizeBonusScope } from '../script-includes/deal-type-normalizer.js'
+import { gs, GlideRecord } from '@servicenow/glide'
 
 export function validatePlanBonusConfiguration(current, previous) {
     if (!current.getValue('commission_plan')) {
@@ -56,9 +55,9 @@ export function validatePlanBonusConfiguration(current, previous) {
         return;
     }
 
-    var dealType = normalizeDealType(current.getValue('deal_type'));
-    if (!isSupportedDealType(dealType)) {
-        gs.addErrorMessage('Deal type scope must be one of: any, new_business, renewal, expansion, upsell.');
+    var dealTypeScope = resolveDealTypeScope(current.getValue('deal_type_ref'));
+    if (!dealTypeScope.valid) {
+        gs.addErrorMessage('Deal Type reference, when provided, must point to an active governed Deal Type.');
         current.setAbortAction(true);
         return;
     }
@@ -66,9 +65,8 @@ export function validatePlanBonusConfiguration(current, previous) {
     current.setValue('qualification_metric', metric);
     current.setValue('qualification_operator', operator);
     current.setValue('evaluation_period', period);
-    current.setValue('deal_type', dealType);
 
-    var summary = buildConditionSummary(metric, operator, threshold, period, dealType, oneTime);
+    var summary = buildConditionSummary(metric, operator, threshold, period, dealTypeScope.code, oneTime);
     current.setValue('condition_summary', summary);
 
     if (!current.getValue('bonus_trigger')) {
@@ -88,10 +86,6 @@ function normalizePeriod(value) {
     return (value || '').toString().trim() || 'calculation';
 }
 
-function normalizeDealType(value) {
-    return normalizeBonusScope(value);
-}
-
 function isSupportedMetric(metric) {
     return metric === 'quota_attainment_percent' ||
         metric === 'deal_amount' ||
@@ -107,12 +101,22 @@ function isSupportedPeriod(period) {
     return period === 'calculation' || period === 'monthly' || period === 'quarterly' || period === 'annual';
 }
 
-function isSupportedDealType(dealType) {
-    return dealType === 'any' ||
-        dealType === 'new_business' ||
-        dealType === 'renewal' ||
-        dealType === 'expansion' ||
-        dealType === 'upsell';
+function resolveDealTypeScope(refId) {
+    var id = (refId || '').toString().trim();
+    if (!id) {
+        return { valid: true, code: 'any' };
+    }
+
+    var typeGr = new GlideRecord('x_823178_commissio_deal_types');
+    if (!typeGr.get(id)) {
+        return { valid: false, code: '' };
+    }
+
+    if (typeGr.getValue('is_active') !== 'true' && typeGr.getValue('is_active') !== true) {
+        return { valid: false, code: '' };
+    }
+
+    return { valid: true, code: (typeGr.getValue('code') || '').toString() || 'any' };
 }
 
 function buildConditionSummary(metric, operator, threshold, period, dealType, oneTime) {

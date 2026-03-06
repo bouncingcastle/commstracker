@@ -10,6 +10,11 @@ export const x_823178_commissio_plan_tiers = Table({
             referenceTable: 'x_823178_commissio_commission_plans',
             mandatory: true
         }),
+        plan_target: ReferenceColumn({
+            label: 'Plan Target',
+            referenceTable: 'x_823178_commissio_plan_targets',
+            mandatory: true
+        }),
         tier_name: StringColumn({
             label: 'Tier Name',
             maxLength: 100,
@@ -26,11 +31,6 @@ export const x_823178_commissio_plan_tiers = Table({
             precision: 6,
             scale: 2,
             mandatory: true
-        }),
-        deal_type: StringColumn({
-            label: 'Deal Type Scope',
-            maxLength: 40,
-            default: 'all'
         }),
         commission_rate_percent: DecimalColumn({
             label: 'Commission Rate (%)',
@@ -54,6 +54,10 @@ export const x_823178_commissio_plan_tiers = Table({
         {
             name: 'idx_plan_tier_plan_order',
             fields: ['commission_plan', 'sort_order']
+        },
+        {
+            name: 'idx_plan_tier_target_floor',
+            fields: ['plan_target', 'attainment_floor_percent']
         }
     ],
     audit: true,

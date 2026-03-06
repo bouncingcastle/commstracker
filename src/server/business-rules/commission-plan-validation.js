@@ -57,36 +57,6 @@ export function validateCommissionPlan(current, previous) {
         }
     }
     
-    // Validate commission rates
-    var rates = [
-        { field: 'new_business_rate', name: 'New Business' },
-        { field: 'renewal_rate', name: 'Renewal' },
-        { field: 'expansion_rate', name: 'Expansion' },
-        { field: 'upsell_rate', name: 'Upsell' },
-        { field: 'base_rate', name: 'Base' }
-    ];
-    
-    for (var i = 0; i < rates.length; i++) {
-        var rate = parseFloat(current.getValue(rates[i].field)) || 0;
-        if (rate < 0) {
-            gs.addErrorMessage(rates[i].name + ' rate cannot be negative');
-            current.setAbortAction(true);
-            return;
-        }
-        if (rate > 100) {
-            gs.addErrorMessage(rates[i].name + ' rate cannot exceed 100%');
-            current.setAbortAction(true);
-            return;
-        }
-    }
-    
-    // Ensure base rate exists
-    if (!current.getValue('base_rate') || parseFloat(current.getValue('base_rate')) === 0) {
-        gs.addErrorMessage('Base rate must be specified and greater than 0');
-        current.setAbortAction(true);
-        return;
-    }
-    
     // BUSINESS REQUIREMENT: Allow plan modification with approval when calculations exist
     if (previous && previous.sys_id) {
         var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
@@ -99,8 +69,7 @@ export function validateCommissionPlan(current, previous) {
             var allowedFields = ['description', 'is_active'];
             var hasDisallowedChanges = false;
             
-            var fields = ['new_business_rate', 'renewal_rate', 'expansion_rate', 'upsell_rate', 'base_rate', 
-                         'effective_start_date', 'effective_end_date', 'sales_rep'];
+            var fields = ['effective_start_date', 'effective_end_date', 'sales_rep'];
             
             for (var j = 0; j < fields.length; j++) {
                 if (current.getValue(fields[j]) !== previous.getValue(fields[j])) {

@@ -35,8 +35,9 @@ export function enforceDealTypeLifecycleGovernance(current, previous) {
     var wasActive = toBool(previous.getValue('is_active'));
     var nowActive = toBool(current.getValue('is_active'));
 
-    if (priorIsSystem && priorCode !== code) {
-        gs.addErrorMessage('System Deal Type code is immutable. Create a new deal type instead of renaming the code.');
+    if (priorCode !== code) {
+        var immutabilityScope = priorIsSystem ? 'System' : 'Governed';
+        gs.addErrorMessage(immutabilityScope + ' Deal Type code is immutable. Create a new deal type and migrate usage instead of renaming the code.');
         current.setAbortAction(true);
         return;
     }
@@ -66,12 +67,13 @@ export function enforceDealTypeLifecycleGovernance(current, previous) {
 }
 
 function collectUsageCounts(code) {
+    var typeId = getDealTypeIdByCode(code);
     var usage = {
-        deals: countByField('x_823178_commissio_deals', 'deal_type', code),
-        planTargets: countByField('x_823178_commissio_plan_targets', 'deal_type', code),
-        planTiers: countTierScope(code),
-        planBonuses: countBonusScope(code),
-        calculations: countByField('x_823178_commissio_commission_calculations', 'deal_type', code),
+        deals: countByReference('x_823178_commissio_deals', 'deal_type_ref', typeId),
+        planTargets: countByReference('x_823178_commissio_plan_targets', 'deal_type_ref', typeId),
+        planTiers: countTiersByTargetDealTypeRef(typeId),
+        planBonuses: countByReference('x_823178_commissio_plan_bonuses', 'deal_type_ref', typeId),
+        calculations: countByReference('x_823178_commissio_commission_calculations', 'deal_type_ref', typeId),
         hasUsage: false
     };
 
@@ -79,25 +81,45 @@ function collectUsageCounts(code) {
     return usage;
 }
 
-function countByField(table, field, value) {
+function getDealTypeIdByCode(code) {
+    var gr = new GlideRecord('x_823178_commissio_deal_types');
+    gr.addQuery('code', code);
+    gr.setLimit(1);
+    gr.query();
+    return gr.next() ? gr.getUniqueValue() : '';
+}
+
+function countByReference(table, field, refId) {
+    if (!refId) {
+        return 0;
+    }
     var gr = new GlideRecord(table);
-    gr.addQuery(field, value);
+    gr.addQuery(field, refId);
     gr.query();
     return gr.getRowCount();
 }
 
-function countTierScope(code) {
-    var gr = new GlideRecord('x_823178_commissio_plan_tiers');
-    gr.addQuery('deal_type', code);
-    gr.query();
-    return gr.getRowCount();
-}
+function countTiersByTargetDealTypeRef(refId) {
+    if (!refId) {
+        return 0;
+    }
 
-function countBonusScope(code) {
-    var gr = new GlideRecord('x_823178_commissio_plan_bonuses');
-    gr.addQuery('deal_type', code);
-    gr.query();
-    return gr.getRowCount();
+    var targetIds = [];
+    var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+    targetGr.addQuery('deal_type_ref', refId);
+    targetGr.query();
+    while (targetGr.next()) {
+        targetIds.push(targetGr.getUniqueValue());
+    }
+
+    if (targetIds.length === 0) {
+        return 0;
+    }
+
+    var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
+    tierGr.addQuery('plan_target', 'IN', targetIds.join(','));
+    tierGr.query();
+    return tierGr.getRowCount();
 }
 
 function hasApprovedOverride(recordId, requestType) {

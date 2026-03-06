@@ -89,7 +89,7 @@ UiPage({
 
       treeEl.innerHTML =
         row('Commission Plan', '/x_823178_commissio_commission_plans.do?sys_id=' + planId + '&sysparm_view=default', 'Parent configuration record') +
-        row('└─ Plan Targets', '/x_823178_commissio_plan_targets_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYdeal_type', 'Quota by deal type') +
+        row('└─ Plan Targets', '/x_823178_commissio_plan_targets_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYdeal_type_ref', 'Quota by deal type') +
         row('└─ Plan Tiers', '/x_823178_commissio_plan_tiers_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYattainment_floor_percent', 'Rate bands and accelerators') +
         row('└─ Plan Bonuses', '/x_823178_commissio_plan_bonuses_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYbonus_name', 'Structured bonus rules') +
         row('└─ Recognition Policies', '/x_823178_commissio_plan_recognition_policies_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYDESCeffective_start_date', 'Versioned recognition basis policies');

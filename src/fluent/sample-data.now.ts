@@ -12,9 +12,6 @@ Record({
         is_active: true,
         lifecycle_state: 'active',
         plan_version: 1,
-        new_business_rate: 8.0,
-        renewal_rate: 3.0,
-        expansion_rate: 6.0,
         upsell_rate: 5.0,
         base_rate: 5.0,
         description: 'Standard commission plan for Abel Tuter in 2024'
@@ -34,9 +31,6 @@ Record({
         is_active: true,
         lifecycle_state: 'active',
         plan_version: 1,
-        new_business_rate: 10.0,
-        renewal_rate: 4.0,
-        expansion_rate: 8.0,
         upsell_rate: 7.0,
         base_rate: 6.0,
         description: 'Premium commission plan for senior sales representatives'

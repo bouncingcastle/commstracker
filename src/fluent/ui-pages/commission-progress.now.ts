@@ -543,10 +543,7 @@ UiPage({
       <div class="selector-field" style="margin-bottom:12px;">
         <input id="estimateAmount" type="number" min="0" step="100" placeholder="Deal amount" />
         <select id="estimateDealType">
-          <option value="new_business">New Business</option>
-          <option value="renewal">Renewal</option>
-          <option value="expansion">Expansion</option>
-          <option value="upsell">Upsell</option>
+          <option value="">Select Deal Type</option>
         </select>
         <input id="estimateCloseDate" type="date" />
         <button onclick="runCommissionEstimate()">Estimate</button>
@@ -1099,7 +1096,7 @@ UiPage({
                 tier_name: tier.tier_name || 'Tier',
                 floor_percent: parseFloat(tier.floor_percent || 0),
                 rate_percent: parseFloat(tier.rate_percent || 0),
-                deal_type: String(tier.deal_type || 'all').toLowerCase()
+                deal_type: String(tier.deal_type || 'other').toLowerCase()
               };
             })
             .filter(function(tier) {
@@ -1115,11 +1112,11 @@ UiPage({
           var normalized = String(dealType || '').toLowerCase();
 
           var scoped = tiers.filter(function(tier) {
-            var tierScope = String(tier.deal_type || 'all').toLowerCase();
-            return tierScope === 'all' || tierScope === '' || tierScope === normalized;
+            var tierScope = String(tier.deal_type || 'other').toLowerCase();
+            return tierScope === normalized;
           });
 
-          return scoped.length ? scoped : tiers;
+          return scoped;
         }
 
         function resolveTierByPercent(tiers, attainmentPercent) {
@@ -1245,6 +1242,7 @@ UiPage({
             document.getElementById('compensationSection').style.display = '';
             updateQuotaTargets(data.active_plan);
             updateOTE(data.active_plan);
+            syncEstimatorDealTypeOptions(data.active_plan);
           }
 
           if (data.active_plan && data.active_plan.tiers && data.active_plan.tiers.length > 0) {
@@ -1393,13 +1391,6 @@ UiPage({
             : null;
 
           if (!targets) {
-            var planLevelTarget = parseFloat((plan && (plan.plan_target_amount || plan.total_quota)) || 0);
-            if (planLevelTarget > 0) {
-              targets = { new_business: planLevelTarget };
-            }
-          }
-
-          if (!targets) {
             container.innerHTML = '<div class="break-item">No quota targets are configured for this plan</div>';
             return;
           }
@@ -1520,6 +1511,36 @@ UiPage({
           });
         }
 
+        function syncEstimatorDealTypeOptions(activePlan) {
+          var select = document.getElementById('estimateDealType');
+          if (!select) return;
+
+          var current = select.value || '';
+          var targets = activePlan && activePlan.targets && typeof activePlan.targets === 'object' ? activePlan.targets : {};
+          var keys = Object.keys(targets);
+
+          if (keys.length === 0) {
+            keys = ['new_business'];
+          }
+
+          select.innerHTML = '';
+          for (var i = 0; i < keys.length; i++) {
+            var key = String(keys[i] || '').toLowerCase();
+            if (!key) continue;
+            var option = document.createElement('option');
+            option.value = key;
+            option.textContent = formatDealTypeLabel(key);
+            if (current && current === key) {
+              option.selected = true;
+            }
+            select.appendChild(option);
+          }
+
+          if (!select.value && select.options.length > 0) {
+            select.options[0].selected = true;
+          }
+        }
+
         function loadForecastAndPriorities(userId, reportYear) {
           if (userId === 'all' || userId === 'team') {
             renderForecastError('Forecast simulation is available for individual representatives only.');
@@ -1587,13 +1608,6 @@ UiPage({
           var targets = activePlan.targets && typeof activePlan.targets === 'object'
             ? activePlan.targets
             : {};
-
-          if (Object.keys(targets).length === 0) {
-            var planTargetAmount = parseFloat(activePlan.plan_target_amount || activePlan.total_quota || 0);
-            if (planTargetAmount > 0) {
-              targets = { new_business: planTargetAmount };
-            }
-          }
 
           if (Object.keys(targets).length === 0) return {};
 
@@ -1810,7 +1824,7 @@ UiPage({
           }
 
           var amount = parseFloat((document.getElementById('estimateAmount') || {}).value || '0');
-          var dealType = (document.getElementById('estimateDealType') || {}).value || 'new_business';
+          var dealType = (document.getElementById('estimateDealType') || {}).value || '';
           var closeDate = (document.getElementById('estimateCloseDate') || {}).value || '';
 
           if (!amount || amount <= 0) {
@@ -1820,6 +1834,11 @@ UiPage({
 
           if (!closeDate) {
             alert('Select an expected close date.');
+            return;
+          }
+
+          if (!dealType) {
+            alert('Select a deal type for the estimate.');
             return;
           }
 

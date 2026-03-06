@@ -52,35 +52,6 @@ export const x_823178_commissio_commission_plans = Table({
             referenceTable: 'x_823178_commissio_commission_plans',
             read_only: true
         }),
-        deal_type: StringColumn({
-            label: 'Legacy Deal Type (Unused)',
-            choices: {
-                new_business: { label: 'New Business', sequence: 0 },
-                renewal: { label: 'Renewal', sequence: 1 },
-                expansion: { label: 'Expansion', sequence: 2 },
-                upsell: { label: 'Upsell', sequence: 3 }
-            },
-            defaultValue: 'new_business',
-            description: 'Legacy field kept for compatibility. Active plan design uses per-type rate columns and related Plan Targets/Tiers/Bonuses.'
-        }),
-        new_business_rate: DecimalColumn({ 
-            label: 'New Business Rate (%)',
-            precision: 5,
-            scale: 2,
-            mandatory: true
-        }),
-        renewal_rate: DecimalColumn({ 
-            label: 'Renewal Rate (%)',
-            precision: 5,
-            scale: 2,
-            mandatory: true
-        }),
-        expansion_rate: DecimalColumn({ 
-            label: 'Expansion Rate (%)',
-            precision: 5,
-            scale: 2,
-            mandatory: true
-        }),
         upsell_rate: DecimalColumn({ 
             label: 'Upsell Rate (%)',
             precision: 5,
@@ -92,12 +63,6 @@ export const x_823178_commissio_commission_plans = Table({
             precision: 5,
             scale: 2,
             mandatory: true
-        }),
-        plan_target_amount: DecimalColumn({ 
-            label: 'Plan Target Commission Amount',
-            precision: 12,
-            scale: 2,
-            description: 'Optional top-level target. Detailed targets, tiering accelerators, and bonuses are configured via related records on this plan.'
         }),
         description: StringColumn({ 
             label: 'Description',

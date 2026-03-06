@@ -21,6 +21,7 @@ export function seedBonusScenarios() {
     var processedPlans = 0;
     var created = 0;
     var updated = 0;
+    var dealTypeMap = loadActiveDealTypeMap();
 
     while (planGr.next()) {
         processedPlans++;
@@ -28,7 +29,7 @@ export function seedBonusScenarios() {
 
         var definitions = getSeedDefinitions();
         for (var i = 0; i < definitions.length; i++) {
-            var outcome = upsertBonus(planId, definitions[i]);
+            var outcome = upsertBonus(planId, definitions[i], dealTypeMap);
             if (outcome === 'created') {
                 created++;
             } else if (outcome === 'updated') {
@@ -87,7 +88,7 @@ function getSeedDefinitions() {
     ];
 }
 
-function upsertBonus(planId, definition) {
+function upsertBonus(planId, definition, dealTypeMap) {
     var bonusGr = new GlideRecord('x_823178_commissio_plan_bonuses');
     bonusGr.addQuery('commission_plan', planId);
     bonusGr.addQuery('bonus_name', definition.bonus_name);
@@ -107,7 +108,18 @@ function upsertBonus(planId, definition) {
     bonusGr.setValue('qualification_threshold', definition.qualification_threshold);
     bonusGr.setValue('evaluation_period', definition.evaluation_period);
     bonusGr.setValue('one_time_per_period', definition.one_time_per_period);
-    bonusGr.setValue('deal_type', definition.deal_type);
+    var scopeCode = normalizeDealTypeCode(definition.deal_type || 'any');
+    if (scopeCode === 'any') {
+        bonusGr.setValue('deal_type_ref', '');
+    } else {
+        var ref = dealTypeMap[scopeCode] || '';
+        if (!ref) {
+            gs.warn('Commission Management: Bonus scenario seed scope could not be resolved for code: ' + scopeCode);
+            bonusGr.setValue('deal_type_ref', '');
+        } else {
+            bonusGr.setValue('deal_type_ref', ref);
+        }
+    }
     bonusGr.setValue('is_discretionary', definition.is_discretionary);
     bonusGr.setValue('payout_frequency', definition.payout_frequency);
     bonusGr.setValue('auto_payout', definition.auto_payout);
@@ -125,4 +137,26 @@ function upsertBonus(planId, definition) {
 
 function toBool(value) {
     return value === true || value === 'true' || value === '1' || value === 1;
+}
+
+function loadActiveDealTypeMap() {
+    var map = {};
+    var typeGr = new GlideRecord('x_823178_commissio_deal_types');
+    typeGr.addQuery('is_active', true);
+    typeGr.query();
+
+    while (typeGr.next()) {
+        var code = normalizeDealTypeCode(typeGr.getValue('code'));
+        if (!code) continue;
+        map[code] = typeGr.getUniqueValue();
+    }
+
+    return map;
+}
+
+function normalizeDealTypeCode(value) {
+    var normalized = (value || '').toString().trim().toLowerCase();
+    if (!normalized) return 'any';
+    if (normalized === 'new business') return 'new_business';
+    return normalized.replace(/[^a-z0-9_]/g, '_');
 }

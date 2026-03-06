@@ -1,5 +1,5 @@
 import { gs, GlideRecord } from '@servicenow/glide'
-import { normalizeDealType as normalizeDealTypeCanonical } from '../script-includes/deal-type-normalizer.js'
+
 
 export function validateDealClassification(current, previous) {
     if (!current || !current.getValue('deal')) {
@@ -7,18 +7,23 @@ export function validateDealClassification(current, previous) {
     }
 
     var dealId = current.getValue('deal');
-    var dealType = normalizeDealType(current.getValue('deal_type'));
-    if (!dealType) {
-        gs.addErrorMessage('Deal classification type is required.');
+    var dealTypeRef = (current.getValue('deal_type_ref') || '').toString();
+    if (!dealTypeRef) {
+        gs.addErrorMessage('Deal classification deal type reference is required.');
         current.setAbortAction(true);
         return;
     }
 
-    current.setValue('deal_type', dealType);
+    var dealTypeGr = new GlideRecord('x_823178_commissio_deal_types');
+    if (!dealTypeGr.get(dealTypeRef) || (dealTypeGr.getValue('is_active') !== 'true' && dealTypeGr.getValue('is_active') !== true)) {
+        gs.addErrorMessage('Deal classification must reference an active governed Deal Type.');
+        current.setAbortAction(true);
+        return;
+    }
 
     var duplicateGr = new GlideRecord('x_823178_commissio_deal_classifications');
     duplicateGr.addQuery('deal', dealId);
-    duplicateGr.addQuery('deal_type', dealType);
+    duplicateGr.addQuery('deal_type_ref', dealTypeRef);
     duplicateGr.addQuery('sys_id', '!=', current.getUniqueValue());
     duplicateGr.query();
 
@@ -50,19 +55,6 @@ export function validateDealClassification(current, previous) {
     if (!current.getValue('priority')) {
         current.setValue('priority', 100);
     }
-}
-
-function normalizeDealType(value) {
-    var normalized = normalizeDealTypeCanonical(value, '');
-    if (!normalized) {
-        return '';
-    }
-
-    if (normalized === 'all' || normalized === 'new_business' || normalized === 'renewal' || normalized === 'expansion' || normalized === 'upsell') {
-        return normalized;
-    }
-
-    return '';
 }
 
 function hasAnyPrimary(dealId, currentSysId, currentIsPrimary) {

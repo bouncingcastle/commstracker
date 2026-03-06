@@ -59,6 +59,14 @@ export function calculateCommissionOnPayment(current, previous) {
             current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
+
+        var dealTypeRef = (dealGr.getValue('deal_type_ref') || '').toString();
+        var dealTypeCode = resolveDealTypeCodeFromReference(dealTypeRef);
+        if (!dealTypeCode) {
+            gs.error('Commission Management: Deal requires an active Deal Type reference for commission calculation');
+            current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
+            return;
+        }
         
         // BUSINESS REQUIREMENT: Deal must be properly closed, but allow processing of approved high-value deals
         if (!dealGr.getValue('is_won') || !dealGr.getValue('snapshot_taken') || !dealGr.getValue('snapshot_timestamp')) {
@@ -145,13 +153,14 @@ export function calculateCommissionOnPayment(current, previous) {
             salesRep: commissionOwner,
             closeDate: temporalLookupDate,
             dealId: dealGr.getUniqueValue(),
-            dealType: dealGr.getValue('deal_type'),
+            dealType: dealTypeCode,
+            dealTypeRef: dealTypeRef,
             dealAmount: parseFloat(dealGr.getValue('amount')) || 0
         });
 
         var commissionRate = tierEvaluation.effectiveRate;
         if (!commissionRate || commissionRate <= 0) {
-            gs.error('Commission Management: Invalid commission rate for deal type ' + dealGr.getValue('deal_type'));
+            gs.error('Commission Management: Invalid commission rate for deal type ' + dealTypeCode);
             current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
         }
@@ -180,7 +189,7 @@ export function calculateCommissionOnPayment(current, previous) {
         var commissionBaseAmount = Math.round(invoiceSubtotal * paymentRatio * 100) / 100;
         var effectiveCommissionComponent = calculateMarginalCommissionAmount({
             planId: commissionPlan.planId,
-            dealType: tierEvaluation.appliedDealType || dealGr.getValue('deal_type'),
+            dealType: tierEvaluation.appliedDealType || dealTypeCode,
             baseRate: tierEvaluation.baseRate || commissionRate,
             attainedBeforePercent: tierEvaluation.attainedBeforePercent,
             attainedAfterPercent: tierEvaluation.attainmentPercent,
@@ -210,8 +219,8 @@ export function calculateCommissionOnPayment(current, previous) {
             paymentId: current.getUniqueValue(),
             paymentDate: current.getValue('payment_date'),
             dealId: dealGr.getUniqueValue(),
-            dealType: tierEvaluation.appliedDealType || dealGr.getValue('deal_type'),
-            dealTypeCandidates: tierEvaluation.dealTypeCandidates || resolveDealTypeCandidates(dealGr.getValue('deal_type'), dealGr.getUniqueValue()),
+            dealType: tierEvaluation.appliedDealType || dealTypeCode,
+            dealTypeCandidates: tierEvaluation.dealTypeCandidates || resolveDealTypeCandidates(dealGr.getUniqueValue(), dealTypeRef),
             dealAmount: parseFloat(dealGr.getValue('amount')) || 0,
             invoiceId: invoiceGr.getUniqueValue(),
             evaluationDate: temporalLookupDate,
@@ -263,7 +272,8 @@ export function calculateCommissionOnPayment(current, previous) {
             payoutEligibleDate: payoutSchedule.payout_eligible_date,
             payoutScheduleSnapshot: payoutSchedule.snapshot,
             dealCloseDate: closeDate,
-            dealType: tierEvaluation.appliedDealType || dealGr.getValue('deal_type'),
+            dealType: tierEvaluation.appliedDealType || dealTypeCode,
+            dealTypeRef: resolveDealTypeReferenceByCodeRequired(tierEvaluation.appliedDealType || dealTypeCode),
             isNegative: isNegative,
             requiresApproval: requiresApproval,
             bonusAmount: bonusEvaluation.totalBonusAmount,
@@ -284,7 +294,7 @@ export function calculateCommissionOnPayment(current, previous) {
                 paymentAmount: paymentAmount,
                 paymentRatio: paymentRatio,
                 planName: commissionPlan.planName,
-                originalDealType: dealGr.getValue('deal_type'),
+                originalDealType: dealTypeCode,
                 appliedDealType: tierEvaluation.appliedDealType,
                 dealTypeCandidates: tierEvaluation.dealTypeCandidates,
                 rateEvaluations: tierEvaluation.rateEvaluations,
@@ -397,12 +407,7 @@ function getCommissionPlan(salesRep, closeDate) {
             planId: gr.sys_id.toString(),
             planName: gr.getValue('plan_name'),
             startDate: gr.getValue('effective_start_date'),
-            endDate: gr.getValue('effective_end_date'),
-            newBusinessRate: parseFloat(gr.getValue('new_business_rate')) || 0,
-            renewalRate: parseFloat(gr.getValue('renewal_rate')) || 0,
-            expansionRate: parseFloat(gr.getValue('expansion_rate')) || 0,
-            upsellRate: parseFloat(gr.getValue('upsell_rate')) || 0,
-            baseRate: parseFloat(gr.getValue('base_rate')) || 0
+            endDate: gr.getValue('effective_end_date')
         });
     }
     
@@ -488,39 +493,33 @@ function extractDateOnly(value) {
     return str;
 }
 
-function getCommissionRateFromPlan(plan, dealType) {
-    var normalizedDealType = normalizeDealTypeKey(dealType);
-
-    switch (normalizedDealType) {
-        case 'new_business':
-        case 'seller_sourced':
-        case 'seller_sourced_deal':
-            return plan.newBusinessRate || plan.baseRate;
-        case 'renewal':
-        case 'referral_deal':
-        case 'referral_assigned':
-        case 'referral_deal_assigned':
-            return plan.renewalRate || plan.baseRate;
-        case 'expansion':
-            return plan.expansionRate || plan.baseRate;
-        case 'upsell':
-            return plan.upsellRate || plan.baseRate;
-        default:
-            return plan.baseRate;
-    }
-}
-
 function evaluateEffectiveCommissionRate(params) {
     var plan = params.plan;
     var salesRep = params.salesRep;
     var closeDate = params.closeDate;
     var dealId = params.dealId;
     var dealType = params.dealType;
+    var dealTypeRef = params.dealTypeRef;
     var dealAmount = Math.abs(parseFloat(params.dealAmount) || 0);
 
-    var dealTypeCandidates = resolveDealTypeCandidates(dealType, dealId);
+    var dealTypeCandidates = resolveDealTypeCandidates(dealId, dealTypeRef);
     if (dealTypeCandidates.length === 0) {
-        dealTypeCandidates.push('other');
+        return {
+            baseRate: 0,
+            effectiveRate: 0,
+            tierName: '',
+            tierFloorPercent: 0,
+            tierCeilingPercent: 0,
+            attainmentPercent: 0,
+            attainedBeforePercent: 0,
+            quotaAmount: 0,
+            attainedBeforeAmount: 0,
+            attainedAmount: 0,
+            acceleratorApplied: false,
+            appliedDealType: '',
+            dealTypeCandidates: [],
+            rateEvaluations: []
+        };
     }
 
     var quotaAmount = getPlanQuotaAmount(plan.planId, plan);
@@ -532,7 +531,7 @@ function evaluateEffectiveCommissionRate(params) {
     var evaluations = [];
     for (var i = 0; i < dealTypeCandidates.length; i++) {
         var candidateDealType = dealTypeCandidates[i];
-        var candidateBaseRate = getCommissionRateFromPlan(plan, candidateDealType);
+        var candidateBaseRate = getCommissionRateForDealType(plan, candidateDealType);
         var candidateTier = resolveTierForAttainment(plan.planId, attainmentPercent, candidateDealType);
         var candidateMarginalRate = calculateMarginalEffectiveRate({
             planId: plan.planId,
@@ -559,7 +558,7 @@ function evaluateEffectiveCommissionRate(params) {
 
     var selectedEvaluation = selectHighestRateEvaluation(evaluations);
     var selectedTier = selectedEvaluation ? selectedEvaluation.tier : null;
-    var selectedBaseRate = selectedEvaluation ? selectedEvaluation.baseRate : getCommissionRateFromPlan(plan, dealTypeCandidates[0]);
+    var selectedBaseRate = selectedEvaluation ? selectedEvaluation.baseRate : getCommissionRateForDealType(plan, dealTypeCandidates[0]);
     var selectedEffectiveRate = selectedEvaluation ? selectedEvaluation.effectiveRate : selectedBaseRate;
     var selectedDealType = selectedEvaluation ? selectedEvaluation.dealType : dealTypeCandidates[0];
 
@@ -618,9 +617,40 @@ function selectHighestRateEvaluation(evaluations) {
     return best;
 }
 
+function getCommissionRateForDealType(plan, dealType) {
+    var targetRate = getPlanTargetCommissionRate(plan.planId, dealType);
+    if (targetRate > 0) {
+        return targetRate;
+    }
+    return 0;
+}
+
+function getPlanTargetCommissionRate(planId, dealType) {
+    var normalizedDealType = normalizeDealTypeKey(dealType);
+    var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+    targetGr.addQuery('commission_plan', planId);
+    targetGr.addQuery('is_active', true);
+    targetGr.query();
+
+    while (targetGr.next()) {
+        var targetDealType = resolveDealTypeCodeFromReference(targetGr.getValue('deal_type_ref'));
+        if (!targetDealType || targetDealType !== normalizedDealType) {
+            continue;
+        }
+
+        var rate = parseFloat(targetGr.getValue('commission_rate_percent')) || 0;
+        if (rate > 0) {
+            return rate;
+        }
+    }
+
+    return 0;
+}
+
 function getTierBandsForDealType(planId, dealType) {
     var bands = [];
     var normalizedDealType = normalizeDealTypeKey(dealType) || 'other';
+    var planTargetId = getPlanTargetIdForDealType(planId, normalizedDealType);
 
     var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
     tierGr.addQuery('commission_plan', planId);
@@ -629,8 +659,13 @@ function getTierBandsForDealType(planId, dealType) {
     tierGr.query();
 
     while (tierGr.next()) {
-        var tierDealType = normalizeDealTypeKey(tierGr.getValue('deal_type') || 'all');
-        if (!(tierDealType === 'all' || tierDealType === '' || tierDealType === normalizedDealType)) {
+        var tierTargetId = (tierGr.getValue('plan_target') || '').toString();
+        if (planTargetId && tierTargetId && tierTargetId !== planTargetId) {
+            continue;
+        }
+
+        var tierDealType = resolveTierDealTypeCode(tierGr);
+        if (!tierDealType || tierDealType !== normalizedDealType) {
             continue;
         }
 
@@ -748,9 +783,6 @@ function getPlanQuotaAmount(planId, plan) {
         totalQuota += parseFloat(targetGr.getValue('annual_target_amount')) || 0;
     }
 
-    if (totalQuota <= 0 && plan) {
-        totalQuota = parseFloat(plan.planTargetAmount || 0) || 0;
-    }
     return totalQuota;
 }
 
@@ -781,10 +813,16 @@ function resolveTierForAttainment(planId, attainmentPercent, dealType) {
     var selectedTier = null;
     var highestEligibleTier = null;
     var normalizedDealType = normalizeDealTypeKey(dealType);
+    var planTargetId = getPlanTargetIdForDealType(planId, normalizedDealType);
 
     while (tierGr.next()) {
-        var tierDealType = normalizeDealTypeKey(tierGr.getValue('deal_type') || 'all');
-        var dealTypeMatches = tierDealType === 'all' || tierDealType === '' || tierDealType === normalizedDealType;
+        var tierTargetId = (tierGr.getValue('plan_target') || '').toString();
+        if (planTargetId && tierTargetId && tierTargetId !== planTargetId) {
+            continue;
+        }
+
+        var tierDealType = resolveTierDealTypeCode(tierGr);
+        var dealTypeMatches = !!tierDealType && tierDealType === normalizedDealType;
         if (!dealTypeMatches) {
             continue;
         }
@@ -826,11 +864,32 @@ function resolveTierForAttainment(planId, attainmentPercent, dealType) {
     return null;
 }
 
+function getPlanTargetIdForDealType(planId, dealType) {
+    var normalized = normalizeDealTypeKey(dealType);
+    if (!planId || !normalized) {
+        return '';
+    }
+
+    var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+    targetGr.addQuery('commission_plan', planId);
+    targetGr.addQuery('is_active', true);
+    targetGr.query();
+
+    while (targetGr.next()) {
+        var targetDealType = resolveDealTypeCodeFromReference(targetGr.getValue('deal_type_ref'));
+        if (targetDealType === normalized) {
+            return targetGr.getUniqueValue();
+        }
+    }
+
+    return '';
+}
+
 function normalizeDealTypeKey(value) {
     return normalizeDealTypeCanonical(value, '');
 }
 
-function resolveDealTypeCandidates(rawDealType, dealId) {
+function resolveDealTypeCandidates(dealId, dealTypeRef) {
     var seen = {};
     var candidates = [];
 
@@ -844,7 +903,7 @@ function resolveDealTypeCandidates(rawDealType, dealId) {
         classGr.query();
 
         while (classGr.next()) {
-            var mapped = normalizeDealTypeKey(classGr.getValue('deal_type'));
+            var mapped = resolveDealTypeCodeFromReference(classGr.getValue('deal_type_ref'));
             if (!mapped || seen[mapped]) {
                 continue;
             }
@@ -853,27 +912,10 @@ function resolveDealTypeCandidates(rawDealType, dealId) {
         }
     }
 
-    var raw = (rawDealType || '').toString();
-    if (!raw) {
-        return candidates;
-    }
-
-    var parts = raw.split(/[;,|]+/);
-
-    for (var i = 0; i < parts.length; i++) {
-        var normalized = normalizeDealTypeKey(parts[i]);
-        if (!normalized || seen[normalized]) {
-            continue;
-        }
-        seen[normalized] = true;
-        candidates.push(normalized);
-    }
-
-    if (candidates.length === 0) {
-        var fallback = normalizeDealTypeKey(raw);
-        if (fallback) {
-            candidates.push(fallback);
-        }
+    var primaryFromRef = resolveDealTypeCodeFromReference(dealTypeRef);
+    if (primaryFromRef && !seen[primaryFromRef]) {
+        seen[primaryFromRef] = true;
+        candidates.push(primaryFromRef);
     }
 
     return candidates;
@@ -909,7 +951,7 @@ function evaluateStructuredBonuses(params) {
         var threshold = parseFloat(bonusGr.getValue('qualification_threshold'));
         var period = (bonusGr.getValue('evaluation_period') || 'calculation').toString();
         var oneTimePerPeriod = bonusGr.getValue('one_time_per_period') === 'true' || bonusGr.getValue('one_time_per_period') === true;
-        var bonusDealType = normalizeBonusDealType(bonusGr.getValue('deal_type'));
+        var bonusDealType = normalizeBonusDealType(resolveDealTypeCodeFromReference(bonusGr.getValue('deal_type_ref')));
 
         if (!metric || isNaN(threshold)) {
             summaryRows.push(bonusName + ': skipped (incomplete structured condition)');
@@ -1107,9 +1149,12 @@ function getRepWonDealCountForPeriod(salesRep, periodStart, periodEnd, dealTypeS
     dealGr.query();
     while (dealGr.next()) {
         if (normalizedScope !== 'any') {
-            var rawDealType = dealGr.getValue('deal_type');
-            var dealTypeCandidates = resolveDealTypeCandidates(rawDealType, dealGr.getUniqueValue());
-            if (!bonusScopeMatches(normalizedScope, rawDealType, dealTypeCandidates)) {
+            var primaryDealType = resolveDealTypeCodeFromReference(dealGr.getValue('deal_type_ref'));
+            if (!primaryDealType) {
+                continue;
+            }
+            var dealTypeCandidates = resolveDealTypeCandidates(dealGr.getUniqueValue(), dealGr.getValue('deal_type_ref'));
+            if (!bonusScopeMatches(normalizedScope, primaryDealType, dealTypeCandidates)) {
                 continue;
             }
         }
@@ -1241,7 +1286,9 @@ function createCommissionCalculation(data) {
     }
     commissionGr.setValue('calculation_date', new GlideDateTime().getDisplayValue());
     commissionGr.setValue('deal_close_date', data.dealCloseDate);
-    commissionGr.setValue('deal_type', data.dealType);
+    if (data.dealTypeRef) {
+        commissionGr.setValue('deal_type_ref', data.dealTypeRef);
+    }
     commissionGr.setValue('is_negative', data.isNegative);
     commissionGr.setValue('status', 'draft');
     commissionGr.setValue('calculation_inputs', JSON.stringify(data.calculationInputs));
@@ -1257,6 +1304,59 @@ function createCommissionCalculation(data) {
         commissionGr.update();
         return commissionGr.sys_id;
     }
+}
+
+function resolveTierDealTypeCode(tierGr) {
+    if (!tierGr) {
+        return '';
+    }
+
+    var targetId = (tierGr.getValue('plan_target') || '').toString();
+    if (!targetId) {
+        return '';
+    }
+
+    var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+    if (!targetGr.get(targetId)) {
+        return '';
+    }
+
+    return resolveDealTypeCodeFromReference(targetGr.getValue('deal_type_ref'));
+}
+
+function resolveDealTypeCodeFromReference(refId) {
+    if (!refId) {
+        return '';
+    }
+
+    var typeGr = new GlideRecord('x_823178_commissio_deal_types');
+    if (!typeGr.get(refId)) {
+        return '';
+    }
+
+    if (typeGr.getValue('is_active') !== 'true' && typeGr.getValue('is_active') !== true) {
+        return '';
+    }
+
+    return normalizeDealTypeKey(typeGr.getValue('code'));
+}
+
+function resolveDealTypeReferenceByCodeRequired(code) {
+    var normalized = normalizeDealTypeKey(code);
+    if (!normalized || normalized === 'all' || normalized === 'any') {
+        return '';
+    }
+
+    var typeGr = new GlideRecord('x_823178_commissio_deal_types');
+    typeGr.addQuery('code', normalized);
+    typeGr.addQuery('is_active', true);
+    typeGr.setLimit(1);
+    typeGr.query();
+    if (!typeGr.next()) {
+        return '';
+    }
+
+    return typeGr.getUniqueValue();
 }
 
 function getPayoutSchedule(paymentDateValue, recognitionBasis) {

@@ -347,6 +347,84 @@ For every proposed change, record this in this file before implementation:
 | SoT Sections Updated | Function Impact Record Log |
 | Decision | Approved for implementation |
 
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-017 |
+| Date | 2026-03-05 |
+| Summary | Deal-type integrity hardening for tier/target/bonus string-scoped model: prevent all deal type code renames to avoid orphaned scope references |
+| Impacted Functions | F-01, F-02, F-03, F-05, F-07, F-14 |
+| Change Type | data model, workflow, access control |
+| Expected Effect | enhancement (stronger referential stability without changing runtime calculation behavior) |
+| Required Validation | Diagnostics clean; updating existing deal type code is blocked with clear guidance; existing deal type validation and deactivation governance remain intact |
+| Gap Impact | Strengthens T2/T4 architecture integrity and reduces production drift risk in T5 |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-018 |
+| Date | 2026-03-05 |
+| Summary | Reference-first hierarchy migration: add deal-type references across targets/tiers/bonuses/deals/classifications/calculations and align tier structure to plan-target references with backward-compatible fallbacks |
+| Impacted Functions | F-01, F-02, F-03, F-05, F-06, F-07, F-08, F-10, F-14 |
+| Change Type | data model, workflow, access control |
+| Expected Effect | enhancement (referential integrity uplift with compatibility bridge for existing data) |
+| Required Validation | Diagnostics clean; tier/target/bonus/deal/classification/calculation paths resolve deal type via references; calculations still execute when legacy code fields are present; no regression in dashboard tier rendering |
+| Gap Impact | Advances T2 architectural hardening and T4 reliability; reduces fit-for-purpose risk for hierarchy governance |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-019 |
+| Date | 2026-03-05 |
+| Summary | Strict referential cutover: remove legacy deal-type code/fallback behavior and enforce reference-only plan/target/tier/deal classification and rate resolution |
+| Impacted Functions | F-01, F-02, F-03, F-05, F-06, F-07, F-08, F-10, F-14 |
+| Change Type | data model, workflow, access control |
+| Expected Effect | breaking (legacy string-code paths disabled; reference-first model becomes mandatory) |
+| Required Validation | Diagnostics clean; all tier and target operations require references; commission calculations resolve deal type/rate/tier via references only; no remaining runtime dependency on legacy deal_type fields |
+| Gap Impact | Completes T2 referential model hardening and eliminates architecture ambiguity in T4 |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-020 |
+| Date | 2026-03-05 |
+| Summary | Strict-cutover hygiene for migration utilities: replaced legacy `deal_type`-based backfill scripts with referential-safe audit/maintenance behavior and updated scheduled-job metadata |
+| Impacted Functions | F-01, F-02, F-03, F-05, F-07, F-08, F-14, F-17 |
+| Change Type | workflow, data model, observability |
+| Expected Effect | enhancement (eliminates post-cutover runtime risk from obsolete migration paths; no payout algorithm change) |
+| Required Validation | Diagnostics clean on updated scheduled scripts/metadata; confirm no legacy `deal_type` access in rewritten jobs |
+| Gap Impact | Strengthens T2 strict referential integrity posture and reduces operational drift risk in T5 |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-021 |
+| Date | 2026-03-05 |
+| Summary | Production naming cleanup: replaced residual “Backfill” scheduled-job labels with strict referential audit/maintenance names to reflect non-placeholder operational purpose |
+| Impacted Functions | F-17 |
+| Change Type | observability, workflow |
+| Expected Effect | enhancement (operational clarity; no runtime behavior change) |
+| Required Validation | Diagnostics clean on updated scheduled-script metadata files |
+| Gap Impact | Improves T5 operational readiness by reducing operator ambiguity in job selection |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-05-022 |
+| Date | 2026-03-05 |
+| Summary | Full referential architecture completion pass: remove remaining runtime writes to legacy deal_type fields, align seed/reconcile utilities, and eliminate UI/workflow fallback assumptions that bypass target/ref hierarchy |
+| Impacted Functions | F-01, F-02, F-03, F-05, F-07, F-08, F-10, F-14, F-17, F-18 |
+| Change Type | data model, workflow, integration, observability |
+| Expected Effect | enhancement (strict referential consistency end-to-end; no intended payout math regression) |
+| Required Validation | Diagnostics clean on all touched files; no remaining runtime `setValue('deal_type', ...)` in server paths; progress/estimator and seed/governance flows operate via deal_type_ref/plan_target hierarchy |
+| Gap Impact | Closes remaining T2 strictness gaps and improves T5 operational integrity |
+| SoT Sections Updated | Function Impact Record Log |
+| Decision | Approved for implementation |
+
 ## KPIs
 - Reproducible calculations from persisted snapshots: target 100%
 - Core UI checklist critical pass rate: target 100%

@@ -15,13 +15,9 @@ Record({
         is_active: true,
         lifecycle_state: 'active',
         plan_version: 1,
-        plan_target_amount: 50000,
-        new_business_rate: 8.0,
-        renewal_rate: 3.0,
-        expansion_rate: 6.0,
         upsell_rate: 5.0,
         base_rate: 5.0,
-        description: 'Standard commission plan for Abel Tuter - 8% new business, 3% renewals - $50K target'
+        description: 'Standard commission plan for Abel Tuter with target-based rate cards and accelerators'
     },
     $meta: {
         installMethod: 'demo'
@@ -40,13 +36,9 @@ Record({
         is_active: true,
         lifecycle_state: 'active',
         plan_version: 1,
-        plan_target_amount: 85000,
-        new_business_rate: 10.0,
-        renewal_rate: 4.0,
-        expansion_rate: 8.0,
         upsell_rate: 7.0,
         base_rate: 6.0,
-        description: 'Senior commission plan for Adela Cervantsz - 10% new business, 4% renewals - $85K target'
+        description: 'Senior commission plan for Adela Cervantsz with target-based rate cards and accelerators'
     },
     $meta: {
         installMethod: 'demo'
@@ -65,13 +57,9 @@ Record({
         is_active: true,
         lifecycle_state: 'active',
         plan_version: 1,
-        plan_target_amount: 35000,
-        new_business_rate: 5.0,
-        renewal_rate: 2.0,
-        expansion_rate: 4.0,
         upsell_rate: 3.0,
         base_rate: 3.0,
-        description: 'Test commission plan for system administration and testing - $35K target'
+        description: 'Test commission plan for system administration and referential architecture validation'
     },
     $meta: {
         installMethod: 'demo'

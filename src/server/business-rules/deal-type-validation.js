@@ -1,84 +1,87 @@
 import { gs, GlideRecord } from '@servicenow/glide'
 
 export function validateDealTypeOnDeal(current, previous) {
-    validateDealType(current, {
-        field: 'deal_type',
+    validateDealTypeReference(current, {
+        refField: 'deal_type_ref',
         allowEmpty: false,
-        allowSpecialScopes: false,
         contextLabel: 'Deal'
     });
 }
 
 export function validateDealTypeOnPlanTarget(current, previous) {
-    validateDealType(current, {
-        field: 'deal_type',
+    validateDealTypeReference(current, {
+        refField: 'deal_type_ref',
         allowEmpty: false,
-        allowSpecialScopes: false,
         contextLabel: 'Plan Target'
     });
+
+    var targetAmount = parseFloat(current.getValue('annual_target_amount')) || 0;
+    if (targetAmount <= 0) {
+        gs.addErrorMessage('Plan Target annual target amount must be greater than 0.');
+        current.setAbortAction(true);
+        return;
+    }
+
+    var rate = parseFloat(current.getValue('commission_rate_percent')) || 0;
+    if (rate <= 0 || rate > 100) {
+        gs.addErrorMessage('Plan Target commission rate must be greater than 0 and at most 100.');
+        current.setAbortAction(true);
+    }
 }
 
 export function validateDealTypeOnPlanBonus(current, previous) {
-    validateDealType(current, {
-        field: 'deal_type',
+    validateDealTypeReference(current, {
+        refField: 'deal_type_ref',
         allowEmpty: true,
-        allowSpecialScopes: true,
         contextLabel: 'Plan Bonus'
     });
 }
 
-export function validateDealTypeOnPlanTier(current, previous) {
-    validateDealType(current, {
-        field: 'deal_type',
-        allowEmpty: true,
-        allowSpecialScopes: true,
-        contextLabel: 'Plan Tier'
-    });
-}
-
 export function validateDealTypeOnCalculation(current, previous) {
-    validateDealType(current, {
-        field: 'deal_type',
-        allowEmpty: true,
-        allowSpecialScopes: false,
+    validateDealTypeReference(current, {
+        refField: 'deal_type_ref',
+        allowEmpty: false,
         contextLabel: 'Commission Calculation'
     });
 }
 
-function validateDealType(current, options) {
-    var fieldName = options.field;
-    var rawValue = (current.getValue(fieldName) || '').toString().trim();
+function validateDealTypeReference(current, options) {
+    var refFieldName = options.refField || 'deal_type_ref';
+    var rawRef = (current.getValue(refFieldName) || '').toString().trim();
 
-    if (!rawValue) {
+    if (!rawRef) {
         if (options.allowEmpty) {
             return;
         }
-        gs.addErrorMessage(options.contextLabel + ' requires a deal type value.');
+        gs.addErrorMessage(options.contextLabel + ' requires a Deal Type reference.');
         current.setAbortAction(true);
         return;
     }
 
-    var normalized = rawValue;
-    if (normalized === 'any' || normalized === 'all') {
-        if (options.allowSpecialScopes) {
-            return;
-        }
-        gs.addErrorMessage(options.contextLabel + ' does not allow scope values "any" or "all". Select a governed deal type.');
-        current.setAbortAction(true);
-        return;
-    }
-
-    if (!isActiveDealType(normalized)) {
-        gs.addErrorMessage(options.contextLabel + ' deal type "' + normalized + '" is not an active governed deal type.');
+    var byRef = getActiveDealTypeById(rawRef);
+    if (!byRef) {
+        gs.addErrorMessage(options.contextLabel + ' references an inactive or missing Deal Type record.');
         current.setAbortAction(true);
     }
 }
 
-function isActiveDealType(code) {
+function getActiveDealTypeById(sysId) {
+    if (!sysId) {
+        return null;
+    }
+
     var typeGr = new GlideRecord('x_823178_commissio_deal_types');
-    typeGr.addQuery('code', code);
-    typeGr.addQuery('is_active', true);
-    typeGr.setLimit(1);
-    typeGr.query();
-    return typeGr.next();
+    if (!typeGr.get(sysId)) {
+        return null;
+    }
+
+    if (typeGr.getValue('is_active') !== 'true' && typeGr.getValue('is_active') !== true) {
+        return null;
+    }
+
+    return {
+        id: typeGr.getUniqueValue(),
+        code: (typeGr.getValue('code') || '').toString()
+    };
 }
+

@@ -101,11 +101,8 @@ Record({
                     var compDetails = this.getCompensationPlanDetails(planId);
                     var baseRate = compDetails.base_rate;
                     var totalQuota = compDetails.total_quota;
-                    var resolvedPlanTarget = totalQuota > 0 ? totalQuota : (parseFloat(planGr.getValue('plan_target_amount')) || 0);
+                    var resolvedPlanTarget = totalQuota;
                     var oTE100 = parseFloat(compDetails.ote_at_100_percent || 0);
-                    if (oTE100 <= 0 && resolvedPlanTarget > 0 && baseRate > 0) {
-                        oTE100 = resolvedPlanTarget * baseRate / 100;
-                    }
                     var oteWithBonuses = oTE100 + compDetails.total_bonus_potential;
                     
                     result.data.active_plan = {
@@ -163,7 +160,7 @@ Record({
             while (calcGr.next()) {
                 var commAmount = parseFloat(calcGr.getValue('commission_amount')) || 0;
                 var status = calcGr.getValue('status') || 'draft';
-                var dealType = calcGr.getValue('deal_type') || 'other';
+                var dealType = this.resolveDealTypeForRecord(calcGr, 'deal_type_ref', 'other');
 
                 if (status === 'paid' || status === 'locked') {
                     paidAmount += commAmount;
@@ -226,7 +223,7 @@ Record({
                         sales_rep_name: repName,
                         deal_name: calcDealName,
                         deal_display: calcDealName,
-                        deal_type: calcGr.getValue('deal_type'),
+                        deal_type: dealType,
                         commission_base_amount: calcGr.getValue('commission_base_amount'),
                         commission_rate: calcGr.getValue('commission_rate'),
                         base_component: explainability.base_component,
@@ -338,7 +335,7 @@ Record({
 
             var targets = {};
             while (targetGr.next()) {
-                var dt = this.normalizeDealType(targetGr.getValue('deal_type'));
+                var dt = this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', 'other');
                 targets[dt] = parseFloat(targetGr.getValue('annual_target_amount')) || 0;
             }
 
@@ -369,33 +366,8 @@ Record({
             }
 
             if (Object.keys(targets).length === 0) {
-                var planTargetFallback = 0;
-                var planForTarget = new GlideRecord('x_823178_commissio_commission_plans');
-                if (planForTarget.get(planId)) {
-                    planTargetFallback = parseFloat(planForTarget.getValue('plan_target_amount')) || 0;
-                }
-
                 var achievedKeys = Object.keys(achieved);
-                var achievedTotal = 0;
-                for (var k = 0; k < achievedKeys.length; k++) {
-                    achievedTotal += parseFloat(achieved[achievedKeys[k]] || 0);
-                }
-
-                if (planTargetFallback <= 0 && achievedTotal > 0) {
-                    planTargetFallback = achievedTotal;
-                }
-
-                if (planTargetFallback > 0) {
-                    if (achievedTotal > 0 && achievedKeys.length > 0) {
-                        for (var i = 0; i < achievedKeys.length; i++) {
-                            var key = achievedKeys[i];
-                            var share = (parseFloat(achieved[key] || 0) / achievedTotal);
-                            targets[key] = this.round2(planTargetFallback * share);
-                        }
-                    } else {
-                        targets.new_business = planTargetFallback;
-                    }
-                } else if (achievedKeys.length > 0) {
+                if (achievedKeys.length > 0) {
                     for (var j = 0; j < achievedKeys.length; j++) {
                         targets[achievedKeys[j]] = 0;
                     }
@@ -850,7 +822,7 @@ Record({
             lineItems.push({
                 calculation_id: calcGr.getUniqueValue(),
                 deal_name: dealName,
-                deal_type: calcGr.getValue('deal_type') || 'other',
+                deal_type: this.resolveDealTypeForRecord(calcGr, 'deal_type_ref', 'other'),
                 payment_date: calcGr.getValue('payment_date') || '',
                 status: calcGr.getValue('status') || 'draft',
                 base_component: explainability.base_component,
@@ -919,25 +891,20 @@ Record({
 
             if (!planId) return details;
 
-            var planGr = new GlideRecord('x_823178_commissio_commission_plans');
-            if (planGr.get(planId)) {
-                details.base_rate = parseFloat(planGr.getValue('base_rate')) || 0;
-                details.rate_card.new_business = parseFloat(planGr.getValue('new_business_rate')) || 0;
-                details.rate_card.renewal = parseFloat(planGr.getValue('renewal_rate')) || 0;
-                details.rate_card.expansion = parseFloat(planGr.getValue('expansion_rate')) || 0;
-                details.rate_card.upsell = parseFloat(planGr.getValue('upsell_rate')) || 0;
-            }
-
             var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
             targetGr.addQuery('commission_plan', planId);
-            targetGr.orderBy('deal_type');
+            targetGr.orderBy('deal_type_ref');
             targetGr.query();
 
             while (targetGr.next()) {
-                var dealType = this.normalizeDealType(targetGr.getValue('deal_type'));
+                var dealType = this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', 'other');
                 var amount = parseFloat(targetGr.getValue('annual_target_amount')) || 0;
+                var targetRate = parseFloat(targetGr.getValue('commission_rate_percent')) || 0;
                 details.total_quota += amount;
                 details.targets[dealType] = amount;
+                if (targetRate > 0) {
+                    details.rate_card[dealType] = targetRate;
+                }
             }
 
             var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
@@ -953,7 +920,8 @@ Record({
                     tier_name: tierGr.getValue('tier_name'),
                     floor_percent: floor,
                     rate_percent: rate,
-                    deal_type: this.normalizeDealType(tierGr.getValue('deal_type') || 'all')
+                    deal_type: this.resolveDealTypeForTier(tierGr, 'other'),
+                    plan_target: tierGr.getValue('plan_target') || ''
                 });
             }
 
@@ -970,7 +938,7 @@ Record({
                     name: bonusGr.getValue('bonus_name'),
                     amount: bonusAmount,
                     trigger: bonusGr.getValue('bonus_trigger'),
-                    deal_type: this.normalizeDealType(bonusGr.getValue('deal_type') || 'any'),
+                    deal_type: this.resolveDealTypeForRecord(bonusGr, 'deal_type_ref', 'other'),
                     is_discretionary: bonusGr.getValue('is_discretionary') === '1' || bonusGr.getValue('is_discretionary') === true
                 });
             }
@@ -987,12 +955,7 @@ Record({
                 else if (targetDealType === 'expansion') targetRate = parseFloat(details.rate_card.expansion || 0);
                 else if (targetDealType === 'upsell') targetRate = parseFloat(details.rate_card.upsell || 0);
 
-                if (targetRate <= 0) targetRate = parseFloat(details.base_rate || 0);
                 oteAtTarget += targetAmount * (targetRate / 100);
-            }
-
-            if (oteAtTarget <= 0 && details.total_quota > 0 && details.base_rate > 0) {
-                oteAtTarget = details.total_quota * (details.base_rate / 100);
             }
 
             details.ote_at_100_percent = this.round2(oteAtTarget);
@@ -1021,7 +984,7 @@ Record({
         try {
             var plan = this.getForecastPlan(userId, selectedYear);
             var quota = this.getForecastTotalQuota(plan ? plan.sys_id : '');
-            var rateCard = this.getForecastRateCard(plan);
+            var rateCard = this.getForecastRateCard(planId);
             var scenario = this.getForecastScenario(scenarioId, userId, selectedYear);
 
             var overrideWin = parseFloat(this.getParameter('sysparm_win_rate_multiplier') || '');
@@ -1176,7 +1139,7 @@ Record({
             }
 
             var planId = plan.getUniqueValue();
-            var rateCard = this.getForecastRateCard(plan);
+            var rateCard = this.getForecastRateCard(planId);
             var quota = this.getForecastTotalQuota(planId);
             var wonRevenueBeforeClose = this.getWonRevenueYtdUntilDate(userId, selectedYear, closeDateRaw);
             var projectedRevenue = wonRevenueBeforeClose + amount;
@@ -1263,7 +1226,7 @@ Record({
     getForecastSummaryValues: function(userId, selectedYear, winRateMultiplier, pipelineMultiplier) {
         var plan = this.getForecastPlan(userId, selectedYear);
         var quota = this.getForecastTotalQuota(plan ? plan.sys_id : '');
-        var rateCard = this.getForecastRateCard(plan);
+        var rateCard = this.getForecastRateCard(plan ? plan.getUniqueValue() : '');
 
         var stageProbability = {
             lead: 0.2,
@@ -1387,26 +1350,38 @@ Record({
         return total;
     },
 
-    getForecastRateCard: function(planGr) {
-        if (!planGr) {
-            return { base_rate: 0, new_business: 0, renewal: 0, expansion: 0, upsell: 0 };
+    getForecastRateCard: function(planId) {
+        var rateCard = { base_rate: 0, new_business: 0, renewal: 0, expansion: 0, upsell: 0 };
+        if (!planId) {
+            return rateCard;
         }
-        return {
-            base_rate: parseFloat(planGr.getValue('base_rate')) || 0,
-            new_business: parseFloat(planGr.getValue('new_business_rate')) || 0,
-            renewal: parseFloat(planGr.getValue('renewal_rate')) || 0,
-            expansion: parseFloat(planGr.getValue('expansion_rate')) || 0,
-            upsell: parseFloat(planGr.getValue('upsell_rate')) || 0
-        };
+
+        var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+        targetGr.addQuery('commission_plan', planId);
+        targetGr.addQuery('is_active', true);
+        targetGr.query();
+
+        while (targetGr.next()) {
+            var dealType = this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', '');
+            var targetRate = parseFloat(targetGr.getValue('commission_rate_percent')) || 0;
+            if (!dealType || targetRate <= 0) {
+                continue;
+            }
+            if (rateCard.hasOwnProperty(dealType)) {
+                rateCard[dealType] = targetRate;
+            }
+        }
+
+        return rateCard;
     },
 
     resolveForecastRate: function(rateCard, dealType) {
         var normalized = this.normalizeDealType(dealType);
-        if (normalized === 'new_business') return rateCard.new_business || rateCard.base_rate;
-        if (normalized === 'renewal') return rateCard.renewal || rateCard.base_rate;
-        if (normalized === 'expansion') return rateCard.expansion || rateCard.base_rate;
-        if (normalized === 'upsell') return rateCard.upsell || rateCard.base_rate;
-        return rateCard.base_rate;
+        if (normalized === 'new_business') return rateCard.new_business || 0;
+        if (normalized === 'renewal') return rateCard.renewal || 0;
+        if (normalized === 'expansion') return rateCard.expansion || 0;
+        if (normalized === 'upsell') return rateCard.upsell || 0;
+        return 0;
     },
 
     getForecastRecognitionProjection: function(planId, closeDateValue, stage, selectedYear) {
@@ -1859,7 +1834,8 @@ Record({
                 tier_name: tierGr.getValue('tier_name') || 'Tier',
                 floor_percent: parseFloat(tierGr.getValue('attainment_floor_percent')) || 0,
                 rate_percent: parseFloat(tierGr.getValue('commission_rate_percent')) || 0,
-                deal_type: this.normalizeDealType(tierGr.getValue('deal_type'))
+                deal_type: this.resolveDealTypeForTier(tierGr, 'other'),
+                plan_target: tierGr.getValue('plan_target') || ''
             });
         }
         return tiers;
@@ -1867,7 +1843,7 @@ Record({
 
     resolvePrimaryDealTypeForDeal: function(dealGr, cache) {
         var dealId = dealGr ? dealGr.getUniqueValue() : '';
-        var fallback = this.normalizeDealType(dealGr ? dealGr.getValue('deal_type') : 'other');
+        var fallback = this.resolveDealTypeForRecord(dealGr, 'deal_type_ref', 'other');
         if (!dealId) {
             return fallback || 'other';
         }
@@ -1888,7 +1864,7 @@ Record({
 
         var resolved = fallback || 'other';
         if (classificationGr.next()) {
-            resolved = this.normalizeDealType(classificationGr.getValue('deal_type')) || resolved;
+            resolved = this.resolveDealTypeForRecord(classificationGr, 'deal_type_ref', resolved) || resolved;
         }
 
         if (cache) {
@@ -1901,6 +1877,35 @@ Record({
         return (${normalizeDealTypeCanonicalSource})(value, 'other');
     },
 
+    resolveDealTypeForRecord: function(gr, refField, fallback) {
+        if (!gr) return this.normalizeDealType(fallback || 'other');
+
+        var refId = gr.getValue(refField);
+        if (refId) {
+            var typeGr = new GlideRecord('x_823178_commissio_deal_types');
+            if (typeGr.get(refId)) {
+                var active = typeGr.getValue('is_active');
+                if (active === 'true' || active === true) {
+                    return this.normalizeDealType(typeGr.getValue('code') || fallback || 'other');
+                }
+            }
+        }
+
+        return this.normalizeDealType(fallback || 'other');
+    },
+
+    resolveDealTypeForTier: function(tierGr, fallback) {
+        if (!tierGr) return this.normalizeDealType(fallback || 'other');
+
+        var targetId = tierGr.getValue('plan_target');
+        if (!targetId) return this.normalizeDealType(fallback || 'other');
+
+        var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+        if (!targetGr.get(targetId)) return this.normalizeDealType(fallback || 'other');
+
+        return this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', fallback || 'other');
+    },
+
     filterTiersForDealType: function(tiers, dealType) {
         if (!tiers || tiers.length === 0) return [];
 
@@ -1909,13 +1914,13 @@ Record({
 
         for (var i = 0; i < tiers.length; i++) {
             var tier = tiers[i] || {};
-            var tierDealType = this.normalizeDealType(tier.deal_type || 'all');
-            if (tierDealType === 'all' || tierDealType === '' || tierDealType === normalizedDealType) {
+            var tierDealType = this.normalizeDealType(tier.deal_type || 'other');
+            if (tierDealType === normalizedDealType) {
                 scoped.push(tier);
             }
         }
 
-        return scoped.length > 0 ? scoped : tiers;
+        return scoped;
     },
 
     resolveTierByAttainment: function(tiers, attainmentPercent) {

@@ -35,10 +35,10 @@ Record({
 })
 
 Record({
-    $id: 'plan_tiers_field_deal_type',
+    $id: 'plan_tiers_field_plan_target',
     table: 'sys_ui_element',
     data: {
-        element: 'deal_type',
+        element: 'plan_target',
         position: 2,
         sys_ui_section: 'plan_tiers_default_section'
     }
