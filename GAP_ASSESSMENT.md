@@ -53,6 +53,36 @@
 | F-23 | Multi-currency FX model + calc-time snapshot | Open |
 | F-24 | Analytics maturity (trend/cohort/variance saved views) | Open |
 
+## Master Feature List (Canonical Product Contract)
+> Business-facing feature contract. This list is the enduring reference for MVP assessment and release tracking, even when features are already implemented.
+> Every feature row must map to one or more `F-xx` entries above and retain a current state.
+
+Status key:
+- `Implemented` = delivered and in canonical baseline
+- `Partial-Strong` = delivered baseline with known confidence/risk caveat
+- `Open` = planned/not yet delivered
+
+| MF ID | Feature Area | Capability | Function Mapping | MVP Scope | Current State | Delivery Track |
+|---|---|---|---|---|---|---|
+| MF-01 | Plan Design & Calculation | Flexible commission plan setup (simple to complex plan architecture) | F-01, F-02 | Yes | Implemented | T2 |
+| MF-02 | Plan Design & Calculation | Accelerators, tiers, multiple triggers, and nuanced payout logic | F-02, F-06, F-07, F-08, F-09 | Yes | Implemented | T2/T3 |
+| MF-03 | Plan Design & Calculation | Rule/condition definitions (governed overrides, scheduling, flat/percentage payout components) | F-04, F-08, F-09, F-12, F-17 | Yes | Implemented | T1/T3/T4 |
+| MF-04 | Plan Design & Calculation | Commission modeling, forecasting, and simulation/testing | F-10 | Yes | Partial-Strong | T4 |
+| MF-05 | Plan Design & Calculation | Commission estimator and potential-earnings guidance for reps | F-10, F-14 | Yes | Partial-Strong | T4 |
+| MF-06 | Real-Time Tracking & Visibility | Real-time visibility for reps, managers, and finance/admin roles | F-14, F-17 | Yes | Implemented | T4 |
+| MF-07 | Real-Time Tracking & Visibility | Rep visibility into current, past, and forecasted earnings | F-10, F-14 | Yes | Partial-Strong | T4 |
+| MF-08 | Real-Time Tracking & Visibility | Live dashboards and analytics reporting surfaces | F-14, F-17, F-24 | Yes (core), No (advanced analytics) | Partial-Strong | T4 (core), T8 (advanced) |
+| MF-09 | Reporting & Insight | Detailed compensation statements with drill-down explainability | F-11, F-13 | Yes | Implemented | T3/T4 |
+| MF-10 | Commission Administration & Controls | Deep audit trails for changes/calculations with reconciliation/alerts | F-04, F-05, F-12, F-17, F-22 | Yes (core), No (immutable export domain) | Partial-Strong | T1/T5 (core), T7 (export) |
+| MF-11 | Commission Administration & Controls | Effective dating for plans, logic/policies, and manager-to-rep governance | F-01, F-09, F-15 | Yes | Implemented | T2/T4 |
+| MF-12 | Commission Administration & Controls | Bulk user/team/plan management | F-15, F-16 | Yes | Implemented | T2/T4 |
+| MF-13 | Commission Administration & Controls | Approval workflows for commission statements | F-12 | Yes | Implemented | T4 |
+| MF-14 | Commission Administration & Controls | Dispute management and in-app commentary | F-20, F-21 | No (Next phase) | Open | T7 |
+| MF-15 | Motivation & Sales Enablement | Performance metrics and KPI tracking | F-10, F-14, F-17 | Yes | Partial-Strong | T4/T5 |
+| MF-16 | Motivation & Sales Enablement | Potential-earnings visibility to prioritize deals | F-10, F-14 | Yes | Partial-Strong | T4 |
+| MF-17 | Currency & Compliance Support | Multi-currency conversion and FX rate management | F-23 | No (Next phase) | Open | T8 |
+| MF-18 | Currency & Compliance Support | Immutable compliance journal and evidence exports | F-22 | No (Next phase) | Open | T7 |
+
 ## Roadmap (Lean)
 | Phase | Focus | Exit Criteria |
 |---|---|---|
@@ -424,6 +454,19 @@ For every proposed change, record this in this file before implementation:
 | Gap Impact | Closes remaining T2 strictness gaps and improves T5 operational integrity |
 | SoT Sections Updated | Function Impact Record Log |
 | Decision | Approved for implementation |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-17-001 |
+| Date | 2026-03-17 |
+| Summary | Added canonical Master Feature List (MF-01..MF-18) aligned to business-facing requirements, mapped to `F-xx`, with MVP scope and current-state tracking |
+| Impacted Functions | F-01..F-24 (traceability/governance mapping update only) |
+| Change Type | workflow, observability |
+| Expected Effect | enhancement (documentation governance uplift; no runtime behavior change) |
+| Required Validation | Canonical consistency review: MF rows map to existing F-xx entries, status labels align to current baseline, and MVP scope flags align to roadmap phases |
+| Gap Impact | Improves cross-functional tracking fidelity for T4/T5 MVP assessment and post-MVP phase planning; no track state flips |
+| SoT Sections Updated | Master Feature List (Canonical Product Contract), Function Impact Record Log |
+| Decision | Approved and implemented |
 
 ## KPIs
 - Reproducible calculations from persisted snapshots: target 100%
