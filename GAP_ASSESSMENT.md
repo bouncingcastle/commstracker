@@ -83,6 +83,42 @@ Status key:
 | MF-17 | Currency & Compliance Support | Multi-currency conversion and FX rate management | F-23 | No (Next phase) | Open | T8 |
 | MF-18 | Currency & Compliance Support | Immutable compliance journal and evidence exports | F-22 | No (Next phase) | Open | T7 |
 
+## Minimal Commission Tracking MVP Assessment Plan (ServiceNow + UI)
+> ServiceNow-first validation plan for the minimal commission-tracking capability set. Ingestion remains externalized and is out of scope for this pass.
+
+Assessment scope in this pass:
+- Included: Features 2–7 from the minimal set (plan/tier governance, snapshots, payment-driven calculation, deterministic rate+payout math, role visibility, exception/audit controls)
+- Excluded: Feature 1 ingestion (`F-18`) runtime validation, full finance cockpit (`F-19`), disputes/commentary (`F-20/F-21`), compliance export domain (`F-22`), multi-currency (`F-23`), analytics maturity (`F-24`)
+
+| Suite ID | Capability | Function Mapping | Validation Layer | Evidence Required | Exit Signal |
+|---|---|---|---|---|---|
+| SV-01 | Plan and tier setup governance (effective dates, contiguous tier bands, overlap/gap prevention) | F-01, F-02 | UI forms + business rules | plan/target/tier sys_ids + blocked negative-case screenshots/messages | Invalid setup blocked; valid setup saves cleanly |
+| SV-02 | Close-won snapshot immutability and approved override path | F-04 | Deal form workflow + business rules | deal sys_id + snapshot fields + blocked post-snapshot edit evidence | Snapshot created on close-won and immutable without approved exception |
+| SV-03 | Payment-driven commission creation (subtotal-prorated base, refund negatives, pending/error paths) | F-05 | Payment form/data actions + after-BR runtime | payment/invoice/deal/calc sys_ids + payment status transitions | One payment event produces deterministic calc state/result |
+| SV-04 | Highest-applicable rate selection and marginal payout explainability | F-06, F-07 | Runtime + UI explainability surfaces | calc `calculation_inputs` snapshot + statement/progress drill-down screenshots | Selected rate and component math are reproducible and explainable |
+| SV-05 | Role-based visibility and team-scope boundaries | F-14 | ACL + Script Include + UI (impersonation) | Rep/Manager/Finance/Admin access matrix with pass/fail | No scope leakage; expected visibility per persona |
+| SV-06 | Exception queue, duplicate prevention, reconciliation logging/alerts | F-17 | BR guardrails + scheduled scripts + monitoring tables | exception/alert/reconciliation sys_ids + run logs | Duplicates blocked/remediated; controls leave auditable evidence |
+
+Execution order (mandatory):
+1. SV-01 setup integrity
+2. SV-02 snapshot integrity
+3. SV-03 payment runtime correctness
+4. SV-04 deterministic payout explainability
+5. SV-05 role/ACL and UI scope
+6. SV-06 exception/reconciliation operations
+
+Minimum UI coverage required in this pass:
+1. Plan setup forms and related lists (plan/targets/tiers/bonuses/policies)
+2. Commission progress page (`x_823178_commissio_progress.do`) for Rep, Manager team rollup, Finance/Admin selector behavior
+3. Statement explainability page (`x_823178_commissio_statement_explainability.do`) line-item component verification
+4. Application navigation/menu path checks for Dashboard and My Progress
+
+Assessment completion criteria for this minimal scope:
+1. SV-01 through SV-06 all pass with evidence artifacts
+2. No critical role/access leakage findings
+3. No unresolved duplicate or orphaned calculation defects
+4. Reconciliation run status is `passed` or `warning` with owned follow-up items; no unowned critical errors
+
 ## Roadmap (Lean)
 | Phase | Focus | Exit Criteria |
 |---|---|---|
@@ -466,6 +502,19 @@ For every proposed change, record this in this file before implementation:
 | Required Validation | Canonical consistency review: MF rows map to existing F-xx entries, status labels align to current baseline, and MVP scope flags align to roadmap phases |
 | Gap Impact | Improves cross-functional tracking fidelity for T4/T5 MVP assessment and post-MVP phase planning; no track state flips |
 | SoT Sections Updated | Master Feature List (Canonical Product Contract), Function Impact Record Log |
+| Decision | Approved and implemented |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-17-002 |
+| Date | 2026-03-17 |
+| Summary | Added ServiceNow-first Minimal Commission Tracking MVP Assessment Plan (`SV-01..SV-06`) with explicit UI validation coverage and evidence gates |
+| Impacted Functions | F-01, F-02, F-04, F-05, F-06, F-07, F-14, F-17 |
+| Change Type | workflow, observability |
+| Expected Effect | enhancement (assessment governance clarity; no runtime behavior change) |
+| Required Validation | Plan consistency review: suite mapping aligns with function baseline and MVP scope, UI coverage is explicitly represented, execution order and completion criteria are unambiguous |
+| Gap Impact | Improves T4/T5 validation execution quality and reduces risk of server-only sign-off drift during MVP assessment |
+| SoT Sections Updated | Minimal Commission Tracking MVP Assessment Plan (ServiceNow + UI), Function Impact Record Log |
 | Decision | Approved and implemented |
 
 ## KPIs
