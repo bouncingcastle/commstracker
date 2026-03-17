@@ -119,6 +119,12 @@ Assessment completion criteria for this minimal scope:
 3. No unresolved duplicate or orphaned calculation defects
 4. Reconciliation run status is `passed` or `warning` with owned follow-up items; no unowned critical errors
 
+Execution pack artifacts (repo):
+1. `validation/SV_MVP_EXECUTION_RUNBOOK.md`
+2. `validation/SV_MVP_ATF_BLUEPRINT.md`
+3. `validation/SV_MVP_UI_IMPERSONATION_CHECKLIST.md`
+4. `validation/sv_mvp_background_probes.js`
+
 ## Roadmap (Lean)
 | Phase | Focus | Exit Criteria |
 |---|---|---|
@@ -514,6 +520,19 @@ For every proposed change, record this in this file before implementation:
 | Expected Effect | enhancement (assessment governance clarity; no runtime behavior change) |
 | Required Validation | Plan consistency review: suite mapping aligns with function baseline and MVP scope, UI coverage is explicitly represented, execution order and completion criteria are unambiguous |
 | Gap Impact | Improves T4/T5 validation execution quality and reduces risk of server-only sign-off drift during MVP assessment |
+| SoT Sections Updated | Minimal Commission Tracking MVP Assessment Plan (ServiceNow + UI), Function Impact Record Log |
+| Decision | Approved and implemented |
+
+| Field | Value |
+|---|---|
+| Change ID | FIR-2026-03-17-003 |
+| Date | 2026-03-17 |
+| Summary | Added executable ServiceNow validation pack for `SV-01..SV-06`: runbook, ATF blueprint, manual UI/impersonation checklist, and background probe script |
+| Impacted Functions | F-01, F-02, F-04, F-05, F-06, F-07, F-14, F-17 |
+| Change Type | workflow, observability |
+| Expected Effect | enhancement (test execution readiness uplift; no runtime behavior change) |
+| Required Validation | Review artifact-path correctness and suite-to-function mapping consistency; dry-run background probe script syntax in non-production instance |
+| Gap Impact | Accelerates T4/T5 MVP validation execution and reduces ambiguity between UI and server-side evidence capture |
 | SoT Sections Updated | Minimal Commission Tracking MVP Assessment Plan (ServiceNow + UI), Function Impact Record Log |
 | Decision | Approved and implemented |
 
