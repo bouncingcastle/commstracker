@@ -624,6 +624,7 @@ UiPage({
 
         function invokeHelper(methodName, params, callback) {
           var helperNames = [
+            'x_823178_commissio.CommissionProgressDataServiceV2',
             'x_823178_commissio.CommissionProgressDataService'
           ];
 
@@ -673,6 +674,7 @@ UiPage({
 
         function invokeP1Helper(methodName, params, callback) {
           var helperNames = [
+            'x_823178_commissio.CommissionProgressDataServiceV2',
             'x_823178_commissio.CommissionProgressDataService'
           ];
 
@@ -914,9 +916,15 @@ UiPage({
                 select.appendChild(option);
               });
 
-              var preferredUserId = viewingUserId || currentUserId;
+              var preferredUserId = viewingUserId || (canViewAllUsers ? 'all' : (canViewTeamRollup ? 'team' : currentUserId));
               if (preferredUserId) {
                 select.value = preferredUserId;
+              }
+              if (!select.value && canViewAllUsers) {
+                select.value = 'all';
+              }
+              if (!select.value && canViewTeamRollup) {
+                select.value = 'team';
               }
               if (!select.value && currentUserId) {
                 select.value = currentUserId;
@@ -1079,6 +1087,11 @@ UiPage({
           loadUserOptions();
           loadEstimatorDealTypes();
           initializeYearContext(function() {
+            if ((viewingUserId === currentUserId || !viewingUserId) && canViewAllUsers) {
+              viewingUserId = 'all';
+            } else if ((viewingUserId === currentUserId || !viewingUserId) && canViewTeamRollup) {
+              viewingUserId = 'team';
+            }
             loadUserOptions();
             loadInitialData();
           });

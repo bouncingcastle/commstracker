@@ -112,28 +112,6 @@ export const x_823178_commissio_commission_plans = Table({
             scale: 2,
             label: 'Renewal Rate (%)',
         }),
-        deal_type: StringColumn({
-            choices: {
-                new_business: {
-                    label: 'New Business',
-                    sequence: 0,
-                },
-                renewal: {
-                    label: 'Renewal',
-                    sequence: 1,
-                },
-                expansion: {
-                    label: 'Expansion',
-                    sequence: 2,
-                },
-                upsell: {
-                    label: 'Upsell',
-                    sequence: 3,
-                },
-            },
-            dropdown: 'dropdown_with_none',
-            label: 'Deal Type',
-        }),
         expansion_rate: DecimalColumn({
             scale: 2,
             label: 'Expansion Rate (%)',

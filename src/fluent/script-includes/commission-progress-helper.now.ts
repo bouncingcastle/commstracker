@@ -52,14 +52,14 @@ Record({
     $id: Now.ID['commission_progress_helper_script_include'],
     table: 'sys_script_include',
     data: {
-        name: 'CommissionProgressDataService',
+        name: 'CommissionProgressDataServiceV2',
         active: true,
         client_callable: true,
         access: 'public',
         script: `
     var resolveCommissionRoleAccess = ${resolveCommissionRoleAccessSource};
-    var CommissionProgressDataService = Class.create();
-    CommissionProgressDataService.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+    var CommissionProgressDataServiceV2 = Class.create();
+    CommissionProgressDataServiceV2.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     
     getRepProgress: function() {
         var userId = this.getParameter('sysparm_user_id') || this.getParameter('user_id');
@@ -115,27 +115,20 @@ Record({
 
             var selectedUserIds = [];
             if (includeAllUsers) {
-                selectedUserIds = this.listUserIdsWithActivePlansForYear(selectedYear, null);
+                selectedUserIds = this.listUserIdsForRollupScope(selectedYear, null);
                 result.data.view_mode = 'all_users';
                 result.data.selected_user_count = selectedUserIds.length;
             } else if (includeTeamUsers) {
                 var managerScopeIds = this.getManagedUserIds(currentViewerId, true);
-                selectedUserIds = this.listUserIdsWithActivePlansForYear(selectedYear, managerScopeIds);
+                selectedUserIds = this.listUserIdsForRollupScope(selectedYear, managerScopeIds);
                 result.data.view_mode = 'team_rollup';
                 result.data.selected_user_count = selectedUserIds.length;
             }
 
             var planId = '';
             if (!includeAllUsers && !includeTeamUsers) {
-                var planGr = new GlideRecord('x_823178_commissio_commission_plans');
-                planGr.addQuery('sales_rep', userId);
-                planGr.addQuery('is_active', true);
-                planGr.addQuery('effective_start_date', '<=', yearEnd);
-                planGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
-                planGr.orderByDesc('effective_start_date');
-                planGr.query();
-
-                if (planGr.next()) {
+                var planGr = this.getActivePlanForUserYear(userId, yearStart, yearEnd);
+                if (planGr) {
                     var planYearStr = planGr.getValue('effective_start_date');
                     var planYear = planYearStr ? new GlideDateTime(planYearStr).getYearLocalTime() : selectedYear;
                     planId = planGr.getValue('sys_id');
@@ -377,8 +370,11 @@ Record({
 
             var targets = {};
             while (targetGr.next()) {
-                var dt = this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', 'other');
-                targets[dt] = parseFloat(targetGr.getValue('annual_target_amount')) || 0;
+                var dt = this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', '');
+                if (!dt) {
+                    continue;
+                }
+                targets[dt] = (parseFloat(targets[dt]) || 0) + (parseFloat(targetGr.getValue('annual_target_amount')) || 0);
             }
 
             var tiers = this.getPlanTiersForProgress(planId);
@@ -577,40 +573,58 @@ Record({
             var yearStart = selectedYear + '-01-01';
             var yearEnd = selectedYear + '-12-31';
 
-            var statements = new GlideAggregate('x_823178_commissio_commission_statements');
-            if (!isAllYears) {
-                statements.addQuery('statement_year', selectedYear);
-            }
-            statements.addAggregate('COUNT');
-            statements.query();
-            var totalStatements = statements.next() ? parseInt(statements.getAggregate('COUNT'), 10) : 0;
+            var countRows = function(tableName, configureQuery, includeRecord) {
+                var gr = new GlideRecord(tableName);
+                if (typeof configureQuery === 'function') {
+                    configureQuery(gr);
+                }
+                gr.query();
 
-            var pending = new GlideAggregate('x_823178_commissio_exception_approvals');
-            pending.addQuery('status', 'pending');
-            if (!isAllYears) {
-                pending.addQuery('request_date', '>=', yearStart + ' 00:00:00');
-                pending.addQuery('request_date', '<=', yearEnd + ' 23:59:59');
-            }
-            pending.addAggregate('COUNT');
-            pending.query();
-            var pendingReviews = pending.next() ? parseInt(pending.getAggregate('COUNT'), 10) : 0;
+                var count = 0;
+                while (gr.next()) {
+                    if (!includeRecord || includeRecord(gr)) {
+                        count++;
+                    }
+                }
+                return count;
+            };
 
-            var deals = new GlideAggregate('x_823178_commissio_deals');
-            deals.addQuery('is_won', false);
-            deals.addQuery('stage', '!=', 'closed_lost');
-            deals.addAggregate('COUNT');
-            deals.query();
-            var activeDeals = deals.next() ? parseInt(deals.getAggregate('COUNT'), 10) : 0;
+            var totalStatements = countRows('x_823178_commissio_commission_statements', function(gr) {
+                if (!isAllYears) {
+                    gr.addQuery('statement_year', selectedYear);
+                }
+            });
 
-            var alerts = new GlideAggregate('x_823178_commissio_system_alerts');
-            alerts.addQuery('status', 'IN', 'open,acknowledged');
-            if (!isAllYears) {
-                alerts.addQuery('alert_date', '>=', yearStart + ' 00:00:00');
-                alerts.addQuery('alert_date', '<=', yearEnd + ' 23:59:59');
-            }
-            alerts.addAggregate('COUNT');
-            alerts.query();
-            var openAlerts = alerts.next() ? parseInt(alerts.getAggregate('COUNT'), 10) : 0;
+            var pendingReviews = countRows('x_823178_commissio_exception_approvals', function(gr) {
+                if (!isAllYears) {
+                    gr.addQuery('request_date', '>=', yearStart + ' 00:00:00');
+                    gr.addQuery('request_date', '<=', yearEnd + ' 23:59:59');
+                }
+            }, function(gr) {
+                var status = String(gr.getValue('status') || '').toLowerCase();
+                return status === 'pending';
+            });
+
+            var activeDeals = countRows('x_823178_commissio_deals', null, function(gr) {
+                var stage = String(gr.getValue('stage') || '').toLowerCase().replace(/\s+/g, '_');
+                var isWonRaw = String(gr.getValue('is_won') || '').toLowerCase();
+                var isWon = isWonRaw === 'true' || isWonRaw === '1';
+
+                if (stage === 'closed_lost' || stage === 'closed_won') {
+                    return false;
+                }
+                return !isWon;
+            });
+
+            var openAlerts = countRows('x_823178_commissio_system_alerts', function(gr) {
+                if (!isAllYears) {
+                    gr.addQuery('alert_date', '>=', yearStart + ' 00:00:00');
+                    gr.addQuery('alert_date', '<=', yearEnd + ' 23:59:59');
+                }
+            }, function(gr) {
+                var status = String(gr.getValue('status') || '').toLowerCase();
+                return status === 'open' || status === 'acknowledged';
+            });
 
             return JSON.stringify({
                 status: 'success',
@@ -671,6 +685,20 @@ Record({
 
             while (planAgg.next()) {
                 addUserById(planAgg.getValue('sales_rep'));
+            }
+
+            if (users.length === 0) {
+                var anyPlanAgg = new GlideAggregate('x_823178_commissio_commission_plans');
+                if (managerScopeIds && managerScopeIds.length > 0) {
+                    anyPlanAgg.addQuery('sales_rep', 'IN', managerScopeIds.join(','));
+                } else if (!isAdmin && !isManager) {
+                    anyPlanAgg.addQuery('sales_rep', viewerId);
+                }
+                anyPlanAgg.groupBy('sales_rep');
+                anyPlanAgg.query();
+                while (anyPlanAgg.next()) {
+                    addUserById(anyPlanAgg.getValue('sales_rep'));
+                }
             }
 
             if (users.length === 0) {
@@ -954,11 +982,14 @@ Record({
             targetGr.query();
 
             while (targetGr.next()) {
-                var dealType = this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', 'other');
+                var dealType = this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', '');
+                if (!dealType) {
+                    continue;
+                }
                 var amount = parseFloat(targetGr.getValue('annual_target_amount')) || 0;
                 var targetRate = parseFloat(targetGr.getValue('commission_rate_percent')) || 0;
                 details.total_quota += amount;
-                details.targets[dealType] = amount;
+                details.targets[dealType] = (parseFloat(details.targets[dealType]) || 0) + amount;
                 if (targetRate > 0) {
                     details.rate_card[dealType] = targetRate;
                 }
@@ -977,7 +1008,7 @@ Record({
                     tier_name: tierGr.getValue('tier_name'),
                     floor_percent: floor,
                     rate_percent: rate,
-                    deal_type: this.resolveDealTypeForTier(tierGr, 'other'),
+                    deal_type: this.resolveDealTypeForTier(tierGr, ''),
                     plan_target: tierGr.getValue('plan_target') || ''
                 });
             }
@@ -995,7 +1026,7 @@ Record({
                     name: bonusGr.getValue('bonus_name'),
                     amount: bonusAmount,
                     trigger: bonusGr.getValue('bonus_trigger'),
-                    deal_type: this.resolveDealTypeForRecord(bonusGr, 'deal_type_ref', 'other'),
+                    deal_type: this.resolveDealTypeForRecord(bonusGr, 'deal_type_ref', ''),
                     is_discretionary: bonusGr.getValue('is_discretionary') === '1' || bonusGr.getValue('is_discretionary') === true
                 });
             }
@@ -1040,7 +1071,8 @@ Record({
 
         try {
             var plan = this.getForecastPlan(userId, selectedYear);
-            var quota = this.getForecastTotalQuota(plan ? plan.sys_id : '');
+            var planId = plan ? plan.getUniqueValue() : '';
+            var quota = this.getForecastTotalQuota(planId);
             var rateCard = this.getForecastRateCard(planId);
             var scenario = this.getForecastScenario(scenarioId, userId, selectedYear);
 
@@ -1087,7 +1119,7 @@ Record({
                 var adjustedAmount = amount * pipelineMultiplier;
                 var expectedRevenue = adjustedAmount * probability;
                 var expectedCommission = expectedRevenue * (rate / 100);
-                var recognitionProjection = this.getForecastRecognitionProjection(plan ? plan.getUniqueValue() : '', dealsGr.getValue('close_date'), stage, selectedYear);
+                var recognitionProjection = this.getForecastRecognitionProjection(planId, dealsGr.getValue('close_date'), stage, selectedYear);
                 var urgencyBoost = this.getForecastUrgencyBoost(dealsGr.getValue('close_date'));
                 var score = expectedCommission * (1 + urgencyBoost);
 
@@ -1431,16 +1463,7 @@ Record({
     getForecastPlan: function(userId, selectedYear) {
         var yearStart = selectedYear + '-01-01';
         var yearEnd = selectedYear + '-12-31';
-        var planGr = new GlideRecord('x_823178_commissio_commission_plans');
-        planGr.addQuery('sales_rep', userId);
-        planGr.addQuery('is_active', true);
-        planGr.addQuery('effective_start_date', '<=', yearEnd);
-        planGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
-        planGr.orderByDesc('effective_start_date');
-        planGr.setLimit(1);
-        planGr.query();
-        if (!planGr.next()) return null;
-        return planGr;
+        return this.getActivePlanForUserYear(userId, yearStart, yearEnd);
     },
 
     getForecastTotalQuota: function(planId) {
@@ -1920,8 +1943,76 @@ Record({
         return ids;
     },
 
+    planHasTargetConfiguration: function(planId) {
+        if (!planId) return false;
+
+        var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+        targetGr.addQuery('commission_plan', planId);
+        targetGr.setLimit(1);
+        targetGr.query();
+        return targetGr.next();
+    },
+
+    getActivePlanForUserYear: function(userId, yearStart, yearEnd) {
+        if (!userId) return null;
+
+        var firstOverlap = null;
+        var overlapGr = new GlideRecord('x_823178_commissio_commission_plans');
+        overlapGr.addQuery('sales_rep', userId);
+        overlapGr.addQuery('is_active', true);
+        if (yearStart && yearEnd) {
+            overlapGr.addQuery('effective_start_date', '<=', yearEnd);
+            overlapGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
+        }
+        overlapGr.orderByDesc('effective_start_date');
+        overlapGr.query();
+        while (overlapGr.next()) {
+            if (!firstOverlap) {
+                firstOverlap = overlapGr.getUniqueValue();
+            }
+            if (this.planHasTargetConfiguration(overlapGr.getUniqueValue())) {
+                return overlapGr;
+            }
+        }
+        if (firstOverlap) {
+            var firstOverlapGr = new GlideRecord('x_823178_commissio_commission_plans');
+            if (firstOverlapGr.get(firstOverlap)) return firstOverlapGr;
+        }
+
+        // Fallback: use latest active plan even if no year overlap.
+        var activeFallback = new GlideRecord('x_823178_commissio_commission_plans');
+        activeFallback.addQuery('sales_rep', userId);
+        activeFallback.addQuery('is_active', true);
+        activeFallback.orderByDesc('effective_start_date');
+        activeFallback.query();
+        var firstActive = null;
+        while (activeFallback.next()) {
+            if (!firstActive) {
+                firstActive = activeFallback.getUniqueValue();
+            }
+            if (this.planHasTargetConfiguration(activeFallback.getUniqueValue())) {
+                return activeFallback;
+            }
+        }
+        if (firstActive) {
+            var firstActiveGr = new GlideRecord('x_823178_commissio_commission_plans');
+            if (firstActiveGr.get(firstActive)) return firstActiveGr;
+        }
+
+        // Last-resort fallback for migrated records where is_active was not maintained.
+        var latestPlan = new GlideRecord('x_823178_commissio_commission_plans');
+        latestPlan.addQuery('sales_rep', userId);
+        latestPlan.orderByDesc('effective_start_date');
+        latestPlan.setLimit(1);
+        latestPlan.query();
+        if (latestPlan.next()) return latestPlan;
+
+        return null;
+    },
+
     listUserIdsWithActivePlansForYear: function(selectedYear, allowedUserIds) {
         var userIds = [];
+        var seen = {};
 
         var agg = new GlideAggregate('x_823178_commissio_commission_plans');
         agg.addQuery('is_active', true);
@@ -1935,8 +2026,98 @@ Record({
         agg.query();
         while (agg.next()) {
             var repId = agg.getValue('sales_rep');
-            if (repId) userIds.push(repId);
+            if (repId && !seen[repId]) {
+                userIds.push(repId);
+                seen[repId] = true;
+            }
         }
+
+        // Fallback for migrated/manual plans where is_active was not populated consistently.
+        if (userIds.length === 0) {
+            var anyPlanAgg = new GlideAggregate('x_823178_commissio_commission_plans');
+            if (allowedUserIds && allowedUserIds.length > 0) {
+                anyPlanAgg.addQuery('sales_rep', 'IN', allowedUserIds.join(','));
+            } else if (allowedUserIds && allowedUserIds.length === 0) {
+                return [];
+            }
+            anyPlanAgg.groupBy('sales_rep');
+            anyPlanAgg.query();
+            while (anyPlanAgg.next()) {
+                var fallbackRep = anyPlanAgg.getValue('sales_rep');
+                if (fallbackRep && !seen[fallbackRep]) {
+                    userIds.push(fallbackRep);
+                    seen[fallbackRep] = true;
+                }
+            }
+        }
+        return userIds;
+    },
+
+    listUserIdsForRollupScope: function(selectedYear, allowedUserIds) {
+        var seen = {};
+        var userIds = [];
+        var yearStart = selectedYear + '-01-01';
+        var yearEnd = selectedYear + '-12-31';
+
+        var addIfAllowed = function(repId) {
+            if (!repId) return;
+            var id = String(repId);
+            if (seen[id]) return;
+            if (allowedUserIds && allowedUserIds.length === 0) return;
+            if (allowedUserIds && allowedUserIds.length > 0 && allowedUserIds.indexOf(id) === -1) return;
+            seen[id] = true;
+            userIds.push(id);
+        };
+
+        var fromPlans = this.listUserIdsWithActivePlansForYear(selectedYear, allowedUserIds);
+        for (var i = 0; i < fromPlans.length; i++) {
+            addIfAllowed(fromPlans[i]);
+        }
+        if (userIds.length > 0) {
+            return userIds;
+        }
+
+        var calcAgg = new GlideAggregate('x_823178_commissio_commission_calculations');
+        calcAgg.addQuery('calculation_date', '>=', yearStart);
+        calcAgg.addQuery('calculation_date', '<=', yearEnd);
+        if (allowedUserIds && allowedUserIds.length > 0) {
+            calcAgg.addQuery('sales_rep', 'IN', allowedUserIds.join(','));
+        } else if (allowedUserIds && allowedUserIds.length === 0) {
+            return [];
+        }
+        calcAgg.groupBy('sales_rep');
+        calcAgg.query();
+        while (calcAgg.next()) {
+            addIfAllowed(calcAgg.getValue('sales_rep'));
+        }
+        if (userIds.length > 0) {
+            return userIds;
+        }
+
+        var dealOwnerAgg = new GlideAggregate('x_823178_commissio_deals');
+        dealOwnerAgg.addQuery('close_date', '>=', yearStart);
+        dealOwnerAgg.addQuery('close_date', '<=', yearEnd);
+        if (allowedUserIds && allowedUserIds.length > 0) {
+            dealOwnerAgg.addQuery('current_owner', 'IN', allowedUserIds.join(','));
+        }
+        dealOwnerAgg.groupBy('current_owner');
+        dealOwnerAgg.query();
+        while (dealOwnerAgg.next()) {
+            addIfAllowed(dealOwnerAgg.getValue('current_owner'));
+        }
+
+        var dealSnapshotAgg = new GlideAggregate('x_823178_commissio_deals');
+        dealSnapshotAgg.addQuery('close_date', '>=', yearStart);
+        dealSnapshotAgg.addQuery('close_date', '<=', yearEnd);
+        if (allowedUserIds && allowedUserIds.length > 0) {
+            dealSnapshotAgg.addQuery('owner_at_close', 'IN', allowedUserIds.join(','));
+        }
+        dealSnapshotAgg.groupBy('owner_at_close');
+        dealSnapshotAgg.query();
+        while (dealSnapshotAgg.next()) {
+            addIfAllowed(dealSnapshotAgg.getValue('owner_at_close'));
+        }
+
         return userIds;
     },
 
@@ -1949,15 +2130,8 @@ Record({
         var totalQuota = 0;
 
         for (var i = 0; i < userIds.length; i++) {
-            var planGr = new GlideRecord('x_823178_commissio_commission_plans');
-            planGr.addQuery('sales_rep', userIds[i]);
-            planGr.addQuery('is_active', true);
-            planGr.addQuery('effective_start_date', '<=', yearEnd);
-            planGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', yearStart);
-            planGr.orderByDesc('effective_start_date');
-            planGr.setLimit(1);
-            planGr.query();
-            if (!planGr.next()) continue;
+            var planGr = this.getActivePlanForUserYear(userIds[i], yearStart, yearEnd);
+            if (!planGr) continue;
 
             var details = this.getCompensationPlanDetails(planGr.getUniqueValue());
             totalQuota += parseFloat(details.total_quota) || 0;
@@ -2000,7 +2174,7 @@ Record({
                 tier_name: tierGr.getValue('tier_name') || 'Tier',
                 floor_percent: parseFloat(tierGr.getValue('attainment_floor_percent')) || 0,
                 rate_percent: parseFloat(tierGr.getValue('commission_rate_percent')) || 0,
-                deal_type: this.resolveDealTypeForTier(tierGr, 'other'),
+                deal_type: this.resolveDealTypeForTier(tierGr, ''),
                 plan_target: tierGr.getValue('plan_target') || ''
             });
         }
@@ -2044,7 +2218,8 @@ Record({
     },
 
     resolveDealTypeForRecord: function(gr, refField, fallback) {
-        if (!gr) return this.normalizeDealType(fallback || 'other');
+        var resolvedFallback = (typeof fallback === 'string') ? fallback : 'other';
+        if (!gr) return resolvedFallback ? this.normalizeDealType(resolvedFallback) : '';
 
         var refId = gr.getValue(refField);
         if (refId) {
@@ -2052,24 +2227,26 @@ Record({
             if (typeGr.get(refId)) {
                 var active = typeGr.getValue('is_active');
                 if (active === 'true' || active === true) {
-                    return this.normalizeDealType(typeGr.getValue('code') || fallback || 'other');
+                    var typeCode = (typeGr.getValue('code') || '').toString();
+                    return typeCode ? this.normalizeDealType(typeCode) : (resolvedFallback ? this.normalizeDealType(resolvedFallback) : '');
                 }
             }
         }
 
-        return this.normalizeDealType(fallback || 'other');
+        return resolvedFallback ? this.normalizeDealType(resolvedFallback) : '';
     },
 
     resolveDealTypeForTier: function(tierGr, fallback) {
-        if (!tierGr) return this.normalizeDealType(fallback || 'other');
+        var resolvedFallback = (typeof fallback === 'string') ? fallback : 'other';
+        if (!tierGr) return resolvedFallback ? this.normalizeDealType(resolvedFallback) : '';
 
         var targetId = tierGr.getValue('plan_target');
-        if (!targetId) return this.normalizeDealType(fallback || 'other');
+        if (!targetId) return resolvedFallback ? this.normalizeDealType(resolvedFallback) : '';
 
         var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
-        if (!targetGr.get(targetId)) return this.normalizeDealType(fallback || 'other');
+        if (!targetGr.get(targetId)) return resolvedFallback ? this.normalizeDealType(resolvedFallback) : '';
 
-        return this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', fallback || 'other');
+        return this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', resolvedFallback);
     },
 
     filterTiersForDealType: function(tiers, dealType) {
@@ -2080,7 +2257,11 @@ Record({
 
         for (var i = 0; i < tiers.length; i++) {
             var tier = tiers[i] || {};
-            var tierDealType = this.normalizeDealType(tier.deal_type || 'other');
+            var tierDealTypeRaw = (tier.deal_type || '').toString();
+            if (!tierDealTypeRaw) {
+                continue;
+            }
+            var tierDealType = this.normalizeDealType(tierDealTypeRaw);
             if (tierDealType === normalizedDealType) {
                 scoped.push(tier);
             }
@@ -2194,7 +2375,7 @@ Record({
         });
     },
 
-    type: 'CommissionProgressDataService'
+    type: 'CommissionProgressDataServiceV2'
 });
         `
     }

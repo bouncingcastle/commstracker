@@ -52,10 +52,6 @@ export const x_823178_commissio_plan_tiers = Table({
             label: 'Description',
             maxLength: 500,
         }),
-        deal_type: StringColumn({
-            default: 'all',
-            label: 'Deal Type Scope',
-        }),
     },
     audit: true,
     accessibleFrom: 'public',

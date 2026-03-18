@@ -7,16 +7,50 @@ import {
     commissionManagerRole,
 } from '../roles/commission-roles.now'
 
-// Commission Plans - Admin only
+// Commission Plans - Role-aware read scope
 Acl({
     $id: Now.ID['commission_plans_read_acl'],
     type: 'record',
     table: 'x_823178_commissio_commission_plans',
     operation: 'read',
-    roles: [commissionAdminRole],
+    roles: [commissionAdminRole, commissionFinanceRole, commissionManagerRole, commissionRepRole],
     active: true,
     adminOverrides: true,
-    description: 'Only commission admins can read commission plans',
+    script: `
+        if (gs.hasRole('x_823178_commissio.admin') || gs.hasRole('admin') || gs.hasRole('x_823178_commissio.finance')) {
+            answer = true;
+        } else {
+            var viewerId = gs.getUserID();
+            var repId = current.getValue('sales_rep');
+            answer = false;
+
+            if (repId && String(repId) === String(viewerId)) {
+                answer = true;
+            } else if (gs.hasRole('x_823178_commissio.manager') && repId) {
+                var today = new GlideDateTime().getValue().substring(0, 10);
+                var membershipGr = new GlideRecord('x_823178_commissio_manager_team_memberships');
+                membershipGr.addQuery('manager_user', viewerId);
+                membershipGr.addQuery('sales_rep', repId);
+                membershipGr.addQuery('is_active', true);
+                membershipGr.addQuery('effective_start_date', '<=', today);
+                membershipGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', today);
+                membershipGr.setLimit(1);
+                membershipGr.query();
+                if (membershipGr.next()) {
+                    answer = true;
+                } else {
+                    var userGr = new GlideRecord('sys_user');
+                    userGr.addQuery('sys_id', repId);
+                    userGr.addQuery('manager', viewerId);
+                    userGr.addActiveQuery();
+                    userGr.setLimit(1);
+                    userGr.query();
+                    answer = userGr.next();
+                }
+            }
+        }
+    `,
+    description: 'Admins/finance can read all plans; reps read their own plans; managers read plans for their governed reps',
 })
 
 Acl({
@@ -228,16 +262,47 @@ Acl({
     description: 'Only commission admins can create/update recognition basis policies',
 })
 
-// Plan setup hierarchy children - admin only
+// Plan setup hierarchy children - role-aware read scope
 Acl({
     $id: 'plan_targets_read_acl',
     type: 'record',
     table: 'x_823178_commissio_plan_targets',
     operation: 'read',
-    roles: [commissionAdminRole],
+    roles: [commissionAdminRole, commissionFinanceRole, commissionManagerRole, commissionRepRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can read plan target records',
+    script: `
+        if (gs.hasRole('x_823178_commissio.admin') || gs.hasRole('admin') || gs.hasRole('x_823178_commissio.finance')) {
+            answer = true;
+        } else {
+            answer = false;
+            var viewerId = gs.getUserID();
+            var planId = current.getValue('commission_plan');
+            if (planId) {
+                var planGr = new GlideRecord('x_823178_commissio_commission_plans');
+                if (planGr.get(planId)) {
+                    var repId = planGr.getValue('sales_rep');
+                    if (repId && String(repId) === String(viewerId)) {
+                        answer = true;
+                    } else if (gs.hasRole('x_823178_commissio.manager') && repId) {
+                        var today = new GlideDateTime().getValue().substring(0, 10);
+                        var membershipGr = new GlideRecord('x_823178_commissio_manager_team_memberships');
+                        membershipGr.addQuery('manager_user', viewerId);
+                        membershipGr.addQuery('sales_rep', repId);
+                        membershipGr.addQuery('is_active', true);
+                        membershipGr.addQuery('effective_start_date', '<=', today);
+                        membershipGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', today);
+                        membershipGr.setLimit(1);
+                        membershipGr.query();
+                        if (membershipGr.next()) {
+                            answer = true;
+                        }
+                    }
+                }
+            }
+        }
+    `,
+    description: 'Admins/finance can read all targets; reps and managers can read targets for accessible plans',
 })
 
 Acl({
@@ -256,10 +321,41 @@ Acl({
     type: 'record',
     table: 'x_823178_commissio_plan_tiers',
     operation: 'read',
-    roles: [commissionAdminRole],
+    roles: [commissionAdminRole, commissionFinanceRole, commissionManagerRole, commissionRepRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can read plan tier records',
+    script: `
+        if (gs.hasRole('x_823178_commissio.admin') || gs.hasRole('admin') || gs.hasRole('x_823178_commissio.finance')) {
+            answer = true;
+        } else {
+            answer = false;
+            var viewerId = gs.getUserID();
+            var planId = current.getValue('commission_plan');
+            if (planId) {
+                var planGr = new GlideRecord('x_823178_commissio_commission_plans');
+                if (planGr.get(planId)) {
+                    var repId = planGr.getValue('sales_rep');
+                    if (repId && String(repId) === String(viewerId)) {
+                        answer = true;
+                    } else if (gs.hasRole('x_823178_commissio.manager') && repId) {
+                        var today = new GlideDateTime().getValue().substring(0, 10);
+                        var membershipGr = new GlideRecord('x_823178_commissio_manager_team_memberships');
+                        membershipGr.addQuery('manager_user', viewerId);
+                        membershipGr.addQuery('sales_rep', repId);
+                        membershipGr.addQuery('is_active', true);
+                        membershipGr.addQuery('effective_start_date', '<=', today);
+                        membershipGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', today);
+                        membershipGr.setLimit(1);
+                        membershipGr.query();
+                        if (membershipGr.next()) {
+                            answer = true;
+                        }
+                    }
+                }
+            }
+        }
+    `,
+    description: 'Admins/finance can read all tiers; reps and managers can read tiers for accessible plans',
 })
 
 Acl({
@@ -278,10 +374,41 @@ Acl({
     type: 'record',
     table: 'x_823178_commissio_plan_bonuses',
     operation: 'read',
-    roles: [commissionAdminRole],
+    roles: [commissionAdminRole, commissionFinanceRole, commissionManagerRole, commissionRepRole],
     active: true,
     admin_overrides: true,
-    description: 'Only commission admins can read plan bonus records',
+    script: `
+        if (gs.hasRole('x_823178_commissio.admin') || gs.hasRole('admin') || gs.hasRole('x_823178_commissio.finance')) {
+            answer = true;
+        } else {
+            answer = false;
+            var viewerId = gs.getUserID();
+            var planId = current.getValue('commission_plan');
+            if (planId) {
+                var planGr = new GlideRecord('x_823178_commissio_commission_plans');
+                if (planGr.get(planId)) {
+                    var repId = planGr.getValue('sales_rep');
+                    if (repId && String(repId) === String(viewerId)) {
+                        answer = true;
+                    } else if (gs.hasRole('x_823178_commissio.manager') && repId) {
+                        var today = new GlideDateTime().getValue().substring(0, 10);
+                        var membershipGr = new GlideRecord('x_823178_commissio_manager_team_memberships');
+                        membershipGr.addQuery('manager_user', viewerId);
+                        membershipGr.addQuery('sales_rep', repId);
+                        membershipGr.addQuery('is_active', true);
+                        membershipGr.addQuery('effective_start_date', '<=', today);
+                        membershipGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', today);
+                        membershipGr.setLimit(1);
+                        membershipGr.query();
+                        if (membershipGr.next()) {
+                            answer = true;
+                        }
+                    }
+                }
+            }
+        }
+    `,
+    description: 'Admins/finance can read all bonuses; reps and managers can read bonuses for accessible plans',
 })
 
 Acl({

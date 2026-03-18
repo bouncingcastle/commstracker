@@ -162,7 +162,7 @@ Record({
     $id: Now.ID['e8d164aa839f3210a0365dc6feaad3f3'],
     table: 'sys_ui_element',
     data: {
-        element: 'deal_type',
+        element: 'deal_type_ref',
         position: 17,
         sys_ui_section: 'dcd1ac6a839f3210a0365dc6feaad321',
     },

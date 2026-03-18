@@ -1,14 +1,17 @@
 import { gs, GlideRecord } from '@servicenow/glide'
 
 export function validateDealTypeOnDeal(current, previous) {
+    assertNoLegacyDealTypeField(current, 'Deal');
     validateDealTypeReference(current, {
         refField: 'deal_type_ref',
         allowEmpty: false,
-        contextLabel: 'Deal'
+        contextLabel: 'Deal',
+        requiredMessage: 'Deal requires a Deal Type. Select a Deal Type before saving.'
     });
 }
 
 export function validateDealTypeOnPlanTarget(current, previous) {
+    assertNoLegacyDealTypeField(current, 'Plan Target');
     validateDealTypeReference(current, {
         refField: 'deal_type_ref',
         allowEmpty: false,
@@ -30,6 +33,7 @@ export function validateDealTypeOnPlanTarget(current, previous) {
 }
 
 export function validateDealTypeOnPlanBonus(current, previous) {
+    assertNoLegacyDealTypeField(current, 'Plan Bonus');
     validateDealTypeReference(current, {
         refField: 'deal_type_ref',
         allowEmpty: true,
@@ -38,6 +42,7 @@ export function validateDealTypeOnPlanBonus(current, previous) {
 }
 
 export function validateDealTypeOnCalculation(current, previous) {
+    assertNoLegacyDealTypeField(current, 'Commission Calculation');
     validateDealTypeReference(current, {
         refField: 'deal_type_ref',
         allowEmpty: false,
@@ -53,7 +58,7 @@ function validateDealTypeReference(current, options) {
         if (options.allowEmpty) {
             return;
         }
-        gs.addErrorMessage(options.contextLabel + ' requires a Deal Type reference.');
+        gs.addErrorMessage(options.requiredMessage || (options.contextLabel + ' requires a Deal Type reference.'));
         current.setAbortAction(true);
         return;
     }
@@ -63,6 +68,20 @@ function validateDealTypeReference(current, options) {
         gs.addErrorMessage(options.contextLabel + ' references an inactive or missing Deal Type record.');
         current.setAbortAction(true);
     }
+}
+
+function assertNoLegacyDealTypeField(current, contextLabel) {
+    if (!current || typeof current.getValue !== 'function') {
+        return;
+    }
+
+    var legacyValue = (current.getValue('deal_type') || '').toString().trim();
+    if (!legacyValue) {
+        return;
+    }
+
+    gs.addErrorMessage(contextLabel + ' uses deprecated deal_type text. Use Deal Type reference only.');
+    current.setAbortAction(true);
 }
 
 function getActiveDealTypeById(sysId) {
@@ -93,4 +112,3 @@ function isActiveFlag(value) {
     var normalized = (value || '').toString().toLowerCase();
     return normalized === 'true' || normalized === '1';
 }
-

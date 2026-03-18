@@ -6,6 +6,13 @@ export function validateDealClassification(current, previous) {
         return;
     }
 
+    var legacyDealType = (current.getValue('deal_type') || '').toString().trim();
+    if (legacyDealType) {
+        gs.addErrorMessage('Deal classification uses deprecated deal_type text. Use Deal Type reference only.');
+        current.setAbortAction(true);
+        return;
+    }
+
     var dealId = current.getValue('deal');
     var dealTypeRef = (current.getValue('deal_type_ref') || '').toString();
     if (!dealTypeRef) {

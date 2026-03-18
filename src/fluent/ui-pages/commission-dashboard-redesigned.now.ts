@@ -307,6 +307,7 @@ UiPage({
 
         function invokeHelper(methodName, params, callback) {
           var helperNames = [
+            'x_823178_commissio.CommissionProgressDataServiceV2',
             'x_823178_commissio.CommissionProgressDataService'
           ];
 

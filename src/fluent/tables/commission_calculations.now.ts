@@ -253,28 +253,6 @@ export const x_823178_commissio_commission_calculations = Table({
             maxLength: 1000,
             readOnly: true,
         }),
-        deal_type: StringColumn({
-            choices: {
-                new_business: {
-                    label: 'New Business',
-                    sequence: 0,
-                },
-                renewal: {
-                    label: 'Renewal',
-                    sequence: 1,
-                },
-                expansion: {
-                    label: 'Expansion',
-                    sequence: 2,
-                },
-                upsell: {
-                    label: 'Upsell',
-                    sequence: 3,
-                },
-            },
-            dropdown: 'dropdown_with_none',
-            label: 'Deal Type',
-        }),
     },
     audit: true,
     accessibleFrom: 'public',

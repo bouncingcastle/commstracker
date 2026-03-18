@@ -89,10 +89,30 @@ UiPage({
       }
 
       function invokeHelper(methodName, params, callback) {
-        var ajax = new GlideAjax('x_823178_commissio.CommissionProgressDataService');
-        ajax.addParam('sysparm_name', methodName);
-        Object.keys(params || {}).forEach(function(k){ ajax.addParam(k, params[k]); });
-        ajax.getXMLAnswer(function(response){ callback(response || null); });
+        var helperNames = [
+          'x_823178_commissio.CommissionProgressDataServiceV2',
+          'x_823178_commissio.CommissionProgressDataService'
+        ];
+
+        function tryIndex(index) {
+          if (index >= helperNames.length) {
+            callback(null);
+            return;
+          }
+
+          var ajax = new GlideAjax(helperNames[index]);
+          ajax.addParam('sysparm_name', methodName);
+          Object.keys(params || {}).forEach(function(k){ ajax.addParam(k, params[k]); });
+          ajax.getXMLAnswer(function(response){
+            if (response) {
+              callback(response);
+              return;
+            }
+            tryIndex(index + 1);
+          });
+        }
+
+        tryIndex(0);
       }
 
       function renderEmpty(message){

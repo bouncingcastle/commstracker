@@ -149,7 +149,7 @@ Record({
         payment_date: '2026-02-01',
         deal_close_date: '2026-01-20',
         calculation_date: '2026-02-01 10:00:00',
-        deal_type: 'new_business',
+        deal_type_ref: Now.ID['deal_type_new_business'],
         is_negative: false,
         status: 'draft',
         requires_approval: false
@@ -240,7 +240,7 @@ Record({
         payment_date: '2026-02-15',
         deal_close_date: '2026-02-10',
         calculation_date: '2026-02-15 11:00:00',
-        deal_type: 'expansion',
+        deal_type_ref: Now.ID['deal_type_expansion'],
         is_negative: false,
         status: 'draft',
         requires_approval: false
@@ -331,7 +331,7 @@ Record({
         payment_date: '2026-01-25',
         deal_close_date: '2026-01-15',
         calculation_date: '2026-01-25 14:00:00',
-        deal_type: 'renewal',
+        deal_type_ref: Now.ID['deal_type_renewal'],
         is_negative: false,
         status: 'draft',
         requires_approval: false

@@ -129,28 +129,6 @@ export const x_823178_commissio_deals = Table({
         finance_approval_date: DateTimeColumn({
             label: 'Finance Approval Date',
         }),
-        deal_type: StringColumn({
-            choices: {
-                upsell: {
-                    label: 'Upsell',
-                    sequence: 3,
-                },
-                new_business: {
-                    label: 'New Business',
-                    sequence: 0,
-                },
-                renewal: {
-                    label: 'Renewal',
-                    sequence: 1,
-                },
-                expansion: {
-                    label: 'Expansion',
-                    sequence: 2,
-                },
-            },
-            dropdown: 'dropdown_with_none',
-            label: 'Deal Type',
-        }),
     },
     audit: true,
     accessibleFrom: 'public',
