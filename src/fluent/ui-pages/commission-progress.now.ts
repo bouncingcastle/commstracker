@@ -1393,7 +1393,7 @@ UiPage({
 
             item.innerHTML = 
               '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">' +
-                '<div style="font-weight:600;color:var(--text);">' + statusEmoji + ' ' + capitalizeFirst(dealType.replace(/_/g, ' ')) + '</div>' +
+                '<div style="font-weight:600;color:var(--text);">' + statusEmoji + ' ' + formatDealTypeLabel(dealType) + '</div>' +
                 '<div style="font-size:14px;font-weight:700;color:' + statusColor + ';font-variant-numeric:tabular-nums;">' + attainment.toFixed(1) + '%</div>' +
               '</div>' +
               '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;font-size:12px;">' +
@@ -1492,7 +1492,7 @@ UiPage({
             var item = document.createElement('div');
             item.className = 'quota-item';
             item.innerHTML = 
-              '<span class="quota-label">' + capitalizeFirst(dealType.replace(/_/g, ' ')) + '</span>' +
+              '<span class="quota-label">' + formatDealTypeLabel(dealType) + '</span>' +
               '<span class="quota-amount">$' + parseFloat(amount).toFixed(0) + '</span>';
             container.appendChild(item);
           });
