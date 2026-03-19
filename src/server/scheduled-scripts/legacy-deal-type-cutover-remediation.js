@@ -143,6 +143,9 @@ function processReferentialTable(config, catalog, dryRun, maxRowsPerTable, sampl
                 if (refMeta && refMeta.code) {
                     remapRef = catalog.activeByCode[refMeta.code] || ''
                 }
+                if (!remapRef) {
+                    remapRef = resolveRefFromLegacy(currentRef, catalog, config.allowBlankScope)
+                }
                 if (!remapRef && legacyRaw) {
                     remapRef = resolveRefFromLegacy(legacyRaw, catalog, config.allowBlankScope)
                 }

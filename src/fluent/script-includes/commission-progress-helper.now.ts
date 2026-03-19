@@ -1,52 +1,5 @@
 import '@servicenow/sdk/global'
 import { Record } from '@servicenow/sdk/core'
-import { normalizeDealType as normalizeDealTypeCanonical } from '../../server/script-includes/deal-type-normalizer.js'
-
-const normalizeDealTypeCanonicalSource = normalizeDealTypeCanonical.toString()
-const resolveCommissionRoleAccessSource = `
-function resolveCommissionRoleAccess(user) {
-    var subject = user || gs.getUser();
-
-    function hasRole(roleName) {
-        try {
-            if (!roleName) {
-                return false;
-            }
-
-            if (typeof gs.hasRole === 'function' && gs.hasRole(roleName)) {
-                return true;
-            }
-
-            if (!subject || typeof subject.hasRole !== 'function') {
-                return false;
-            }
-
-            return !!subject.hasRole(roleName);
-        } catch (e) {
-            return false;
-        }
-    }
-
-    var roles = {
-        admin: hasRole('x_823178_commissio.admin') || hasRole('admin'),
-        manager: hasRole('x_823178_commissio.manager'),
-        finance: hasRole('x_823178_commissio.finance'),
-        rep: hasRole('x_823178_commissio.rep')
-    };
-
-    if (roles.admin || roles.manager || roles.finance) {
-        roles.rep = true;
-    }
-
-    return {
-        roles: roles,
-        canSelectUsers: !!(roles.admin || roles.manager || roles.finance),
-        canViewAllUsers: !!(roles.admin || roles.finance),
-        canViewTeamRollup: !!(roles.admin || roles.manager),
-        canReviewStatements: !!(roles.admin || roles.finance)
-    };
-}
-`
 
 Record({
     $id: Now.ID['commission_progress_helper_script_include'],
@@ -57,7 +10,49 @@ Record({
         client_callable: true,
         access: 'public',
         script: `
-    var resolveCommissionRoleAccess = ${resolveCommissionRoleAccessSource};
+    function resolveCommissionRoleAccess(user) {
+        var subject = user || gs.getUser();
+
+        function hasRole(roleName) {
+            try {
+                if (!roleName) {
+                    return false;
+                }
+
+                if (typeof gs.hasRole === 'function' && gs.hasRole(roleName)) {
+                    return true;
+                }
+
+                if (!subject || typeof subject.hasRole !== 'function') {
+                    return false;
+                }
+
+                return !!subject.hasRole(roleName);
+            } catch (e) {
+                return false;
+            }
+        }
+
+        var roles = {
+            admin: hasRole('x_823178_commissio.admin') || hasRole('admin'),
+            manager: hasRole('x_823178_commissio.manager'),
+            finance: hasRole('x_823178_commissio.finance'),
+            rep: hasRole('x_823178_commissio.rep')
+        };
+
+        if (roles.admin || roles.manager || roles.finance) {
+            roles.rep = true;
+        }
+
+        return {
+            roles: roles,
+            canSelectUsers: !!(roles.admin || roles.manager || roles.finance),
+            canViewAllUsers: !!(roles.admin || roles.finance),
+            canViewTeamRollup: !!(roles.admin || roles.manager),
+            canReviewStatements: !!(roles.admin || roles.finance)
+        };
+    }
+
     var CommissionProgressDataServiceV2 = Class.create();
     CommissionProgressDataServiceV2.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
     
@@ -2223,7 +2218,24 @@ Record({
     },
 
     normalizeDealType: function(value) {
-        return (${normalizeDealTypeCanonicalSource})(value, 'other');
+        var normalized = (value || '').toString().toLowerCase();
+        normalized = normalized.replace(/[\\s\\-]+/g, '_').replace(/__+/g, '_');
+        normalized = normalized.replace(/^_+|_+$/g, '');
+
+        var aliases = {
+            seller_sourced: 'new_business',
+            seller_sourced_deal: 'new_business',
+            referral: 'renewal',
+            referral_deal: 'renewal',
+            referral_assigned: 'renewal',
+            referral_deal_assigned: 'renewal'
+        };
+
+        if (aliases[normalized]) {
+            return aliases[normalized];
+        }
+
+        return normalized || 'other';
     },
 
     resolveDealTypeForRecord: function(gr, refField, fallback) {
@@ -2241,7 +2253,82 @@ Record({
             }
         }
 
+        // Compatibility path for migrated records where ref field value is text instead of sys_id.
+        var fallbackCandidates = [];
+        var seen = {};
+
+        function addCandidate(value) {
+            var raw = (value || '').toString().trim();
+            if (!raw || seen[raw]) {
+                return;
+            }
+            seen[raw] = true;
+            fallbackCandidates.push(raw);
+        }
+
+        addCandidate(refId);
+
+        try {
+            addCandidate(gr.getDisplayValue(refField));
+        } catch (e) {
+            // Ignore display-value lookup errors.
+        }
+
+        for (var i = 0; i < fallbackCandidates.length; i++) {
+            var resolvedFromText = this.resolveDealTypeFromText(fallbackCandidates[i]);
+            if (resolvedFromText) {
+                return resolvedFromText;
+            }
+        }
+
         return resolvedFallback ? this.normalizeDealType(resolvedFallback) : '';
+    },
+
+    resolveDealTypeFromText: function(rawValue) {
+        var raw = (rawValue || '').toString().trim();
+        if (!raw) {
+            return '';
+        }
+
+        var normalized = this.normalizeDealType(raw);
+        if (!normalized) {
+            return '';
+        }
+
+        var byCode = new GlideRecord('x_823178_commissio_deal_types');
+        byCode.addQuery('code', normalized);
+        byCode.addQuery('is_active', true);
+        byCode.setLimit(1);
+        byCode.query();
+        if (byCode.next()) {
+            var codeValue = (byCode.getValue('code') || '').toString();
+            if (codeValue) {
+                return this.normalizeDealType(codeValue);
+            }
+        }
+
+        var byName = new GlideRecord('x_823178_commissio_deal_types');
+        byName.addQuery('name', raw);
+        byName.addQuery('is_active', true);
+        byName.setLimit(1);
+        byName.query();
+        if (byName.next()) {
+            var nameCode = (byName.getValue('code') || '').toString();
+            if (nameCode) {
+                return this.normalizeDealType(nameCode);
+            }
+            return this.normalizeDealType(byName.getValue('name'));
+        }
+
+        // If no matching active deal type row exists yet, keep canonical values usable in dashboards.
+        var canonical = {
+            new_business: true,
+            renewal: true,
+            expansion: true,
+            upsell: true,
+            other: true
+        };
+        return canonical[normalized] ? normalized : '';
     },
 
     resolveDealTypeForTier: function(tierGr, fallback) {
