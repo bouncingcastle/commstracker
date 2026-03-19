@@ -952,7 +952,7 @@ UiPage({
         function normalizeDealTypeKey(value) {
           var key = String(value || '').toLowerCase().trim();
           if (!key) return '';
-          key = key.replace(/[\\s-]+/g, '_');
+          key = key.replace(/[\s-]+/g, '_');
           return key;
         }
 
@@ -1998,7 +1998,7 @@ UiPage({
 
         function formatDealTypeLabel(raw) {
           if (!raw) return 'Other';
-          var key = String(raw).toLowerCase();
+          var key = String(raw).toLowerCase().trim().replace(/[\s-]+/g, '_');
           if (key === 'new_business') return 'New Business';
           if (key === 'renewal') return 'Renewal';
           if (key === 'expansion') return 'Expansion';

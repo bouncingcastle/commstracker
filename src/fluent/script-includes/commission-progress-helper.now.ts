@@ -397,6 +397,10 @@ Record({
                 achieved[dt2] += amount;
             }
 
+            // Safety net: if won-stage flags are inconsistent, use recognized calculation bases.
+            var calcAchieved = this.getAchievedFromCalculations(userId, yearStart, yearEnd);
+            this.mergeAchievedByMax(achieved, calcAchieved);
+
             if (Object.keys(targets).length === 0) {
                 var achievedKeys = Object.keys(achieved);
                 if (achievedKeys.length > 0) {
@@ -456,6 +460,9 @@ Record({
             achieved[dt] = (achieved[dt] || 0) + amount;
         }
 
+        var calcAchieved = this.getAchievedFromCalculations(userIds, yearStart, yearEnd);
+        this.mergeAchievedByMax(achieved, calcAchieved);
+
         Object.keys(targets || {}).forEach(function(dealType) {
             var normalizedDealType = this.normalizeDealType(dealType);
             var target = parseFloat(targets[dealType]) || 0;
@@ -474,6 +481,50 @@ Record({
         }, this);
 
         return progress;
+    },
+
+    getAchievedFromCalculations: function(userScope, yearStart, yearEnd) {
+        var achieved = {};
+        var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
+        if (Array.isArray(userScope)) {
+            if (userScope.length === 0) return achieved;
+            calcGr.addQuery('sales_rep', 'IN', userScope.join(','));
+        } else {
+            if (!userScope) return achieved;
+            calcGr.addQuery('sales_rep', userScope);
+        }
+        calcGr.addQuery('calculation_date', '>=', yearStart);
+        calcGr.addQuery('calculation_date', '<=', yearEnd);
+        calcGr.addQuery('status', '!=', 'error');
+        calcGr.query();
+
+        while (calcGr.next()) {
+            var dealType = this.resolveDealTypeForRecord(calcGr, 'deal_type_ref', '');
+            if (!dealType) continue;
+
+            var baseAmount = parseFloat(calcGr.getValue('commission_base_amount')) || 0;
+            if (baseAmount <= 0) continue;
+
+            achieved[dealType] = (achieved[dealType] || 0) + baseAmount;
+        }
+        return achieved;
+    },
+
+    mergeAchievedByMax: function(primary, secondary) {
+        var source = secondary || {};
+        var target = primary || {};
+        var keys = Object.keys(source);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var incoming = parseFloat(source[key]) || 0;
+            var existing = parseFloat(target[key]) || 0;
+            if (incoming > existing) {
+                target[key] = incoming;
+            } else if (!target.hasOwnProperty(key)) {
+                target[key] = incoming;
+            }
+        }
+        return target;
     },
 
     getCurrentUser: function() {
@@ -2219,7 +2270,7 @@ Record({
 
     normalizeDealType: function(value) {
         var normalized = (value || '').toString().toLowerCase();
-        normalized = normalized.replace(/[\\s\\-]+/g, '_').replace(/__+/g, '_');
+        normalized = normalized.replace(/[\s\-]+/g, '_').replace(/__+/g, '_');
         normalized = normalized.replace(/^_+|_+$/g, '');
 
         var aliases = {
@@ -2248,7 +2299,14 @@ Record({
             if (typeGr.get(refId)) {
                 if (this.isActiveFlag(typeGr.getValue('is_active'))) {
                     var typeCode = (typeGr.getValue('code') || '').toString();
-                    return typeCode ? this.normalizeDealType(typeCode) : (resolvedFallback ? this.normalizeDealType(resolvedFallback) : '');
+                    if (typeCode) {
+                        return this.normalizeDealType(typeCode);
+                    }
+                    var typeName = (typeGr.getValue('name') || '').toString();
+                    if (typeName) {
+                        return this.normalizeDealType(typeName);
+                    }
+                    return resolvedFallback ? this.normalizeDealType(resolvedFallback) : '';
                 }
             }
         }
