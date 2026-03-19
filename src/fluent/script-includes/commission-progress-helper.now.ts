@@ -1122,18 +1122,34 @@ Record({
                 });
             }
 
+            // Fallback: if rate_card is still 0 for any deal type, use the lowest-floor tier rate.
+            // This handles plans where commission_rate_percent on plan_targets is not populated
+            // and rates live only on the tier structure (same logic as getForecastRateCard).
+            var tierBaseFallback = {};
+            for (var tb = 0; tb < details.tiers.length; tb++) {
+                var tbTier = details.tiers[tb];
+                var tbDealType = tbTier.deal_type;
+                var tbRate = parseFloat(tbTier.rate_percent) || 0;
+                var tbFloor = parseFloat(tbTier.floor_percent);
+                if (isNaN(tbFloor)) tbFloor = 0;
+                if (!tbDealType || tbRate <= 0) continue;
+                if (!tierBaseFallback[tbDealType] || tbFloor < tierBaseFallback[tbDealType].floor) {
+                    tierBaseFallback[tbDealType] = { rate: tbRate, floor: tbFloor };
+                }
+            }
+            var fbKeys = Object.keys(tierBaseFallback);
+            for (var fb = 0; fb < fbKeys.length; fb++) {
+                var fbKey = fbKeys[fb];
+                if (!(parseFloat(details.rate_card[fbKey]) > 0)) {
+                    details.rate_card[fbKey] = tierBaseFallback[fbKey].rate;
+                }
+            }
+
             var oteAtTarget = 0;
             var targetTypes = Object.keys(details.targets || {});
             for (var i = 0; i < targetTypes.length; i++) {
-                var targetDealType = this.normalizeDealType(targetTypes[i]);
                 var targetAmount = parseFloat(details.targets[targetTypes[i]] || 0);
-                var targetRate = 0;
-
-                if (targetDealType === 'new_business') targetRate = parseFloat(details.rate_card.new_business || 0);
-                else if (targetDealType === 'renewal') targetRate = parseFloat(details.rate_card.renewal || 0);
-                else if (targetDealType === 'expansion') targetRate = parseFloat(details.rate_card.expansion || 0);
-                else if (targetDealType === 'upsell') targetRate = parseFloat(details.rate_card.upsell || 0);
-
+                var targetRate = parseFloat(details.rate_card[targetTypes[i]] || 0);
                 oteAtTarget += targetAmount * (targetRate / 100);
             }
 

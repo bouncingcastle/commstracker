@@ -130,6 +130,141 @@ export function validateDealMapping(current, previous) {
     }
 }
 
+export function createDealCloseCommissionDraft(current, previous) {
+    var previousStage = previous ? (previous.getValue('stage') || '') : '';
+
+    // Only act when transitioning into closed_won with snapshot completed
+    if (current.getValue('stage') !== 'closed_won' || previousStage === 'closed_won') {
+        return;
+    }
+    if (!current.getValue('snapshot_taken') || !current.getValue('owner_at_close')) {
+        return;
+    }
+
+    try {
+        var dealId = current.getUniqueValue();
+        var salesRep = current.getValue('owner_at_close');
+        var closeDate = current.getValue('close_date');
+        var dealAmount = parseFloat(current.getValue('amount')) || 0;
+        var dealTypeRef = (current.getValue('deal_type_ref') || '').toString();
+
+        if (!salesRep || !closeDate || dealAmount <= 0) {
+            gs.warn('Commission Management: Skipping deal-close draft - missing rep, close date, or amount');
+            return;
+        }
+
+        // Avoid duplicate drafts if rule fires more than once
+        var existingDraft = new GlideRecord('x_823178_commissio_commission_calculations');
+        existingDraft.addQuery('deal', dealId);
+        existingDraft.addNullQuery('payment');
+        existingDraft.addQuery('status', 'draft');
+        existingDraft.query();
+        if (existingDraft.next()) {
+            return;
+        }
+
+        // Find the commission plan active at close date
+        var planGr = new GlideRecord('x_823178_commissio_commission_plans');
+        planGr.addQuery('sales_rep', salesRep);
+        planGr.addQuery('effective_start_date', '<=', closeDate);
+        planGr.addQuery('is_active', true);
+        planGr.addNullQuery('effective_end_date').addOrCondition('effective_end_date', '>=', closeDate);
+        planGr.orderByDesc('effective_start_date');
+        planGr.setLimit(1);
+        planGr.query();
+        if (!planGr.next()) {
+            gs.warn('Commission Management: No commission plan found for deal-close draft on deal ' + current.getValue('deal_name'));
+            return;
+        }
+        var planId = planGr.getUniqueValue();
+
+        // Resolve deal type code
+        var dealTypeCode = '';
+        if (dealTypeRef) {
+            var dtGr = new GlideRecord('x_823178_commissio_deal_types');
+            if (dtGr.get(dealTypeRef)) {
+                dealTypeCode = (dtGr.getValue('code') || '').toString().toLowerCase().replace(/[\s\-]+/g, '_').replace(/__+/g, '_').replace(/^_+|_+$/g, '');
+            }
+        }
+
+        // Get commission rate from plan targets, falling back to lowest tier rate
+        var commissionRate = 0;
+        var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
+        targetGr.addQuery('commission_plan', planId);
+        targetGr.addQuery('is_active', true);
+        targetGr.query();
+        while (targetGr.next()) {
+            if (dealTypeCode) {
+                var tDtGr = new GlideRecord('x_823178_commissio_deal_types');
+                var tDtRef = targetGr.getValue('deal_type_ref');
+                if (tDtRef && tDtGr.get(tDtRef)) {
+                    var tDtCode = (tDtGr.getValue('code') || '').toString().toLowerCase().replace(/[\s\-]+/g, '_').replace(/__+/g, '_').replace(/^_+|_+$/g, '');
+                    if (tDtCode !== dealTypeCode) continue;
+                }
+            }
+            var rate = parseFloat(targetGr.getValue('commission_rate_percent')) || 0;
+            if (rate > 0) {
+                commissionRate = rate;
+                break;
+            }
+        }
+
+        if (commissionRate <= 0) {
+            // Fallback to lowest-floor active tier rate
+            var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
+            tierGr.addQuery('commission_plan', planId);
+            tierGr.addQuery('is_active', true);
+            tierGr.orderBy('attainment_floor_percent');
+            tierGr.query();
+            while (tierGr.next()) {
+                var tierRate = parseFloat(tierGr.getValue('commission_rate_percent')) || 0;
+                if (tierRate > 0) {
+                    commissionRate = tierRate;
+                    break;
+                }
+            }
+        }
+
+        if (commissionRate <= 0) {
+            gs.warn('Commission Management: No commission rate found for deal-close draft on deal ' + current.getValue('deal_name'));
+            return;
+        }
+
+        var commissionAmount = Math.round(dealAmount * (commissionRate / 100) * 100) / 100;
+
+        var calcGr = new GlideRecord('x_823178_commissio_commission_calculations');
+        calcGr.initialize();
+        calcGr.setValue('deal', dealId);
+        calcGr.setValue('sales_rep', salesRep);
+        calcGr.setValue('commission_plan', planId);
+        calcGr.setValue('commission_base_amount', dealAmount);
+        calcGr.setValue('commission_rate', commissionRate);
+        calcGr.setValue('commission_amount', commissionAmount);
+        calcGr.setValue('base_commission_component', commissionAmount);
+        calcGr.setValue('deal_close_date', closeDate);
+        if (dealTypeRef) {
+            calcGr.setValue('deal_type_ref', dealTypeRef);
+        }
+        calcGr.setValue('calculation_date', new GlideDateTime().getDisplayValue());
+        calcGr.setValue('original_calculation_date', new GlideDateTime().getDisplayValue());
+        calcGr.setValue('status', 'draft');
+        calcGr.setValue('calculation_inputs', JSON.stringify({
+            source: 'deal_close_draft',
+            dealAmount: dealAmount,
+            commissionRate: commissionRate,
+            planId: planId,
+            note: 'Estimated commission pending payment receipt. Will be superseded when payment is received.'
+        }));
+
+        var draftId = calcGr.insert();
+        if (draftId) {
+            gs.info('Commission Management: Deal-close draft commission created for deal ' + current.getValue('deal_name') + ' - $' + commissionAmount.toFixed(2));
+        }
+    } catch (e) {
+        gs.error('Commission Management: Error creating deal-close commission draft - ' + e.message);
+    }
+}
+
 function checkApprovedOverride(recordId, requestType) {
     return getApprovedOverrideJustification(recordId, requestType);
 }

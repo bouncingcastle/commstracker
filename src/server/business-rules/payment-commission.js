@@ -1241,8 +1241,21 @@ function clearBonusEarningsForPayment(paymentId) {
 }
 
 function createCommissionCalculation(data) {
+    // Supersede any deal-close draft for this deal before creating the payment-based calculation.
+    // The draft was an estimate; the payment-based calculation is authoritative.
+    if (data.deal) {
+        var draftGr = new GlideRecord('x_823178_commissio_commission_calculations');
+        draftGr.addQuery('deal', data.deal);
+        draftGr.addNullQuery('payment');
+        draftGr.addQuery('status', 'draft');
+        draftGr.query();
+        while (draftGr.next()) {
+            draftGr.deleteRecord();
+        }
+    }
+
     var commissionGr = new GlideRecord('x_823178_commissio_commission_calculations');
-    
+
     // Check for existing calculation
     commissionGr.addQuery('payment', data.payment);
     commissionGr.query();

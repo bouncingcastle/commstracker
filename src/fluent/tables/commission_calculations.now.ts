@@ -17,7 +17,6 @@ export const x_823178_commissio_commission_calculations = Table({
         payment: ReferenceColumn({
             label: 'Payment',
             referenceTable: 'x_823178_commissio_payments',
-            mandatory: true,
             attributes: {
                 encode_utf8: false,
             },
