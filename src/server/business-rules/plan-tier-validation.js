@@ -136,16 +136,11 @@ function validateContiguousCoverage(current, currentFloor, currentCeiling, planT
         return true;
     }
 
-    if (Math.abs((ranges[0].floor || 0) - 0) > 0.0001) {
-        gs.addErrorMessage('Tier bands must start at 0% attainment for each deal type scope.');
-        return false;
-    }
-
     for (var i = 1; i < ranges.length; i++) {
         var prev = ranges[i - 1];
         var next = ranges[i];
         if (Math.abs((prev.ceiling || 0) - (next.floor || 0)) > 0.0001) {
-            gs.addErrorMessage('Tier bands must be contiguous with no gaps for each scope (previous ceiling must equal next floor).');
+            gs.addErrorMessage('Tier bands must be contiguous with no gaps for each scope (previous ceiling must equal next floor). The plan target rate is used as the 0% baseline before the first tier floor.');
             return false;
         }
     }
