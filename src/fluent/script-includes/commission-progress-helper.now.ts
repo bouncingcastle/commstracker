@@ -93,12 +93,15 @@ Record({
                     pipeline_value: 0,
                     breakdown: {},
                     deal_breakdown: {},
+                    deal_type_labels: {},
                     won_commissions_by_month: [],
                     recent_calculations: [],
                     active_deals: [],
                     active_plan: null
                 }
             };
+            var activeDealTypeLabels = this.getActiveDealTypeLabelMap();
+            result.data.deal_type_labels = activeDealTypeLabels;
 
             var requestedYear = parseInt(this.getParameter('sysparm_year') || this.getParameter('year'), 10);
             var today = new GlideDateTime();
@@ -183,7 +186,7 @@ Record({
             var totalBaseComponent = 0;
             var totalAcceleratorDelta = 0;
             var totalBonusComponent = 0;
-            var breakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
+            var breakdown = this.createDealTypeTotals(activeDealTypeLabels);
             var wonCommissionsByMonthMap = {};
             var recentCalcs = [];
 
@@ -222,11 +225,11 @@ Record({
                 totalAcceleratorDelta += explainability.accelerator_component;
                 totalBonusComponent += explainability.bonus_component;
 
-                if (breakdown.hasOwnProperty(dealType)) {
-                    breakdown[dealType] += commAmount;
-                } else {
-                    breakdown.other += commAmount;
+                var breakdownType = dealType || 'other';
+                if (!breakdown.hasOwnProperty(breakdownType)) {
+                    breakdown[breakdownType] = 0;
                 }
+                breakdown[breakdownType] += commAmount;
 
                 if (recentCalcs.length < 10) {
                     var calcDealName = calcGr.getDisplayValue('deal') || '';
@@ -298,7 +301,7 @@ Record({
 
             var activeDeals = [];
             var pipelineValue = 0;
-            var dealBreakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
+            var dealBreakdown = this.createDealTypeTotals(activeDealTypeLabels);
             var dealCount = 0;
             var activeDealTypeCache = {};
 
@@ -308,11 +311,11 @@ Record({
 
                 pipelineValue += dealAmount;
 
-                if (dealBreakdown.hasOwnProperty(dealType2)) {
-                    dealBreakdown[dealType2] += dealAmount;
-                } else {
-                    dealBreakdown.other += dealAmount;
+                var pipelineType = dealType2 || 'other';
+                if (!dealBreakdown.hasOwnProperty(pipelineType)) {
+                    dealBreakdown[pipelineType] = 0;
                 }
+                dealBreakdown[pipelineType] += dealAmount;
 
                 if (activeDeals.length < 20) {
                     activeDeals.push({
@@ -525,6 +528,49 @@ Record({
             }
         }
         return target;
+    },
+
+    getActiveDealTypeLabelMap: function() {
+        var labels = {};
+        try {
+            var typeGr = new GlideRecord('x_823178_commissio_deal_types');
+            typeGr.addEncodedQuery('is_active=true^ORis_active=1');
+            typeGr.orderBy('display_order');
+            typeGr.orderBy('name');
+            typeGr.query();
+
+            while (typeGr.next()) {
+                var normalizedCode = this.resolvePreferredDealTypeCode(typeGr.getValue('code'), typeGr.getValue('name'), '');
+                if (!normalizedCode || labels[normalizedCode]) {
+                    continue;
+                }
+                var label = (typeGr.getValue('name') || '').toString();
+                if (!label) {
+                    label = normalizedCode.replace(/_/g, ' ');
+                }
+                labels[normalizedCode] = label;
+            }
+        } catch (e) {
+            // If lookup fails, UI will fall back to friendly formatting.
+        }
+
+        if (!labels.other) {
+            labels.other = 'Other';
+        }
+        return labels;
+    },
+
+    createDealTypeTotals: function(labelMap) {
+        var totals = {};
+        var labels = labelMap || {};
+        var keys = Object.keys(labels);
+        for (var i = 0; i < keys.length; i++) {
+            totals[keys[i]] = 0;
+        }
+        if (!totals.hasOwnProperty('other')) {
+            totals.other = 0;
+        }
+        return totals;
     },
 
     getCurrentUser: function() {
@@ -1530,7 +1576,7 @@ Record({
 
         var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
         targetGr.addQuery('commission_plan', planId);
-        targetGr.addQuery('is_active', true);
+        targetGr.addEncodedQuery('is_active=true^ORis_active=1');
         targetGr.query();
 
         while (targetGr.next()) {
@@ -1539,20 +1585,77 @@ Record({
             if (!dealType || targetRate <= 0) {
                 continue;
             }
-            if (rateCard.hasOwnProperty(dealType)) {
-                rateCard[dealType] = targetRate;
+            rateCard[dealType] = targetRate;
+        }
+
+        // Forecast should still work when plan target rates are not populated.
+        // Fall back to the lowest active tier rate per deal type.
+        var tierBaseRates = this.getForecastTierBaseRates(planId);
+        var tierDealTypes = Object.keys(tierBaseRates || {});
+        for (var i = 0; i < tierDealTypes.length; i++) {
+            var key = tierDealTypes[i];
+            var current = parseFloat(rateCard[key]) || 0;
+            if (current > 0) {
+                continue;
+            }
+            var tierRate = parseFloat(tierBaseRates[key]) || 0;
+            if (tierRate > 0) {
+                rateCard[key] = tierRate;
             }
         }
 
         return rateCard;
     },
 
+    getForecastTierBaseRates: function(planId) {
+        var tierRates = {};
+        if (!planId) {
+            return tierRates;
+        }
+
+        var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
+        tierGr.addQuery('commission_plan', planId);
+        tierGr.addEncodedQuery('is_active=true^ORis_active=1');
+        tierGr.query();
+
+        while (tierGr.next()) {
+            var dealType = this.resolveDealTypeForTier(tierGr, '');
+            var rate = parseFloat(tierGr.getValue('commission_rate_percent')) || 0;
+            var floor = parseFloat(tierGr.getValue('attainment_floor_percent'));
+            if (isNaN(floor)) {
+                floor = 0;
+            }
+            if (!dealType || rate <= 0) {
+                continue;
+            }
+
+            if (!tierRates[dealType] || floor < tierRates[dealType].floor) {
+                tierRates[dealType] = {
+                    rate: rate,
+                    floor: floor
+                };
+            }
+        }
+
+        var baseRates = {};
+        var keys = Object.keys(tierRates);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            baseRates[key] = parseFloat(tierRates[key].rate) || 0;
+        }
+        return baseRates;
+    },
+
     resolveForecastRate: function(rateCard, dealType) {
         var normalized = this.normalizeDealType(dealType);
-        if (normalized === 'new_business') return rateCard.new_business || 0;
-        if (normalized === 'renewal') return rateCard.renewal || 0;
-        if (normalized === 'expansion') return rateCard.expansion || 0;
-        if (normalized === 'upsell') return rateCard.upsell || 0;
+        var direct = parseFloat(rateCard[normalized]) || 0;
+        if (direct > 0) {
+            return direct;
+        }
+        if (normalized === 'new_business') return parseFloat(rateCard.new_business) || 0;
+        if (normalized === 'renewal') return parseFloat(rateCard.renewal) || 0;
+        if (normalized === 'expansion') return parseFloat(rateCard.expansion) || 0;
+        if (normalized === 'upsell') return parseFloat(rateCard.upsell) || 0;
         return 0;
     },
 
@@ -2289,6 +2392,33 @@ Record({
         return normalized || 'other';
     },
 
+    isCanonicalDealType: function(value) {
+        var normalized = this.normalizeDealType(value);
+        return normalized === 'new_business' ||
+            normalized === 'renewal' ||
+            normalized === 'expansion' ||
+            normalized === 'upsell' ||
+            normalized === 'other';
+    },
+
+    resolvePreferredDealTypeCode: function(rawCode, rawName, fallback) {
+        var normalizedCode = this.normalizeDealType(rawCode || '');
+        var normalizedName = this.normalizeDealType(rawName || '');
+
+        // If name is canonical but code is malformed/custom, trust the governed name.
+        if (normalizedName && this.isCanonicalDealType(normalizedName) && !this.isCanonicalDealType(normalizedCode)) {
+            return normalizedName;
+        }
+
+        if (normalizedCode) {
+            return normalizedCode;
+        }
+        if (normalizedName) {
+            return normalizedName;
+        }
+        return fallback ? this.normalizeDealType(fallback) : '';
+    },
+
     resolveDealTypeForRecord: function(gr, refField, fallback) {
         var resolvedFallback = (typeof fallback === 'string') ? fallback : 'other';
         if (!gr) return resolvedFallback ? this.normalizeDealType(resolvedFallback) : '';
@@ -2299,14 +2429,8 @@ Record({
             if (typeGr.get(refId)) {
                 if (this.isActiveFlag(typeGr.getValue('is_active'))) {
                     var typeCode = (typeGr.getValue('code') || '').toString();
-                    if (typeCode) {
-                        return this.normalizeDealType(typeCode);
-                    }
                     var typeName = (typeGr.getValue('name') || '').toString();
-                    if (typeName) {
-                        return this.normalizeDealType(typeName);
-                    }
-                    return resolvedFallback ? this.normalizeDealType(resolvedFallback) : '';
+                    return this.resolvePreferredDealTypeCode(typeCode, typeName, resolvedFallback);
                 }
             }
         }
@@ -2355,27 +2479,24 @@ Record({
 
         var byCode = new GlideRecord('x_823178_commissio_deal_types');
         byCode.addQuery('code', normalized);
-        byCode.addQuery('is_active', true);
+        byCode.addEncodedQuery('is_active=true^ORis_active=1');
         byCode.setLimit(1);
         byCode.query();
         if (byCode.next()) {
             var codeValue = (byCode.getValue('code') || '').toString();
-            if (codeValue) {
-                return this.normalizeDealType(codeValue);
-            }
+            var codeName = (byCode.getValue('name') || '').toString();
+            return this.resolvePreferredDealTypeCode(codeValue, codeName, '');
         }
 
         var byName = new GlideRecord('x_823178_commissio_deal_types');
         byName.addQuery('name', raw);
-        byName.addQuery('is_active', true);
+        byName.addEncodedQuery('is_active=true^ORis_active=1');
         byName.setLimit(1);
         byName.query();
         if (byName.next()) {
             var nameCode = (byName.getValue('code') || '').toString();
-            if (nameCode) {
-                return this.normalizeDealType(nameCode);
-            }
-            return this.normalizeDealType(byName.getValue('name'));
+            var nameValue = (byName.getValue('name') || '').toString();
+            return this.resolvePreferredDealTypeCode(nameCode, nameValue, '');
         }
 
         // If no matching active deal type row exists yet, keep canonical values usable in dashboards.

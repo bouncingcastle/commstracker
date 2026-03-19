@@ -567,6 +567,7 @@ UiPage({
         var canViewAllUsers = false;
         var canViewTeamRollup = false;
         var estimatorDealTypeCatalog = [];
+        var dealTypeLabelMap = {};
 
         function hasClientRole(roleName) {
           try {
@@ -952,7 +953,7 @@ UiPage({
         function normalizeDealTypeKey(value) {
           var key = String(value || '').toLowerCase().trim();
           if (!key) return '';
-          key = key.replace(/[\s-]+/g, '_');
+          key = key.replace(/[\\s-]+/g, '_');
           return key;
         }
 
@@ -1255,6 +1256,10 @@ UiPage({
         }
 
         function updateMetrics(data) {
+          if (data && data.deal_type_labels && typeof data.deal_type_labels === 'object') {
+            dealTypeLabelMap = data.deal_type_labels;
+          }
+
           // Total Earned
           var earned = parseFloat(data.total_earned || 0);
           document.getElementById('totalEarned').textContent = '$' + earned.toFixed(2);
@@ -1408,7 +1413,7 @@ UiPage({
 
             item.innerHTML = 
               '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">' +
-                '<div style="font-weight:600;color:var(--text);">' + statusEmoji + ' ' + capitalizeFirst(dealType.replace(/_/g, ' ')) + '</div>' +
+                '<div style="font-weight:600;color:var(--text);">' + statusEmoji + ' ' + formatDealTypeLabel(dealType) + '</div>' +
                 '<div style="font-size:14px;font-weight:700;color:' + statusColor + ';font-variant-numeric:tabular-nums;">' + attainment.toFixed(1) + '%</div>' +
               '</div>' +
               '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;font-size:12px;">' +
@@ -1507,7 +1512,7 @@ UiPage({
             var item = document.createElement('div');
             item.className = 'quota-item';
             item.innerHTML = 
-              '<span class="quota-label">' + capitalizeFirst(dealType.replace(/_/g, ' ')) + '</span>' +
+              '<span class="quota-label">' + formatDealTypeLabel(dealType) + '</span>' +
               '<span class="quota-amount">$' + parseFloat(amount).toFixed(0) + '</span>';
             container.appendChild(item);
           });
@@ -1998,12 +2003,16 @@ UiPage({
 
         function formatDealTypeLabel(raw) {
           if (!raw) return 'Other';
-          var key = String(raw).toLowerCase().trim().replace(/[\s-]+/g, '_');
-          if (key === 'new_business') return 'New Business';
-          if (key === 'renewal') return 'Renewal';
-          if (key === 'expansion') return 'Expansion';
-          if (key === 'upsell') return 'Upsell';
-          return capitalizeFirst(key.replace(/_/g, ' '));
+          var key = String(raw).toLowerCase().trim().replace(/[\\s-]+/g, '_');
+          if (dealTypeLabelMap && dealTypeLabelMap[key]) {
+            return String(dealTypeLabelMap[key]);
+          }
+          return key
+            .replace(/_/g, ' ')
+            .split(' ')
+            .filter(function(part) { return part; })
+            .map(function(part) { return part.charAt(0).toUpperCase() + part.slice(1); })
+            .join(' ');
         }
 
         function updateCalculationsTable(calcs) {

@@ -348,7 +348,6 @@ export function calculateCommissionOnPayment(current, previous) {
 function shouldRecalculate(paymentRecord) {
     // Allow recalculation if specifically requested or if calculation is in error state
     if (paymentRecord.getValue('commission_calculated') === PAYMENT_CALC_STATE.ERROR) {
-            commissionGr.setValue('status', CALC_STATUS.DRAFT);
         return true;
     }
     
