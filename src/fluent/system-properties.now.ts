@@ -231,7 +231,9 @@ Record({
         value: '2',
         description: 'Number of pay cycles after payment before commission becomes payout-eligible (default: 2)',
         type: 'integer',
-        suffix: 'Commission Management',
+        suffix: 'pay_cycles_after_payment',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -243,7 +245,9 @@ Record({
         value: '2026-01-01',
         description: 'Anchor date for pay-cycle boundaries in cycle payout mode (YYYY-MM-DD)',
         type: 'string',
-        suffix: 'Commission Management',
+        suffix: 'pay_cycle_anchor_date',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -256,7 +260,9 @@ Record({
         description:
             'Default commission recognition basis for new plan recognition policies (cash_received, invoice_issued, booking, milestone)',
         type: 'string',
-        suffix: 'Commission Management',
+        suffix: 'default_recognition_basis',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -268,7 +274,9 @@ Record({
         value: '28',
         description: 'Fixed wait days after payment in days payout mode (default: 28)',
         type: 'integer',
-        suffix: 'Commission Management',
+        suffix: 'payout_wait_days',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -280,7 +288,9 @@ Record({
         value: '5000',
         description: 'Maximum commission calculations updated per backfill run (default: 5000)',
         type: 'integer',
-        suffix: 'Commission Management',
+        suffix: 'payout_backfill_limit',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -293,7 +303,9 @@ Record({
         description:
             'When true, backfill recalculates payout eligibility for rows that already have payout_eligible_date',
         type: 'boolean',
-        suffix: 'Commission Management',
+        suffix: 'payout_backfill_recompute_existing',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -319,7 +331,9 @@ Record({
         description:
             'Controls whether demo/test data seed scripts are allowed in deployment workflows (default: false)',
         type: 'boolean',
-        suffix: 'Commission Management',
+        suffix: 'seed_demo_data_enabled',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -344,7 +358,9 @@ Record({
         value: 'strict',
         description: 'Seed deployment idempotency mode (strict|audit_only). strict blocks non-controlled seed runs.',
         type: 'string',
-        suffix: 'Commission Management',
+        suffix: 'seed_idempotency_mode',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -356,7 +372,9 @@ Record({
         value: '48',
         description: 'SLA in hours for statement approval workflow due date calculation (default: 48)',
         type: 'integer',
-        suffix: 'Commission Management',
+        suffix: 'statement_approval_sla_hours',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -369,7 +387,9 @@ Record({
         description:
             'Optional override year for month-end readiness audit target period (blank = previous month from current date)',
         type: 'string',
-        suffix: 'Commission Management',
+        suffix: 'audit_target_year',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -394,7 +414,9 @@ Record({
         value: '7',
         description: 'Forecast assumption: days from close to invoice issue for invoice_issued recognition basis',
         type: 'integer',
-        suffix: 'Commission Management',
+        suffix: 'forecast_invoice_issue_days',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 
@@ -406,7 +428,9 @@ Record({
         value: '30',
         description: 'Forecast assumption: days from close to cash receipt for cash_received recognition basis',
         type: 'integer',
-        suffix: 'Commission Management',
+        suffix: 'forecast_cash_receipt_days',
+        ignore_cache: false,
+        is_private: false,
     },
 })
 

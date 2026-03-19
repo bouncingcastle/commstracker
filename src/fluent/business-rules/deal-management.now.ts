@@ -1,13 +1,17 @@
 import '@servicenow/sdk/global'
 import { BusinessRule } from '@servicenow/sdk/core'
-import { snapshotDealOnClose, validateDealMapping, createDealCloseCommissionDraft } from '../../server/business-rules/deal-management.js'
+import {
+    snapshotDealOnClose,
+    validateDealMapping,
+    createDealCloseCommissionDraft,
+} from '../../server/business-rules/deal-management.js'
 
 // Business rule to snapshot deal owner when deal is closed won
 BusinessRule({
     $id: Now.ID['deal_snapshot'],
     name: 'Deal Snapshot on Close',
     table: 'x_823178_commissio_deals',
-    action: ['insert', 'update'],
+    action: ['update', 'insert'],
     when: 'before',
     script: snapshotDealOnClose,
     active: true,
@@ -38,5 +42,6 @@ BusinessRule({
     script: createDealCloseCommissionDraft,
     active: true,
     order: 200,
-    description: 'Creates a draft commission calculation when a deal is marked closed won, allowing pending commissions to appear on the dashboard before payment is received.',
+    description:
+        'Creates a draft commission calculation when a deal is marked closed won, allowing pending commissions to appear on the dashboard before payment is received.',
 })

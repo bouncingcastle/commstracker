@@ -116,6 +116,28 @@ export const x_823178_commissio_commission_plans = Table({
             scale: 2,
             label: 'Expansion Rate (%)',
         }),
+        deal_type: StringColumn({
+            choices: {
+                renewal: {
+                    label: 'Renewal',
+                    sequence: 1,
+                },
+                expansion: {
+                    label: 'Expansion',
+                    sequence: 2,
+                },
+                upsell: {
+                    label: 'Upsell',
+                    sequence: 3,
+                },
+                new_business: {
+                    label: 'New Business',
+                    sequence: 0,
+                },
+            },
+            dropdown: 'dropdown_with_none',
+            label: 'Deal Type',
+        }),
     },
     audit: true,
     index: [
@@ -125,12 +147,12 @@ export const x_823178_commissio_commission_plans = Table({
             element: 'plan_overlap_approved_by',
         },
         {
-            name: 'index2',
+            name: 'index3',
             unique: false,
             element: 'superseded_by_plan',
         },
         {
-            name: 'index3',
+            name: 'index2',
             unique: false,
             element: 'sales_rep',
         },

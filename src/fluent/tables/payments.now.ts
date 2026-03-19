@@ -141,12 +141,12 @@ export const x_823178_commissio_payments = Table({
     accessibleFrom: 'public',
     index: [
         {
-            name: 'index',
+            name: 'index2',
             unique: false,
             element: 'deal',
         },
         {
-            name: 'index2',
+            name: 'index',
             unique: false,
             element: 'commission_calculation_id',
         },

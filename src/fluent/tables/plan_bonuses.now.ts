@@ -110,6 +110,33 @@ export const x_823178_commissio_plan_bonuses = Table({
             label: 'Description',
             maxLength: 500,
         }),
+        deal_type: StringColumn({
+            default: 'any',
+            choices: {
+                new_business: {
+                    label: 'New Business',
+                    sequence: 1,
+                },
+                upsell: {
+                    label: 'Upsell',
+                    sequence: 4,
+                },
+                renewal: {
+                    label: 'Renewal',
+                    sequence: 2,
+                },
+                expansion: {
+                    label: 'Expansion',
+                    sequence: 3,
+                },
+                any: {
+                    label: 'Any',
+                    sequence: 0,
+                },
+            },
+            dropdown: 'dropdown_with_none',
+            label: 'Deal Type',
+        }),
     },
     audit: true,
     accessibleFrom: 'public',

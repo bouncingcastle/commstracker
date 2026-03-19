@@ -1,11 +1,19 @@
-import '@servicenow/sdk/global'
 import { Record } from '@servicenow/sdk/core'
 
 Record({
-    $id: 'legacy_deal_type_cutover_remediation_job',
+    $id: Now.ID['10301e2bc53146d3a10164df1b6caf02'],
     table: 'sysauto_script',
     data: {
+        active: 'false',
+        advanced: 'false',
+        conditional: 'false',
         name: 'Commission Legacy Deal Type Cutover Remediation',
+        run_dayofmonth: '1',
+        run_dayofweek: '1',
+        run_month: '1',
+        run_time: '2026-03-18 23:55:21',
+        run_type: 'on_demand',
+        run_weekinmonth: '1',
         script: `(function executeLegacyDealTypeCutoverRemediation() {
     var dryRun = toBool(gs.getProperty('x_823178_commissio.legacy_cutover_dry_run', 'true'));
     var maxRowsPerTable = toPositiveInt(gs.getProperty('x_823178_commissio.legacy_cutover_max_rows_per_table', '20000'), 20000);
@@ -146,9 +154,6 @@ Record({
                     var refMeta = catalog.byId[currentRef];
                     if (refMeta && refMeta.code) {
                         remapRef = catalog.activeByCode[refMeta.code] || '';
-                    }
-                    if (!remapRef) {
-                        remapRef = resolveRefFromLegacy(currentRef, catalog, config.allowBlankScope);
                     }
                     if (!remapRef && legacyRaw) {
                         remapRef = resolveRefFromLegacy(legacyRaw, catalog, config.allowBlankScope);
@@ -414,13 +419,6 @@ Record({
         }
     }
 })();`,
-        active: false,
-        run_type: 'on_demand',
-        run_time: '2026-03-19 03:29:59',
-        description:
-            'One-time strict-cutover remediation. Maps legacy deal_type strings to active deal_type_ref, clears deprecated deal_type values, and reports unresolved records. Controlled by x_823178_commissio.legacy_cutover_* properties.',
-        advanced: 'false',
-        conditional: 'false',
         upgrade_safe: 'false',
     },
 })

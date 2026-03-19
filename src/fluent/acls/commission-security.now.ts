@@ -1,11 +1,6 @@
 import '@servicenow/sdk/global'
 import { Acl } from '@servicenow/sdk/core'
-import {
-    commissionRepRole,
-    commissionAdminRole,
-    commissionFinanceRole,
-    commissionManagerRole,
-} from '../roles/commission-roles.now'
+import { commissionRepRole, commissionAdminRole, commissionFinanceRole } from '../roles/commission-roles.now'
 
 // Commission Plans - Role-aware read scope
 Acl({
@@ -13,7 +8,30 @@ Acl({
     type: 'record',
     table: 'x_823178_commissio_commission_plans',
     operation: 'read',
-    roles: [commissionAdminRole, commissionFinanceRole, commissionManagerRole, commissionRepRole],
+    roles: [
+        commissionAdminRole,
+        commissionFinanceRole,
+        {
+            name: 'x_823178_commissio.manager',
+            assignable_by: '',
+            can_delegate: false,
+            description: 'Commission managers can view direct-report performance and team rollups',
+            elevated_privilege: false,
+            grantable: true,
+            scoped_admin: false,
+            suffix: 'manager',
+        },
+        {
+            name: 'x_823178_commissio.rep',
+            assignable_by: '',
+            can_delegate: false,
+            description: 'Sales representatives can view their own commission calculations and statements',
+            elevated_privilege: false,
+            grantable: true,
+            scoped_admin: false,
+            suffix: 'rep',
+        },
+    ],
     active: true,
     adminOverrides: true,
     script: `
@@ -50,7 +68,8 @@ Acl({
             }
         }
     `,
-    description: 'Admins/finance can read all plans; reps read their own plans; managers read plans for their governed reps',
+    description:
+        'Admins/finance can read all plans; reps read their own plans; managers read plans for their governed reps',
 })
 
 Acl({
@@ -268,7 +287,7 @@ Acl({
     type: 'record',
     table: 'x_823178_commissio_plan_targets',
     operation: 'read',
-    roles: [commissionAdminRole, commissionFinanceRole, commissionManagerRole, commissionRepRole],
+    roles: [commissionAdminRole, commissionFinanceRole, commissionRepRole],
     active: true,
     admin_overrides: true,
     script: `
@@ -321,7 +340,7 @@ Acl({
     type: 'record',
     table: 'x_823178_commissio_plan_tiers',
     operation: 'read',
-    roles: [commissionAdminRole, commissionFinanceRole, commissionManagerRole, commissionRepRole],
+    roles: [commissionAdminRole, commissionFinanceRole, commissionRepRole],
     active: true,
     admin_overrides: true,
     script: `
@@ -374,7 +393,7 @@ Acl({
     type: 'record',
     table: 'x_823178_commissio_plan_bonuses',
     operation: 'read',
-    roles: [commissionAdminRole, commissionFinanceRole, commissionManagerRole, commissionRepRole],
+    roles: [commissionAdminRole, commissionFinanceRole, commissionRepRole],
     active: true,
     admin_overrides: true,
     script: `
@@ -451,7 +470,7 @@ Acl({
     type: 'record',
     table: 'x_823178_commissio_manager_team_memberships',
     operation: 'read',
-    roles: [commissionAdminRole, commissionManagerRole],
+    roles: [commissionAdminRole],
     active: true,
     admin_overrides: true,
     script: `

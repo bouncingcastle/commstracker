@@ -43,6 +43,10 @@ export const x_823178_commissio_deal_classifications = Table({
             label: 'Notes',
             maxLength: 500,
         }),
+        deal_type: StringColumn({
+            label: 'Classification Code',
+            mandatory: true,
+        }),
     },
     audit: true,
     accessibleFrom: 'public',

@@ -17,6 +17,7 @@ export const x_823178_commissio_commission_calculations = Table({
         payment: ReferenceColumn({
             label: 'Payment',
             referenceTable: 'x_823178_commissio_payments',
+            mandatory: false,
             attributes: {
                 encode_utf8: false,
             },
@@ -252,6 +253,28 @@ export const x_823178_commissio_commission_calculations = Table({
             maxLength: 1000,
             readOnly: true,
         }),
+        deal_type: StringColumn({
+            choices: {
+                renewal: {
+                    label: 'Renewal',
+                    sequence: 1,
+                },
+                expansion: {
+                    label: 'Expansion',
+                    sequence: 2,
+                },
+                upsell: {
+                    label: 'Upsell',
+                    sequence: 3,
+                },
+                new_business: {
+                    label: 'New Business',
+                    sequence: 0,
+                },
+            },
+            dropdown: 'dropdown_with_none',
+            label: 'Deal Type',
+        }),
     },
     audit: true,
     accessibleFrom: 'public',
@@ -260,57 +283,57 @@ export const x_823178_commissio_commission_calculations = Table({
     allowWebServiceAccess: true,
     index: [
         {
-            name: 'index',
+            name: 'index2',
             unique: false,
             element: 'commission_plan',
         },
         {
-            name: 'index2',
+            name: 'index3',
             unique: false,
             element: 'deal',
         },
         {
-            name: 'index3',
+            name: 'index4',
             unique: false,
             element: 'deal_type_ref',
         },
         {
-            name: 'index4',
+            name: 'index7',
             unique: false,
             element: 'invoice',
         },
         {
-            name: 'index5',
+            name: 'index',
             unique: false,
             element: 'approved_by',
         },
         {
-            name: 'index6',
+            name: 'index8',
             unique: false,
             element: 'payment',
         },
         {
-            name: 'index7',
+            name: 'index5',
             unique: false,
             element: 'dispute_opened_by',
         },
         {
-            name: 'index8',
+            name: 'index10',
             unique: false,
             element: 'sales_rep',
         },
         {
-            name: 'index9',
+            name: 'index11',
             unique: false,
             element: 'statement',
         },
         {
-            name: 'index10',
+            name: 'index9',
             unique: false,
             element: 'recognition_policy_record',
         },
         {
-            name: 'index11',
+            name: 'index6',
             unique: false,
             element: 'dispute_resolved_by',
         },
