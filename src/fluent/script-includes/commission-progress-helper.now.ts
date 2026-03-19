@@ -1,8 +1,23 @@
 import '@servicenow/sdk/global'
 import { Record } from '@servicenow/sdk/core'
-import { normalizeDealType as normalizeDealTypeCanonical } from '../../server/script-includes/deal-type-normalizer.js'
 
-const normalizeDealTypeCanonicalSource = normalizeDealTypeCanonical.toString()
+const normalizeDealTypeCanonicalSource = `function normalizeDealType(value, fallback) {
+    var normalized = (value || '').toString().toLowerCase();
+    normalized = normalized.replace(/[^a-z0-9]+/g, '_').replace(/_+/g, '_');
+    normalized = normalized.replace(/^_+|_+$/g, '');
+    var aliases = {
+        seller_sourced: 'new_business',
+        seller_sourced_deal: 'new_business',
+        referral: 'renewal',
+        referral_deal: 'renewal',
+        referral_assigned: 'renewal',
+        referral_deal_assigned: 'renewal'
+    };
+    if (aliases[normalized]) {
+        return aliases[normalized];
+    }
+    return normalized || fallback || '';
+}`
 const resolveCommissionRoleAccessSource = `
 function resolveCommissionRoleAccess(user) {
     var subject = user || gs.getUser();

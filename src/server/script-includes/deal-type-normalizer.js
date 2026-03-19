@@ -1,6 +1,6 @@
 export function normalizeDealType(value, fallback) {
     var normalized = (value || '').toString().toLowerCase();
-    normalized = normalized.replace(/[\s\-]+/g, '_').replace(/__+/g, '_');
+    normalized = normalized.replace(/[^a-z0-9]+/g, '_').replace(/_+/g, '_');
     normalized = normalized.replace(/^_+|_+$/g, '');
 
     var aliases = {
