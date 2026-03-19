@@ -383,6 +383,46 @@ declare global {
                         id: '106867d683d73210a0365dc6feaad302'
                         deleted: true
                     }
+                    '1098d45acd90459d84de0d4dd73ded6f': {
+                        table: 'sys_script'
+                        id: '1098d45acd90459d84de0d4dd73ded6f'
+                    }
+                    '10a17fa3e177431192b5e29ad27ea6a6': {
+                        table: 'sys_script'
+                        id: '10a17fa3e177431192b5e29ad27ea6a6'
+                    }
+                    '10a21d84841243cba6149a2d50f6f879': {
+                        table: 'sys_script'
+                        id: '10a21d84841243cba6149a2d50f6f879'
+                    }
+                    '1114f58186ed4023975240c88fefda2e': {
+                        table: 'sys_security_acl'
+                        id: '1114f58186ed4023975240c88fefda2e'
+                    }
+                    '112d8661ff1c44f3b667e068ebae8ff9': {
+                        table: 'sys_script'
+                        id: '112d8661ff1c44f3b667e068ebae8ff9'
+                    }
+                    '1143bdf2833f401fa18be6ceb476a972': {
+                        table: 'sys_script'
+                        id: '1143bdf2833f401fa18be6ceb476a972'
+                    }
+                    '1169fef5632841b19cc14ca53d1d801c': {
+                        table: 'sys_security_acl'
+                        id: '1169fef5632841b19cc14ca53d1d801c'
+                    }
+                    '119bcc10dd184778b6851f12fca6191b': {
+                        table: 'sys_app_module'
+                        id: '119bcc10dd184778b6851f12fca6191b'
+                    }
+                    '11d29894c474475c93ff8ce88573e4ab': {
+                        table: 'sysauto_script'
+                        id: '11d29894c474475c93ff8ce88573e4ab'
+                    }
+                    '1204f5230c9742e2a43464fd6a3362c3': {
+                        table: 'sys_script'
+                        id: '1204f5230c9742e2a43464fd6a3362c3'
+                    }
                     '1221475683933210a0365dc6feaad3ab': {
                         table: 'sys_ui_element'
                         id: '1221475683933210a0365dc6feaad3ab'
@@ -508,6 +548,74 @@ declare global {
                         table: 'sys_ui_element'
                         id: '1621875683933210a0365dc6feaad30a'
                         deleted: true
+                    }
+                    '16221f33dd11460090beb3645b15ee68': {
+                        table: 'sys_security_acl'
+                        id: '16221f33dd11460090beb3645b15ee68'
+                    }
+                    '1669b51815404f9aa1bcab93f4f0be08': {
+                        table: 'sysauto_script'
+                        id: '1669b51815404f9aa1bcab93f4f0be08'
+                    }
+                    '1690159b65d443c3a94d6a8043836e70': {
+                        table: 'sysauto_script'
+                        id: '1690159b65d443c3a94d6a8043836e70'
+                    }
+                    '16976a2a01624d1db8258169669a4daf': {
+                        table: 'sys_ui_action'
+                        id: '16976a2a01624d1db8258169669a4daf'
+                    }
+                    '169ada80ef154bf0915e18e6c94254ad': {
+                        table: 'sys_app_module'
+                        id: '169ada80ef154bf0915e18e6c94254ad'
+                    }
+                    '16d22ae6ca7744aeb997dc066c76f516': {
+                        table: 'sys_ui_action'
+                        id: '16d22ae6ca7744aeb997dc066c76f516'
+                    }
+                    '17046c4539e44913bcad11ac5caab6ad': {
+                        table: 'sys_app_module'
+                        id: '17046c4539e44913bcad11ac5caab6ad'
+                    }
+                    '17440a652cf34beba172309d0ef60b0e': {
+                        table: 'sysauto_script'
+                        id: '17440a652cf34beba172309d0ef60b0e'
+                    }
+                    '175f0c9c5b9d49bfbd450d2445bd5db1': {
+                        table: 'sys_script'
+                        id: '175f0c9c5b9d49bfbd450d2445bd5db1'
+                    }
+                    '17ab01221ddc4cb9b7acdfea6b2e6adc': {
+                        table: 'sys_script'
+                        id: '17ab01221ddc4cb9b7acdfea6b2e6adc'
+                    }
+                    '17c96462a86b4f1aa1d28fc9477b2d5b': {
+                        table: 'sys_script'
+                        id: '17c96462a86b4f1aa1d28fc9477b2d5b'
+                    }
+                    '17ffe2dade064ac7b90d489420761856': {
+                        table: 'sys_security_acl'
+                        id: '17ffe2dade064ac7b90d489420761856'
+                    }
+                    '1804490a7c50472f8519ee608332da50': {
+                        table: 'sys_script'
+                        id: '1804490a7c50472f8519ee608332da50'
+                    }
+                    '1810bdc7ffca4724ae0b733386d9c2b1': {
+                        table: 'sys_ui_page'
+                        id: '1810bdc7ffca4724ae0b733386d9c2b1'
+                    }
+                    '181ee7dd60874ace8e9c904aec65facc': {
+                        table: 'sys_security_acl'
+                        id: '181ee7dd60874ace8e9c904aec65facc'
+                    }
+                    '182158f5330d4d8eb2401cf02c4fd77c': {
+                        table: 'sys_security_acl'
+                        id: '182158f5330d4d8eb2401cf02c4fd77c'
+                    }
+                    '182bb10d4dba4fd99fcf679977750fd4': {
+                        table: 'sys_app_module'
+                        id: '182bb10d4dba4fd99fcf679977750fd4'
                     }
                     '186827d683d73210a0365dc6feaad3fc': {
                         table: 'sys_ui_element'
@@ -639,6 +747,18 @@ declare global {
                         table: 'sys_ui_element'
                         id: '1c6867d683d73210a0365dc6feaad304'
                         deleted: true
+                    }
+                    '1ccb928ea2d54eff8d816221b1f9283b': {
+                        table: 'sys_script'
+                        id: '1ccb928ea2d54eff8d816221b1f9283b'
+                    }
+                    '1cda717e3da8447aba4bd0332b7e3a0c': {
+                        table: 'sys_properties'
+                        id: '1cda717e3da8447aba4bd0332b7e3a0c'
+                    }
+                    '1dbcef9a485b40ed874a89d29378c584': {
+                        table: 'sys_script_include'
+                        id: '1dbcef9a485b40ed874a89d29378c584'
                     }
                     '1e21475683933210a0365dc6feaad3ad': {
                         table: 'sys_ui_element'
@@ -2069,6 +2189,26 @@ declare global {
                         id: '506867d683d73210a0365dc6feaad304'
                         deleted: true
                     }
+                    '51304d416ba94589ba66e07d34c79784': {
+                        table: 'sys_script'
+                        id: '51304d416ba94589ba66e07d34c79784'
+                    }
+                    '51342abd9d13459eb8208712b5bc4324': {
+                        table: 'sysauto_script'
+                        id: '51342abd9d13459eb8208712b5bc4324'
+                    }
+                    '513aca6679b84cdbb09a9f405b77cfbe': {
+                        table: 'sys_security_acl'
+                        id: '513aca6679b84cdbb09a9f405b77cfbe'
+                    }
+                    '513f584272f14481b5058a1e83e76d3e': {
+                        table: 'sys_security_acl'
+                        id: '513f584272f14481b5058a1e83e76d3e'
+                    }
+                    '51c1c3c7a9c54b649167eecfd78805a2': {
+                        table: 'sys_security_acl'
+                        id: '51c1c3c7a9c54b649167eecfd78805a2'
+                    }
                     '5221475683933210a0365dc6feaad3ad': {
                         table: 'sys_ui_element'
                         id: '5221475683933210a0365dc6feaad3ad'
@@ -2212,10 +2352,58 @@ declare global {
                         id: '5621875683933210a0365dc6feaad30c'
                         deleted: true
                     }
+                    '563a42bebd3a426f8848d2e47fd47411': {
+                        table: 'sys_security_acl'
+                        id: '563a42bebd3a426f8848d2e47fd47411'
+                    }
+                    '5671114af4ce4d65a6097db7d89edc40': {
+                        table: 'sys_script'
+                        id: '5671114af4ce4d65a6097db7d89edc40'
+                    }
+                    '57cfbfd39fae4e67a14e7bf570b77d11': {
+                        table: 'sys_app_module'
+                        id: '57cfbfd39fae4e67a14e7bf570b77d11'
+                    }
+                    '5812300f350a4956ab318ff7de51488d': {
+                        table: 'sysauto_script'
+                        id: '5812300f350a4956ab318ff7de51488d'
+                    }
+                    '581ab952690341a9870ad3c9ac05f51a': {
+                        table: 'sys_app_module'
+                        id: '581ab952690341a9870ad3c9ac05f51a'
+                    }
                     '586827d683d73210a0365dc6feaad3fe': {
                         table: 'sys_ui_element'
                         id: '586827d683d73210a0365dc6feaad3fe'
                         deleted: true
+                    }
+                    '58f9cc1a32544d6886836a482ff98ac1': {
+                        table: 'sys_script'
+                        id: '58f9cc1a32544d6886836a482ff98ac1'
+                    }
+                    '591c4ce6d7c246df9eff0b962d705194': {
+                        table: 'sys_script_include'
+                        id: '591c4ce6d7c246df9eff0b962d705194'
+                    }
+                    '594b6eee754e4914934856931d9560c4': {
+                        table: 'sys_app_module'
+                        id: '594b6eee754e4914934856931d9560c4'
+                    }
+                    '596b355fb2cf429995f879e03f5cd37b': {
+                        table: 'sys_script'
+                        id: '596b355fb2cf429995f879e03f5cd37b'
+                    }
+                    '59b0b135dd4043648bdfd7d9b60b41ce': {
+                        table: 'sysauto_script'
+                        id: '59b0b135dd4043648bdfd7d9b60b41ce'
+                    }
+                    '59efdd96aecb4de3b3d89276626d31e6': {
+                        table: 'sys_script'
+                        id: '59efdd96aecb4de3b3d89276626d31e6'
+                    }
+                    '5a06f1bd1c8f4026bf5b66b766ac151d': {
+                        table: 'sys_script'
+                        id: '5a06f1bd1c8f4026bf5b66b766ac151d'
                     }
                     '5a21475683933210a0365dc6feaad3a7': {
                         table: 'sys_ui_element'
@@ -2239,6 +2427,54 @@ declare global {
                         table: 'sys_ui_element'
                         id: '5a21875683933210a0365dc6feaad309'
                         deleted: true
+                    }
+                    '5a649658caf846e48050c4b8d7517e0e': {
+                        table: 'sys_security_acl'
+                        id: '5a649658caf846e48050c4b8d7517e0e'
+                    }
+                    '5aa91f8ab49f47fa8658f2421fc1106d': {
+                        table: 'sysauto_script'
+                        id: '5aa91f8ab49f47fa8658f2421fc1106d'
+                    }
+                    '5aaa9d3213d34ec2af07977a85fc66c3': {
+                        table: 'sys_script_include'
+                        id: '5aaa9d3213d34ec2af07977a85fc66c3'
+                    }
+                    '5ac6b05bb5034e0ab5ad827bf38ce1f7': {
+                        table: 'sys_security_acl'
+                        id: '5ac6b05bb5034e0ab5ad827bf38ce1f7'
+                    }
+                    '5adc1cb4a6b44988aafdee59b558a809': {
+                        table: 'sys_script'
+                        id: '5adc1cb4a6b44988aafdee59b558a809'
+                    }
+                    '5b12ab818bba4933be10a71b1cb8a2f8': {
+                        table: 'sys_script'
+                        id: '5b12ab818bba4933be10a71b1cb8a2f8'
+                    }
+                    '5b1bbe0ece6043dda87af4287f22e8ab': {
+                        table: 'sysauto_script'
+                        id: '5b1bbe0ece6043dda87af4287f22e8ab'
+                    }
+                    '5b45968883af3210a0365dc6feaad30d': {
+                        table: 'sys_scope_privilege'
+                        id: '5b45968883af3210a0365dc6feaad30d'
+                    }
+                    '5b53e47aea7842ccb8f88776570fe52c': {
+                        table: 'sys_script_include'
+                        id: '5b53e47aea7842ccb8f88776570fe52c'
+                    }
+                    '5ba88c9f50064505aa62c7c09a256f1d': {
+                        table: 'sys_script'
+                        id: '5ba88c9f50064505aa62c7c09a256f1d'
+                    }
+                    '5c13bea93ce44410a48bc48f8d5a5802': {
+                        table: 'sys_script'
+                        id: '5c13bea93ce44410a48bc48f8d5a5802'
+                    }
+                    '5c6318ae1d614bafbbbc2059a7dc40f1': {
+                        table: 'sys_security_acl'
+                        id: '5c6318ae1d614bafbbbc2059a7dc40f1'
                     }
                     '5c6827d683d73210a0365dc6feaad3fb': {
                         table: 'sys_ui_element'
@@ -3727,7 +3963,7 @@ declare global {
                     '96210b1683933210a0365dc6feaad3b2': {
                         table: 'sys_ui_section'
                         id: '96210b1683933210a0365dc6feaad3b2'
-                        deleted: true
+                        deleted: false
                     }
                     '9621475683933210a0365dc6feaad3ac': {
                         table: 'sys_ui_element'
@@ -3790,6 +4026,42 @@ declare global {
                         id: '986867d683d73210a0365dc6feaad300'
                         deleted: true
                     }
+                    '98a669e1f01c4c8bbaec7161c14b4400': {
+                        table: 'sys_script'
+                        id: '98a669e1f01c4c8bbaec7161c14b4400'
+                    }
+                    '990ad987ce7f4424b37c564c47b6caf5': {
+                        table: 'sys_ui_action'
+                        id: '990ad987ce7f4424b37c564c47b6caf5'
+                    }
+                    '9936d72b9cd94ce4a2d647260c8bd8f8': {
+                        table: 'sysauto_script'
+                        id: '9936d72b9cd94ce4a2d647260c8bd8f8'
+                    }
+                    '994cc770d1a140ed912023bea1d1c8eb': {
+                        table: 'sys_security_acl'
+                        id: '994cc770d1a140ed912023bea1d1c8eb'
+                    }
+                    '995f0a697f424d5089ff674ba9b5d927': {
+                        table: 'sys_script'
+                        id: '995f0a697f424d5089ff674ba9b5d927'
+                    }
+                    '998068eeb06a4148b96ea3fd75dd132f': {
+                        table: 'sys_script'
+                        id: '998068eeb06a4148b96ea3fd75dd132f'
+                    }
+                    '9991875462ae41aa9ba0ee676c8bb330': {
+                        table: 'sys_security_acl'
+                        id: '9991875462ae41aa9ba0ee676c8bb330'
+                    }
+                    '99c89e4935164c3489fcc7fdadac49f1': {
+                        table: 'sys_script'
+                        id: '99c89e4935164c3489fcc7fdadac49f1'
+                    }
+                    '99e79f9e438a4090b9726f347dfd9e8f': {
+                        table: 'sys_app_module'
+                        id: '99e79f9e438a4090b9726f347dfd9e8f'
+                    }
                     '9a21475683933210a0365dc6feaad3a9': {
                         table: 'sys_ui_element'
                         id: '9a21475683933210a0365dc6feaad3a9'
@@ -3812,6 +4084,46 @@ declare global {
                         table: 'sys_ui_element'
                         id: '9a21875683933210a0365dc6feaad30b'
                         deleted: true
+                    }
+                    '9a3fdc5b190845ef9e9640a5da395611': {
+                        table: 'sysauto_script'
+                        id: '9a3fdc5b190845ef9e9640a5da395611'
+                    }
+                    '9a8753375f184bcc956740050ebc1ce9': {
+                        table: 'sys_ui_action'
+                        id: '9a8753375f184bcc956740050ebc1ce9'
+                    }
+                    '9abd7f363ceb44818a2ddd4bb3ca9f85': {
+                        table: 'sysauto_script'
+                        id: '9abd7f363ceb44818a2ddd4bb3ca9f85'
+                    }
+                    '9ad03e334fb1435b94590a37f11e8a16': {
+                        table: 'sys_security_acl'
+                        id: '9ad03e334fb1435b94590a37f11e8a16'
+                    }
+                    '9ad42d52d8654c8491fa0c57f4c9e990': {
+                        table: 'sys_security_acl'
+                        id: '9ad42d52d8654c8491fa0c57f4c9e990'
+                    }
+                    '9af766f02b064b7a8cdfbd4af55c4a62': {
+                        table: 'sys_security_acl'
+                        id: '9af766f02b064b7a8cdfbd4af55c4a62'
+                    }
+                    '9b20d6a63a55485ea9984ef174ee1281': {
+                        table: 'sysauto_script'
+                        id: '9b20d6a63a55485ea9984ef174ee1281'
+                    }
+                    '9b7a97d9d7214cea971310e7e72d9d74': {
+                        table: 'sys_script_include'
+                        id: '9b7a97d9d7214cea971310e7e72d9d74'
+                    }
+                    '9c46feb5d8474026a2211d8d0b60f52e': {
+                        table: 'sys_script'
+                        id: '9c46feb5d8474026a2211d8d0b60f52e'
+                    }
+                    '9c598d8cc1ae4c8cbc051847060c2afc': {
+                        table: 'sys_ui_action'
+                        id: '9c598d8cc1ae4c8cbc051847060c2afc'
                     }
                     '9c6827d683d73210a0365dc6feaad3fd': {
                         table: 'sys_ui_element'
@@ -3932,6 +4244,302 @@ declare global {
                         table: 'sys_scope_privilege'
                         id: '9e77f21283533210a0365dc6feaad3bd'
                     }
+                    '9e93db10413449af9ddf7a158c2c888a': {
+                        table: 'sys_app_module'
+                        id: '9e93db10413449af9ddf7a158c2c888a'
+                    }
+                    '9e946e409573463584eaa3e9c65f072c': {
+                        table: 'sysauto_script'
+                        id: '9e946e409573463584eaa3e9c65f072c'
+                    }
+                    '9eb9c5e3b31f4392b151a13d0ddf8369': {
+                        table: 'sys_ui_action'
+                        id: '9eb9c5e3b31f4392b151a13d0ddf8369'
+                    }
+                    '9ec29b9ed2dc4669b47f21f09aa42875': {
+                        table: 'sysauto_script'
+                        id: '9ec29b9ed2dc4669b47f21f09aa42875'
+                    }
+                    '9ec7c528ce0944b1b5379ce8bed22514': {
+                        table: 'sys_script'
+                        id: '9ec7c528ce0944b1b5379ce8bed22514'
+                    }
+                    '9ef3925e15f148bfa8b969e162c8f930': {
+                        table: 'sys_ui_action'
+                        id: '9ef3925e15f148bfa8b969e162c8f930'
+                    }
+                    '9effc2d0984d4d7ba8177b84b41030e8': {
+                        table: 'sys_security_acl'
+                        id: '9effc2d0984d4d7ba8177b84b41030e8'
+                    }
+                    '9f09466a03e748de8ea308fca04ed2f8': {
+                        table: 'sys_script_include'
+                        id: '9f09466a03e748de8ea308fca04ed2f8'
+                    }
+                    '9f2607d3d404451496af4f43ee369ff5': {
+                        table: 'sys_script'
+                        id: '9f2607d3d404451496af4f43ee369ff5'
+                    }
+                    '9f433dd800214b82b1d719487f1a2b23': {
+                        table: 'sys_ui_page'
+                        id: '9f433dd800214b82b1d719487f1a2b23'
+                    }
+                    '9f45968883af3210a0365dc6feaad300': {
+                        table: 'sys_scope_privilege'
+                        id: '9f45968883af3210a0365dc6feaad300'
+                    }
+                    '9f5113359ba0433b860b2e3cfb19281f': {
+                        table: 'sys_script'
+                        id: '9f5113359ba0433b860b2e3cfb19281f'
+                    }
+                    '9f5a99d330e249f0a27f883b38aa6134': {
+                        table: 'sys_security_acl'
+                        id: '9f5a99d330e249f0a27f883b38aa6134'
+                    }
+                    '9f5eb3b9104f45d08f683fc12914669b': {
+                        table: 'sys_script'
+                        id: '9f5eb3b9104f45d08f683fc12914669b'
+                    }
+                    '9f872f96e3a247088f367d288118e52e': {
+                        table: 'sys_security_acl'
+                        id: '9f872f96e3a247088f367d288118e52e'
+                    }
+                    '9ff4af89c9a746609ef29e2e083cf65b': {
+                        table: 'sys_script'
+                        id: '9ff4af89c9a746609ef29e2e083cf65b'
+                    }
+                    '9ff870ec3c044e63a194de0ee9f36251': {
+                        table: 'sys_script'
+                        id: '9ff870ec3c044e63a194de0ee9f36251'
+                    }
+                    a03370556a7645d8b10acd272d1046d8: {
+                        table: 'sys_security_acl'
+                        id: 'a03370556a7645d8b10acd272d1046d8'
+                    }
+                    a03ffe5743a14b91abcf8d50574820a9: {
+                        table: 'sys_ui_page'
+                        id: 'a03ffe5743a14b91abcf8d50574820a9'
+                    }
+                    a063a572c12c4327ac03f4b9ff507f3e: {
+                        table: 'sysauto_script'
+                        id: 'a063a572c12c4327ac03f4b9ff507f3e'
+                    }
+                    a06a206cfef4476a82a39ebd09228dcb: {
+                        table: 'sysauto_script'
+                        id: 'a06a206cfef4476a82a39ebd09228dcb'
+                    }
+                    a0a68b37cc474b43ac7f8c1eb73bb375: {
+                        table: 'sys_script'
+                        id: 'a0a68b37cc474b43ac7f8c1eb73bb375'
+                    }
+                    a0bae16780184a4589ffd55fc8408d0c: {
+                        table: 'sys_script'
+                        id: 'a0bae16780184a4589ffd55fc8408d0c'
+                    }
+                    a0d12e32b03740c5a3dc212600919646: {
+                        table: 'sysauto_script'
+                        id: 'a0d12e32b03740c5a3dc212600919646'
+                    }
+                    a0d164aa839f3210a0365dc6feaad3ec: {
+                        table: 'sys_ui_element'
+                        id: 'a0d164aa839f3210a0365dc6feaad3ec'
+                    }
+                    a0d164aa839f3210a0365dc6feaad3f7: {
+                        table: 'sys_ui_element'
+                        id: 'a0d164aa839f3210a0365dc6feaad3f7'
+                    }
+                    a0e5b8e852c04da8839a608c3d80182d: {
+                        table: 'sys_script'
+                        id: 'a0e5b8e852c04da8839a608c3d80182d'
+                    }
+                    a103461d29694bcbab12672e9ffb4e52: {
+                        table: 'sys_properties'
+                        id: 'a103461d29694bcbab12672e9ffb4e52'
+                    }
+                    a10493b54124420aa222485f4b56fce1: {
+                        table: 'sys_ui_page'
+                        id: 'a10493b54124420aa222485f4b56fce1'
+                    }
+                    a1077fdba5b64cb5b658855af7aa81b0: {
+                        table: 'sys_app_module'
+                        id: 'a1077fdba5b64cb5b658855af7aa81b0'
+                    }
+                    a12b905beb144d048a8241b5ee8defd4: {
+                        table: 'sys_security_acl'
+                        id: 'a12b905beb144d048a8241b5ee8defd4'
+                    }
+                    a1ae0cc4c4e9455085f85ef20f9f90c7: {
+                        table: 'sys_script'
+                        id: 'a1ae0cc4c4e9455085f85ef20f9f90c7'
+                    }
+                    a1f85c27ebdb4d928d58142579476cb0: {
+                        table: 'sys_script'
+                        id: 'a1f85c27ebdb4d928d58142579476cb0'
+                    }
+                    a263de61354141118dfd5fc003f27c79: {
+                        table: 'sys_script'
+                        id: 'a263de61354141118dfd5fc003f27c79'
+                    }
+                    a2e4e82d48d9452e813c537c6686711d: {
+                        table: 'sys_script'
+                        id: 'a2e4e82d48d9452e813c537c6686711d'
+                    }
+                    a31239d0c1534e17beb3191235e7646f: {
+                        table: 'sys_app_module'
+                        id: 'a31239d0c1534e17beb3191235e7646f'
+                    }
+                    a33dd00373dc441e81cd5b07f2629284: {
+                        table: 'sysauto_script'
+                        id: 'a33dd00373dc441e81cd5b07f2629284'
+                    }
+                    a34b7d68afb741b79097dd622961dfd7: {
+                        table: 'sys_security_acl'
+                        id: 'a34b7d68afb741b79097dd622961dfd7'
+                    }
+                    a380bb9ebf52414886105f269bb80aab: {
+                        table: 'sys_security_acl'
+                        id: 'a380bb9ebf52414886105f269bb80aab'
+                    }
+                    a3a72cb8369c49e6bbba4bb6c764ead0: {
+                        table: 'sys_app_module'
+                        id: 'a3a72cb8369c49e6bbba4bb6c764ead0'
+                    }
+                    a40b9f3228e04196bcf20c6581324a05: {
+                        table: 'sys_script'
+                        id: 'a40b9f3228e04196bcf20c6581324a05'
+                    }
+                    a42e9a042de2418e83be2c23c0a51d4e: {
+                        table: 'sys_script'
+                        id: 'a42e9a042de2418e83be2c23c0a51d4e'
+                    }
+                    a467b36283d33210a0365dc6feaad31e: {
+                        table: 'sys_ui_element'
+                        id: 'a467b36283d33210a0365dc6feaad31e'
+                    }
+                    a4d164aa839f3210a0365dc6feaad3e7: {
+                        table: 'sys_ui_element'
+                        id: 'a4d164aa839f3210a0365dc6feaad3e7'
+                    }
+                    a4d164aa839f3210a0365dc6feaad3e9: {
+                        table: 'sys_ui_element'
+                        id: 'a4d164aa839f3210a0365dc6feaad3e9'
+                    }
+                    a4d164aa839f3210a0365dc6feaad3f4: {
+                        table: 'sys_ui_element'
+                        id: 'a4d164aa839f3210a0365dc6feaad3f4'
+                    }
+                    a4d164aa839f3210a0365dc6feaad3ff: {
+                        table: 'sys_ui_element'
+                        id: 'a4d164aa839f3210a0365dc6feaad3ff'
+                    }
+                    a4e0ec1a438740098b4fdc63e25dff1a: {
+                        table: 'sysauto_script'
+                        id: 'a4e0ec1a438740098b4fdc63e25dff1a'
+                    }
+                    a63a58965f284f51b16a8e9e328246fb: {
+                        table: 'sys_security_acl'
+                        id: 'a63a58965f284f51b16a8e9e328246fb'
+                    }
+                    a682314aa37e48c6954c9ba89606911b: {
+                        table: 'sys_app_module'
+                        id: 'a682314aa37e48c6954c9ba89606911b'
+                    }
+                    a6911e254da346ebac998de9669a6ef2: {
+                        table: 'sys_script'
+                        id: 'a6911e254da346ebac998de9669a6ef2'
+                    }
+                    a6ba8066520b42a1aa13c93c20e8dd9e: {
+                        table: 'sys_security_acl'
+                        id: 'a6ba8066520b42a1aa13c93c20e8dd9e'
+                    }
+                    a6c50e0d55d14f718e18b137219b2807: {
+                        table: 'sys_script'
+                        id: 'a6c50e0d55d14f718e18b137219b2807'
+                    }
+                    a70ba72a076b49ba8591ad00d9308bfa: {
+                        table: 'sysauto_script'
+                        id: 'a70ba72a076b49ba8591ad00d9308bfa'
+                    }
+                    a76cbd19d6cd4e3ea030e338c055a6b7: {
+                        table: 'sys_security_acl'
+                        id: 'a76cbd19d6cd4e3ea030e338c055a6b7'
+                    }
+                    a7934b77753d4e228c2d427db18ad7dc: {
+                        table: 'sys_security_acl'
+                        id: 'a7934b77753d4e228c2d427db18ad7dc'
+                    }
+                    a844006a613a4a52aed1126444e6970d: {
+                        table: 'sys_script'
+                        id: 'a844006a613a4a52aed1126444e6970d'
+                    }
+                    a867b36283d33210a0365dc6feaad31b: {
+                        table: 'sys_ui_element'
+                        id: 'a867b36283d33210a0365dc6feaad31b'
+                    }
+                    a8c31b2f9f464f6c8f2a10b4d3e98711: {
+                        table: 'sys_ui_section'
+                        id: 'a8c31b2f9f464f6c8f2a10b4d3e98711'
+                    }
+                    a8d164aa839f3210a0365dc6feaad3f1: {
+                        table: 'sys_ui_element'
+                        id: 'a8d164aa839f3210a0365dc6feaad3f1'
+                    }
+                    a8d164aa839f3210a0365dc6feaad3fc: {
+                        table: 'sys_ui_element'
+                        id: 'a8d164aa839f3210a0365dc6feaad3fc'
+                    }
+                    a8d85f8f2c054dcf9af6731253d22f57: {
+                        table: 'sys_ui_page'
+                        id: 'a8d85f8f2c054dcf9af6731253d22f57'
+                    }
+                    aa19b87d2efd43dda7a65bcdba56bd09: {
+                        table: 'sys_script'
+                        id: 'aa19b87d2efd43dda7a65bcdba56bd09'
+                    }
+                    aa4df83ddd6344c0a86b8ebd912b5fa4: {
+                        table: 'sys_security_acl'
+                        id: 'aa4df83ddd6344c0a86b8ebd912b5fa4'
+                    }
+                    aa6445b511264bb696b93dbde3de92a0: {
+                        table: 'sys_security_acl'
+                        id: 'aa6445b511264bb696b93dbde3de92a0'
+                    }
+                    aa65c811f0e949999f4a921e463d4096: {
+                        table: 'sys_security_acl'
+                        id: 'aa65c811f0e949999f4a921e463d4096'
+                    }
+                    aa9517efeb8648638c5db479e12dbe36: {
+                        table: 'sys_security_acl'
+                        id: 'aa9517efeb8648638c5db479e12dbe36'
+                    }
+                    aa9a62b5d6bb4a8a9095308c958265e1: {
+                        table: 'sysauto_script'
+                        id: 'aa9a62b5d6bb4a8a9095308c958265e1'
+                    }
+                    aad554f15fe540679beda85401199621: {
+                        table: 'sys_security_acl'
+                        id: 'aad554f15fe540679beda85401199621'
+                    }
+                    aae79a2b26754b9299996f7e5d1bb715: {
+                        table: 'sys_properties'
+                        id: 'aae79a2b26754b9299996f7e5d1bb715'
+                    }
+                    ab11fed5fd914da6911b2030a454e385: {
+                        table: 'sys_ui_page'
+                        id: 'ab11fed5fd914da6911b2030a454e385'
+                    }
+                    ab39d119dc5a4551bfe44784270f032a: {
+                        table: 'sys_security_acl'
+                        id: 'ab39d119dc5a4551bfe44784270f032a'
+                    }
+                    ab63b80f61464c5db182e186adbaa0b0: {
+                        table: 'sys_script'
+                        id: 'ab63b80f61464c5db182e186adbaa0b0'
+                    }
+                    abdbb427aae34026823c8ea13839e7f2: {
+                        table: 'sysauto_script'
+                        id: 'abdbb427aae34026823c8ea13839e7f2'
+                    }
                     abel_bonus_expansion: {
                         table: 'x_823178_commissio_plan_bonuses'
                         id: '9ebf7b12b1284aca9e097beaf91ae4db'
@@ -4014,6 +4622,58 @@ declare global {
                         table: 'x_823178_commissio_plan_tiers'
                         id: '3ce605e9e5f14716be78ac25f9719fde'
                     }
+                    ac466b3561064dcaa3c5eb2152e47571: {
+                        table: 'sysauto_script'
+                        id: 'ac466b3561064dcaa3c5eb2152e47571'
+                    }
+                    ac51cbf0a0594dc5acece58646235a96: {
+                        table: 'sysauto_script'
+                        id: 'ac51cbf0a0594dc5acece58646235a96'
+                    }
+                    ac67b36283d33210a0365dc6feaad317: {
+                        table: 'sys_ui_element'
+                        id: 'ac67b36283d33210a0365dc6feaad317'
+                    }
+                    ac89727661d34a7d918f348d524c6ac4: {
+                        table: 'sys_script'
+                        id: 'ac89727661d34a7d918f348d524c6ac4'
+                    }
+                    ac928e425362484790306ce95e575c73: {
+                        table: 'sys_script'
+                        id: 'ac928e425362484790306ce95e575c73'
+                    }
+                    acd164aa839f3210a0365dc6feaad3ee: {
+                        table: 'sys_ui_element'
+                        id: 'acd164aa839f3210a0365dc6feaad3ee'
+                    }
+                    acd164aa839f3210a0365dc6feaad3f9: {
+                        table: 'sys_ui_element'
+                        id: 'acd164aa839f3210a0365dc6feaad3f9'
+                    }
+                    ace4686a5dbb47ef9def07e89e1da541: {
+                        table: 'sys_script'
+                        id: 'ace4686a5dbb47ef9def07e89e1da541'
+                    }
+                    ace8593e9ddc40ab8f8047556f872d8b: {
+                        table: 'sys_security_acl'
+                        id: 'ace8593e9ddc40ab8f8047556f872d8b'
+                    }
+                    ad04d40e7478479d94020450641ee10f: {
+                        table: 'sys_script'
+                        id: 'ad04d40e7478479d94020450641ee10f'
+                    }
+                    ad114eba186f45f98b4c648b8e8965ce: {
+                        table: 'sys_security_acl'
+                        id: 'ad114eba186f45f98b4c648b8e8965ce'
+                    }
+                    ad17b47d15cf407c8590b617165a8300: {
+                        table: 'sys_script_include'
+                        id: 'ad17b47d15cf407c8590b617165a8300'
+                    }
+                    adc2b2c9ce7c4d6e8bd04a429d3f31e6: {
+                        table: 'sysauto_script'
+                        id: 'adc2b2c9ce7c4d6e8bd04a429d3f31e6'
+                    }
                     adela_bonus_expansion: {
                         table: 'x_823178_commissio_plan_bonuses'
                         id: '1cd2471aa16e4796b5d985ae22e1957e'
@@ -4078,6 +4738,34 @@ declare global {
                         id: '94d043f877e54ed0a06901be98e096aa'
                         deleted: false
                     }
+                    ae25adafa0834064b46064e575e24fd3: {
+                        table: 'sys_security_acl'
+                        id: 'ae25adafa0834064b46064e575e24fd3'
+                    }
+                    ae5d812cb58f4a8db265a30b9c0b08ac: {
+                        table: 'sys_security_acl'
+                        id: 'ae5d812cb58f4a8db265a30b9c0b08ac'
+                    }
+                    aecacaa6594a4543812405c7233896a3: {
+                        table: 'sys_ui_action'
+                        id: 'aecacaa6594a4543812405c7233896a3'
+                    }
+                    aeea681554ae4333a683385f3425f597: {
+                        table: 'sysauto_script'
+                        id: 'aeea681554ae4333a683385f3425f597'
+                    }
+                    af5b08bfe9964644ad98d2d86a792dda: {
+                        table: 'sys_app_module'
+                        id: 'af5b08bfe9964644ad98d2d86a792dda'
+                    }
+                    af6ef49edf1d450994b9c14fbbce5498: {
+                        table: 'sys_ui_page'
+                        id: 'af6ef49edf1d450994b9c14fbbce5498'
+                    }
+                    afb8cf8d0d92443999f98effbf19d1e8: {
+                        table: 'sys_script'
+                        id: 'afb8cf8d0d92443999f98effbf19d1e8'
+                    }
                     alert_calculation_ready: {
                         table: 'x_823178_commissio_system_alerts'
                         id: '356d0d758cce4209aaf4581a9803fa9d'
@@ -4119,6 +4807,238 @@ declare global {
                         table: 'sys_properties'
                         id: '5de7ae38f81a4775a654cee1c5718f5a'
                     }
+                    b002d0efc7cf40bb964ffeace5d5cc52: {
+                        table: 'sys_security_acl'
+                        id: 'b002d0efc7cf40bb964ffeace5d5cc52'
+                    }
+                    b07bf46283937210a0365dc6feaad317: {
+                        table: 'sys_ui_element'
+                        id: 'b07bf46283937210a0365dc6feaad317'
+                    }
+                    b07bf46283937210a0365dc6feaad322: {
+                        table: 'sys_ui_element'
+                        id: 'b07bf46283937210a0365dc6feaad322'
+                    }
+                    b09bc948e4844044a292b36d8d1f23f9: {
+                        table: 'sys_script'
+                        id: 'b09bc948e4844044a292b36d8d1f23f9'
+                    }
+                    b0a46482a7e44e8c8957c4c708d31898: {
+                        table: 'sys_ui_page'
+                        id: 'b0a46482a7e44e8c8957c4c708d31898'
+                    }
+                    b0a4e514d46b4496afb66933214d35b7: {
+                        table: 'sys_script'
+                        id: 'b0a4e514d46b4496afb66933214d35b7'
+                    }
+                    b0ab4d3a707a404c841a68bd00ab0e1f: {
+                        table: 'sys_script'
+                        id: 'b0ab4d3a707a404c841a68bd00ab0e1f'
+                    }
+                    b0b49116c8ed49628e81a7776ed338f4: {
+                        table: 'sysauto_script'
+                        id: 'b0b49116c8ed49628e81a7776ed338f4'
+                    }
+                    b0b995cf30294716925906c92691d59a: {
+                        table: 'sys_script'
+                        id: 'b0b995cf30294716925906c92691d59a'
+                    }
+                    b0c5a3dbadb84095908ef524882fcbda: {
+                        table: 'sys_script'
+                        id: 'b0c5a3dbadb84095908ef524882fcbda'
+                    }
+                    b0ef3f7e0189414b94672f10213cbaa3: {
+                        table: 'sys_app_module'
+                        id: 'b0ef3f7e0189414b94672f10213cbaa3'
+                    }
+                    b12c6c8f5f284e518f60d8e2ee5180ff: {
+                        table: 'sys_script'
+                        id: 'b12c6c8f5f284e518f60d8e2ee5180ff'
+                    }
+                    b14166c81ed64928adf7e8b43ab4764a: {
+                        table: 'sysauto_script'
+                        id: 'b14166c81ed64928adf7e8b43ab4764a'
+                    }
+                    b145e5c4832b3210a0365dc6feaad385: {
+                        table: 'sys_ui_element'
+                        id: 'b145e5c4832b3210a0365dc6feaad385'
+                    }
+                    b17a41176ed8489d89ff6b11309e0fa7: {
+                        table: 'sys_script'
+                        id: 'b17a41176ed8489d89ff6b11309e0fa7'
+                    }
+                    b18615bba4d64beaa6c1ff432c8a721a: {
+                        table: 'sysauto_script'
+                        id: 'b18615bba4d64beaa6c1ff432c8a721a'
+                    }
+                    b1c8ac725b3d4138a4677837cc3e3c3b: {
+                        table: 'sys_security_acl'
+                        id: 'b1c8ac725b3d4138a4677837cc3e3c3b'
+                    }
+                    b1cbf18b22a74be0aa48c38d7f7e46cd: {
+                        table: 'sys_app_module'
+                        id: 'b1cbf18b22a74be0aa48c38d7f7e46cd'
+                    }
+                    b22462f9f9c0499cbc0c20cef0e31915: {
+                        table: 'sys_security_acl'
+                        id: 'b22462f9f9c0499cbc0c20cef0e31915'
+                    }
+                    b22a0f0129d54a078c05beb65a7d182c: {
+                        table: 'sys_security_acl'
+                        id: 'b22a0f0129d54a078c05beb65a7d182c'
+                    }
+                    b232688a582044c6a2d5c29cccd2ca63: {
+                        table: 'sys_script'
+                        id: 'b232688a582044c6a2d5c29cccd2ca63'
+                    }
+                    b263f1d01dea4f98903af0f0c9ecde20: {
+                        table: 'sys_script'
+                        id: 'b263f1d01dea4f98903af0f0c9ecde20'
+                    }
+                    b27ae23eca064d36ab5a087ad2b59671: {
+                        table: 'sys_security_acl'
+                        id: 'b27ae23eca064d36ab5a087ad2b59671'
+                    }
+                    b2af7f9bc1d748e7826635dade40d6a1: {
+                        table: 'sys_app_module'
+                        id: 'b2af7f9bc1d748e7826635dade40d6a1'
+                    }
+                    b342ec2b09084ab7b11f5fb9ec01b652: {
+                        table: 'sys_app_module'
+                        id: 'b342ec2b09084ab7b11f5fb9ec01b652'
+                    }
+                    b3f64b1d0d8b446e9f34e1a05ce67c9f: {
+                        table: 'sysauto_script'
+                        id: 'b3f64b1d0d8b446e9f34e1a05ce67c9f'
+                    }
+                    b42ce152615c47c18de2d7f14904b30e: {
+                        table: 'sys_script'
+                        id: 'b42ce152615c47c18de2d7f14904b30e'
+                    }
+                    b43a99c474d5484dabfd3a6b8f68d99d: {
+                        table: 'sysauto_script'
+                        id: 'b43a99c474d5484dabfd3a6b8f68d99d'
+                    }
+                    b47bf46283937210a0365dc6feaad314: {
+                        table: 'sys_ui_element'
+                        id: 'b47bf46283937210a0365dc6feaad314'
+                    }
+                    b47bf46283937210a0365dc6feaad31f: {
+                        table: 'sys_ui_element'
+                        id: 'b47bf46283937210a0365dc6feaad31f'
+                    }
+                    b4d907dba7ec4586bb31c7d2dd0aaee2: {
+                        table: 'sys_security_acl'
+                        id: 'b4d907dba7ec4586bb31c7d2dd0aaee2'
+                    }
+                    b4e168aa839f3210a0365dc6feaad304: {
+                        table: 'sys_scope_privilege'
+                        id: 'b4e168aa839f3210a0365dc6feaad304'
+                    }
+                    b526b32a511c462fb0a9836081aa8d8a: {
+                        table: 'sys_security_acl'
+                        id: 'b526b32a511c462fb0a9836081aa8d8a'
+                    }
+                    b53ccc44b6ca41dfac6b66e4e097b900: {
+                        table: 'sys_script'
+                        id: 'b53ccc44b6ca41dfac6b66e4e097b900'
+                    }
+                    b545e5c4832b3210a0365dc6feaad382: {
+                        table: 'sys_ui_element'
+                        id: 'b545e5c4832b3210a0365dc6feaad382'
+                    }
+                    b57a9b5959e44251953c539554d85757: {
+                        table: 'sys_script'
+                        id: 'b57a9b5959e44251953c539554d85757'
+                    }
+                    b5b400bd194c4b448742b8e6b2bc291c: {
+                        table: 'sys_ui_action'
+                        id: 'b5b400bd194c4b448742b8e6b2bc291c'
+                    }
+                    b62ef734f1af4f589db649c16577cb80: {
+                        table: 'sysauto_script'
+                        id: 'b62ef734f1af4f589db649c16577cb80'
+                    }
+                    b653714595f34a5a89846c10fd61cf25: {
+                        table: 'sys_security_acl'
+                        id: 'b653714595f34a5a89846c10fd61cf25'
+                    }
+                    b657dcd24a9047f4ae9e88a51e179432: {
+                        table: 'sys_security_acl'
+                        id: 'b657dcd24a9047f4ae9e88a51e179432'
+                    }
+                    b678d03994d84947999e20ab6d82fd2d: {
+                        table: 'sys_security_acl'
+                        id: 'b678d03994d84947999e20ab6d82fd2d'
+                    }
+                    b782d6449f774f37843217757a9c4012: {
+                        table: 'sysauto_script'
+                        id: 'b782d6449f774f37843217757a9c4012'
+                    }
+                    b78cf83c616f47349145302492a33eff: {
+                        table: 'sys_security_acl'
+                        id: 'b78cf83c616f47349145302492a33eff'
+                    }
+                    b792045d889a4219bd3f4aedc19449b5: {
+                        table: 'sys_security_acl'
+                        id: 'b792045d889a4219bd3f4aedc19449b5'
+                    }
+                    b7ae276f16574e54b4f748575402e712: {
+                        table: 'sys_app_module'
+                        id: 'b7ae276f16574e54b4f748575402e712'
+                    }
+                    b7c72394a12f4f0e9f39bb5e911c19c1: {
+                        table: 'sys_script'
+                        id: 'b7c72394a12f4f0e9f39bb5e911c19c1'
+                    }
+                    b7eec48f30a74a65a94733b40f128d67: {
+                        table: 'sys_app_module'
+                        id: 'b7eec48f30a74a65a94733b40f128d67'
+                    }
+                    b7f1afc5e58748e2b6379fcb4913299f: {
+                        table: 'sys_app_module'
+                        id: 'b7f1afc5e58748e2b6379fcb4913299f'
+                    }
+                    b809274d061a43ea835da077c6106fdd: {
+                        table: 'sys_script_include'
+                        id: 'b809274d061a43ea835da077c6106fdd'
+                    }
+                    b854c6ff1c8a41a1b62305e5bb05a42c: {
+                        table: 'sys_security_acl'
+                        id: 'b854c6ff1c8a41a1b62305e5bb05a42c'
+                    }
+                    b87bf46283937210a0365dc6feaad31c: {
+                        table: 'sys_ui_element'
+                        id: 'b87bf46283937210a0365dc6feaad31c'
+                    }
+                    b91d4c3a7e5f4d1ca2b398760d4e2f23: {
+                        table: 'sys_ui_section'
+                        id: 'b91d4c3a7e5f4d1ca2b398760d4e2f23'
+                    }
+                    b92ecc1215c44b3ea39d8bd370fc98c9: {
+                        table: 'sys_script'
+                        id: 'b92ecc1215c44b3ea39d8bd370fc98c9'
+                    }
+                    b945e5c4832b3210a0365dc6feaad37f: {
+                        table: 'sys_ui_element'
+                        id: 'b945e5c4832b3210a0365dc6feaad37f'
+                    }
+                    b9612aa040644923a15afab32fb8a156: {
+                        table: 'sys_security_acl'
+                        id: 'b9612aa040644923a15afab32fb8a156'
+                    }
+                    ba0137b848dc4d23a91c5dab24f3d8e0: {
+                        table: 'sys_script'
+                        id: 'ba0137b848dc4d23a91c5dab24f3d8e0'
+                    }
+                    ba90ea496e0d47c19b1c8ee8d265ea5d: {
+                        table: 'sysauto_script'
+                        id: 'ba90ea496e0d47c19b1c8ee8d265ea5d'
+                    }
+                    babd5dda679f4f338e499e7107b08432: {
+                        table: 'sys_app_module'
+                        id: 'babd5dda679f4f338e499e7107b08432'
+                    }
                     backfill_deal_type_references_job: {
                         table: 'sysauto_script'
                         id: 'c198c3be4adf451e9ee4c93687c05836'
@@ -4126,6 +5046,94 @@ declare global {
                     backfill_tier_and_deal_classifications_job: {
                         table: 'sysauto_script'
                         id: 'e1b0d2b47abe4737bb98d3498b058b99'
+                    }
+                    bad9b9804ecf424bb8ddaf6baa0dbe7f: {
+                        table: 'sys_security_acl'
+                        id: 'bad9b9804ecf424bb8ddaf6baa0dbe7f'
+                    }
+                    bb35be5594174efcba0c0651c92ace4f: {
+                        table: 'sys_security_acl'
+                        id: 'bb35be5594174efcba0c0651c92ace4f'
+                    }
+                    bb394e3dae76439d99c309df7197c4aa: {
+                        table: 'sys_app_module'
+                        id: 'bb394e3dae76439d99c309df7197c4aa'
+                    }
+                    bb61104ec2b04006a283e0a0a14818a5: {
+                        table: 'sys_security_acl'
+                        id: 'bb61104ec2b04006a283e0a0a14818a5'
+                    }
+                    bb9a6eb4e4fe4af282327a3658fe1473: {
+                        table: 'sys_security_acl'
+                        id: 'bb9a6eb4e4fe4af282327a3658fe1473'
+                    }
+                    bb9c061619894ff69ee76168052121fb: {
+                        table: 'sys_security_acl'
+                        id: 'bb9c061619894ff69ee76168052121fb'
+                    }
+                    bbe505cc1f5b4ee2aa0e7f346f75f483: {
+                        table: 'sys_app_module'
+                        id: 'bbe505cc1f5b4ee2aa0e7f346f75f483'
+                    }
+                    bc7bb46283937210a0365dc6feaad3a1: {
+                        table: 'sys_ui_section'
+                        id: 'bc7bb46283937210a0365dc6feaad3a1'
+                    }
+                    bc7bf46283937210a0365dc6feaad319: {
+                        table: 'sys_ui_element'
+                        id: 'bc7bf46283937210a0365dc6feaad319'
+                    }
+                    bcc9bc76d7bc429da263edcae2fa41ac: {
+                        table: 'sys_script_include'
+                        id: 'bcc9bc76d7bc429da263edcae2fa41ac'
+                    }
+                    bce6abfb1bf941acb228d40aa4dc6b49: {
+                        table: 'sys_security_acl'
+                        id: 'bce6abfb1bf941acb228d40aa4dc6b49'
+                    }
+                    bd1fa625b9f544e4841ae372e177762f: {
+                        table: 'sys_security_acl'
+                        id: 'bd1fa625b9f544e4841ae372e177762f'
+                    }
+                    bd45e5c4832b3210a0365dc6feaad387: {
+                        table: 'sys_ui_element'
+                        id: 'bd45e5c4832b3210a0365dc6feaad387'
+                    }
+                    bd77963ec8054172b092d4376e863705: {
+                        table: 'sys_app_module'
+                        id: 'bd77963ec8054172b092d4376e863705'
+                    }
+                    bdbb87aa1d004341b2af6fef5e5ed014: {
+                        table: 'sys_script'
+                        id: 'bdbb87aa1d004341b2af6fef5e5ed014'
+                    }
+                    be3e8cc9063a415db812e3637600838f: {
+                        table: 'sysauto_script'
+                        id: 'be3e8cc9063a415db812e3637600838f'
+                    }
+                    be503cb803d8498cb9fad6dd44fbe01b: {
+                        table: 'sysauto_script'
+                        id: 'be503cb803d8498cb9fad6dd44fbe01b'
+                    }
+                    be56561c79d74561b7ec72861d626381: {
+                        table: 'sys_script'
+                        id: 'be56561c79d74561b7ec72861d626381'
+                    }
+                    bec39b58360445cdbb53a9daef55fb63: {
+                        table: 'sys_app_module'
+                        id: 'bec39b58360445cdbb53a9daef55fb63'
+                    }
+                    beeb2374b24f4b018359c28e702ae144: {
+                        table: 'sys_script_include'
+                        id: 'beeb2374b24f4b018359c28e702ae144'
+                    }
+                    bfa8af1f68284dbbb325652b148cb031: {
+                        table: 'sysauto_script'
+                        id: 'bfa8af1f68284dbbb325652b148cb031'
+                    }
+                    bffc59aa2c4e4bc4856c74d48ca39c6e: {
+                        table: 'sys_security_acl'
+                        id: 'bffc59aa2c4e4bc4856c74d48ca39c6e'
                     }
                     bom_json: {
                         table: 'sys_module'
@@ -4872,6 +5880,14 @@ declare global {
                         table: 'sys_app_module'
                         id: '42793fc7b0bd4d4b85416c9537a4c9c4'
                     }
+                    d01fab67d0ff426d8c83f0b5a1e5097d: {
+                        table: 'sys_app_module'
+                        id: 'd01fab67d0ff426d8c83f0b5a1e5097d'
+                    }
+                    d0669c94479e42dc801a9ec093712fb6: {
+                        table: 'sys_script'
+                        id: 'd0669c94479e42dc801a9ec093712fb6'
+                    }
                     d06827d683d73210a0365dc6feaad3fd: {
                         table: 'sys_ui_element'
                         id: 'd06827d683d73210a0365dc6feaad3fd'
@@ -5138,6 +6154,34 @@ declare global {
                         id: 'd86867d683d73210a0365dc6feaad302'
                         deleted: true
                     }
+                    d87c62a899174333bc26d3678b646ff6: {
+                        table: 'sys_security_acl'
+                        id: 'd87c62a899174333bc26d3678b646ff6'
+                    }
+                    d8cd9a50a80345d4b52bb06e40e20863: {
+                        table: 'sysauto_script'
+                        id: 'd8cd9a50a80345d4b52bb06e40e20863'
+                    }
+                    d8f7ed6a0fe14c11904d9590aee4ab41: {
+                        table: 'sys_script'
+                        id: 'd8f7ed6a0fe14c11904d9590aee4ab41'
+                    }
+                    d927000f9c0f4493bea19f450a965e1f: {
+                        table: 'sys_security_acl'
+                        id: 'd927000f9c0f4493bea19f450a965e1f'
+                    }
+                    d9bb7d5634694474a47fa71d166de412: {
+                        table: 'sys_script'
+                        id: 'd9bb7d5634694474a47fa71d166de412'
+                    }
+                    d9cf19b41ac547eab93f85fa0dd6c3f2: {
+                        table: 'sys_app_module'
+                        id: 'd9cf19b41ac547eab93f85fa0dd6c3f2'
+                    }
+                    d9f5ccc161fb46c182c84cefa44a3ba6: {
+                        table: 'sys_security_acl'
+                        id: 'd9f5ccc161fb46c182c84cefa44a3ba6'
+                    }
                     da21475683933210a0365dc6feaad3ab: {
                         table: 'sys_ui_element'
                         id: 'da21475683933210a0365dc6feaad3ab'
@@ -5160,6 +6204,22 @@ declare global {
                     da21875683933210a0365dc6feaad312: {
                         table: 'sys_ui_element'
                         id: 'da21875683933210a0365dc6feaad312'
+                    }
+                    da3c35f9589e4058967bb0764193fa33: {
+                        table: 'sys_ui_page'
+                        id: 'da3c35f9589e4058967bb0764193fa33'
+                    }
+                    da4e5cf396314900a8c814d60b7bb940: {
+                        table: 'sys_security_acl'
+                        id: 'da4e5cf396314900a8c814d60b7bb940'
+                    }
+                    da8b4a7e341f426ea6673448a6de1779: {
+                        table: 'sys_properties'
+                        id: 'da8b4a7e341f426ea6673448a6de1779'
+                    }
+                    dad741f6fe714aefb063794272ff1a74: {
+                        table: 'sys_security_acl'
+                        id: 'dad741f6fe714aefb063794272ff1a74'
                     }
                     daily_reconciliation_job: {
                         table: 'sysauto_script'
@@ -5208,6 +6268,26 @@ declare global {
                         id: 'dc6827d683d73210a0365dc6feaad3ff'
                         deleted: true
                     }
+                    dcb66cd305414e3da20900ee68ffb58e: {
+                        table: 'sys_security_acl'
+                        id: 'dcb66cd305414e3da20900ee68ffb58e'
+                    }
+                    dcc003b9391a4564b375d24de267175f: {
+                        table: 'sys_script'
+                        id: 'dcc003b9391a4564b375d24de267175f'
+                    }
+                    dcd1ac6a839f3210a0365dc6feaad321: {
+                        table: 'sys_ui_section'
+                        id: 'dcd1ac6a839f3210a0365dc6feaad321'
+                    }
+                    dcdfbedd16364e449c0cf73759567a48: {
+                        table: 'sys_script'
+                        id: 'dcdfbedd16364e449c0cf73759567a48'
+                    }
+                    dcf8e28997244d72bff47bddcb434cc5: {
+                        table: 'sys_script'
+                        id: 'dcf8e28997244d72bff47bddcb434cc5'
+                    }
                     de21475683933210a0365dc6feaad3a8: {
                         table: 'sys_ui_element'
                         id: 'de21475683933210a0365dc6feaad3a8'
@@ -5230,6 +6310,10 @@ declare global {
                         table: 'sys_ui_element'
                         id: 'de21875683933210a0365dc6feaad30a'
                         deleted: true
+                    }
+                    de6431e5deda4a518b86b5546dc1c47b: {
+                        table: 'sys_script'
+                        id: 'de6431e5deda4a518b86b5546dc1c47b'
                     }
                     deal_classification_validation: {
                         table: 'sys_script'
@@ -5315,9 +6399,21 @@ declare global {
                         table: 'sys_security_acl'
                         id: 'd938f438dec5477b9a1907754d6e7994'
                     }
+                    ded693343e3c42c480b14aa588da9504: {
+                        table: 'sys_script'
+                        id: 'ded693343e3c42c480b14aa588da9504'
+                    }
+                    dedcc08a82ea4a9596a0f1c1ca44fdcf: {
+                        table: 'sys_app_module'
+                        id: 'dedcc08a82ea4a9596a0f1c1ca44fdcf'
+                    }
                     default_recognition_basis_prop: {
                         table: 'sys_properties'
                         id: '026d16e3c8a14b2db48a1fca707c483b'
+                    }
+                    defd2fc46c8547698d318e403e11700e: {
+                        table: 'sys_ui_action'
+                        id: 'defd2fc46c8547698d318e403e11700e'
                     }
                     demo_calc_abel_1: {
                         table: 'x_823178_commissio_commission_calculations'
@@ -6604,89 +7700,114 @@ declare global {
                         table: 'sys_ui_related_list'
                         id: 'ddd120a70c93497e9d6e17587fdbdba0'
                     }
+                    plan_target_validation: {
+                        table: 'sys_script'
+                        id: 'ad7fb4b098974308a0080a13896126f1'
+                    }
                     plan_targets_base_field_annual_target_amount: {
                         table: 'sys_ui_element'
                         id: 'b5eb6ac3671f4448bb3635700e40863f'
+                        deleted: true
                     }
                     plan_targets_base_field_commission_plan: {
                         table: 'sys_ui_element'
                         id: '805ed6b1582a434f8b024d36d3ff7fbd'
+                        deleted: true
                     }
                     plan_targets_base_field_commission_rate_percent: {
                         table: 'sys_ui_element'
                         id: 'ed6fbd7891ce4e35be3e9865217b3bdf'
+                        deleted: true
                     }
                     plan_targets_base_field_deal_type_ref: {
                         table: 'sys_ui_element'
                         id: 'f993fe689511482998447f3bc3636a4d'
+                        deleted: true
                     }
                     plan_targets_base_field_description: {
                         table: 'sys_ui_element'
                         id: 'f61540920c33407fb2cc46aaddd7f220'
+                        deleted: true
                     }
                     plan_targets_base_field_is_active: {
                         table: 'sys_ui_element'
                         id: '60736ecf43434aabb202bcb6a6124bd4'
+                        deleted: true
                     }
                     plan_targets_base_section: {
                         table: 'sys_ui_section'
                         id: 'd93763292a84429eb3ed044b1f24e2d8'
+                        deleted: true
                     }
                     plan_targets_default_lower_field_annual_target_amount: {
                         table: 'sys_ui_element'
                         id: '18449ffdaa7c4b9a830d8a3bbd5719cf'
+                        deleted: true
                     }
                     plan_targets_default_lower_field_commission_plan: {
                         table: 'sys_ui_element'
                         id: 'c2963a2f73a144dab842fb3fbc9ab6f7'
+                        deleted: true
                     }
                     plan_targets_default_lower_field_commission_rate_percent: {
                         table: 'sys_ui_element'
                         id: '07d551565690470f92b66d6de4d53799'
+                        deleted: true
                     }
                     plan_targets_default_lower_field_deal_type_ref: {
                         table: 'sys_ui_element'
                         id: 'b8113941eb5a469c947d6a05daf67d07'
+                        deleted: true
                     }
                     plan_targets_default_lower_field_description: {
                         table: 'sys_ui_element'
                         id: 'cf67948959264ba5a228a9a624bc9b32'
+                        deleted: true
                     }
                     plan_targets_default_lower_field_is_active: {
                         table: 'sys_ui_element'
                         id: '5333175b9718494e8953fa71654b0f6d'
+                        deleted: true
                     }
                     plan_targets_default_lower_section: {
                         table: 'sys_ui_section'
                         id: '10ca6fe22d784d969e0a25d91bfbb1f6'
+                        deleted: true
                     }
                     plan_targets_default_section: {
                         table: 'sys_ui_section'
                         id: 'a1299dcbedf844ce9de6226d01f12c99'
+                        deleted: true
                     }
                     plan_targets_field_annual_target_amount: {
                         table: 'sys_ui_element'
                         id: 'ee438d28c872441b9c64ce2e3cb65b29'
+                        deleted: true
                     }
                     plan_targets_field_commission_plan: {
                         table: 'sys_ui_element'
                         id: '3a4fbb1dffe0437299dc2d0c84d76114'
+                        deleted: true
                     }
                     plan_targets_field_commission_rate_percent: {
                         table: 'sys_ui_element'
                         id: 'f834a3c82f4645a58f2548f63e02544a'
+                        deleted: true
                     }
                     plan_targets_field_deal_type_ref: {
                         table: 'sys_ui_element'
                         id: 'ae28b676200f47c58538a63d5a2c5597'
+                        deleted: true
                     }
                     plan_targets_field_description: {
                         table: 'sys_ui_element'
                         id: 'dfee23f78d4f4e28941024d2c1815069'
+                        deleted: true
                     }
                     plan_targets_field_is_active: {
                         table: 'sys_ui_element'
                         id: 'ebdb76ea50454d728940c6b25bd692c6'
+                        deleted: true
                     }
                     plan_targets_module: {
                         table: 'sys_app_module'
@@ -6871,6 +7992,10 @@ declare global {
                         table: 'sys_module'
                         id: '46647813b3b0482eb3c117a7f9fcc5c6'
                     }
+                    'src_server_business-rules_plan-target-validation_js': {
+                        table: 'sys_module'
+                        id: '99389a1516dd43ebbebbc70cf557d1e1'
+                    }
                     'src_server_business-rules_plan-tier-validation_js': {
                         table: 'sys_module'
                         id: '40e162b3c687498087875af30eef3783'
@@ -7030,6 +8155,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '00407662cb6e421cb5803ffbb69b09ee'
+                        key: {
+                            sys_security_acl: '0d73a698999f40b6afeda06021ae8280'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '006c7f63926a4e8083342c7a8a0fcdb3'
                         key: {
@@ -7055,6 +8193,40 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '0144f671fd70471a83328df0c7377b99'
+                        key: {
+                            sys_security_acl: '6f70b0ee21de47e8a48f8940bd10e4f9'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '0185f5c3c5954c96a1f5800748291d53'
+                        key: {
+                            sys_security_acl: '4b586e65b0e14417ab08b7d587f55176'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: '01d58ce895e64c068f07fdfe60c8832d'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_exception_approvals'
+                            col_name_string: 'implemented_by'
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: '0227f39a524d4fbcb1603acb014404dd'
                         key: {
@@ -7069,6 +8241,29 @@ declare global {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type_ref'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '0274a611a4de4589a23ffef051ea0f5f'
+                        key: {
+                            list_id: {
+                                id: '4260ab1683973210a0365dc6feaad39d'
+                                key: {
+                                    name: 'x_823178_commissio_reconciliation_log'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'reconciliation_date'
                         }
                     },
                     {
@@ -7097,6 +8292,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '02db201a341745c4b7576ac05a96a303'
+                        key: {
+                            name: 'x_823178_commissio_deal_classifications'
+                            element: 'NULL'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: '02f3556b8af440bab2e2ec0cb25b0023'
                         key: {
@@ -7107,14 +8310,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '02db201a341745c4b7576ac05a96a303'
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'NULL'
                         }
                     },
                     {
@@ -7266,13 +8461,65 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '05c86192bc31442c8b1c441a9c30c052'
+                        key: {
+                            sys_security_acl: '423bca7c68c74d0f9ee7a03ef601f0d9'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '05d365a06e114a07b5c2e40dfd7db4cc'
+                        key: {
+                            sys_security_acl: 'dad741f6fe714aefb063794272ff1a74'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '05d6324bf5114fd78d1fb224ffc2c33e'
+                        key: {
+                            sys_security_acl: '75aec10a4907460aa2c94f91358e2150'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '05ded8e7e07246939adf6ecfdb5f7ac5'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'renewal_rate'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '05e5ef77976646368ea2ab3185e05aa7'
+                        key: {
+                            sys_security_acl: 'e47691f170924451913f00f13f53c797'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
                         }
                     },
                     {
@@ -7287,6 +8534,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '0638a20d5ef44d5781a02d1929bbd6b2'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type_ref'
@@ -7361,6 +8609,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '0684b6fc331546cda8bcac8462aebc19'
+                        key: {
+                            sys_security_acl: '0fb73f0d1b5d45329e4824045a0ba72b'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_index'
                         id: '06aa7a22314d447888010ec2d2022bb7'
                         key: {
@@ -7382,6 +8643,19 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'last_owner_change'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '076e29dfd2eb424b9dc32fcb90f6072e'
+                        key: {
+                            sys_security_acl: 'a63a58965f284f51b16a8e9e328246fb'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -7447,6 +8721,7 @@ declare global {
                     {
                         table: 'sys_security_acl_role'
                         id: '085b6e271000423196c6b906db7197c3'
+                        deleted: true
                         key: {
                             sys_security_acl: '556f1d91bf52437fb4d634f6434671bd'
                             sys_user_role: {
@@ -7489,23 +8764,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '09af094b21a94cbb9d618299a24d3c4a'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_threshold'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '09f8ad76714f4862ae08c90000ee496b'
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'attainment_ceiling_percent'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: '089ebc32045f448da1d536b8c1fcad9a'
                         key: {
@@ -7541,6 +8799,19 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: '095f1e7cd2d940d2af928135ab8b8e66'
+                        key: {
+                            sys_security_acl: '3de89e7d3a9c4a5189da06ce6ddf1d0f'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: '098473a43c4a44988ae545cc596c649c'
                         key: {
                             sys_security_acl: '759c74c7b9b74bba93f0d2cbb49b24ba'
@@ -7553,12 +8824,29 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: '09af094b21a94cbb9d618299a24d3c4a'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'qualification_threshold'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: '09c57b4a693941a4b732f95b9467656b'
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'payout_frequency'
                             value: 'annual'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '09f8ad76714f4862ae08c90000ee496b'
+                        key: {
+                            name: 'x_823178_commissio_plan_tiers'
+                            element: 'attainment_ceiling_percent'
                         }
                     },
                     {
@@ -7589,6 +8877,7 @@ declare global {
                     {
                         table: 'sys_security_acl_role'
                         id: '0a506bbf905540539653792f76b1192d'
+                        deleted: true
                         key: {
                             sys_security_acl: 'eb8af1b8b5864ab5a70b336ff4b6453a'
                             sys_user_role: {
@@ -7675,6 +8964,15 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
+                        id: '0ad71b2bc86e46ebb9608a55c3f98e90'
+                        key: {
+                            name: 'x_823178_commissio_deal_classifications'
+                            element: 'deal_type'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
                         id: '0ae0cffee702404b8f419508c7ee00d5'
                         key: {
                             name: 'x_823178_commissio_commission_plans'
@@ -7692,6 +8990,29 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '0afe33f01a2c4e3a80e43fd50265d7e7'
+                        key: {
+                            list_id: {
+                                id: '3375192a83577210a0365dc6feaad3d8'
+                                key: {
+                                    name: 'x_823178_commissio_deal_types'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'name'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '0b13dba8772c4ef9920e05e4c1423f68'
                         key: {
@@ -7703,10 +9024,23 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '0bd4c659ab3145119b82abe30c72844d'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'expansion_rate'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '0be3a2a5e57d4a708b26d5554918ccdf'
+                        key: {
+                            sys_security_acl: '5f2e84de0c42486582c5b70b0482bba6'
+                            sys_user_role: {
+                                id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
+                                key: {
+                                    name: 'x_823178_commissio.manager'
+                                }
+                            }
                         }
                     },
                     {
@@ -7731,6 +9065,14 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'effective_end_date'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '0d1fd2dc08d64cb18618b8738707718b'
+                        key: {
+                            name: 'x_823178_commissio_plan_targets'
+                            element: 'deal_type'
                         }
                     },
                     {
@@ -7842,12 +9184,48 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '0f739578246f40acbe3b6992ee17117a'
+                        key: {
+                            sys_security_acl: '563a42bebd3a426f8848d2e47fd47411'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '0f98c02324924141a2d45f22e822c75e'
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'projected_commission'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '0fa92cc53eb540b88a3ba560473cd574'
+                        key: {
+                            list_id: {
+                                id: 'a01bf6d683533210a0365dc6feaad33b'
+                                key: {
+                                    name: 'x_823178_commissio_commission_calculations'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'commission_rate'
                         }
                     },
                     {
@@ -7915,6 +9293,46 @@ declare global {
                     },
                     {
                         table: 'sys_ui_list_element'
+                        id: '10bde9379a3f47908b24ebe2b9e2277a'
+                        key: {
+                            list_id: {
+                                id: 'da5692662a7a4304b47cd6a2760932ee'
+                                key: {
+                                    name: 'x_823178_commissio_forecast_scenarios'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'projected_commission'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '10c96dddc3534ef798d6b5e5fb8b423c'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_plan_recognition_policies'
+                            element: 'NULL'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '10e2d482889142d0a12da2cf9d77bd3f'
+                        key: {
+                            name: 'x_823178_commissio_commission_calculations'
+                            element: 'effective_tier_floor_percent'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
                         id: '110b079a83d33210a0365dc6feaad397'
                         key: {
                             list_id: {
@@ -7962,12 +9380,60 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '119e5f5f599b42ffa31d855d0216b337'
+                        key: {
+                            name: 'x_823178_commissio_forecast_scenarios'
+                            element: 'projected_revenue'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '11b9616f837344dd99a1665fe9b3c218'
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'notes'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '11c5fb0a831a4bad8561b2da7be466ab'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'one_time_per_period'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '11d5b147818c4b399a45f4cece2d75e4'
+                        key: {
+                            name: 'x_823178_commissio_commission_calculations'
+                            element: 'temporal_lookup_date_snapshot'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '123fcc07c3034eafa39217c8c457a1b4'
+                        key: {
+                            list_id: {
+                                id: 'b160ab1683973210a0365dc6feaad325'
+                                key: {
+                                    name: 'x_823178_commissio_system_alerts'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'status'
                         }
                     },
                     {
@@ -8029,6 +9495,28 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: '12fcea7804de4fa58b774a45a3e60fe2'
+                        key: {
+                            sys_security_acl: '69f33dce21d94e9299b3cdbb9b649012'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '132804b779204d73b6f97e0cb2bc73c5'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_plan_targets'
+                            element: 'commission_plan'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: '1354c80464864a64b3d0a3fc22b6099a'
                         key: {
                             sys_security_acl: '349ab6a4c4ec4337892e84202f1ff82a'
@@ -8038,6 +9526,69 @@ declare global {
                                     name: 'x_823178_commissio.manager'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '138ac879fb0b448c929f15ae3f11f3f3'
+                        key: {
+                            list_id: {
+                                id: '7ab43192d1fc44b1bb00891404c30d81'
+                                key: {
+                                    name: 'x_823178_commissio_plan_tiers'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'sort_order'
+                        }
+                    },
+                    {
+                        table: 'sys_choice_set'
+                        id: '13946fc78edc4b2294c05d779da9ff55'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'qualification_metric'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '13b4b7b458814225a011c0b886ede397'
+                        key: {
+                            list_id: {
+                                id: 'ed606b1683973210a0365dc6feaad364'
+                                key: {
+                                    name: 'x_823178_commissio_exception_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'reference_record'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: '14108260acd042efbed71156be15fc2b'
+                        key: {
+                            name: 'x_823178_commissio_exception_approvals'
+                            element: 'request_type'
+                            value: 'recognition_policy_overlap'
                         }
                     },
                     {
@@ -8054,69 +9605,16 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '10c96dddc3534ef798d6b5e5fb8b423c'
+                        table: 'sys_security_acl_role'
+                        id: '144563571ad0474e9890ae67838db963'
                         key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'NULL'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '10e2d482889142d0a12da2cf9d77bd3f'
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'effective_tier_floor_percent'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '119e5f5f599b42ffa31d855d0216b337'
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'projected_revenue'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '11c5fb0a831a4bad8561b2da7be466ab'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'one_time_per_period'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '11d5b147818c4b399a45f4cece2d75e4'
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'temporal_lookup_date_snapshot'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '132804b779204d73b6f97e0cb2bc73c5'
-                        key: {
-                            name: 'x_823178_commissio_plan_targets'
-                            element: 'commission_plan'
-                        }
-                    },
-                    {
-                        table: 'sys_choice_set'
-                        id: '13946fc78edc4b2294c05d779da9ff55'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_metric'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: '14108260acd042efbed71156be15fc2b'
-                        key: {
-                            name: 'x_823178_commissio_exception_approvals'
-                            element: 'request_type'
-                            value: 'recognition_policy_overlap'
+                            sys_security_acl: '81883569202a490f8dcd4191dceadc65'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -8188,6 +9686,29 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '15c4e371bd5f4339b25a8bb6ebf9d877'
+                        key: {
+                            list_id: {
+                                id: 'b160ab1683973210a0365dc6feaad325'
+                                key: {
+                                    name: 'x_823178_commissio_system_alerts'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'title'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '163bf2af36884248a90ca4fb68f474e9'
                         key: {
@@ -8222,12 +9743,16 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: '16f49db641c24ddfb8d6018e88fccb19'
+                        table: 'sys_security_acl_role'
+                        id: '16783e25db014d08835a7cdeefa49c30'
                         key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'policy_state'
-                            value: 'retired'
+                            sys_security_acl: 'cc35ed244a6d4e1b84b0b5f20e927c16'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -8246,6 +9771,15 @@ declare global {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'notes'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: '16f49db641c24ddfb8d6018e88fccb19'
+                        key: {
+                            name: 'x_823178_commissio_plan_recognition_policies'
+                            element: 'policy_state'
+                            value: 'retired'
                         }
                     },
                     {
@@ -8284,34 +9818,9 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '1960f1a57b014962b193b8d227af7328'
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'version_number'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '196b3f570d4d4348851ec2468031f1fa'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'payout_frequency'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '1a0d0631d9e249578bb968935edf4a85'
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'governance_source'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: '1813bb9a8c754a3f85c53eb4275d19c1'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'effective_tier_floor_percent'
@@ -8332,6 +9841,14 @@ declare global {
                         key: {
                             logical_table_name: 'x_823178_commissio_manager_team_memberships'
                             col_name_string: 'manager_user'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '18d4e4abdc5945d89a2b6255743ea2ca'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'deal_type'
                         }
                     },
                     {
@@ -8372,6 +9889,19 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: '1922d7b0cf3f4d75a083bf4fc6dea6c6'
+                        key: {
+                            sys_security_acl: '731064c814ca491ea29bc6fa311f3827'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: '194364c137d143f0850969603b7319a1'
                         key: {
                             sys_security_acl: '81f7e7e0153c4ffbb644db35d18c9219'
@@ -8381,6 +9911,24 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '1960f1a57b014962b193b8d227af7328'
+                        key: {
+                            name: 'x_823178_commissio_plan_recognition_policies'
+                            element: 'version_number'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '196b3f570d4d4348851ec2468031f1fa'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'payout_frequency'
+                            language: 'en'
                         }
                     },
                     {
@@ -8402,6 +9950,14 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '1a0d0631d9e249578bb968935edf4a85'
+                        key: {
+                            name: 'x_823178_commissio_manager_team_memberships'
+                            element: 'governance_source'
                         }
                     },
                     {
@@ -8509,6 +10065,19 @@ declare global {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'recognition_basis'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '1bec3bcc574c4cc784f942d4454aceac'
+                        key: {
+                            sys_security_acl: '28d0af3120524589ab77c2bb91dca28a'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -8621,6 +10190,45 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '1d77842efdd84b52bcd8069a9600867d'
+                        key: {
+                            sys_security_acl: '9069ccb0c585466491e0098f8442bcf2'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '1dda352b35954688aa11ab9f3bf94af9'
+                        key: {
+                            sys_security_acl: '4b2ea82754b045ac830f7ca00dc052f5'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '1e0818263ec54a828e2b4b1f8292ed75'
+                        key: {
+                            sys_security_acl: 'd87c62a899174333bc26d3678b646ff6'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '1e0f2c1f004e4db4a3e97f828cf48f37'
                         key: {
@@ -8690,12 +10298,46 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: '1efdfb31d82a43b9add83295c60dbadb'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_statement_approvals'
+                            col_name_string: 'sales_rep'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '1fa1a43404a24eb4a719a964baa80d0a'
+                        key: {
+                            sys_security_acl: 'c0063424084d477e958b18d3d9a0d32e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: '1fbc27349f22433eb851ccf8f55e1568'
                         key: {
                             name: 'x_823178_commissio_payments'
                             element: 'payment_method'
                             value: 'credit_card'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '2113027ca4714b92abb538113d05cb95'
+                        key: {
+                            sys_security_acl: '3109073ba503460182feb5129ca29c5d'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -8713,6 +10355,19 @@ declare global {
                             name: 'x_823178_commissio_invoices'
                             element: 'sync_status'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '21854a9c7e1a40e38b206bf95dabf0f1'
+                        key: {
+                            sys_security_acl: 'e960276b24bd4108ab453da900c126a8'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -8759,6 +10414,72 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'scenario_year'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '22cf972a538045fa9155e92300784446'
+                        key: {
+                            sys_security_acl: 'bb35be5594174efcba0c0651c92ace4f'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list'
+                        id: '22fc50e9f29d41fda452d2d3ca23ae35'
+                        key: {
+                            name: 'x_823178_commissio_commission_statements'
+                            view: {
+                                id: 'Default view'
+                                key: {
+                                    name: 'NULL'
+                                }
+                            }
+                            sys_domain: 'global'
+                            element: 'NULL'
+                            relationship: 'NULL'
+                            parent: 'NULL'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '23161e5d0ad149969a9bc220c26f1507'
+                        key: {
+                            list_id: {
+                                id: 'ed606b1683973210a0365dc6feaad364'
+                                key: {
+                                    name: 'x_823178_commissio_exception_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'current_amount'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '23a3f604c46b443ca733a66dd18b5ef7'
+                        key: {
+                            sys_security_acl: 'f10e13a8315e46aa9367cca616609fbf'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
                         }
                     },
                     {
@@ -8816,6 +10537,38 @@ declare global {
                         id: '2482e70cb7e147049c89c3d132bc0390'
                         key: {
                             name: 'x_823178_commissio_deal_types'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: '24c03ccc5f4c4018956d25c75ba95edd'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'deal_type'
+                            value: 'new_business'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '24cd59affa4c4e0ab4f1a00440e3c9a2'
+                        key: {
+                            list_id: {
+                                id: 'ed606b1683973210a0365dc6feaad364'
+                                key: {
+                                    name: 'x_823178_commissio_exception_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'audit_notes'
                         }
                     },
                     {
@@ -8884,6 +10637,68 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: '2629e1d408824758b462eabc9df3b7f6'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_plan_targets'
+                            col_name_string: 'commission_plan'
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: '263d1cd84e9b4afea3500c7d04a56e3b'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_commission_calculations'
+                            col_name_string: 'approved_by'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '267933435708428cbdee4d3d3592e103'
+                        key: {
+                            list_id: {
+                                id: '7d681ceacede4dc8ba401738fd61bb3e'
+                                key: {
+                                    name: 'x_823178_commissio_plan_bonuses'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'description'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '2682c6fa51bb4a5e9fb4ada6d3638bc8'
+                        key: {
+                            list_id: {
+                                id: '22fc50e9f29d41fda452d2d3ca23ae35'
+                                key: {
+                                    name: 'x_823178_commissio_commission_statements'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'locked_date'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '268ce6c6fd974cca90fbbd7d74d23440'
                         key: {
@@ -8936,6 +10751,29 @@ declare global {
                     },
                     {
                         table: 'sys_ui_list_element'
+                        id: '27bdca8ce4504421bccb8478275dedf2'
+                        key: {
+                            list_id: {
+                                id: '7d681ceacede4dc8ba401738fd61bb3e'
+                                key: {
+                                    name: 'x_823178_commissio_plan_bonuses'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'deal_type'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
                         id: '281bf6d683533210a0365dc6feaad341'
                         key: {
                             list_id: {
@@ -8950,6 +10788,29 @@ declare global {
                                 }
                             }
                             element: 'invoice'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '2822f74b2282421aa1ef1436c0995d9f'
+                        key: {
+                            list_id: {
+                                id: 'a01bf6d683533210a0365dc6feaad33b'
+                                key: {
+                                    name: 'x_823178_commissio_commission_calculations'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'commission_base_amount'
                         }
                     },
                     {
@@ -8990,6 +10851,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_choice'
+                        id: '28b322ef747f430d9f1f5be83da56cad'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'deal_type'
+                            value: 'expansion'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '28c5d4e24a064159a420a488dc52d419'
                         key: {
@@ -9005,6 +10875,19 @@ declare global {
                             name: 'x_823178_commissio_reconciliation_log'
                             element: 'details'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '294066d8e7df49ec93e1b715b378a9ab'
+                        key: {
+                            sys_security_acl: '353bd89ef8624165accacdb3fbe928b7'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -9057,6 +10940,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '29b3595ec95d422481efd4bd7c601a45'
+                        key: {
+                            sys_security_acl: '8453896bd7574742b222bbc67f2b9571'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_ui_list_element'
                         id: '2a2a4b1a83d33210a0365dc6feaad312'
                         key: {
@@ -9072,6 +10968,23 @@ declare global {
                                 }
                             }
                             element: 'deal_type'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list'
+                        id: '2a39f709d92640abb9567ce401b238a4'
+                        key: {
+                            name: 'x_823178_commissio_plan_recognition_policies'
+                            view: {
+                                id: 'Default view'
+                                key: {
+                                    name: 'NULL'
+                                }
+                            }
+                            sys_domain: 'global'
+                            element: 'NULL'
+                            relationship: 'NULL'
+                            parent: 'NULL'
                         }
                     },
                     {
@@ -9102,6 +11015,15 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'is_primary'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '2aa25ad169e842fc9564b1c38998c17d'
+                        key: {
+                            name: 'x_823178_commissio_plan_tiers'
+                            element: 'deal_type'
+                            language: 'en'
                         }
                     },
                     {
@@ -9154,6 +11076,55 @@ declare global {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'submitted_on'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '2af7ff3da5a74620bd536ddcd16ad6f5'
+                        key: {
+                            list_id: {
+                                id: '4260ab1683973210a0365dc6feaad39d'
+                                key: {
+                                    name: 'x_823178_commissio_reconciliation_log'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'records_checked'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '2b18c36ea75c4c5bb70002007b60dcfd'
+                        key: {
+                            sys_security_acl: '2fccbc11c5564cd58239b88bb3f6caa7'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '2b292ef81696498fb9658d4ed8d3cfa0'
+                        key: {
+                            sys_security_acl: '3d7dfdfde79e4847b2d2534ac977ce0a'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
                         }
                     },
                     {
@@ -9266,11 +11237,73 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '2c6ae65f248f4648b3fea60c2aa17cc0'
+                        key: {
+                            list_id: {
+                                id: '4260ab1683973210a0365dc6feaad39d'
+                                key: {
+                                    name: 'x_823178_commissio_reconciliation_log'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'significant_variances'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '2c8d68565ed9457587370ee714dbbf9c'
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'statement'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '2cab56eb1fd54fc9bbaa74f92e4c9f42'
+                        key: {
+                            sys_security_acl: 'b22a0f0129d54a078c05beb65a7d182c'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '2d0bc196749849669b2c24446aa3d970'
+                        key: {
+                            sys_security_acl: 'b002d0efc7cf40bb964ffeace5d5cc52'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '2d1ec3eaf7ee44eb8dee24b6367c52e7'
+                        key: {
+                            sys_security_acl: 'f10e13a8315e46aa9367cca616609fbf'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -9300,12 +11333,65 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '2dfa769af4c0489a8798d2c5a6895692'
+                        key: {
+                            list_id: {
+                                id: '53d08571fcf34d5a846b870023503ea9'
+                                key: {
+                                    name: 'x_823178_commissio_deals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'finance_approval_date'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '2e1dbc620e014f4cb0e48931f0024267'
+                        key: {
+                            sys_security_acl: '6445498a546546d88e7d732d4f594db0'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '2e222b15371941f5b68780541b6dd551'
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'evaluation_period'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list'
+                        id: '2e4d50afb79c41a985ee831a9986aaec'
+                        key: {
+                            name: 'x_823178_commissio_commission_plans'
+                            view: {
+                                id: '9a180d07e4c1475cb534c462e867bb86'
+                                key: {
+                                    name: 'sys_ref_list'
+                                }
+                            }
+                            sys_domain: 'global'
+                            element: 'NULL'
+                            relationship: 'NULL'
+                            parent: 'NULL'
                         }
                     },
                     {
@@ -9322,6 +11408,15 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'superseded_by_policy'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '2e7a020e09144e0e8154be11b18230ad'
+                        key: {
+                            name: 'x_823178_commissio_plan_targets'
+                            element: 'deal_type'
                             language: 'en'
                         }
                     },
@@ -9362,6 +11457,29 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '2ee6507c85944935946e2145bbf36f0e'
+                        key: {
+                            list_id: {
+                                id: '8cdd5c62839f3210a0365dc6feaad373'
+                                key: {
+                                    name: 'x_823178_commissio_plan_targets'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'annual_target_amount'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '2f43c0facf0d4f8ab41e05a6ecbf9423'
                         key: {
@@ -9398,6 +11516,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: '2fffd6ee32ba4351bbc21874ce8fdc93'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            col_name_string: 'executed_by'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: '3000095c8ce44831bbcef99b1d58ed73'
                         key: {
@@ -9413,6 +11539,19 @@ declare global {
                             name: 'x_823178_commissio_exception_approvals'
                             element: 'request_type'
                             value: 'snapshot_correction'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '305418a147c544f7aeff9b696fa45d21'
+                        key: {
+                            sys_security_acl: 'b1c8ac725b3d4138a4677837cc3e3c3b'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -9438,6 +11577,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: '30a85d56653b4921807ef9731305e986'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_manager_team_memberships'
+                            col_name_string: 'sales_rep'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: '30d4feee4ff64b65bc0dbb69bc534e01'
                         key: {
@@ -9448,6 +11595,23 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '30dfcd93e26b43d382025599a694a45d'
+                        key: {
+                            name: 'x_823178_commissio_bonus_earnings'
+                            element: 'evaluation_snapshot'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '312620b59b5047de831603b4c7560dd5'
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'source_plan'
+                            language: 'en'
                         }
                     },
                     {
@@ -9478,6 +11642,19 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: '313fded69cdb426892c7dc1801198be8'
+                        key: {
+                            sys_security_acl: '0d73a698999f40b6afeda06021ae8280'
+                            sys_user_role: {
+                                id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
+                                key: {
+                                    name: 'x_823178_commissio.manager'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: '3141d7a873a147b58474a918ff2b67dc'
                         key: {
                             sys_security_acl: '9815b40633e84c2dbdfa24a3b37411c0'
@@ -9491,23 +11668,6 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
-                        id: '30dfcd93e26b43d382025599a694a45d'
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'evaluation_snapshot'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '312620b59b5047de831603b4c7560dd5'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'source_plan'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
                         id: '314e6dfd70214864bb7fc67e9408ce35'
                         key: {
                             name: 'x_823178_commissio_system_alerts'
@@ -9517,6 +11677,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '315bd1f68112419a92ee2de23fd47116'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'qualification_metric_snapshot'
@@ -9533,6 +11694,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '3179779a29c1445c96130cbe5df9ba6b'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'effective_end_date'
@@ -9545,6 +11707,19 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'assumptions_json'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '322e49230b5343968cd8f6d93bc6ee2b'
+                        key: {
+                            sys_security_acl: 'cdd8387c239c4a56af2400760fb58572'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -9589,6 +11764,23 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list'
+                        id: '32ed4f8f6e9f4df6a0028df2319e1e2b'
+                        key: {
+                            name: 'x_823178_commissio_payments'
+                            view: {
+                                id: 'Default view'
+                                key: {
+                                    name: 'NULL'
+                                }
+                            }
+                            sys_domain: 'global'
+                            element: 'NULL'
+                            relationship: 'NULL'
+                            parent: 'NULL'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: '32f79ce524894141aae744387788a177'
                         key: {
@@ -9629,6 +11821,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '3368898f88d0417b802702e60501788a'
+                        key: {
+                            sys_security_acl: 'c6c59498d5de40bcb8390047560e472b'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_ui_list'
                         id: '3375192a83577210a0365dc6feaad3d8'
                         key: {
@@ -9651,6 +11856,19 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'commission_calculations_count'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '339abf1cec97417da1a0a4834ef13b61'
+                        key: {
+                            sys_security_acl: '382b9971bfef48a4b655d677a0c5c859'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -9744,6 +11962,40 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: '3528a9f0dbb74aa79c46c78cab5571c9'
+                        key: {
+                            sys_security_acl: '5f6a18da044d4064be51563eeef5da19'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '3532deedca6c4e1da2b35646453ac143'
+                        key: {
+                            sys_security_acl: 'cf407dc604b24e58ab2eb2d14e1e0085'
+                            sys_user_role: {
+                                id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
+                                key: {
+                                    name: 'x_823178_commissio.manager'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: '353eac3c321241469a0fbbb3ab2c812e'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_commission_plans'
+                            col_name_string: 'sales_rep'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: '354e20b8a81f442aaf8882fb178ca700'
                         key: {
                             sys_security_acl: '8fef51babdd14c96aec370707370a146'
@@ -9789,6 +12041,27 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: '35fb3243dbc647459d07878357ddbba2'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_payments'
+                            col_name_string: 'commission_calculation_id'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '36494d878dd7472e84184bb448315d30'
+                        key: {
+                            sys_security_acl: '9af766f02b064b7a8cdfbd4af55c4a62'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '365437d7984649e2b1e649ada0cb75aa'
                         key: {
@@ -9805,11 +12078,78 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '37095e126bd3415eb76251e8855f7d8c'
+                        key: {
+                            sys_security_acl: '638256afd9b742aabe47e399a192c21c'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '373bc1467ebf4729978061b05a954566'
+                        key: {
+                            list_id: {
+                                id: '7d3a8b1a83d33210a0365dc6feaad3ce'
+                                key: {
+                                    name: 'x_823178_commissio_commission_plans'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'is_active'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '373e196215be495f9f9a8dc7786b8dfc'
                         key: {
                             name: 'x_823178_commissio_invoices'
                             element: 'invoice_number'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '3747d540de73469ba59e0e482bc4a1c0'
+                        key: {
+                            sys_security_acl: '0f3cb93aaac24aa9ba22f45afad3e7db'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: '374b37cf59044d478fbe659f4db22b2f'
+                        key: {
+                            name: 'x_823178_commissio_plan_targets'
+                            element: 'deal_type'
+                            value: 'new_business'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '3756ebe7cf884c5aa054ce73cac7da20'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'bonus_name'
+                            language: 'en'
                         }
                     },
                     {
@@ -9850,53 +12190,10 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '37d0ce75161d41948dbb6dff97dcdfaf'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'submitted_on'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_security_acl_role'
-                        id: '383697dc3e554c36893d394bdf9392d4'
-                        key: {
-                            sys_security_acl: 'c8e681f495064a7785c8d050884bb1c8'
-                            sys_user_role: {
-                                id: '8a1e53939ebb45d7873f258a9ac7d757'
-                                key: {
-                                    name: 'x_823178_commissio.rep'
-                                }
-                            }
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: '3882aad37c3b42428a0b0e0ca7d7235f'
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'status'
-                            value: 'reversed'
-                        }
-                    },
-                    {
-                        table: 'sys_security_acl_role'
-                        id: '388872c9a4d14a27bc179dbbffd529ad'
-                        key: {
-                            sys_security_acl: '0336fe55faab464d9ebc36d3720c640f'
-                            sys_user_role: {
-                                id: '696ca2e6b66449e08519c5f20a55f2be'
-                                key: {
-                                    name: 'x_823178_commissio.admin'
-                                }
-                            }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '3756ebe7cf884c5aa054ce73cac7da20'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'bonus_name'
                             language: 'en'
                         }
                     },
@@ -9919,12 +12216,35 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '383697dc3e554c36893d394bdf9392d4'
+                        key: {
+                            sys_security_acl: 'c8e681f495064a7785c8d050884bb1c8'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '385a849aee2f4f1989883d8f5feef705'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'superseded_by_policy'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: '3882aad37c3b42428a0b0e0ca7d7235f'
+                        key: {
+                            name: 'x_823178_commissio_bonus_earnings'
+                            element: 'status'
+                            value: 'reversed'
                         }
                     },
                     {
@@ -9934,6 +12254,19 @@ declare global {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'operator_snapshot'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '388872c9a4d14a27bc179dbbffd529ad'
+                        key: {
+                            sys_security_acl: '0336fe55faab464d9ebc36d3720c640f'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -9980,19 +12313,19 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_db_object'
-                        id: '391f94eddd40411aae32d1091d0b2ab4'
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: '38cb1a74ddf344dcab9c1afb594a0512'
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'sort_order'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_db_object'
+                        id: '391f94eddd40411aae32d1091d0b2ab4'
+                        key: {
+                            name: 'x_823178_commissio_plan_recognition_policies'
                         }
                     },
                     {
@@ -10007,6 +12340,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '394befbd5f804b7fa9d694f9537548e0'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'projected_revenue'
@@ -10072,6 +12406,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '39fd72cb11134dd18096e994e661c440'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'effective_end_date'
@@ -10105,8 +12440,18 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_choice'
+                        id: '3b014eb70c094da2a6ca7647c91d17a1'
+                        key: {
+                            name: 'x_823178_commissio_plan_targets'
+                            element: 'deal_type'
+                            value: 'expansion'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '3b2ea4ce2a614f93b0acf12f65bea31e'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'commission_plan'
@@ -10118,6 +12463,15 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'bonus_earned_count'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '3b4d3f3215f643299a0f4bdac6922be6'
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'mode'
                             language: 'en'
                         }
                     },
@@ -10150,15 +12504,6 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: '3b4d3f3215f643299a0f4bdac6922be6'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'mode'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: '3b761a0fac8a4b929450e2123b002839'
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
@@ -10169,6 +12514,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '3b795e917c3f48b784978d6aeb4b7a8e'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'policy_state'
@@ -10184,20 +12530,21 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: '3c1b45295d2545f2a3e3b285ff148f81'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_commission_calculations'
+                            element: 'payout_schedule_snapshot'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '3c3e6c4a4e9c44ea8c968b75eef711cc'
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type_ref'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '3c1b45295d2545f2a3e3b285ff148f81'
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'payout_schedule_snapshot'
-                            language: 'en'
                         }
                     },
                     {
@@ -10237,6 +12584,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '3c6affbdd3b74439b399f3287314ac55'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'notes'
@@ -10274,11 +12622,37 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '3ca5e922b21b4bc4b1db5d163d139203'
+                        key: {
+                            sys_security_acl: '34ac7d7b42f64a4ba959bcf2df869e2e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '3d39de81bc964027b90beb516b188b68'
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'is_won'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '3d43f00534a34ddda783d0515b4136fc'
+                        key: {
+                            sys_security_acl: '23d26c38fc2b4dd29ef458521dd34f0e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -10290,10 +12664,59 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '3d7dad6292ea4b0cb61042322d748ac9'
+                        key: {
+                            sys_security_acl: '9f5a99d330e249f0a27f883b38aa6134'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_db_object'
                         id: '3d84f3245b3347ef8a06b010973fbbce'
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '3d954272a60b431cade2d45f6219fd0f'
+                        key: {
+                            sys_security_acl: 'f993dcbd91184c049e121d62c73d089e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '3daf9dcb12424278962315b2421eb24b'
+                        key: {
+                            list_id: {
+                                id: '7ab43192d1fc44b1bb00891404c30d81'
+                                key: {
+                                    name: 'x_823178_commissio_plan_tiers'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'commission_rate_percent'
                         }
                     },
                     {
@@ -10337,6 +12760,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '3e851d3397cf49cc8478326271f90c6c'
+                        key: {
+                            sys_security_acl: '3d4bcdfede004afba0dd3a9b7c518846'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '3e9b5fd05d564607a4e46975ba410b56'
                         key: {
@@ -10364,8 +12800,26 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list'
+                        id: '3f8675410a694a7cb88916a544f8454f'
+                        key: {
+                            name: 'x_823178_commissio_invoices'
+                            view: {
+                                id: 'Default view'
+                                key: {
+                                    name: 'NULL'
+                                }
+                            }
+                            sys_domain: 'global'
+                            element: 'NULL'
+                            relationship: 'NULL'
+                            parent: 'NULL'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: '3f9d387b6507495aa3bfb75ec0d0c663'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'status'
@@ -10373,8 +12827,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '3fc299eb076241ee86f5c852d1e6a1a8'
+                        key: {
+                            sys_security_acl: 'd927000f9c0f4493bea19f450a965e1f'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '3fcfa15636f14fa9b6be62c92997481b'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'commission_plan'
@@ -10440,6 +12908,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '412d2d21b6f64375a5e32425e29ae5e1'
+                        key: {
+                            sys_security_acl: 'c0ce61089ef74d61808153a9b7f86c44'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '414bdb712eaf4aae910980e5567f8f95'
                         key: {
@@ -10451,6 +12932,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '414c77b3f9b64657a9bee3c2de080f75'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'assumptions_json'
@@ -10488,6 +12970,15 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_system_alerts'
                             element: 'acknowledged_date'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '422b545f80fa43ccb2162860611439a3'
+                        key: {
+                            name: 'x_823178_commissio_deal_classifications'
+                            element: 'deal_type_ref'
                             language: 'en'
                         }
                     },
@@ -10559,6 +13050,19 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: '427be22335ea464d96526d7b88df9dd5'
+                        key: {
+                            sys_security_acl: '19b72e0940354cb6bda666dae78e37c5'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: '42831ba00be14881b5ced33961654dca'
                         key: {
                             sys_security_acl: 'f10e13a8315e46aa9367cca616609fbf'
@@ -10573,9 +13077,33 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '428f9c3bf439406b877a5651ccce69c9'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'payout_eligible_date'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '4305a681084447d899ff5a6376d34247'
+                        key: {
+                            list_id: {
+                                id: 'b160ab1683973210a0365dc6feaad325'
+                                key: {
+                                    name: 'x_823178_commissio_system_alerts'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'acknowledged_date'
                         }
                     },
                     {
@@ -10587,28 +13115,6 @@ declare global {
                                 id: '8a1e53939ebb45d7873f258a9ac7d757'
                                 key: {
                                     name: 'x_823178_commissio.rep'
-                                }
-                            }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '422b545f80fa43ccb2162860611439a3'
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'deal_type_ref'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_security_acl_role'
-                        id: '427be22335ea464d96526d7b88df9dd5'
-                        key: {
-                            sys_security_acl: '19b72e0940354cb6bda666dae78e37c5'
-                            sys_user_role: {
-                                id: '696ca2e6b66449e08519c5f20a55f2be'
-                                key: {
-                                    name: 'x_823178_commissio.admin'
                                 }
                             }
                         }
@@ -10647,6 +13153,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '439d3fdd741746339017fffb6e9cd28e'
+                        key: {
+                            sys_security_acl: 'b678d03994d84947999e20ab6d82fd2d'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '43b631c81298419c89ecc45493b6e04c'
                         key: {
@@ -10681,6 +13200,7 @@ declare global {
                     {
                         table: 'sys_user_role'
                         id: '43f2da310d1b4405852f17aa99f0c30c'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio.manager'
                         }
@@ -10714,6 +13234,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '44b5b8c11b374dd497046b4efa38d2da'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'executed_on'
@@ -10745,6 +13266,23 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '45793d3dbee14aefb823cc601c6b3fd8'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_plan_recognition_policies'
+                            element: 'version_number'
+                        }
+                    },
+                    {
+                        table: 'sys_choice_set'
+                        id: '4583cc5f19594bba81849ebf2b0b5871'
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'mode'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: '45a412a961444e68a3750f133b358616'
                         key: {
@@ -10767,6 +13305,32 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '45ad77540b354a35a2bb6557e0cc0240'
+                        key: {
+                            sys_security_acl: '82a00dda7f9148a2a527ba12ab767977'
+                            sys_user_role: {
+                                id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
+                                key: {
+                                    name: 'x_823178_commissio.manager'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '45c6b3e8d240433f86e21058bc751426'
+                        key: {
+                            sys_security_acl: '7d9113e64aaf4bc19ba8f247498eec68'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: '45c787dd69764e0cb9fc0f85793655e2'
                         key: {
@@ -10778,8 +13342,32 @@ declare global {
                     {
                         table: 'sys_db_object'
                         id: '45c8c79258814ddea7daac3ff2ae4116'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '45e7e46e466e4e1ab14c26d3dbce670a'
+                        key: {
+                            list_id: {
+                                id: '53d08571fcf34d5a846b870023503ea9'
+                                key: {
+                                    name: 'x_823178_commissio_deals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'finance_approved'
                         }
                     },
                     {
@@ -10797,26 +13385,36 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
-                        id: '45793d3dbee14aefb823cc601c6b3fd8'
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'version_number'
-                        }
-                    },
-                    {
-                        table: 'sys_choice_set'
-                        id: '4583cc5f19594bba81849ebf2b0b5871'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'mode'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
                         id: '46243e0f4a294c8e990b3c5935fea7be'
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'NULL'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '466538a6855c4d4a9eecc67788577440'
+                        key: {
+                            sys_security_acl: 'f330ca9a3b3044b9bd48ce9da604b9e4'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '466d491934dd45ce9d2e8e941b4179f8'
+                        key: {
+                            sys_security_acl: 'ae5d812cb58f4a8db265a30b9c0b08ac'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -10847,6 +13445,19 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: '46e408eff9424f30af55e2ef2b04523f'
+                        key: {
+                            sys_security_acl: 'dcb66cd305414e3da20900ee68ffb58e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: '46f39ffa92454070b313034bc64dc559'
                         key: {
                             sys_security_acl: '8975f1eaff524612a230a4e17720f047'
@@ -10864,6 +13475,19 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'status'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '47444d7dfcf04fb8aab2bd0daa1c3189'
+                        key: {
+                            sys_security_acl: 'df263d67c52340d48e0846a9a4ad85d9'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -10905,6 +13529,23 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list'
+                        id: '4855a6e0a8ae4bd9ba646285350c8b53'
+                        key: {
+                            name: 'x_823178_commissio_manager_team_memberships'
+                            view: {
+                                id: 'Default view'
+                                key: {
+                                    name: 'NULL'
+                                }
+                            }
+                            sys_domain: 'global'
+                            element: 'NULL'
+                            relationship: 'NULL'
+                            parent: 'NULL'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '489fa621c63e4c1cbd2931ffdc754fba'
                         key: {
@@ -10915,6 +13556,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '48a2e5d4f70e4edeb4025e291e621379'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'commission_plan'
@@ -10935,6 +13577,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '48b22f8b953349a6965a02b19359ee82'
+                        key: {
+                            sys_security_acl: '94c6f437f3304c6d8c0ab77c128e731f'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '48c810125bd444eeb018b4d0b647ae6f'
                         key: {
@@ -10945,9 +13600,33 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '48c92d7063dc4aff82b5013e30526873'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'plan_bonus'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '48eb64c83a254cc382d7db0bac7ca877'
+                        key: {
+                            list_id: {
+                                id: '2e4d50afb79c41a985ee831a9986aaec'
+                                key: {
+                                    name: 'x_823178_commissio_commission_plans'
+                                    view: {
+                                        id: '79a1c3967dec40429aad393098c2cc40'
+                                        key: {
+                                            name: 'sys_ref_list'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'sys_id'
                         }
                     },
                     {
@@ -11012,6 +13691,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_choice'
+                        id: '4a492bc2ce5e45438d4f0713f6f7ddce'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'evaluation_period'
+                            value: 'calculation'
+                        }
+                    },
+                    {
                         table: 'sys_ui_list_element'
                         id: '4a6acf1a83d33210a0365dc6feaad36d'
                         key: {
@@ -11031,20 +13719,21 @@ declare global {
                     },
                     {
                         table: 'sys_choice'
-                        id: '4a492bc2ce5e45438d4f0713f6f7ddce'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'evaluation_period'
-                            value: 'calculation'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
                         id: '4a6b4a44049143638edd065d957e4479'
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'stage'
                             value: 'closed_lost'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '4a6f92df9fc34d58b82555d8aae573a6'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_commission_calculations'
+                            element: 'recognition_policy_version_snapshot'
+                            language: 'en'
                         }
                     },
                     {
@@ -11056,12 +13745,16 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '4a6f92df9fc34d58b82555d8aae573a6'
+                        table: 'sys_security_acl_role'
+                        id: '4aabbacbde0343d6982232c63a2f9968'
                         key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'recognition_policy_version_snapshot'
-                            language: 'en'
+                            sys_security_acl: '3854501ee7bb48589aaf5121c90a1f4e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -11117,6 +13810,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '4b01c6c99bc0444f832dc56050186499'
+                        key: {
+                            sys_security_acl: 'e47691f170924451913f00f13f53c797'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '4b25511f3f1744b29bd525812550ae01'
                         key: {
@@ -11145,7 +13851,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '4be0f526063743f69b0dcd4ebb131f02'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -11184,6 +13890,19 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'effective_end_date'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '4d1fd080e03f45ffb16948c48b170c5c'
+                        key: {
+                            sys_security_acl: '2d6009d56003461d887a2b9068fa8e24'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -11240,7 +13959,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '4e0c68c611604a39b2faaadb5e93d607'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -11257,7 +13976,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '4e393cfebb7e4f08a222b3208444fd2f'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -11267,6 +13986,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '4e6b70d0a7894baf92373ad1e6e6bb96'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'payout_frequency'
@@ -11276,7 +13996,7 @@ declare global {
                     {
                         table: 'sys_choice_set'
                         id: '4e78f958e83643b0819b194bf6f06374'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'deal_type'
@@ -11285,6 +14005,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '4e8f6385e60349ecad9cb5fd9e64b79f'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'governance_source'
@@ -11297,6 +14018,19 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_exception_approvals'
                             element: 'requested_amount'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '4f1fa3663d84449fb7c202663b94c892'
+                        key: {
+                            sys_security_acl: '3e33286bb41b4527a3d2f781ac7533dd'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -11357,7 +14091,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '5076c57a93fa497a807bbc17f6a4ba04'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -11438,6 +14172,23 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
+                        id: '5148a19f36dd40c292e65ce8d8865da1'
+                        key: {
+                            name: 'x_823178_commissio_commission_calculations'
+                            element: 'accelerator_delta_component'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '515b9cbadffd492187b36e6af6b5c181'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'commission_plan'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
                         id: '51717c706e39422e9b94c3e5f6f2b756'
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
@@ -11447,6 +14198,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '518f915bebb1452589ca3deac4d56f70'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'attainment_percent_at_calc'
@@ -11467,27 +14219,23 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
-                        id: '5148a19f36dd40c292e65ce8d8865da1'
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'accelerator_delta_component'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '515b9cbadffd492187b36e6af6b5c181'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'commission_plan'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
                         id: '51c7e4d41e9645f992874b7fa13a4eb6'
                         key: {
                             name: 'x_823178_commissio_commission_statements'
                             element: 'paid_date'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '51e1fcae95c24a77a6feba76c7883e84'
+                        key: {
+                            sys_security_acl: '9ad03e334fb1435b94590a37f11e8a16'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -11500,12 +14248,65 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '52500968269a47edab9c0717004ea181'
+                        key: {
+                            sys_security_acl: '02587a10a913450194a504bb325571d8'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '5278b6e4e615416ea8a9b27699eff11a'
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'attainment_ceiling_percent'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '535d2eb44a6d48098bffdfa8bf353b5b'
+                        key: {
+                            list_id: {
+                                id: '32ed4f8f6e9f4df6a0028df2319e1e2b'
+                                key: {
+                                    name: 'x_823178_commissio_payments'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'deal'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list'
+                        id: '53d08571fcf34d5a846b870023503ea9'
+                        key: {
+                            name: 'x_823178_commissio_deals'
+                            view: {
+                                id: 'Default view'
+                                key: {
+                                    name: 'NULL'
+                                }
+                            }
+                            sys_domain: 'global'
+                            element: 'NULL'
+                            relationship: 'NULL'
+                            parent: 'NULL'
                         }
                     },
                     {
@@ -11518,13 +14319,85 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '544671704b6b481c9efe3c4a7a5ca8a7'
+                        key: {
+                            list_id: {
+                                id: 'a01bf6d683533210a0365dc6feaad33b'
+                                key: {
+                                    name: 'x_823178_commissio_commission_calculations'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'notes'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: '55277ec9cc974be59c4593e2cdd403d6'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
                             value: 'renewal'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '55378eede00b46038a35cd98804ff2c6'
+                        key: {
+                            list_id: {
+                                id: 'ed606b1683973210a0365dc6feaad364'
+                                key: {
+                                    name: 'x_823178_commissio_exception_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'implementation_date'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '558e1e585b664f3eb05f1c2e73ed4683'
+                        key: {
+                            sys_security_acl: '25246dbf3eae469092d70169a19a328f'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '55a5c82023fe42a5a4b263f44a1af312'
+                        key: {
+                            sys_security_acl: '9effc2d0984d4d7ba8177b84b41030e8'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
                         }
                     },
                     {
@@ -11580,10 +14453,19 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '57ab273494b1401b9f55c66ec8b25276'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'status'
                             value: 'earned'
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: '57c5035e3adb437191fc6e315594ef10'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_commission_calculations'
+                            col_name_string: 'deal'
                         }
                     },
                     {
@@ -11664,6 +14546,19 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: '5915ac056bc64be99fe6afa865e228bb'
+                        key: {
+                            sys_security_acl: '9d5b6a64286c4da1917fc85a28e4ba8d'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: '5935ddf63d7941949052c35f86b6b7df'
                         key: {
                             sys_security_acl: '85033dccc8ad4c5194d20a096078559e'
@@ -11685,6 +14580,45 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '59a286b1bea343538bffad26b00aef01'
+                        key: {
+                            sys_security_acl: '4f366c15b34240f5830bb71a0b6368e3'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '59d9a222b4c84f2ca976d929d5520c1e'
+                        key: {
+                            sys_security_acl: '3d7dfdfde79e4847b2d2534ac977ce0a'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '59eadb0ffbf54308b906f361e9bcac79'
+                        key: {
+                            sys_security_acl: '5f634dcc237743f79df0afb15288386f'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '5aa4fe3f60844f60b96511a97c95a324'
                         key: {
@@ -11702,11 +14636,33 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '5b6888d7ca8745a1b04faa3f15c09caf'
+                        key: {
+                            name: 'x_823178_commissio_plan_targets'
+                            element: 'annual_target_amount'
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: '5b6fbf464be04b9990c91bb1490d04b7'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'governance_source'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '5b822fc373fe4ec5b6c62eeaea15b0a5'
+                        key: {
+                            sys_security_acl: '920dfdc71a3a41c8b912410deb140130'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -11720,14 +14676,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '5b6888d7ca8745a1b04faa3f15c09caf'
-                        key: {
-                            name: 'x_823178_commissio_plan_targets'
-                            element: 'annual_target_amount'
                         }
                     },
                     {
@@ -11765,11 +14713,47 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '5c691afc68d949ccbfe02a1f13890a79'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'deal_type'
                             value: 'new_business'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '5c8ad507b4a24d57a592a7abf049c917'
+                        key: {
+                            sys_security_acl: 'f317c11bc9c9473eb93845672ac587e0'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '5ca88dccf8cc401d8db507f483947708'
+                        key: {
+                            list_id: {
+                                id: '32ed4f8f6e9f4df6a0028df2319e1e2b'
+                                key: {
+                                    name: 'x_823178_commissio_payments'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'calculation_lock'
                         }
                     },
                     {
@@ -11797,6 +14781,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: '5cfedd1562034b1c852225d4fed95af5'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_commission_calculations'
+                            col_name_string: 'commission_plan'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '5d0a90eb250c425a96b01d1dcbefbbb6'
                         key: {
@@ -11810,6 +14802,42 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'deal_type'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '5d66069ca95545fe98b42f786c01ab4f'
+                        key: {
+                            sys_security_acl: '82cd7563e7524e5786b0ad971e6c3436'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '5d67f104b07044578a71964d05bfff20'
+                        key: {
+                            list_id: {
+                                id: '7d681ceacede4dc8ba401738fd61bb3e'
+                                key: {
+                                    name: 'x_823178_commissio_plan_bonuses'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'bonus_trigger'
                         }
                     },
                     {
@@ -11828,12 +14856,58 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '5e04fb7674224cbfb482209880598596'
+                        key: {
+                            list_id: {
+                                id: '22fc50e9f29d41fda452d2d3ca23ae35'
+                                key: {
+                                    name: 'x_823178_commissio_commission_statements'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'period_end_date'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '5e91f61db096474290bcd771b9e85ea1'
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'bonus_amount'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '5ea2b74f9cc04293a883b9285d23a6fe'
+                        key: {
+                            list_id: {
+                                id: '3375192a83577210a0365dc6feaad3d8'
+                                key: {
+                                    name: 'x_823178_commissio_deal_types'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'is_system'
                         }
                     },
                     {
@@ -11856,6 +14930,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '5ee1dbcd92df4996865afdd565412214'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'sales_rep'
@@ -11885,8 +14960,32 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '5f4fc94c80b34c15a0d3f45c7913ba3b'
+                        key: {
+                            list_id: {
+                                id: 'ed606b1683973210a0365dc6feaad364'
+                                key: {
+                                    name: 'x_823178_commissio_exception_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'rejection_reason'
+                        }
+                    },
+                    {
                         table: 'sys_db_object'
                         id: '5f74098415dd4a7788fd8c4508837f0e'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                         }
@@ -11896,6 +14995,19 @@ declare global {
                         id: '5ff3e334e18d40459ff7af506ecf62ab'
                         key: {
                             sys_security_acl: '29a863ad0a6f4b259b6b3053480d634e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '5ffd5109c5ea4dcb8ed577d433c2eb51'
+                        key: {
+                            sys_security_acl: '1114f58186ed4023975240c88fefda2e'
                             sys_user_role: {
                                 id: '696ca2e6b66449e08519c5f20a55f2be'
                                 key: {
@@ -11940,6 +15052,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '60a4bb3d93f2492897ccb82a77ad05ed'
+                        key: {
+                            sys_security_acl: 'e532185dcc7e46409e027199664e4b29'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '60c2a78a013e445898d1291d6664b352'
                         key: {
@@ -11962,6 +15087,65 @@ declare global {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'payment'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '611c596c75e548a095ff60fbfc454faa'
+                        key: {
+                            list_id: {
+                                id: '22fc50e9f29d41fda452d2d3ca23ae35'
+                                key: {
+                                    name: 'x_823178_commissio_commission_statements'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'paid_by'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '616c3e7ce9594a98b77c16165d4baba9'
+                        key: {
+                            list_id: {
+                                id: 'a01bf6d683533210a0365dc6feaad33b'
+                                key: {
+                                    name: 'x_823178_commissio_commission_calculations'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'commission_amount'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '61d1522e5e78498087108e9df4c8d2f0'
+                        key: {
+                            sys_security_acl: 'cf1f56c05ddc4d9099fbcfe35c63261b'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -12056,6 +15240,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '6502908b9b7b450e9287728e4939f349'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'sort_order'
@@ -12085,12 +15270,38 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '65d78fc9dd1e48e1af4b91dc1bdc4c14'
+                        key: {
+                            sys_security_acl: '3e25d9565a354b4385f0029666af7ea5'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '667b78f992ab4246872b50d84a55695d'
                         key: {
                             name: 'x_823178_commissio_invoices'
                             element: 'last_sync'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '66a4a43e0a184eb994a2314169be41d7'
+                        key: {
+                            sys_security_acl: '4e372e542cfb410699edbd482df565ce'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -12102,12 +15313,39 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '66b7e4529b354ea0add59fd83aa7349b'
+                        key: {
+                            sys_security_acl: 'f4c8822832c14f2f811dfcbb41531ddd'
+                            sys_user_role: {
+                                id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
+                                key: {
+                                    name: 'x_823178_commissio.manager'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '66be6e19fb5747c4bb066d92df452960'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'quota_amount_snapshot'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '66d8fee4805e41868bb8a37001c370ce'
+                        key: {
+                            sys_security_acl: '9f872f96e3a247088f367d288118e52e'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
                         }
                     },
                     {
@@ -12122,7 +15360,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '674c21571967415f8685691d6931e53d'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'deal_type'
@@ -12145,6 +15383,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '67a33c7d02a54f85bbec4eb1901f41d8'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'rollback_summary'
@@ -12174,6 +15413,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '67d98a9899a7409a8d9943d107899af7'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'projected_commission'
@@ -12181,8 +15421,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '67f428677e1c47f8845f0a35922cda1e'
+                        key: {
+                            sys_security_acl: 'cae21355eb004520bb6d6d339fdfbc1c'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '681c5eff2d5f4abd92636a7f9956e7d4'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'qualification_operator'
@@ -12201,6 +15455,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '68428ea556184b0b87681a39a03a271a'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'effective_end_date'
@@ -12291,6 +15546,19 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: '69bc1ace50ef4004bd37a04d902aeb9e'
+                        key: {
+                            sys_security_acl: '2a93619c26184d45be7c14ce217d1698'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: '69c864857f2c4fef907b3e7b10c46a37'
                         key: {
                             sys_security_acl: '4477f45fc324401d9a2cdfd7befa3d33'
@@ -12318,7 +15586,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '69de2789259c42e987f9b0e4b44f533c'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'deal_type'
@@ -12383,8 +15651,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '6a4ce0755faa4e1396b4728fb2ea870b'
+                        key: {
+                            sys_security_acl: '3d7dfdfde79e4847b2d2534ac977ce0a'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '6a95219865ad4a08ad3128e8299d67d2'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'commission_plan'
@@ -12459,10 +15741,57 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '6b44a6f12f884529a18352cc4271dbad'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'qualification_metric'
                             value: 'deal_amount'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '6b52607b191e427f966de5adde90361e'
+                        key: {
+                            list_id: {
+                                id: 'f245b0e283537210a0365dc6feaad37b'
+                                key: {
+                                    name: 'x_823178_commissio_statement_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'statement'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '6b645576fcfd4e8fb3a1b6f3d1c954a3'
+                        key: {
+                            list_id: {
+                                id: '3f8675410a694a7cb88916a544f8454f'
+                                key: {
+                                    name: 'x_823178_commissio_invoices'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'is_mapped'
                         }
                     },
                     {
@@ -12494,6 +15823,7 @@ declare global {
                     {
                         table: 'sys_db_object'
                         id: '6c52150bcbd043d1bf9a98889a200909'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_types'
                         }
@@ -12514,6 +15844,29 @@ declare global {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'dispute_resolved_by'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '6c8925795acc49729f68b029d4da0138'
+                        key: {
+                            list_id: {
+                                id: '7d3a8b1a83d33210a0365dc6feaad3ce'
+                                key: {
+                                    name: 'x_823178_commissio_commission_plans'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'deal_type'
                         }
                     },
                     {
@@ -12538,6 +15891,14 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'NULL'
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: '6cc632ff90924a6484e0054a0df4b8e4'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_manager_team_memberships'
+                            col_name_string: 'approved_by'
                         }
                     },
                     {
@@ -12670,12 +16031,48 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '6ef6cfac9b884cf998cc64f8f4bc2c76'
+                        key: {
+                            sys_security_acl: 'b22462f9f9c0499cbc0c20cef0e31915'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '6ef8dfb08fa14edfa979c2b7fb99f483'
                         key: {
                             name: 'x_823178_commissio_exception_approvals'
                             element: 'implementation_date'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '6f2098f0cdd44308a5eb3750d52d565f'
+                        key: {
+                            list_id: {
+                                id: 'f245b0e283537210a0365dc6feaad37b'
+                                key: {
+                                    name: 'x_823178_commissio_statement_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'submitted_by'
                         }
                     },
                     {
@@ -12687,11 +16084,43 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '6f5da8a185b54157b60e121eab0f1dbe'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'payout_frequency'
+                        }
+                    },
+                    {
                         table: 'sys_index'
                         id: '6f9a59ea01714dada8a9ade8da0b1d5b'
                         key: {
                             logical_table_name: 'x_823178_commissio_bonus_earnings'
                             col_name_string: 'deal'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '6ff9c98191b246d4b6b4d199bcfe6dd3'
+                        key: {
+                            list_id: {
+                                id: '4855a6e0a8ae4bd9ba646285350c8b53'
+                                key: {
+                                    name: 'x_823178_commissio_manager_team_memberships'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'notes'
                         }
                     },
                     {
@@ -12708,11 +16137,29 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: '70116a1c77154e0eae741e3036892238'
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'override_effective_start_date'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '701e421be94842bf86861c0d6aae6a55'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'governance_source'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '7056bb27056e49f0af8a817a81754911'
+                        key: {
+                            name: 'x_823178_commissio_commission_plans'
+                            element: 'supersedes_plan'
                         }
                     },
                     {
@@ -12731,34 +16178,10 @@ declare global {
                     {
                         table: 'sys_choice_set'
                         id: '708054fed6d046a094020e62a67b3879'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'mode'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '6f5da8a185b54157b60e121eab0f1dbe'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'payout_frequency'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '70116a1c77154e0eae741e3036892238'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'override_effective_start_date'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '7056bb27056e49f0af8a817a81754911'
-                        key: {
-                            name: 'x_823178_commissio_commission_plans'
-                            element: 'supersedes_plan'
                         }
                     },
                     {
@@ -12767,6 +16190,19 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'effective_end_date'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '70977df70af543a39c3adfa107d0b1d4'
+                        key: {
+                            sys_security_acl: '7dc81377af224efc8397115abcbc998a'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -12844,7 +16280,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '71c135ff6d074a6fb5373381c35ef3c4'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -12854,10 +16290,23 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '71c297d0cd4c4be18e58ec0f35e39d04'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'renewal_rate'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '71f02da78be04dcba404e7f7fbe1af9e'
+                        key: {
+                            sys_security_acl: '23d26c38fc2b4dd29ef458521dd34f0e'
+                            sys_user_role: {
+                                id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
+                                key: {
+                                    name: 'x_823178_commissio.manager'
+                                }
+                            }
                         }
                     },
                     {
@@ -12878,12 +16327,38 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '7211f8739ee54f2f995e1bb2f4d51825'
+                        key: {
+                            sys_security_acl: 'c53b17273dfa495d8e7e2e2bdc0a5ea3'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '721ba845ad1042e2bea96bf191b36498'
                         key: {
                             name: 'x_823178_commissio_reconciliation_log'
                             element: 'significant_variances'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '721e4bbd9c4a4b38a53a4854b59c97d7'
+                        key: {
+                            sys_security_acl: 'fc77d54377134dc2aa403da543958d69'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -12922,9 +16397,40 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: '72863ef6fcab4aa1bbc3edaf739f323c'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_deal_classifications'
+                            col_name_string: 'deal'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '7300d60a36b6434984a95a34eced9eb2'
+                        key: {
+                            list_id: {
+                                id: '7d681ceacede4dc8ba401738fd61bb3e'
+                                key: {
+                                    name: 'x_823178_commissio_plan_bonuses'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'is_discretionary'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '73d5ef39661947acac7a8954f78c28d3'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'new_business_rate'
@@ -12946,7 +16452,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '74227c4cc352472aa22ceb9e5fc4e34b'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'plan_target_amount'
@@ -12955,6 +16461,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '7430d3fcd1e1410fbe08a76c4f5c7cf2'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'escalation_level'
@@ -13003,6 +16510,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '752ecca142ef40088a0d6b4dc9c89b2d'
+                        key: {
+                            sys_security_acl: 'd7db6914a7ed4119ac64b6df7d0c45fb'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '75694d3ea20140c691ea02f12be2da19'
                         key: {
@@ -13028,10 +16548,69 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '76033c896fb94f6e95b40ae4d00e7d63'
+                        key: {
+                            sys_security_acl: '235ae5361c654d2db180c9b98d76e373'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '7614625506c548a1a82dd760ae07342b'
+                        key: {
+                            list_id: {
+                                id: '22fc50e9f29d41fda452d2d3ca23ae35'
+                                key: {
+                                    name: 'x_823178_commissio_commission_statements'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'generated_date'
+                        }
+                    },
+                    {
                         table: 'sys_db_object'
                         id: '7614b176689349748e50f5a49c1b9cd4'
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '76273c6feb4d400cb376b6f53ffeffdb'
+                        key: {
+                            list_id: {
+                                id: '4260ab1683973210a0365dc6feaad39d'
+                                key: {
+                                    name: 'x_823178_commissio_reconciliation_log'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'total_variances'
                         }
                     },
                     {
@@ -13041,6 +16620,27 @@ declare global {
                             name: 'x_823178_commissio_deals'
                             element: 'snapshot_taken'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '768e349519684a05abe7eae350069e34'
+                        key: {
+                            sys_security_acl: 'ab39d119dc5a4551bfe44784270f032a'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: '76bf2c7c0eb64524804bc8c841c4769e'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_commission_calculations'
+                            col_name_string: 'dispute_resolved_by'
                         }
                     },
                     {
@@ -13054,10 +16654,34 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '77144d51471740ed96b8cc24beb66435'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'bonus_earned_count'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '77158b800c9443fd998a66eb3e811555'
+                        key: {
+                            list_id: {
+                                id: '22fc50e9f29d41fda452d2d3ca23ae35'
+                                key: {
+                                    name: 'x_823178_commissio_commission_statements'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'is_auto_generated'
                         }
                     },
                     {
@@ -13157,6 +16781,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '77da7816bd124508881c951d1f44b30f'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'deal'
@@ -13178,6 +16803,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '780bf81196e140d7887382f2cd97daaf'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'NULL'
@@ -13243,6 +16869,29 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '78c7e688128b46daa9551e41565f04be'
+                        key: {
+                            list_id: {
+                                id: '3f8675410a694a7cb88916a544f8454f'
+                                key: {
+                                    name: 'x_823178_commissio_invoices'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'books_invoice_id'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '78ea86e6c6ad4862ba1e8b62f5382af5'
                         key: {
@@ -13283,6 +16932,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '79b3d319c8b541bbaa29ae4c8bb4cdf7'
+                        key: {
+                            sys_security_acl: '1427ecea7fae42e19f3e9d0cb9da0697'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '79e0528115ab422087849f09be235d8f'
                         key: {
@@ -13298,6 +16960,23 @@ declare global {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'projected_revenue'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list'
+                        id: '7ab43192d1fc44b1bb00891404c30d81'
+                        key: {
+                            name: 'x_823178_commissio_plan_tiers'
+                            view: {
+                                id: 'Default view'
+                                key: {
+                                    name: 'NULL'
+                                }
+                            }
+                            sys_domain: 'global'
+                            element: 'NULL'
+                            relationship: 'NULL'
+                            parent: 'NULL'
                         }
                     },
                     {
@@ -13339,7 +17018,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '7bd32d6e9c4741418eef3d68ad069a3c'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -13348,9 +17027,79 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '7bdb3964301a4116aeecc40a03b5f309'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'NULL'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '7bdfcc713628438f95cae6f3341d80aa'
+                        key: {
+                            list_id: {
+                                id: '3f8675410a694a7cb88916a544f8454f'
+                                key: {
+                                    name: 'x_823178_commissio_invoices'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'customer_name'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '7c44a1fe11c1432681f95f6a4776b52a'
+                        key: {
+                            list_id: {
+                                id: '4855a6e0a8ae4bd9ba646285350c8b53'
+                                key: {
+                                    name: 'x_823178_commissio_manager_team_memberships'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'manager_user'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '7c515066baa34464933c411659badfbd'
+                        key: {
+                            list_id: {
+                                id: 'a01bf6d683533210a0365dc6feaad33b'
+                                key: {
+                                    name: 'x_823178_commissio_commission_calculations'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'commission_plan'
                         }
                     },
                     {
@@ -13381,8 +17130,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '7ced4d71d3ba41b28c81c0e7d07c392d'
+                        key: {
+                            sys_security_acl: 'bad9b9804ecf424bb8ddaf6baa0dbe7f'
+                            sys_user_role: {
+                                id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
+                                key: {
+                                    name: 'x_823178_commissio.manager'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '7d0fdf6ff72c45078a7165ca34d1d0e7'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type_ref'
@@ -13431,6 +17194,23 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list'
+                        id: '7d681ceacede4dc8ba401738fd61bb3e'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            view: {
+                                id: 'Default view'
+                                key: {
+                                    name: 'NULL'
+                                }
+                            }
+                            sys_domain: 'global'
+                            element: 'NULL'
+                            relationship: 'NULL'
+                            parent: 'NULL'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: '7d719c7c93c848e8a311f5ed820f2e79'
                         key: {
@@ -13444,11 +17224,33 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_choice'
+                        id: '7e2d1ad0e81d4af2a62ee1f371043dfb'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'deal_type'
+                            value: 'renewal'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '7e657c8341584d7d96ca87230eb8b9bd'
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'approved_on'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '7ecbb5470afa4da3b072eba32c2f6c61'
+                        key: {
+                            sys_security_acl: '65259ac44b814f9ba9198f2c02e25e8c'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -13477,6 +17279,19 @@ declare global {
                                 id: '5cc2731a0613479da7f42fd02edd07d9'
                                 key: {
                                     name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '7f3762c283a64afe924442e5a7722653'
+                        key: {
+                            sys_security_acl: 'e60d20a3d503457a8fa1278673bc2e72'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
                                 }
                             }
                         }
@@ -13525,6 +17340,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '7fc54337a8374b3fa646888b6e5d8bb7'
+                        key: {
+                            sys_security_acl: '82cd7563e7524e5786b0ad971e6c3436'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: '7fcbe751430f4163b2f56d34cfab6f8f'
                         key: {
@@ -13545,6 +17373,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '7ff38efa36e94a689f0006b723954733'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'evaluation_period'
@@ -13577,21 +17406,20 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: '8120e515e96b469484e843b53f69c55a'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'evaluation_period'
-                            value: 'annual'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: '806fc850c6174eb1b911a52e62681256'
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'rollback_summary'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: '8080ea8c1a2240a7bd920a93a79d5bc8'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_statement_approvals'
+                            col_name_string: 'submitted_by'
                         }
                     },
                     {
@@ -13626,6 +17454,39 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_choice'
+                        id: '8120e515e96b469484e843b53f69c55a'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'evaluation_period'
+                            value: 'annual'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '812156a5f9444b54a9efc47be1b29dfc'
+                        key: {
+                            list_id: {
+                                id: '7d3a8b1a83d33210a0365dc6feaad3ce'
+                                key: {
+                                    name: 'x_823178_commissio_commission_plans'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'description'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '815b95f6f994427493b440373335fa04'
                         key: {
@@ -13646,7 +17507,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '8199497931b44718b9b6a47567d1449f'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'deal_type'
@@ -13686,6 +17547,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '820d8b69d0294a14be4bcde6e9ec28cb'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'one_time_per_period'
@@ -13740,6 +17602,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '8268abe06669462c872e91a364002a44'
+                        key: {
+                            sys_security_acl: 'ca450eb1cfe84b228b194fde5f19b537'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '82803a42234c4e6ba1313e92825c7759'
                         key: {
@@ -13759,6 +17634,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '82b7a1e4cbf4444ba2900bb782288717'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'is_discretionary'
@@ -13808,6 +17684,16 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: '839a6e4e0f774263b0b0e2650d24d3d1'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_bonus_earnings'
+                            element: 'earned_date'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: '83aa016682a7403294f0557dff7a2dd9'
                         key: {
@@ -13818,15 +17704,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '839a6e4e0f774263b0b0e2650d24d3d1'
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'earned_date'
-                            language: 'en'
                         }
                     },
                     {
@@ -13843,6 +17720,19 @@ declare global {
                             name: 'x_823178_commissio_commission_statements'
                             element: 'paid_date'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '847cd48952464a758c3912df26d99830'
+                        key: {
+                            sys_security_acl: '08161af4ea574da39cf95ecf06d76e18'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -13891,6 +17781,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '8538331c97a741eaa7d90978d34cf674'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'one_time_per_period'
@@ -13916,6 +17807,7 @@ declare global {
                     {
                         table: 'sys_security_acl_role'
                         id: '8612aa28335144a7ac2ac3dfb5effec8'
+                        deleted: true
                         key: {
                             sys_security_acl: '556f1d91bf52437fb4d634f6434671bd'
                             sys_user_role: {
@@ -13927,8 +17819,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '8612c9049a334c62b2a5be1837c30753'
+                        key: {
+                            sys_security_acl: '9dce14d84930431e951a056a025a3a9a'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '861fbdcb067145db9e0c0a9215cadeb0'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'is_active'
@@ -13958,6 +17864,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '862a6d64d7344ae0a9730c0dcc1611cf'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'NULL'
@@ -14001,6 +17908,19 @@ declare global {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'commission_plan'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '871b4f378ee44ccf80bf4dc49281632d'
+                        key: {
+                            sys_security_acl: 'eecc4c2d04fc4501a24691717ff4880b'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -14065,11 +17985,33 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: '88d633980d4e448fa74cbeea66172003'
+                        key: {
+                            name: 'x_823178_commissio_plan_tiers'
+                            element: 'NULL'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '895f995ec7204584ba232818c861cbd3'
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'status'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '896f0fab0a85420fac4447d33e2e92ca'
+                        key: {
+                            sys_security_acl: '0804855e83934cae9428298c696a0479'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
                         }
                     },
                     {
@@ -14082,16 +18024,8 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: '88d633980d4e448fa74cbeea66172003'
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'NULL'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: '899b9dd5da7d4b4ab1e6c69a16005cba'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'approved_by'
@@ -14110,6 +18044,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '89ddfc6eee8642f2adcae7f66b3e8dc6'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'notes'
@@ -14215,11 +18150,42 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '8a6bb6218bb84cb28e49abb1864fe792'
+                        key: {
+                            list_id: {
+                                id: '2a39f709d92640abb9567ce401b238a4'
+                                key: {
+                                    name: 'x_823178_commissio_plan_recognition_policies'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'recognition_basis'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '8a97fbeaa4b147719b39ef300a0e46b5'
                         key: {
                             name: 'x_823178_commissio_payments'
                             element: 'payment_type'
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: '8aa2183581bf453d8a675a1cf68d7369'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_commission_plans'
+                            col_name_string: 'plan_overlap_approved_by'
                         }
                     },
                     {
@@ -14232,9 +18198,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '8b6dc92d6d8645e096855e029b08651f'
+                        key: {
+                            sys_security_acl: 'ff812eb963b9423eab3d146cbba5e0c7'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: '8b7659ba6a2a4a3c821f4d8587d3dc70'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -14252,6 +18231,7 @@ declare global {
                     {
                         table: 'sys_db_object'
                         id: '8be228a3f0634241ac5c68e275039706'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                         }
@@ -14259,6 +18239,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '8be75aaa09c34366ad2ff5e76c501a75'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'earned_date'
@@ -14294,8 +18275,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '8c43d5a7f2ae47069477577e4e801dad'
+                        key: {
+                            sys_security_acl: '6ccf16b8556a4c22a9d4fce942049176'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '8c665bb8e9d240278ea1611e5683e0e2'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'current_step'
@@ -14314,6 +18309,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '8c908df1d1864912a695e47e45984614'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'status'
@@ -14340,6 +18336,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '8cf481caae83411da37c085db2337c42'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'deal_type_ref'
@@ -14349,6 +18346,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '8d412e5acbc346d494e806ae8e00f6db'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'NULL'
@@ -14373,6 +18371,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '8d75ba911b494d1f848824ea0ac0b7d2'
+                        key: {
+                            name: 'x_823178_commissio_statement_approvals'
+                            element: 'sales_rep'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '8d8cba818c1740cd9d08e2dd838aa001'
                         key: {
@@ -14391,14 +18397,6 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
-                        id: '8d75ba911b494d1f848824ea0ac0b7d2'
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'sales_rep'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
                         id: '8de8c292a326476997a4956f6fbb2033'
                         key: {
                             name: 'x_823178_commissio_invoices'
@@ -14406,8 +18404,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '8e06edec4333498ab2b9bc6be613c0f7'
+                        key: {
+                            sys_security_acl: '399e12af18cb41448134666be88313a9'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_db_object'
                         id: '8e0a2fbeb73b46cdae84a8c66798601e'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                         }
@@ -14439,8 +18451,22 @@ declare global {
                     {
                         table: 'sys_db_object'
                         id: '8e652dca682a47a399d659d33a6b75c2'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '8e85eece9db14dbd8e193e95197b1314'
+                        key: {
+                            sys_security_acl: 'ce370ee66150497bbc268e33af1685f6'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -14454,9 +18480,23 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '8f1df6161f204228bb17186296e5b959'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_statements'
                             element: 'total_bonus_amount'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '8f22810e32f24dfcbbf1c3f016c998ca'
+                        key: {
+                            sys_security_acl: '835cd4b9df94431bb78ab884f58bfc5c'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -14466,6 +18506,29 @@ declare global {
                             name: 'x_823178_commissio_reconciliation_log'
                             element: 'reconciliation_date'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '90039a62dcaf4d0385c5884456fe49a7'
+                        key: {
+                            list_id: {
+                                id: 'b160ab1683973210a0365dc6feaad325'
+                                key: {
+                                    name: 'x_823178_commissio_system_alerts'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'acknowledged_by'
                         }
                     },
                     {
@@ -14488,6 +18551,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '907b1b72150b49489b97070efc5a9e8b'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_types'
                             element: 'name'
@@ -14539,6 +18603,29 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '912341cd8e7a4f49921df269d03d2341'
+                        key: {
+                            list_id: {
+                                id: 'f245b0e283537210a0365dc6feaad37b'
+                                key: {
+                                    name: 'x_823178_commissio_statement_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'workflow_history'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '9148d92f260044cfb69384aceb8cb50b'
                         key: {
@@ -14570,6 +18657,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '9190f387335f43199ae3ec8b871a611d'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'deal_type_ref'
@@ -14609,6 +18697,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '9267e50dc7da441dac89ed5208c997eb'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'plan_version'
@@ -14629,6 +18718,19 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'notes'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '92f11957a197416bba0d50143c7555b4'
+                        key: {
+                            sys_security_acl: '5c6318ae1d614bafbbbc2059a7dc40f1'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -14659,6 +18761,19 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'plan_overlap_approved_on'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '939eca7971a547388e77f1aa4132eca5'
+                        key: {
+                            sys_security_acl: '632c97e1a7e346f29a0af1969dc81772'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
                         }
                     },
                     {
@@ -14709,6 +18824,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '943ba9a19bb64d78bca5b0b50b44eafa'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'approved_on'
@@ -14741,6 +18857,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '947fed6989134b9cb818441341283009'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'is_primary'
@@ -14777,10 +18894,34 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '94e2a2aa2b534015b42af014331aab34'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'current_step'
                             value: 'submission'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '94f3a97598ff45c6af042e50f0594191'
+                        key: {
+                            list_id: {
+                                id: '7ab43192d1fc44b1bb00891404c30d81'
+                                key: {
+                                    name: 'x_823178_commissio_plan_tiers'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'is_active'
                         }
                     },
                     {
@@ -14841,6 +18982,16 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: '954223d9553c4081854f0b2e964ac21d'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_bonus_earnings'
+                            element: 'period_key'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: '9605cfedc0a940ce9c1db01a766093f3'
                         key: {
@@ -14851,15 +19002,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '954223d9553c4081854f0b2e964ac21d'
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'period_key'
-                            language: 'en'
                         }
                     },
                     {
@@ -14883,6 +19025,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '9635a36648194c48b3ea2fb15f6ba8a2'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'run_name'
@@ -14916,6 +19059,86 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '96e0982e80a9410d874fa286deef041f'
+                        key: {
+                            sys_security_acl: 'd9f5ccc161fb46c182c84cefa44a3ba6'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '973bf6b886b543d8b7ab892abbb9b8f5'
+                        key: {
+                            list_id: {
+                                id: '8cdd5c62839f3210a0365dc6feaad373'
+                                key: {
+                                    name: 'x_823178_commissio_plan_targets'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'deal_type'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: '9749ef3d5abd4e75bc9f4950143e81a3'
+                        key: {
+                            list_id: {
+                                id: 'f245b0e283537210a0365dc6feaad37b'
+                                key: {
+                                    name: 'x_823178_commissio_statement_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'reviewed_on'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '975aaa7947df415dbc349bb3b8b6d342'
+                        key: {
+                            sys_security_acl: '3e25d9565a354b4385f0029666af7ea5'
+                            sys_user_role: {
+                                id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
+                                key: {
+                                    name: 'x_823178_commissio.manager'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: '976be97af4604baf9c336b7f0ba7c4d8'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_plan_targets'
+                            col_name_string: 'deal_type_ref'
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: '977ff630175f41a89c544a734a2a61f6'
                         key: {
@@ -14926,6 +19149,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '979fee6faf294c35829c0a493a35770b'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'effective_end_date'
@@ -14978,6 +19202,29 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '98c4d7ad220842c392b8629a6abe6b17'
+                        key: {
+                            list_id: {
+                                id: '7d3a8b1a83d33210a0365dc6feaad3ce'
+                                key: {
+                                    name: 'x_823178_commissio_commission_plans'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'base_rate'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '98f6d25e4b6b433b8ed5ad64e41b861b'
                         key: {
@@ -14995,6 +19242,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '9949450683c14648b6b9f807070502cd'
+                        key: {
+                            sys_security_acl: '02b5411f9df842758d901671553b588a'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '997aaf68d5c840b88a9d6d74060e0b9c'
                         key: {
@@ -15008,6 +19268,19 @@ declare global {
                         id: '99b38e1e25644f358e91d8e43a7de6f7'
                         key: {
                             name: 'x_823178_commissio_reconciliation_log'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '9a6c490c39ce43db8089e45d2ad6d835'
+                        key: {
+                            sys_security_acl: 'e369d7091b524cf39d03192c8b9ae187'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -15029,6 +19302,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '9b6a3838110d41d185fbce21ac2f83da'
+                        key: {
+                            sys_security_acl: '3bfcbbd555364d50ba8ca3cbe78238bb'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '9b7c5df0552f49efb123d25687770dab'
                         key: {
@@ -15039,6 +19325,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '9bd6fe5a443d44c79105e3d1bbdcc970'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'status'
@@ -15076,6 +19363,29 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '9c29209d9a3642209d2f5e07d3bf975f'
+                        key: {
+                            list_id: {
+                                id: 'ed606b1683973210a0365dc6feaad364'
+                                key: {
+                                    name: 'x_823178_commissio_exception_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'approval_date'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '9c296f3057ef48ecacd6ec0c6ba972ba'
                         key: {
@@ -15096,6 +19406,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '9dbbce90c10a479d92d6868cfe99d0b9'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'policy_state'
@@ -15201,6 +19512,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '9efed350ccdb4865a21725ea392c887d'
+                        key: {
+                            sys_security_acl: '9ad42d52d8654c8491fa0c57f4c9e990'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '9f2d3fcc5b8948dd9e15df0cf77100f1'
                         key: {
@@ -15245,6 +19569,32 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: '9fe55264bc484b73a3b3bce33b1d114e'
+                        key: {
+                            sys_security_acl: '256596f1eefc452d859034979b7ffeb4'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '9fe65b744ab34c62b847658beb7a8ba4'
+                        key: {
+                            sys_security_acl: 'aad554f15fe540679beda85401199621'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: 'a0069ae9d9db470ab6952af35a832790'
                         key: {
                             sys_security_acl: '81883569202a490f8dcd4191dceadc65'
@@ -15252,6 +19602,42 @@ declare global {
                                 id: '43f2da310d1b4405852f17aa99f0c30c'
                                 key: {
                                     name: 'x_823178_commissio.manager'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'a00e7881802a4d3d88f8b2d0dde42bec'
+                        key: {
+                            list_id: {
+                                id: 'b160ab1683973210a0365dc6feaad325'
+                                key: {
+                                    name: 'x_823178_commissio_system_alerts'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'resolved_date'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'a0148559148e47f69c251d1ac99db1f5'
+                        key: {
+                            sys_security_acl: 'd4e470f5aebd4e41ae3520223b646ffa'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
                                 }
                             }
                         }
@@ -15404,41 +19790,22 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'a185115f36c04671839486f482c5a799'
+                        table: 'sys_security_acl_role'
+                        id: 'a0d03f58cf3b47ce94924adf541cacb5'
                         key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'escalation_level'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'a1a935adafaa4291b1843562cc7eb0f3'
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'sales_rep'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'a1b3f60017a04a6e87cb1050b234af79'
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'NULL'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'a1d9e6da86b649f0a4e5c023e4bcb017'
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'invoice'
+                            sys_security_acl: 'fb13faf8c2dd406b8ef2c54d55fc92da'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
                         table: 'sys_dictionary'
                         id: 'a0f730cf7b8e47359f6c796ba76862af'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'qualification_operator'
@@ -15450,6 +19817,32 @@ declare global {
                         key: {
                             logical_table_name: 'x_823178_commissio_statement_approvals'
                             col_name_string: 'statement'
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: 'a155e9b6cc894db5b795f014b121b392'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_forecast_scenarios'
+                            col_name_string: 'commission_plan'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'a185115f36c04671839486f482c5a799'
+                        key: {
+                            name: 'x_823178_commissio_statement_approvals'
+                            element: 'escalation_level'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'a1a935adafaa4291b1843562cc7eb0f3'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_statement_approvals'
+                            element: 'sales_rep'
                         }
                     },
                     {
@@ -15467,10 +19860,50 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
+                        id: 'a1b3f60017a04a6e87cb1050b234af79'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_manager_team_memberships'
+                            element: 'NULL'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'a1b4baf900ea4d848f4beca4ff93989d'
+                        key: {
+                            list_id: {
+                                id: '53d08571fcf34d5a846b870023503ea9'
+                                key: {
+                                    name: 'x_823178_commissio_deals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'current_owner'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
                         id: 'a1d9d35e390d4f00aefba1249bfcfebc'
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'bonus_earned_count'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'a1d9e6da86b649f0a4e5c023e4bcb017'
+                        key: {
+                            name: 'x_823178_commissio_bonus_earnings'
+                            element: 'invoice'
                         }
                     },
                     {
@@ -15499,12 +19932,62 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'a2373e2d422642919028d68cf9b598e5'
+                        key: {
+                            sys_security_acl: '3a4f4a3a601d4e92ab9a1790b9549803'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'a2479be204054fa0afa505ae6a05c170'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_types'
                             element: 'is_active'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'a2caede48f44405285a9488c4a595b81'
+                        key: {
+                            list_id: {
+                                id: '22fc50e9f29d41fda452d2d3ca23ae35'
+                                key: {
+                                    name: 'x_823178_commissio_commission_statements'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'locked_by'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'a3250130bd884fe4bf91a6f8ccddac29'
+                        key: {
+                            sys_security_acl: 'ce3920c6e22f47aa9af0ede638a4fa64'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -15537,6 +20020,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'a45fdfabeac04d3eba39c984631856d3'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'status'
@@ -15568,7 +20052,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'a498cc169d7747a681d2f25c25684348'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'deal_type'
@@ -15611,6 +20095,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'a5e2f71ace474914b305eebc4cf0351e'
+                        key: {
+                            sys_security_acl: '1af3f44247174ce0b28923c8a09a4064'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: 'a6390e0cfedd4397b4a599cb0db61466'
                         key: {
@@ -15622,6 +20119,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'a6b9c0ca66a147c78a802b8b052e974f'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'NULL'
@@ -15639,6 +20137,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'a6f6128ee7ef40fcb1fa8149887cfc8c'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'description'
@@ -15664,6 +20163,7 @@ declare global {
                     {
                         table: 'ua_table_licensing_config'
                         id: 'a7a16e3502ac4c799dc8e73d3570725c'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_types'
                         }
@@ -15679,6 +20179,29 @@ declare global {
                                     name: 'x_823178_commissio.finance'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'a7ae4ac894104864847a0eceda978b71'
+                        key: {
+                            list_id: {
+                                id: '4855a6e0a8ae4bd9ba646285350c8b53'
+                                key: {
+                                    name: 'x_823178_commissio_manager_team_memberships'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'approved_on'
                         }
                     },
                     {
@@ -15723,6 +20246,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'a869f298ad74490bacd888a4e7eec90f'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'recognition_date_snapshot'
@@ -15730,11 +20254,38 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'a870f700a7714271b6b695485c8915f8'
+                        key: {
+                            sys_security_acl: 'c2304897a3e4404baf6c53f94b7346db'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: 'a87ddedb439c4f5895903e7b1cd04fe0'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'payout_frequency'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'a89019aaa49e42718068f853a949dbce'
+                        key: {
+                            sys_security_acl: '5499f0dbbf004e4fa34ba2bb8a6261bd'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -15742,6 +20293,27 @@ declare global {
                         id: 'a8bad67c7aa243d4a8cd9231bd9b54c8'
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'a8ee0e8076914628ab8697adf27f3959'
+                        key: {
+                            sys_security_acl: '9f5a99d330e249f0a27f883b38aa6134'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: 'a9949392eca4419d8af27cec43644ce0'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_plan_recognition_policies'
+                            col_name_string: 'commission_plan'
                         }
                     },
                     {
@@ -15755,6 +20327,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'a9ce7bb074db4467b2c58492abfabf47'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'description'
@@ -15770,12 +20343,43 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: 'aaba084fd1e44ec9a3ef1971e6aa368c'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'qualification_metric'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: 'aac0b5cd928c419b9642dd0ea046901b'
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'status'
                             value: 'published'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'aae4f6c8facb48e2bfb6e93f42354528'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_plan_tiers'
+                            element: 'description'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'ab09f98533124ecbac329fb78a9c88a8'
+                        key: {
+                            sys_security_acl: 'bd1fa625b9f544e4841ae372e177762f'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -15796,8 +20400,18 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: 'ab33be67b13a45f88640c2154b003463'
+                        key: {
+                            name: 'x_823178_commissio_statement_approvals'
+                            element: 'escalated_on'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: 'ab6325e93f234e9dad4a40e13a7bb0ae'
+                        deleted: true
                         key: {
                             sys_security_acl: '28b3c0a945864a5088f40b6e2306fcff'
                             sys_user_role: {
@@ -15818,8 +20432,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'abf26ababd4f45bb890b7157c4b6d314'
+                        key: {
+                            sys_security_acl: 'a03370556a7645d8b10acd272d1046d8'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'ac043222f48943bca852d32d13fbff83'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'bonus_amount'
@@ -15846,35 +20474,10 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'ac2182bb53764354a4c076df9ac56a2a'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'is_active'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'aaba084fd1e44ec9a3ef1971e6aa368c'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_metric'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'aae4f6c8facb48e2bfb6e93f42354528'
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'description'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'ab33be67b13a45f88640c2154b003463'
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'escalated_on'
-                            language: 'en'
                         }
                     },
                     {
@@ -15905,6 +20508,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'ac7d6902f3914175a933fd68da849271'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'threshold_snapshot'
@@ -15938,7 +20542,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'acc2514e432a4c56a2ca551c93d275e0'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'new_business_rate'
@@ -15948,6 +20552,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'acf3f0a3ec1c493fa1bc5867aed67551'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'auto_payout'
@@ -16001,6 +20606,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: 'aed3689efad04cf8b8360350afef022f'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_bonus_earnings'
+                            col_name_string: 'commission_plan'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'aeecec1d492a4eb8a2450675c085f322'
                         key: {
@@ -16011,7 +20624,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'af2d4b3f3d5541f483b1c7adfb4918ca'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -16041,6 +20654,42 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'afb3d5e314c34fb89c8c20af81edaa45'
+                        key: {
+                            list_id: {
+                                id: 'f245b0e283537210a0365dc6feaad37b'
+                                key: {
+                                    name: 'x_823178_commissio_statement_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'decision_notes'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'afd6642b023849368b55d82e4eec0689'
+                        key: {
+                            sys_security_acl: '2853e3bb0e0b478abc02db4f169b5d33'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: 'afe6edd1c2204db39edcfb7fed31c883'
                         key: {
@@ -16052,6 +20701,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'b002b4f279234fb8bf625ed36839c8f8'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'commission_plan'
@@ -16068,6 +20718,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'b02666779218436189fd87f146efe6ca'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'attainment_percent_at_calc'
@@ -16077,11 +20728,24 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'b0342a276ace45de938fd46e73be5e5b'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'deal_type'
                             value: 'renewal'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'b084939a9a144ecbbc3345c2537e64ce'
+                        key: {
+                            sys_security_acl: '03dcbb2799aa4f0a9d485956eb1b2c34'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -16159,7 +20823,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'b17db6eda63a4c388366f1e7d92e7e40'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -16177,6 +20841,42 @@ declare global {
                                     name: 'x_823178_commissio.manager'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'b20f05e367aa4d9e948d91064d0c06a3'
+                        key: {
+                            sys_security_acl: '85033dccc8ad4c5194d20a096078559e'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'b22b81c4846a4f4cb24c33a80894998b'
+                        key: {
+                            list_id: {
+                                id: '2a39f709d92640abb9567ce401b238a4'
+                                key: {
+                                    name: 'x_823178_commissio_plan_recognition_policies'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'version_number'
                         }
                     },
                     {
@@ -16207,9 +20907,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'b262779183224db783dd657c0ee33ea3'
+                        key: {
+                            sys_security_acl: 'a6ba8066520b42a1aa13c93c20e8dd9e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: 'b2823ffc11714bb2a776767a95e514b3'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -16236,6 +20949,7 @@ declare global {
                     {
                         table: 'sys_security_acl_role'
                         id: 'b28ff391fabe429b863071f15bf63a18'
+                        deleted: true
                         key: {
                             sys_security_acl: '15856848f75d4146a37b2be8e2ec450b'
                             sys_user_role: {
@@ -16255,8 +20969,55 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'b2a71a0aa4ff45d0ae46f084617a2201'
+                        key: {
+                            list_id: {
+                                id: '3375192a83577210a0365dc6feaad3d8'
+                                key: {
+                                    name: 'x_823178_commissio_deal_types'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'sort_order'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'b2d9ff84b7a940d59561be05e7485b6f'
+                        key: {
+                            list_id: {
+                                id: '4855a6e0a8ae4bd9ba646285350c8b53'
+                                key: {
+                                    name: 'x_823178_commissio_manager_team_memberships'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'is_active'
+                        }
+                    },
+                    {
                         table: 'ua_table_licensing_config'
                         id: 'b2efcd6cb7b144298cfec9b0a8bd0134'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                         }
@@ -16264,6 +21025,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'b2ff8e77435949829851bbb36a6112eb'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'description'
@@ -16314,6 +21076,28 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'b345eee09d4a4ad3aa5453aa15874363'
+                        key: {
+                            sys_security_acl: '8a6f5c643dcb4043bc8a60ea673e57fb'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: 'b3486ce29a594f05b0946aa0b4b7045c'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'deal_type'
+                            value: 'any'
                         }
                     },
                     {
@@ -16378,19 +21162,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_security_acl_role'
-                        id: 'b3f3d5e899f14595927e7ed8efd5c36a'
-                        key: {
-                            sys_security_acl: '3a12985e6b8e4f44ade9c4795e2fc3af'
-                            sys_user_role: {
-                                id: '696ca2e6b66449e08519c5f20a55f2be'
-                                key: {
-                                    name: 'x_823178_commissio.admin'
-                                }
-                            }
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: 'b38e0c794e784c35bbaad1e510337479'
                         key: {
@@ -16418,8 +21189,23 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'b3f3d5e899f14595927e7ed8efd5c36a'
+                        deleted: true
+                        key: {
+                            sys_security_acl: '3a12985e6b8e4f44ade9c4795e2fc3af'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'b45270754c874d9b88789b85d3a6f541'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'dry_run'
@@ -16455,10 +21241,24 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'b515f72b96dc4fdcaa0b611991d0e076'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'qualification_metric'
                             value: 'base_commission_amount'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'b54df04ee982421e8a1af9dbd3730e7d'
+                        key: {
+                            sys_security_acl: '40d4d678b57b4d148b57011138664210'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
                         }
                     },
                     {
@@ -16508,6 +21308,32 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: 'b5e468e179d14a61ac8e72c2d1d9c7b6'
+                        key: {
+                            sys_security_acl: '131e43bbd1674161aa15e148bcc3153e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'b5f171087f34458492f1ead2ab657fc4'
+                        key: {
+                            sys_security_acl: '9f872f96e3a247088f367d288118e52e'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: 'b5fd1c6a05a34cfb884f96d67db2b97c'
                         key: {
                             sys_security_acl: '793e9af133094de5b84c5097dd5992fa'
@@ -16517,6 +21343,23 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'b6290440220949179bd0197c0feb1305'
+                        key: {
+                            name: 'x_823178_commissio_commission_plans'
+                            element: 'plan_version'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'b63317e7c5ca44edaa94cc93ca76fbbd'
+                        key: {
+                            name: 'x_823178_commissio_plan_recognition_policies'
+                            element: 'description'
+                            language: 'en'
                         }
                     },
                     {
@@ -16569,25 +21412,9 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'b6290440220949179bd0197c0feb1305'
-                        key: {
-                            name: 'x_823178_commissio_commission_plans'
-                            element: 'plan_version'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'b63317e7c5ca44edaa94cc93ca76fbbd'
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'description'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_choice'
                         id: 'b69bc4965c3e4e9384ce8c2795f38940'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'qualification_metric'
@@ -16702,6 +21529,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'b790197a1db8403eb0439140198f29cb'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'is_primary'
@@ -16717,6 +21545,42 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: 'b7b2eb37f8224e288051c90d0a6a3de2'
+                        key: {
+                            sys_security_acl: '0d127a71a43c4b9aa5e31e6618cbf565'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'b810156b4dc74409a0119f64d1a5b933'
+                        key: {
+                            list_id: {
+                                id: '7ab43192d1fc44b1bb00891404c30d81'
+                                key: {
+                                    name: 'x_823178_commissio_plan_tiers'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'tier_name'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: 'b86751feb4da47a2b33769cb241560b3'
                         key: {
                             sys_security_acl: 'f5dc85c8fcae46899bacdf61df802ac6'
@@ -16726,6 +21590,55 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'b93af74bbbcb4387ae891e290e350bca'
+                        key: {
+                            sys_security_acl: '63638372c0824b06ae859e4d30fd3d38'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'b964dd750efa435ca1e28881d1eea203'
+                        key: {
+                            sys_security_acl: 'fb86941c341a45598d1454412429c291'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'b9b8f387b4b04af8b5ead9525ace1315'
+                        key: {
+                            list_id: {
+                                id: '32ed4f8f6e9f4df6a0028df2319e1e2b'
+                                key: {
+                                    name: 'x_823178_commissio_payments'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'invoice'
                         }
                     },
                     {
@@ -16765,6 +21678,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'ba5922851476477c9640811b2f79cb4b'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'scenario_year'
@@ -16791,6 +21705,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'ba8a0451b46146759d8cdf4912f5cebd'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'description'
@@ -16809,6 +21724,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'baa19a2b30664693ab1862eadd770f11'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'effective_start_date'
@@ -16827,6 +21743,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'bacc999fb93441a38ab1ab1ca1900455'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'submitted_by'
@@ -16861,8 +21778,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'baf23226890643a58a236df0bd42f475'
+                        key: {
+                            sys_security_acl: '5f2e84de0c42486582c5b70b0482bba6'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'bb301295b4a44cd380360e7516624028'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'deal_type_ref'
@@ -16885,6 +21816,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'bb6e0e63e6d54585a27e49b4c09cdf30'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'notes'
@@ -16949,6 +21881,19 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: 'bc44f75e15c14a23970b3abc85b50de3'
+                        key: {
+                            sys_security_acl: 'edd766c89b1142f8be0af70a07d876a8'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: 'bc4c3893099d4d7f8cdd0f4b5989cb8e'
                         key: {
                             sys_security_acl: '2b9af1bdc0214df2a451c75368cc0685'
@@ -16966,6 +21911,32 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'approved'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'bc87c3ffbb8e4cd49aa95448d0efd1a0'
+                        key: {
+                            sys_security_acl: 'cf407dc604b24e58ab2eb2d14e1e0085'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'bc93acd6818c4e2b912f9b3ea3064f9a'
+                        key: {
+                            sys_security_acl: 'f15c9e8e79e34bd5857b8a21331d0f9f'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -16997,9 +21968,23 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'bd1b4355f9c04565b919bd3aeb00c240'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'mode'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'bd232e8320924e5a90685277f5783b19'
+                        key: {
+                            sys_security_acl: '423bca7c68c74d0f9ee7a03ef601f0d9'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
                         }
                     },
                     {
@@ -17038,9 +22023,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'bdd4b698652a4061a8ecca562b76bc14'
+                        key: {
+                            sys_security_acl: '4477f45fc324401d9a2cdfd7befa3d33'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'bdddfe2f51ca418585e304dbf5dc4ac4'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'expansion_rate'
@@ -17058,6 +22056,14 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: 'be024ed9f2284de7a0381aeb6641c98c'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_plan_tiers'
+                            col_name_string: 'plan_target'
                         }
                     },
                     {
@@ -17106,6 +22112,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'bed72d39577840f99ea18d5ea90ab796'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'status'
@@ -17119,6 +22126,42 @@ declare global {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'is_active'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'bf1a2318abcd46afb2803736c2d068d0'
+                        key: {
+                            list_id: {
+                                id: '7ab43192d1fc44b1bb00891404c30d81'
+                                key: {
+                                    name: 'x_823178_commissio_plan_tiers'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'attainment_floor_percent'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'bf2112c5d62c49cda8ab8b9141db9845'
+                        key: {
+                            sys_security_acl: '15239149de3e44f39ffc70845a86b7df'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -17148,6 +22191,40 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'c021d99905014621a6cee4af84933676'
+                        key: {
+                            sys_security_acl: 'ced82814982648e1a867427de63a37a2'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: 'c0289b41b2344b2baff1a2ad6c8522c3'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_commission_statements'
+                            col_name_string: 'locked_by'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'c06a8a5be9bb4af2ae4a028d7178bef5'
+                        key: {
+                            sys_security_acl: '76bc1d9604fa448187cc7efebc9a1fff'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'c0a79abcc5d74bfbbcb6e6434f247da3'
                         key: {
@@ -17167,6 +22244,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'c0e0b18d2ad74f478c33d03b6a08cb29'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'notes'
@@ -17179,6 +22257,19 @@ declare global {
                             name: 'x_823178_commissio_invoices'
                             element: 'subtotal'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'c183380253fc40a38b86ff8918b5b370'
+                        key: {
+                            sys_security_acl: 'c0aa6822ac3046b482280eaf4268a0c2'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
                         }
                     },
                     {
@@ -17200,6 +22291,19 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_reconciliation_log'
                             element: 'records_checked'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'c1f2afcf56904fcd88b84f61bd2ceef0'
+                        key: {
+                            sys_security_acl: 'f5541c44f22648d5ac69a565e6187f2c'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -17279,11 +22383,19 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'c2c66e32383043f3be7d42bf567918ed'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: 'c2dabf960a6c472aac07235034c06f50'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_commission_calculations'
+                            col_name_string: 'payment'
                         }
                     },
                     {
@@ -17296,8 +22408,32 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'c326a1f4a5ac4790b567253b4075c717'
+                        key: {
+                            list_id: {
+                                id: 'b160ab1683973210a0365dc6feaad325'
+                                key: {
+                                    name: 'x_823178_commissio_system_alerts'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'severity'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'c339bf9989134be996d7cf31a3dff645'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'qualification_threshold'
@@ -17336,6 +22472,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: 'c3936bae5d804edfa32ce28bdcd83ba8'
+                        key: {
+                            name: 'x_823178_commissio_commission_plans'
+                            element: 'superseded_by_plan'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: 'c3b21fb3667940cab0143b3dd2a28832'
                         key: {
@@ -17350,20 +22495,24 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: 'c3936bae5d804edfa32ce28bdcd83ba8'
-                        key: {
-                            name: 'x_823178_commissio_commission_plans'
-                            element: 'superseded_by_plan'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: 'c3bf03cadc8e45309e33707ac1331fa3'
                         key: {
                             name: 'x_823178_commissio_invoices'
                             element: 'invoice_number'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'c3c13d0f693242eb9cba887dc102501a'
+                        key: {
+                            sys_security_acl: '4f06577352594e4b847ee30ee4803591'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
                         }
                     },
                     {
@@ -17377,6 +22526,46 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'c3d85bba59cf4284987c793621b9b684'
+                        key: {
+                            list_id: {
+                                id: 'da5692662a7a4304b47cd6a2760932ee'
+                                key: {
+                                    name: 'x_823178_commissio_forecast_scenarios'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'notes'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'c48b43dd56964f0891048ad8fe8c2b90'
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'dry_run'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'c4d3b1b0580f4cb0a8eccd8c2b11b89f'
+                        key: {
+                            name: 'x_823178_commissio_statement_approvals'
+                            element: 'workflow_history'
                         }
                     },
                     {
@@ -17409,8 +22598,28 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: 'c541f2144a684504882b5e7f1081d9c6'
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'notes'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: 'c58840c7f20b4e97b1db1889058c4eb4'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'mode'
+                            value: 'preview'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'c5b31d0ffc2f409f87ca8db3d2309e02'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'recognition_policy_record'
@@ -17431,6 +22640,28 @@ declare global {
                     },
                     {
                         table: 'sys_security_acl_role'
+                        id: 'c5d8d75e7a1f4db9b1074f60be421672'
+                        key: {
+                            sys_security_acl: '1bc764fd0277410aadff9ebfaf1a73af'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: 'c5e8f519ecfc49dfbf011239e4925d18'
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'status'
+                            value: 'error'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
                         id: 'c5fe754d9cfd4e13bba07f1fd8190a90'
                         key: {
                             sys_security_acl: '7640f69b03684941a80e6b3bc106904d'
@@ -17445,6 +22676,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'c64448695a9c4ebe8f9a192207570082'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'NULL'
@@ -17497,63 +22729,6 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: 'c48b43dd56964f0891048ad8fe8c2b90'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'dry_run'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'c4d3b1b0580f4cb0a8eccd8c2b11b89f'
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'workflow_history'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'c541f2144a684504882b5e7f1081d9c6'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'notes'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'c58840c7f20b4e97b1db1889058c4eb4'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'mode'
-                            value: 'preview'
-                        }
-                    },
-                    {
-                        table: 'sys_security_acl_role'
-                        id: 'c5d8d75e7a1f4db9b1074f60be421672'
-                        key: {
-                            sys_security_acl: '1bc764fd0277410aadff9ebfaf1a73af'
-                            sys_user_role: {
-                                id: '696ca2e6b66449e08519c5f20a55f2be'
-                                key: {
-                                    name: 'x_823178_commissio.admin'
-                                }
-                            }
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'c5e8f519ecfc49dfbf011239e4925d18'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'status'
-                            value: 'error'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: 'c6a8f3b7b8d0421598c8e28b544cd377'
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
@@ -17579,20 +22754,22 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice_set'
-                        id: 'c74d4f4a7edb41caabca83d8c7be05aa'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'status'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: 'c74a286415f24902a8e3d6f24684697e'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'executed_by'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_choice_set'
+                        id: 'c74d4f4a7edb41caabca83d8c7be05aa'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'status'
                         }
                     },
                     {
@@ -17638,12 +22815,38 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'c839bd4334ee4a45a67bd6784c61632c'
+                        key: {
+                            sys_security_acl: '5e84008a448c4e5985f50950cf297673'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'c86eb9f5a1e348ba8d112999a8f7ab18'
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'is_active'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'c8c1d3c1e1214fe18f442acd012d09cb'
+                        key: {
+                            sys_security_acl: 'b78cf83c616f47349145302492a33eff'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -17743,14 +22946,29 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'ca7f43c3828841ae9ab85876ce36165d'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'effective_start_date'
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'cacf6449f4e04d98a65754e38db49a22'
+                        key: {
+                            sys_security_acl: '731064c814ca491ea29bc6fa311f3827'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'ua_table_licensing_config'
                         id: 'cb199b6925a74f439f9b0fc9d31ed35c'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                         }
@@ -17791,6 +23009,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: 'cc187978bac14b7ba0f7fdf764290780'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_commission_statements'
+                            element: 'total_base_commission'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'cc2239c008ef42068c2b2d2c6d660461'
                         key: {
@@ -17800,25 +23027,9 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'cc6ddd449df6425e9828f29ed723fbcf'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'bonus_amount'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'cc187978bac14b7ba0f7fdf764290780'
-                        key: {
-                            name: 'x_823178_commissio_commission_statements'
-                            element: 'total_base_commission'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: 'cc3a0f466ff14de89fbc8104b1b5f28b'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'bonus_earned_count'
@@ -17830,6 +23041,16 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'superseded_by_policy'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'cc6ddd449df6425e9828f29ed723fbcf'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'bonus_amount'
+                            language: 'en'
                         }
                     },
                     {
@@ -17847,6 +23068,29 @@ declare global {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'lifecycle_state'
                             value: 'active'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'cd50e26c75364ad8b80fc3cedd0d67ef'
+                        key: {
+                            list_id: {
+                                id: '7d3a8b1a83d33210a0365dc6feaad3ce'
+                                key: {
+                                    name: 'x_823178_commissio_commission_plans'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'expansion_rate'
                         }
                     },
                     {
@@ -17877,6 +23121,7 @@ declare global {
                     {
                         table: 'sys_security_acl_role'
                         id: 'cddf57e1d78e411abe4a0c6d327eb900'
+                        deleted: true
                         key: {
                             sys_security_acl: 'eb8af1b8b5864ab5a70b336ff4b6453a'
                             sys_user_role: {
@@ -17898,6 +23143,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'ce14fec325334fe5bead89cf1c9f6ca0'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'qualification_metric'
@@ -17983,8 +23229,22 @@ declare global {
                     {
                         table: 'ua_table_licensing_config'
                         id: 'ce9c4ebf8fe443d991df2aef3cc476ca'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'ceb78a4608344ee39a0c5832ea1de005'
+                        key: {
+                            sys_security_acl: '9db09f3e74aa454fb1dc3a8421ac2ed0'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -17995,8 +23255,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'cee57135502e4d2ebc4fb054e90384ca'
+                        key: {
+                            sys_security_acl: '181ee7dd60874ace8e9c904aec65facc'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'cef56e1d1b7047e98f9279f3ddef4225'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'deal'
@@ -18011,12 +23285,35 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_choice'
+                        id: 'cf90b2c4d0014196b34c001dc33f2a2a'
+                        key: {
+                            name: 'x_823178_commissio_plan_targets'
+                            element: 'deal_type'
+                            value: 'upsell'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'cfc2d666e99f4dc9b606ceb3ed311d00'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'workflow_history'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'cfff5d22555741b0ace2441405a56c5b'
+                        key: {
+                            sys_security_acl: '5e396de178734c73904eb2474a229ed3'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -18030,24 +23327,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'd01520930baa47f7aeea7513ad59cd66'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_operator'
-                            value: 'gt'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'cf90b2c4d0014196b34c001dc33f2a2a'
-                        key: {
-                            name: 'x_823178_commissio_plan_targets'
-                            element: 'deal_type'
-                            value: 'upsell'
                         }
                     },
                     {
@@ -18066,10 +23345,33 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'd013007268cd42e4b9079f78f3d5e011'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'policy_state'
                             value: 'active'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: 'd01520930baa47f7aeea7513ad59cd66'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'qualification_operator'
+                            value: 'gt'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'd02a91e683744d19a88a3cb6dd469440'
+                        key: {
+                            sys_security_acl: '8e2a7f0d4d134349bdecf5e113014a6b'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -18125,6 +23427,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: 'd10c529e884a4586a6bc18c07300d1bd'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_commission_calculations'
+                            col_name_string: 'deal_type_ref'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: 'd1bd7acbbbde4d52a530283beae9db1c'
                         key: {
@@ -18142,6 +23452,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: 'd2127f9e35ba4122b2b2555d55cf8f5f'
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'executed_on'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: 'd21b03c65d5444a0a88f6b8313c4655f'
                         key: {
@@ -18152,6 +23471,32 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'd24aaa01b4e94ee3880c96e7ce4a0895'
+                        key: {
+                            name: 'x_823178_commissio_bonus_earnings'
+                            element: 'one_time_per_period'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'd2665c0eefaf4553a8c5f567ab09ceeb'
+                        key: {
+                            name: 'x_823178_commissio_deal_types'
+                            element: 'name'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'd272d9aa7fc843d78a123e01f8bebca2'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_statement_approvals'
+                            element: 'sla_due_on'
                         }
                     },
                     {
@@ -18169,11 +23514,74 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
+                        id: 'd2940e0117bc403f88bfe33773b6180c'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_plan_tiers'
+                            element: 'attainment_floor_percent'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'd2c9e0dab3d04b58af44349ea257218f'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'rollback_summary'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'd303b2c84b404c0a80682ff2c42686bd'
+                        key: {
+                            list_id: {
+                                id: '3f8675410a694a7cb88916a544f8454f'
+                                key: {
+                                    name: 'x_823178_commissio_invoices'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'status'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
                         id: 'd3043170146a4eea9d017410ec758c79'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'deal'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'd31294cee9bb44fda2c30dfae12d1781'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'is_active'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: 'd32583de7db04bd7a12b1ef031619673'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'status'
+                            value: 'previewed'
                         }
                     },
                     {
@@ -18190,6 +23598,23 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: 'd3841b75674046128f06000c535e35f1'
+                        key: {
+                            name: 'x_823178_commissio_plan_tiers'
+                            element: 'description'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_db_object'
+                        id: 'd3a6a258324e42e2991272fc7dad01c7'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_plan_tiers'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'd3beeb1813e947b0ab0e07166ca66f3b'
                         key: {
@@ -18200,6 +23625,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'd424f1c53ea545e0a35032dbcf49f972'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'status'
@@ -18209,6 +23635,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'd4279e819f87426287f955ee291217e1'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'NULL'
@@ -18250,6 +23677,37 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'd4a229d359ee4b518b5d5c9dcbff8ee9'
+                        key: {
+                            list_id: {
+                                id: '4260ab1683973210a0365dc6feaad39d'
+                                key: {
+                                    name: 'x_823178_commissio_reconciliation_log'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'processing_time_seconds'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'd507276d5d2f44fcad9e004c06d32ea4'
+                        key: {
+                            name: 'x_823178_commissio_commission_calculations'
+                            element: 'bonus_component'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: 'd527fb13963e475086abb788e06cdf21'
                         key: {
@@ -18263,115 +23721,9 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_security_acl_role'
-                        id: 'd5c32120b3bb467c8278be2ebcbb77f3'
-                        key: {
-                            sys_security_acl: '8357fc97f19d4235a8936e2da3f07a3c'
-                            sys_user_role: {
-                                id: '696ca2e6b66449e08519c5f20a55f2be'
-                                key: {
-                                    name: 'x_823178_commissio.admin'
-                                }
-                            }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'd2127f9e35ba4122b2b2555d55cf8f5f'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'executed_on'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'd24aaa01b4e94ee3880c96e7ce4a0895'
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'one_time_per_period'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'd2665c0eefaf4553a8c5f567ab09ceeb'
-                        key: {
-                            name: 'x_823178_commissio_deal_types'
-                            element: 'name'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'd272d9aa7fc843d78a123e01f8bebca2'
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'sla_due_on'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'd2940e0117bc403f88bfe33773b6180c'
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'attainment_floor_percent'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'd2c9e0dab3d04b58af44349ea257218f'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'rollback_summary'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'd31294cee9bb44fda2c30dfae12d1781'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'is_active'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'd32583de7db04bd7a12b1ef031619673'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'status'
-                            value: 'previewed'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'd3841b75674046128f06000c535e35f1'
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'description'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_db_object'
-                        id: 'd3a6a258324e42e2991272fc7dad01c7'
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'd507276d5d2f44fcad9e004c06d32ea4'
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'bonus_component'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: 'd551fb914bca4b48bd2f8f1b4cf9e4a4'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'is_active'
@@ -18381,6 +23733,7 @@ declare global {
                     {
                         table: 'sys_user_role_contains'
                         id: 'd5b26c1c81944eb28e7e44ea8904801d'
+                        deleted: true
                         key: {
                             role: {
                                 id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
@@ -18399,9 +23752,23 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'd5bcb03da9f3489b9e925e8364c6f4af'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'earned_amount'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'd5c32120b3bb467c8278be2ebcbb77f3'
+                        key: {
+                            sys_security_acl: '8357fc97f19d4235a8936e2da3f07a3c'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -18416,6 +23783,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'd5fbf7d06d184c7d9defa733abfa31c0'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'lifecycle_state'
@@ -18443,8 +23811,22 @@ declare global {
                     {
                         table: 'ua_table_licensing_config'
                         id: 'd617654c90aa4db9b0ad7623e609ea96'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'd620ed5572864e36ac8265978d17e1fa'
+                        key: {
+                            sys_security_acl: '27c765e8b28541d9a418f78e3eeb06ee'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -18461,6 +23843,65 @@ declare global {
                         id: 'd6891b24a13544f1bd068c491b4e6164'
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'd7644f2779814e8085894559a315069e'
+                        key: {
+                            list_id: {
+                                id: 'b160ab1683973210a0365dc6feaad325'
+                                key: {
+                                    name: 'x_823178_commissio_system_alerts'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'resolved_by'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'd7822c0a62804252995f6d46ccc90e95'
+                        key: {
+                            list_id: {
+                                id: '22fc50e9f29d41fda452d2d3ca23ae35'
+                                key: {
+                                    name: 'x_823178_commissio_commission_statements'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'notes'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'd7b3b9e1f40542c5a9e88c0526766dc1'
+                        key: {
+                            sys_security_acl: 'da4e5cf396314900a8c814d60b7bb940'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -18514,6 +23955,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'd967284ddd5a4be0b08c91e8d8a7da29'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'is_active'
@@ -18522,6 +23964,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'd9d84c4c41f74565b3b227c306483d3e'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'invoice'
@@ -18529,9 +23972,62 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'da29bd0516084cd78833f18e391848d3'
+                        key: {
+                            sys_security_acl: '60105d8b30fe49cdb515abac8ccd1cf8'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'da4a7d2347e6459889c285f236ec0178'
+                        key: {
+                            list_id: {
+                                id: 'ed606b1683973210a0365dc6feaad364'
+                                key: {
+                                    name: 'x_823178_commissio_exception_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'reference_table'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list'
+                        id: 'da5692662a7a4304b47cd6a2760932ee'
+                        key: {
+                            name: 'x_823178_commissio_forecast_scenarios'
+                            view: {
+                                id: 'Default view'
+                                key: {
+                                    name: 'NULL'
+                                }
+                            }
+                            sys_domain: 'global'
+                            element: 'NULL'
+                            relationship: 'NULL'
+                            parent: 'NULL'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: 'da68934d7e164daea5a4f07b6fe9d43b'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -18541,6 +24037,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'da6ba14aeb2744118341e18e3c6859c6'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'scenario_name'
@@ -18566,10 +24063,34 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'da8f13ce6a1047978c3c4da379f9510d'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'attainment_ceiling_percent'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'daaa2a2f8462436daf0e320e8faf168a'
+                        key: {
+                            list_id: {
+                                id: '7d681ceacede4dc8ba401738fd61bb3e'
+                                key: {
+                                    name: 'x_823178_commissio_plan_bonuses'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'bonus_name'
                         }
                     },
                     {
@@ -18611,14 +24132,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'db067c64bad74eb494d4b2f0c9a36a9e'
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'temporal_lookup_date_snapshot'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'daf4967ea3bd4184afffa193b4e8b86c'
                         key: {
@@ -18629,6 +24142,14 @@ declare global {
                                     name: 'x_823178_commissio.manager'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'db067c64bad74eb494d4b2f0c9a36a9e'
+                        key: {
+                            name: 'x_823178_commissio_commission_calculations'
+                            element: 'temporal_lookup_date_snapshot'
                         }
                     },
                     {
@@ -18660,6 +24181,19 @@ declare global {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'status'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'dbaa1597dd3b42a594e1c0452e769587'
+                        key: {
+                            sys_security_acl: '6345f1300f944a69a6377754e70085a7'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -18700,8 +24234,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'dc7caddd9e0c4b5aae688e19cd8caec3'
+                        key: {
+                            sys_security_acl: '6048179d41a8480388a84403ab9c7c11'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'dc9e68af921a4bb29d89fd0ebe45a9a5'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_types'
                             element: 'sort_order'
@@ -18748,11 +24296,45 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'deaa50e693df4b558df556c97de925a1'
+                        key: {
+                            sys_security_acl: '5a649658caf846e48050c4b8d7517e0e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'dee1f5eb126040408c81201779557a42'
+                        key: {
+                            sys_security_acl: '0804855e83934cae9428298c696a0479'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'def78013345c454cad91a8008b135008'
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'bonus_summary_snapshot'
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: 'defb721ddce94c7b814608a4ecd7dc10'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_deals'
+                            col_name_string: 'deal_type_ref'
                         }
                     },
                     {
@@ -18767,6 +24349,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'df4e17e26c2e460b8f8b03efc4a1d818'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'recognition_basis'
@@ -18790,11 +24373,71 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'e038f4dea91a482f88a82b6032e26d0c'
+                        key: {
+                            list_id: {
+                                id: '3f8675410a694a7cb88916a544f8454f'
+                                key: {
+                                    name: 'x_823178_commissio_invoices'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'last_sync'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'e058e25c69fe40c89ca82db6cf05df8c'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'created_plan_ids'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'e0b5ff4d752f4ef2af06ac451d722511'
+                        key: {
+                            list_id: {
+                                id: '3f8675410a694a7cb88916a544f8454f'
+                                key: {
+                                    name: 'x_823178_commissio_invoices'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'deal'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'e0c343c1226641a4b1521b33db96743f'
+                        key: {
+                            sys_security_acl: 'c8e681f495064a7785c8d050884bb1c8'
+                            sys_user_role: {
+                                id: '5cc2731a0613479da7f42fd02edd07d9'
+                                key: {
+                                    name: 'x_823178_commissio.finance'
+                                }
+                            }
                         }
                     },
                     {
@@ -18809,6 +24452,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'e0e3dee70a3e45198098122e9c56a85d'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'target_user_ids'
@@ -18866,6 +24510,42 @@ declare global {
                     },
                     {
                         table: 'sys_ui_list_element'
+                        id: 'e21abc6284d247f0bc3e26a45ec39010'
+                        key: {
+                            list_id: {
+                                id: '7d3a8b1a83d33210a0365dc6feaad3ce'
+                                key: {
+                                    name: 'x_823178_commissio_commission_plans'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'new_business_rate'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'e226bf4ed93543fb841bdc63d824b800'
+                        key: {
+                            sys_security_acl: '9ad42d52d8654c8491fa0c57f4c9e990'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
                         id: 'e22a471a83d33210a0365dc6feaad3e8'
                         key: {
                             list_id: {
@@ -18885,6 +24565,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'e23b537c5c574eb89aa9768c9dca178c'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'policy_state'
@@ -18892,8 +24573,17 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: 'e26af6e07e734ca6952390763e561387'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'bonus_name'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: 'e27e1e68f8f04081b5cb9ba67262f425'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'status'
@@ -18903,26 +24593,11 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'e29469cd875a4e86ad89908ee281ef90'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'pipeline_multiplier'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'e308100fb09645fc8fcdf0d1a44f79ad'
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'source_plan'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'e26af6e07e734ca6952390763e561387'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'bonus_name'
                         }
                     },
                     {
@@ -18936,10 +24611,20 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'e2ebf767b50140939b21f89cd80b19b5'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_manager_team_memberships'
                             element: 'effective_start_date'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'e308100fb09645fc8fcdf0d1a44f79ad'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
+                            element: 'source_plan'
                         }
                     },
                     {
@@ -18974,10 +24659,24 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'e34a6a1a59404a439c601ff77dfdedc4'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'priority'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'e39666e2f9de48d4aa0008d9ecbabc42'
+                        key: {
+                            sys_security_acl: 'f409890c638f4187b650c13304ca8b29'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -19034,6 +24733,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'e480725becc34da986ebdd06d3328ce1'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type_ref'
@@ -19049,8 +24749,17 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: 'e509821fc5864f969e2c903d022a35cf'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_bonus_earnings'
+                            col_name_string: 'plan_bonus'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'e50cb10848c6478385a5b532c572f28e'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'evaluation_period'
@@ -19059,6 +24768,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'e531e54dfaf741a2b523a2236c48ddcd'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'commission_calculation'
@@ -19112,6 +24822,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'e65d354992e041ae9df32795e062f7df'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'is_active'
@@ -19121,6 +24832,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'e65dd179c38740b995dfc36329f7f729'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'qualification_metric_snapshot'
@@ -19139,6 +24851,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'e6e6b57e13924c48a4ac6db6f2208c2d'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_types'
                             element: 'sort_order'
@@ -19162,6 +24875,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'e86dec0699c541bda99761e36db86f93'
+                        key: {
+                            sys_security_acl: 'e47691f170924451913f00f13f53c797'
+                            sys_user_role: {
+                                id: '8a1e53939ebb45d7873f258a9ac7d757'
+                                key: {
+                                    name: 'x_823178_commissio.rep'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'e8e05e4eb33d4c6499a1839309e00523'
                         key: {
@@ -19172,6 +24898,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'e9004a7b116b45e792d722a035cd958b'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'notes'
@@ -19256,10 +24983,46 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'ea338dae6eff445187a0e1ad9c43f51b'
+                        key: {
+                            list_id: {
+                                id: '7d681ceacede4dc8ba401738fd61bb3e'
+                                key: {
+                                    name: 'x_823178_commissio_plan_bonuses'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'is_active'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: 'ea4d98a0281d40edb53f4c8792e6ef80'
                         key: {
                             sys_security_acl: '9f872f96e3a247088f367d288118e52e'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'ea85cce4378a41dcbed13c12f3c44edb'
+                        key: {
+                            sys_security_acl: 'b653714595f34a5a89846c10fd61cf25'
                             sys_user_role: {
                                 id: '696ca2e6b66449e08519c5f20a55f2be'
                                 key: {
@@ -19306,15 +25069,39 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'eb1e11c881bc4a218ab57323c00bc2bd'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'NULL'
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'eb7b2d4fc02e45ebaf3a75ab998d49bb'
+                        key: {
+                            list_id: {
+                                id: '7d3a8b1a83d33210a0365dc6feaad3ce'
+                                key: {
+                                    name: 'x_823178_commissio_commission_plans'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'effective_start_date'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: 'eb8132472c954bfd9e2c59c380a3867e'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -19344,21 +25131,9 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_security_acl_role'
-                        id: 'ebce77c1c722462989ee70861bb195ef'
-                        key: {
-                            sys_security_acl: '3519a84133d54438bfd82071f7c6233c'
-                            sys_user_role: {
-                                id: '696ca2e6b66449e08519c5f20a55f2be'
-                                key: {
-                                    name: 'x_823178_commissio.admin'
-                                }
-                            }
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: 'ebaec615f5584181bf3acb68a7cd53d0'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'attainment_floor_percent'
@@ -19378,8 +25153,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'ebce77c1c722462989ee70861bb195ef'
+                        key: {
+                            sys_security_acl: '3519a84133d54438bfd82071f7c6233c'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'ebf8f5c08c9a417f81313b8b6d3b093c'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'plan_version'
@@ -19396,6 +25185,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'ec0bedddc87842e684b813e8127629de'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'policy_state'
@@ -19413,6 +25203,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'ec39c9dd54004476a4491bf7663b2dae'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'recognition_basis'
@@ -19437,8 +25228,19 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_choice'
+                        id: 'ece2a8a3ff3c419485004052fab241df'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_forecast_scenarios'
+                            element: 'status'
+                            value: 'published'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: 'ece96632ae7548088ea9d028c731e369'
+                        deleted: true
                         key: {
                             sys_security_acl: '15856848f75d4146a37b2be8e2ec450b'
                             sys_user_role: {
@@ -19450,20 +25252,25 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'ecebb51707d742e2bbdef56bd758afd6'
+                        table: 'sys_security_acl_role'
+                        id: 'ecea0a44a6eb4e41ab9214bd45e11d0f'
                         key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'condition_summary'
+                            sys_security_acl: '03a8234c710d49e091bda0e4475473b8'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: 'ece2a8a3ff3c419485004052fab241df'
+                        table: 'sys_dictionary'
+                        id: 'ecebb51707d742e2bbdef56bd758afd6'
+                        deleted: true
                         key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'status'
-                            value: 'published'
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'condition_summary'
                         }
                     },
                     {
@@ -19529,6 +25336,37 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'ed759e124feb437da69fc5b280824f5f'
+                        key: {
+                            list_id: {
+                                id: '22fc50e9f29d41fda452d2d3ca23ae35'
+                                key: {
+                                    name: 'x_823178_commissio_commission_statements'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'payment_reference'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'ed81c6082c9840f69249788e13932ccd'
+                        key: {
+                            name: 'x_823178_commissio_deal_types'
+                            element: 'code'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: 'edc9b62c20104ff5acbcee50d801a8c6'
                         key: {
@@ -19544,6 +25382,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'edd6aa79f9cf484fbaacaca79a3df60d'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'statement'
@@ -19568,8 +25407,30 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: 'ee34dbad9d474ac8b415d2f24e4eb53a'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'NULL'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'ee39555b22384749bf5886e4abd12d28'
+                        key: {
+                            sys_security_acl: 'b27ae23eca064d36ab5a087ad2b59671'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'ee57907b580b4f8a8daa5bbeaba54151'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'execution_summary'
@@ -19579,25 +25440,10 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'ee6706064241455cbcb3305809b263c1'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'superseded_by_policy'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'ed81c6082c9840f69249788e13932ccd'
-                        key: {
-                            name: 'x_823178_commissio_deal_types'
-                            element: 'code'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'ee34dbad9d474ac8b415d2f24e4eb53a'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'NULL'
                         }
                     },
                     {
@@ -19617,12 +25463,33 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'ef06e2a2c2e44ef3b4399ff7b08a9b39'
+                        key: {
+                            sys_security_acl: 'c8051ebd59b045f894d7c60699882682'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'ef26834b397b4c528bc585e2ca51e4d9'
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'snapshot_timestamp'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: 'ef344876f3e74f878f3d33fc2a8e0046'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_bonus_earnings'
+                            col_name_string: 'invoice'
                         }
                     },
                     {
@@ -19642,16 +25509,9 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'effe36513bbe428f9cb542de19107ff8'
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'is_active'
-                        }
-                    },
-                    {
                         table: 'sys_choice'
                         id: 'efbc8418bb164582afcd703a2dd43bc3'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'evaluation_period'
@@ -19661,14 +25521,24 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'efef0f771b2f418d93c5c699b5e73730'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'is_active'
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: 'effe36513bbe428f9cb542de19107ff8'
+                        key: {
+                            name: 'x_823178_commissio_plan_tiers'
+                            element: 'is_active'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'f041d26f253a40b589e54151a9f99acf'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'plan_target'
@@ -19706,6 +25576,32 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'f11fc78f3071431497bc9dc23ad1e77b'
+                        key: {
+                            sys_security_acl: '1ef8df4cc189475881d7ffd6d93fc3e8'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'f14f3ce9ed1f4d13a64522296e49e5fc'
+                        key: {
+                            sys_security_acl: '25069cd22e294dcb973b563a8e7b3e77'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'f188313b269b4d42b4da962fbe71086a'
                         key: {
@@ -19722,11 +25618,54 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'f1d63b0355404842baa89928517b6bdf'
+                        key: {
+                            sys_security_acl: 'a380bb9ebf52414886105f269bb80aab'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: 'f203c8ff36a74b529b0650b4e792f173'
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'stage'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'f21317fbc8f344579fd2f7ded844f6c7'
+                        key: {
+                            sys_security_acl: 'fd1e870e1bcc4f24904ea835af51cdc4'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: 'f21e48cbe421461a9cf6458881692b6a'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_statement_approvals'
+                            col_name_string: 'reviewed_by'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: 'f22fa79854014ea9a590029816e25259'
+                        key: {
+                            name: 'x_823178_commissio_plan_bonuses'
+                            element: 'qualification_operator'
+                            value: 'gte'
                         }
                     },
                     {
@@ -19778,35 +25717,9 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_ui_list_element'
-                        id: 'f287b36283d33210a0365dc6feaad378'
-                        key: {
-                            list_id: {
-                                id: '3e87b36283d33210a0365dc6feaad376'
-                                key: {
-                                    name: 'x_823178_commissio_manager_team_memberships'
-                                    view: 'Default view'
-                                    sys_domain: 'global'
-                                    element: 'NULL'
-                                    relationship: 'NULL'
-                                    parent: 'NULL'
-                                }
-                            }
-                            element: 'effective_start_date'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'f22fa79854014ea9a590029816e25259'
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_operator'
-                            value: 'gte'
-                        }
-                    },
-                    {
                         table: 'sys_choice_set'
                         id: 'f245b443dd21481e8f95adcad6e782dd'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'status'
@@ -19824,10 +25737,29 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'f26a12cc05a04b2cae22a78164346191'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'bonus_trigger'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'f287b36283d33210a0365dc6feaad378'
+                        key: {
+                            list_id: {
+                                id: '3e87b36283d33210a0365dc6feaad376'
+                                key: {
+                                    name: 'x_823178_commissio_manager_team_memberships'
+                                    view: 'Default view'
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'effective_start_date'
                         }
                     },
                     {
@@ -19855,6 +25787,7 @@ declare global {
                     {
                         table: 'sys_security_acl_role'
                         id: 'f35a4b8d18f347ceb97bab16fbc02c4a'
+                        deleted: true
                         key: {
                             sys_security_acl: 'bc4bc16937cc4ccdae3dccff00330381'
                             sys_user_role: {
@@ -19866,8 +25799,32 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'f3af3e41d7ce4d61a6fe1e4dac30fbe0'
+                        key: {
+                            list_id: {
+                                id: 'ed606b1683973210a0365dc6feaad364'
+                                key: {
+                                    name: 'x_823178_commissio_exception_approvals'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'approved_by'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'f3d9f07ca85546beb73c7250e44edff7'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'payment'
@@ -19907,6 +25864,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'f46048b22cc24b0f9a3672d55c040522'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'effective_tier_floor_percent'
@@ -19984,6 +25942,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: 'f513bacffafa46eea97a4bf20190b5ef'
+                        key: {
+                            name: 'x_823178_commissio_commission_calculations'
+                            element: 'effective_tier_name'
+                        }
+                    },
+                    {
                         table: 'sys_security_acl_role'
                         id: 'f54e7a7e6cc84844b9e73034c512d1e6'
                         key: {
@@ -20017,18 +25983,11 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'f58dde79bcbb46d7b0beafb4834b9e9a'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'dry_run'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'f513bacffafa46eea97a4bf20190b5ef'
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'effective_tier_name'
                         }
                     },
                     {
@@ -20094,6 +26053,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'f6547cb630614570aec00194528257f2'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'recognition_basis'
@@ -20101,8 +26061,32 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'f65e694a20f143d5b90d4aa122d75315'
+                        key: {
+                            list_id: {
+                                id: '4855a6e0a8ae4bd9ba646285350c8b53'
+                                key: {
+                                    name: 'x_823178_commissio_manager_team_memberships'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'effective_end_date'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: 'f66c414b1cdd477e8cdac35e375bbb46'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'lifecycle_state'
@@ -20138,6 +26122,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'f6a5f7ece9e34541a6e034b2831c8997'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'commission_plan'
@@ -20147,6 +26132,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'f6bb7af3d43143bf922ad49998184c42'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_statements'
                             element: 'total_accelerator_delta'
@@ -20188,6 +26174,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'f76528d028d24f369de7486cc6035da6'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'run_name'
@@ -20195,8 +26182,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'f787099b6b2b409c812e582eb6e6ecf4'
+                        key: {
+                            sys_security_acl: 'bb9c061619894ff69ee76168052121fb'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: 'f7f27c022bbc4ad2a4058f1f444ab001'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_exception_approvals'
                             element: 'request_type'
@@ -20240,7 +26241,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'f8f58268eadd43ddb0f0bf84453c5dbd'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'plan_target_amount'
@@ -20272,6 +26273,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'f925e1dea0d04e60a6aafc38c1b92ad4'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'bonus_amount'
@@ -20343,6 +26345,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_index'
+                        id: 'fa435308f1904ff9877710f967598218'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_bonus_earnings'
+                            col_name_string: 'commission_calculation'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'fadd849f6db6417b89443de11f6586cb'
                         key: {
@@ -20373,6 +26383,19 @@ declare global {
                         id: 'fb87996821fc42daab02dae69c1ec86f'
                         key: {
                             sys_security_acl: 'c33e09bc5f6e4f98b56ea4532b9c2c20'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'fba2b02d589444afa50f324ebbf13a54'
+                        key: {
+                            sys_security_acl: '2e52b775a79a4e60a9b32c7b6fa8001e'
                             sys_user_role: {
                                 id: '696ca2e6b66449e08519c5f20a55f2be'
                                 key: {
@@ -20440,9 +26463,33 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'fc401fc56c5f424c866c62c4abd8ef08'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'escalated_on'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'fc5f2af4435f41e3a420e54166961b62'
+                        key: {
+                            list_id: {
+                                id: '7d681ceacede4dc8ba401738fd61bb3e'
+                                key: {
+                                    name: 'x_823178_commissio_plan_bonuses'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'bonus_amount'
                         }
                     },
                     {
@@ -20454,8 +26501,45 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: 'fc98e0310d0e4f7a91e7f461a75b6e97'
+                        key: {
+                            list_id: {
+                                id: 'b160ab1683973210a0365dc6feaad325'
+                                key: {
+                                    name: 'x_823178_commissio_system_alerts'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'alert_date'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'fc9947fb69d04aa5a0ba79af18a498a9'
+                        key: {
+                            sys_security_acl: '83972ab3a9064af58d71b3e7088c0a53'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'fca4d8974e0243fba8c8761a480694d9'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'sales_rep'
@@ -20473,9 +26557,18 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'fce9076c46604be89e6b3038763666cf'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'pipeline_multiplier'
+                        }
+                    },
+                    {
+                        table: 'sys_index'
+                        id: 'fd41f42b24ef47f8b28cf6db257b0242'
+                        key: {
+                            logical_table_name: 'x_823178_commissio_plan_tiers'
+                            col_name_string: 'commission_plan'
                         }
                     },
                     {
@@ -20488,11 +26581,51 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: 'fd69c4b7b231408b832b441defddb6a8'
+                        key: {
+                            sys_security_acl: '55d4782b6adf433eaab8c77c2e9af745'
+                            sys_user_role: {
+                                id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
+                                key: {
+                                    name: 'x_823178_commissio.manager'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'fdb72fa3f46b4391b1d1e1eec3f32b7b'
+                        key: {
+                            sys_security_acl: 'eecc4c2d04fc4501a24691717ff4880b'
+                            sys_user_role: {
+                                id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
+                                key: {
+                                    name: 'x_823178_commissio.manager'
+                                }
+                            }
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: 'fdf8ee05275546f7a1a3b05da6d64c4a'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'evaluation_period'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'fe3b55c7821346c68470a5601ed2b241'
+                        key: {
+                            sys_security_acl: '917ce69b4abd4b4ba4a99b98737e04d9'
+                            sys_user_role: {
+                                id: '696ca2e6b66449e08519c5f20a55f2be'
+                                key: {
+                                    name: 'x_823178_commissio.admin'
+                                }
+                            }
                         }
                     },
                     {
@@ -20552,8 +26685,18 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: 'ff5d4abd2ccd462b9390a0607c8bc03f'
+                        deleted: true
+                        key: {
+                            name: 'x_823178_commissio_plan_targets'
+                            element: 'is_active'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'ff6ccbb379fa472ca6b7d3deeac28a16'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'attained_amount_snapshot'
@@ -20592,11 +26735,11 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'ff5d4abd2ccd462b9390a0607c8bc03f'
+                        table: 'sys_index'
+                        id: 'ff976d52e7d4421c8439a2a5aa8d2be6'
                         key: {
-                            name: 'x_823178_commissio_plan_targets'
-                            element: 'is_active'
+                            logical_table_name: 'x_823178_commissio_commission_calculations'
+                            col_name_string: 'dispute_opened_by'
                         }
                     },
                     {
