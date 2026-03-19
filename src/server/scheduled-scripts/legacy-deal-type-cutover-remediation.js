@@ -147,7 +147,7 @@ function processReferentialTable(config, catalog, dryRun, maxRowsPerTable, sampl
                     remapRef = resolveRefFromLegacy(legacyRaw, catalog, config.allowBlankScope)
                 }
 
-                if (remapRef || (!config.requiredRef && remapRef === '')) {
+                if (remapRef !== null && (remapRef || !config.requiredRef)) {
                     if (remapRef !== currentRef) {
                         nextRef = remapRef
                         hasChanges = true
@@ -158,6 +158,13 @@ function processReferentialTable(config, catalog, dryRun, maxRowsPerTable, sampl
                             summary.invalid_ref_cleared_optional++
                             results.invalid_ref_cleared_optional++
                         }
+                    }
+                } else if (!config.requiredRef) {
+                    if (currentRef !== '') {
+                        nextRef = ''
+                        hasChanges = true
+                        summary.invalid_ref_cleared_optional++
+                        results.invalid_ref_cleared_optional++
                     }
                 } else {
                     unresolved = true
@@ -177,7 +184,7 @@ function processReferentialTable(config, catalog, dryRun, maxRowsPerTable, sampl
         } else {
             if (legacyRaw) {
                 var mappedRef = resolveRefFromLegacy(legacyRaw, catalog, config.allowBlankScope)
-                if (mappedRef || (!config.requiredRef && mappedRef === '')) {
+                if (mappedRef !== null && (mappedRef || !config.requiredRef)) {
                     if (mappedRef !== currentRef) {
                         nextRef = mappedRef
                         hasChanges = true
@@ -346,12 +353,12 @@ function loadDealTypeCatalog() {
 function resolveRefFromLegacy(rawLegacy, catalog, allowBlankScope) {
     var normalized = normalizeDealType(rawLegacy, '')
     if (!normalized) {
-        return ''
+        return null
     }
     if (normalized === 'any' || normalized === 'all') {
-        return allowBlankScope ? '' : ''
+        return allowBlankScope ? '' : null
     }
-    return catalog.activeByCode[normalized] || ''
+    return catalog.activeByCode[normalized] || null
 }
 
 function pushUnresolved(results, sampleLimit, sample) {

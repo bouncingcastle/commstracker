@@ -297,8 +297,7 @@ Record({
             } else {
                 this.addOwnerScopeQuery(dealGr, userId);
             }
-            dealGr.addQuery('is_won', false);
-            dealGr.addQuery('stage', '!=', 'closed_lost');
+            this.addOpenDealStateQuery(dealGr);
             dealGr.orderBy('close_date');
             dealGr.query();
 
@@ -390,7 +389,7 @@ Record({
 
             var dealGr = new GlideRecord('x_823178_commissio_deals');
             this.addOwnerScopeQuery(dealGr, userId);
-            dealGr.addQuery('is_won', true);
+            this.addWonDealStateQuery(dealGr);
             this.addDateRangeQuery(dealGr, 'close_date', yearStart, yearEnd);
             dealGr.query();
 
@@ -450,7 +449,7 @@ Record({
         var achieved = {};
         var dealGr = new GlideRecord('x_823178_commissio_deals');
         this.addOwnerScopeQuery(dealGr, userIds);
-        dealGr.addQuery('is_won', true);
+        this.addWonDealStateQuery(dealGr);
         this.addDateRangeQuery(dealGr, 'close_date', yearStart, yearEnd);
         dealGr.query();
 
@@ -1103,8 +1102,7 @@ Record({
 
             var dealsGr = new GlideRecord('x_823178_commissio_deals');
             this.addOwnerScopeQuery(dealsGr, userId);
-            dealsGr.addQuery('is_won', false);
-            dealsGr.addQuery('stage', '!=', 'closed_lost');
+            this.addOpenDealStateQuery(dealsGr);
             dealsGr.query();
             var forecastDealTypeCache = {};
 
@@ -1379,8 +1377,7 @@ Record({
 
         var dealsGr = new GlideRecord('x_823178_commissio_deals');
         this.addOwnerScopeQuery(dealsGr, userId);
-        dealsGr.addQuery('is_won', false);
-        dealsGr.addQuery('stage', '!=', 'closed_lost');
+        this.addOpenDealStateQuery(dealsGr);
         dealsGr.query();
         var summaryDealTypeCache = {};
 
@@ -1717,7 +1714,7 @@ Record({
         var total = 0;
         var dealGr = new GlideRecord('x_823178_commissio_deals');
         this.addOwnerScopeQuery(dealGr, userId);
-        dealGr.addQuery('is_won', true);
+        this.addWonDealStateQuery(dealGr);
         this.addDateRangeQuery(dealGr, 'close_date', yearStart, yearEnd);
         dealGr.query();
         while (dealGr.next()) {
@@ -1737,7 +1734,7 @@ Record({
         var total = 0;
         var dealGr = new GlideRecord('x_823178_commissio_deals');
         this.addOwnerScopeQuery(dealGr, userId);
-        dealGr.addQuery('is_won', true);
+        this.addWonDealStateQuery(dealGr);
         this.addDateRangeQuery(dealGr, 'close_date', yearStart, throughDate);
         dealGr.query();
         while (dealGr.next()) {
@@ -1778,6 +1775,18 @@ Record({
     addDateRangeQuery: function(record, fieldName, startDate, endDate) {
         record.addQuery(fieldName, '>=', startDate);
         record.addQuery(fieldName, '<=', endDate);
+    },
+
+    addOpenDealStateQuery: function(record) {
+        if (!record) return;
+        record.addEncodedQuery('is_won=false^ORis_wonISEMPTY');
+        record.addQuery('stage', '!=', 'closed_lost');
+        record.addQuery('stage', '!=', 'closed_won');
+    },
+
+    addWonDealStateQuery: function(record) {
+        if (!record) return;
+        record.addEncodedQuery('is_won=true^ORstage=closed_won');
     },
 
     getValidYear: function(yearRaw) {
@@ -2225,8 +2234,7 @@ Record({
         if (refId) {
             var typeGr = new GlideRecord('x_823178_commissio_deal_types');
             if (typeGr.get(refId)) {
-                var active = typeGr.getValue('is_active');
-                if (active === 'true' || active === true) {
+                if (this.isActiveFlag(typeGr.getValue('is_active'))) {
                     var typeCode = (typeGr.getValue('code') || '').toString();
                     return typeCode ? this.normalizeDealType(typeCode) : (resolvedFallback ? this.normalizeDealType(resolvedFallback) : '');
                 }
@@ -2289,6 +2297,15 @@ Record({
         var num = parseFloat(value);
         if (isNaN(num) || num <= 0) return 1;
         return num;
+    },
+
+    isActiveFlag: function(value) {
+        if (value === true || value === 1) {
+            return true;
+        }
+
+        var normalized = (value || '').toString().toLowerCase();
+        return normalized === 'true' || normalized === '1';
     },
 
     round2: function(value) {

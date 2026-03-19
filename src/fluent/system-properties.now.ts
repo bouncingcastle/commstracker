@@ -421,3 +421,39 @@ Record({
         suffix: 'Commission Management',
     },
 })
+
+Record({
+    $id: 'legacy_cutover_dry_run_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.legacy_cutover_dry_run',
+        value: 'true',
+        description: 'Controls legacy deal-type cutover remediation mode. true = audit/dry-run, false = apply updates.',
+        type: 'boolean',
+        suffix: 'Commission Management',
+    },
+})
+
+Record({
+    $id: 'legacy_cutover_max_rows_per_table_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.legacy_cutover_max_rows_per_table',
+        value: '20000',
+        description: 'Maximum rows scanned per table during legacy deal-type cutover remediation.',
+        type: 'integer',
+        suffix: 'Commission Management',
+    },
+})
+
+Record({
+    $id: 'legacy_cutover_sample_limit_prop',
+    table: 'sys_properties',
+    data: {
+        name: 'x_823178_commissio.legacy_cutover_sample_limit',
+        value: '25',
+        description: 'Maximum unresolved sample rows logged by legacy deal-type cutover remediation.',
+        type: 'integer',
+        suffix: 'Commission Management',
+    },
+})

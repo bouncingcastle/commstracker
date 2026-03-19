@@ -624,8 +624,7 @@ UiPage({
 
         function invokeHelper(methodName, params, callback) {
           var helperNames = [
-            'x_823178_commissio.CommissionProgressDataServiceV2',
-            'x_823178_commissio.CommissionProgressDataService'
+            'x_823178_commissio.CommissionProgressDataServiceV2'
           ];
 
           function tryIndex(index) {
@@ -674,8 +673,7 @@ UiPage({
 
         function invokeP1Helper(methodName, params, callback) {
           var helperNames = [
-            'x_823178_commissio.CommissionProgressDataServiceV2',
-            'x_823178_commissio.CommissionProgressDataService'
+            'x_823178_commissio.CommissionProgressDataServiceV2'
           ];
 
           function tryIndex(index) {
@@ -1143,6 +1141,10 @@ UiPage({
 
         function showGlobalLoadError(message) {
           var msg = message || 'Commission performance data is currently unavailable.';
+          var safeMsg = String(msg)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
 
           var metricIds = ['totalEarned', 'pendingAmount', 'paidAmount', 'activeDeals'];
           for (var i = 0; i < metricIds.length; i++) {
@@ -1160,7 +1162,7 @@ UiPage({
           if (dealPipeline) dealPipeline.textContent = 'Data unavailable';
 
           var breakdown = document.getElementById('commissionBreakdown');
-          if (breakdown) breakdown.innerHTML = '<div class="break-item">Commission summary is unavailable</div>';
+          if (breakdown) breakdown.innerHTML = '<div class="break-item">Commission summary is unavailable</div><div class="break-item" style="color:var(--warn);">' + safeMsg + '</div>';
 
           var dealBreakdown = document.getElementById('dealBreakdown');
           if (dealBreakdown) dealBreakdown.innerHTML = '<div class="break-item">Pipeline summary is unavailable</div>';
@@ -1183,11 +1185,11 @@ UiPage({
 
           var priorityBody = document.getElementById('priorityTableBody');
           if (priorityBody) {
-            priorityBody.innerHTML = '<tr><td colspan="7" class="empty">Prioritized opportunities are unavailable</td></tr>';
+            priorityBody.innerHTML = '<tr><td colspan="7" class="empty">Prioritized opportunities are unavailable: ' + safeMsg + '</td></tr>';
           }
 
           var lastUpEl = document.getElementById('lastUpdate');
-          if (lastUpEl) lastUpEl.textContent = 'Error';
+          if (lastUpEl) lastUpEl.textContent = 'Error: ' + msg;
         }
 
         function getSortedTiers(tiers) {

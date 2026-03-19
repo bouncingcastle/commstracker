@@ -76,3 +76,21 @@ No-Go when any condition is true:
 1. Any critical fail in payout correctness, snapshot immutability, or role access.
 2. Any unresolved duplicate-payout behavior.
 3. Any UI path required for rep/manager/finance/admin cannot be exercised.
+
+## 6) One-Time Legacy Deal-Type Cutover Remediation
+
+Use this only during strict-cutover cleanup when migrating older data to reference-only deal-type architecture.
+
+1. Open `System Properties` and verify:
+   - `x_823178_commissio.legacy_cutover_dry_run=true`
+   - `x_823178_commissio.legacy_cutover_max_rows_per_table=20000` (or a smaller safe batch)
+   - `x_823178_commissio.legacy_cutover_sample_limit=25`
+2. Run scheduled job on-demand:
+   - `Commission Legacy Deal Type Cutover Remediation`
+3. Review `System Logs > All` for summary JSON:
+   - counts for `mapped_from_legacy`, `legacy_value_cleared`, and unresolved buckets
+   - `unresolved_samples` rows needing manual correction
+4. If dry-run output looks correct, set:
+   - `x_823178_commissio.legacy_cutover_dry_run=false`
+5. Run the same job again to apply updates.
+6. Re-run with `dry_run=true` to confirm no remaining changes are proposed.
