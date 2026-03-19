@@ -5,9 +5,10 @@ List({
     view: default_view,
     columns: [
         'attainment_floor_percent',
+        'attainment_ceiling_percent',
         'commission_plan',
+        'plan_target',
         'commission_rate_percent',
-        'description',
         'is_active',
         'sort_order',
         'tier_name',

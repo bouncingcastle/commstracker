@@ -7,7 +7,7 @@ BusinessRule({
     $id: Now.ID['deal_snapshot'],
     name: 'Deal Snapshot on Close',
     table: 'x_823178_commissio_deals',
-    action: ['update'],
+    action: ['insert', 'update'],
     when: 'before',
     script: snapshotDealOnClose,
     active: true,

@@ -3,6 +3,20 @@ import { normalizeDealType as normalizeDealTypeCanonical } from '../script-inclu
 import { getApprovedOverrideJustification } from '../script-includes/ops-governance-utils.js'
 import { PAYMENT_CALC_STATE, CALC_STATUS } from '../script-includes/status-model.js'
 
+function isTruthyBoolean(value) {
+    var normalized = (value || '').toString().toLowerCase();
+    return normalized === 'true' || normalized === '1';
+}
+
+function isDealClosedWon(dealRecord) {
+    if (!dealRecord) {
+        return false;
+    }
+
+    return isTruthyBoolean(dealRecord.getValue('is_won')) ||
+        (dealRecord.getValue('stage') || '').toString() === 'closed_won';
+}
+
 export function calculateCommissionOnPayment(current, previous) {
     // BUSINESS REQUIREMENT: Prevent duplicate calculations but allow legitimate recalculations
     if (current.getValue('commission_calculated') === PAYMENT_CALC_STATE.CALCULATED && !shouldRecalculate(current)) {
@@ -69,7 +83,7 @@ export function calculateCommissionOnPayment(current, previous) {
         }
         
         // BUSINESS REQUIREMENT: Deal must be properly closed, but allow processing of approved high-value deals
-        if (!dealGr.getValue('is_won') || !dealGr.getValue('snapshot_taken') || !dealGr.getValue('snapshot_timestamp')) {
+        if (!isDealClosedWon(dealGr) || !dealGr.getValue('snapshot_taken') || !dealGr.getValue('snapshot_timestamp')) {
             gs.warn('Commission Management: Deal is not properly closed or snapshot incomplete');
             current.setValue('commission_calculated', PAYMENT_CALC_STATE.ERROR);
             return;
@@ -789,7 +803,7 @@ function getRepAttainedAmountBeforeDeal(salesRep, closeDate, currentDealId) {
     var attained = 0;
     var dealGr = new GlideRecord('x_823178_commissio_deals');
     dealGr.addQuery('owner_at_close', salesRep);
-    dealGr.addQuery('is_won', true);
+    dealGr.addEncodedQuery('is_won=true^ORstage=closed_won');
     dealGr.addQuery('close_date', '<=', closeDate);
     if (currentDealId) {
         dealGr.addQuery('sys_id', '!=', currentDealId);
@@ -1136,7 +1150,7 @@ function getRepWonDealCountForPeriod(salesRep, periodStart, periodEnd, dealTypeS
     var normalizedScope = normalizeBonusDealType(dealTypeScope);
     var dealGr = new GlideRecord('x_823178_commissio_deals');
     dealGr.addQuery('owner_at_close', salesRep);
-    dealGr.addQuery('is_won', true);
+    dealGr.addEncodedQuery('is_won=true^ORstage=closed_won');
 
     if (periodStart) {
         dealGr.addQuery('close_date', '>=', periodStart);
@@ -1363,8 +1377,7 @@ function isActiveFlag(value) {
         return true;
     }
 
-    var normalized = (value || '').toString().toLowerCase();
-    return normalized === 'true' || normalized === '1';
+    return isTruthyBoolean(value);
 }
 
 function getPayoutSchedule(paymentDateValue, recognitionBasis) {

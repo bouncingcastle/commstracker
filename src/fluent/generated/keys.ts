@@ -4543,10 +4543,12 @@ declare global {
                     abel_bonus_expansion: {
                         table: 'x_823178_commissio_plan_bonuses'
                         id: '9ebf7b12b1284aca9e097beaf91ae4db'
+                        deleted: true
                     }
                     abel_bonus_quota: {
                         table: 'x_823178_commissio_plan_bonuses'
                         id: 'e0cf3ca406544f21949d477e3fbfbcc1'
+                        deleted: true
                     }
                     abel_plan_2024: {
                         table: 'x_823178_commissio_commission_plans'
@@ -4556,46 +4558,57 @@ declare global {
                     abel_plan_2026: {
                         table: 'x_823178_commissio_commission_plans'
                         id: '884e9c79276243449686c54152d1874c'
+                        deleted: true
                     }
                     abel_statement_feb_2026: {
                         table: 'x_823178_commissio_commission_statements'
                         id: '5c4979bee76449d6976fc5051b7f35ce'
+                        deleted: true
                     }
                     abel_statement_jan_2026: {
                         table: 'x_823178_commissio_commission_statements'
                         id: '48b46c7c631c4d55a4cba3f2aa9a3c3e'
+                        deleted: true
                     }
                     abel_target_expansion: {
                         table: 'x_823178_commissio_plan_targets'
                         id: 'bde058cabf1e4b76a5a7fa71a9ef36a3'
+                        deleted: true
                     }
                     abel_target_new_business: {
                         table: 'x_823178_commissio_plan_targets'
                         id: '1be5ddc509ad47c98e67ccbe28f9b2e6'
+                        deleted: true
                     }
                     abel_target_renewal: {
                         table: 'x_823178_commissio_plan_targets'
                         id: '969aee7658ab42ef9d227b08c06e6aac'
+                        deleted: true
                     }
                     abel_tier_accelerated: {
                         table: 'x_823178_commissio_plan_tiers'
                         id: '0fd91916010d41e9b28be3d09f65ced1'
+                        deleted: true
                     }
                     abel_tier_base: {
                         table: 'x_823178_commissio_plan_tiers'
                         id: '9eff66dbb7c040719e01747faa352b4d'
+                        deleted: true
                     }
                     abel_tier_stretch: {
                         table: 'x_823178_commissio_plan_tiers'
                         id: '22fcd0f5ffea4bc6b6e5ebc0d5ac82d2'
+                        deleted: true
                     }
                     abraham_bonus_manager: {
                         table: 'x_823178_commissio_plan_bonuses'
                         id: '01f904795c4a4d4e9d32af69ec481b1d'
+                        deleted: true
                     }
                     abraham_bonus_quota: {
                         table: 'x_823178_commissio_plan_bonuses'
                         id: '283578b27d3241cb81ae22290acace46'
+                        deleted: true
                     }
                     abraham_plan_2024: {
                         table: 'x_823178_commissio_commission_plans'
@@ -4605,22 +4618,27 @@ declare global {
                     abraham_plan_2026: {
                         table: 'x_823178_commissio_commission_plans'
                         id: 'abe30727e5534e34b95fcebfa384e998'
+                        deleted: true
                     }
                     abraham_target_expansion: {
                         table: 'x_823178_commissio_plan_targets'
                         id: 'f264e9e837114d5d84b98c586558ed93'
+                        deleted: true
                     }
                     abraham_target_new_business: {
                         table: 'x_823178_commissio_plan_targets'
                         id: '5f0d510f69ed43b78be24f9303d12125'
+                        deleted: true
                     }
                     abraham_tier_accelerated: {
                         table: 'x_823178_commissio_plan_tiers'
                         id: '45bc866b8fec48f7ab22a51658f3c4e1'
+                        deleted: true
                     }
                     abraham_tier_base: {
                         table: 'x_823178_commissio_plan_tiers'
                         id: '3ce605e9e5f14716be78ac25f9719fde'
+                        deleted: true
                     }
                     ac466b3561064dcaa3c5eb2152e47571: {
                         table: 'sysauto_script'
@@ -4677,14 +4695,17 @@ declare global {
                     adela_bonus_expansion: {
                         table: 'x_823178_commissio_plan_bonuses'
                         id: '1cd2471aa16e4796b5d985ae22e1957e'
+                        deleted: true
                     }
                     adela_bonus_quota: {
                         table: 'x_823178_commissio_plan_bonuses'
                         id: '8a8504a1ff7d4657a41ccc8fb4d3b2b9'
+                        deleted: true
                     }
                     adela_bonus_stretch: {
                         table: 'x_823178_commissio_plan_bonuses'
                         id: '7a68d66b4ed94c4d90f7e726da3db5bb'
+                        deleted: true
                     }
                     adela_plan_2024: {
                         table: 'x_823178_commissio_commission_plans'
@@ -4694,34 +4715,42 @@ declare global {
                     adela_plan_2026: {
                         table: 'x_823178_commissio_commission_plans'
                         id: 'defb204e4ce6407ea6e660b4e2d7b433'
+                        deleted: true
                     }
                     adela_statement_jan_2026: {
                         table: 'x_823178_commissio_commission_statements'
                         id: '66a98ebf2841405a88a5fb4e56f3f724'
+                        deleted: true
                     }
                     adela_target_expansion: {
                         table: 'x_823178_commissio_plan_targets'
                         id: 'de3f6862388b4850ad4333c4fb9a2fc9'
+                        deleted: true
                     }
                     adela_target_new_business: {
                         table: 'x_823178_commissio_plan_targets'
                         id: '92440c38307044319d8f75bfc1ed645a'
+                        deleted: true
                     }
                     adela_target_renewal: {
                         table: 'x_823178_commissio_plan_targets'
                         id: '09cc83ed87814809872d53ee07503f91'
+                        deleted: true
                     }
                     adela_tier_accelerated: {
                         table: 'x_823178_commissio_plan_tiers'
                         id: 'd8726ed8dee64fa49dc52505cf4768f4'
+                        deleted: true
                     }
                     adela_tier_base: {
                         table: 'x_823178_commissio_plan_tiers'
                         id: '012e4404541b4dc3b4aadda6c99a6b0d'
+                        deleted: true
                     }
                     adela_tier_stretch: {
                         table: 'x_823178_commissio_plan_tiers'
                         id: '66c9cb8bb62f4c7582fa22cab89dec0d'
+                        deleted: true
                     }
                     admin_rep_role_assignment: {
                         table: 'sys_user_has_role'
@@ -4769,14 +4798,17 @@ declare global {
                     alert_calculation_ready: {
                         table: 'x_823178_commissio_system_alerts'
                         id: '356d0d758cce4209aaf4581a9803fa9d'
+                        deleted: true
                     }
                     alert_reconciliation_mismatch: {
                         table: 'x_823178_commissio_system_alerts'
                         id: '689b23584ffc4557a8bde7bbe5a1552e'
+                        deleted: true
                     }
                     alert_sync_success: {
                         table: 'x_823178_commissio_system_alerts'
                         id: 'a3ad9c70da704310bbc42b5419508289'
+                        deleted: true
                     }
                     alerts_module: {
                         table: 'sys_app_module'
@@ -6418,30 +6450,37 @@ declare global {
                     demo_calc_abel_1: {
                         table: 'x_823178_commissio_commission_calculations'
                         id: 'a2beeaef620548ac8fd455e3c6ccd527'
+                        deleted: true
                     }
                     demo_calc_abel_2: {
                         table: 'x_823178_commissio_commission_calculations'
                         id: '80a982817eef442ab9e505e8886c9f9c'
+                        deleted: true
                     }
                     demo_calc_adela_1: {
                         table: 'x_823178_commissio_commission_calculations'
                         id: '63f70284dd7649ec87315bff4848419e'
+                        deleted: true
                     }
                     demo_calc_adela_2: {
                         table: 'x_823178_commissio_commission_calculations'
                         id: 'ea895355b9454b14a1db0e0732e829d6'
+                        deleted: true
                     }
                     demo_deal_abel_1: {
                         table: 'x_823178_commissio_deals'
                         id: 'b3e29bc60f164b4ebeca320d60ad1764'
+                        deleted: true
                     }
                     demo_deal_abel_2: {
                         table: 'x_823178_commissio_deals'
                         id: 'bbffee3556e6410a90f3170221b20ad2'
+                        deleted: true
                     }
                     demo_deal_abel_active_1: {
                         table: 'x_823178_commissio_deals'
                         id: 'e9400f5061cf4778a8074d256c203dc7'
+                        deleted: true
                     }
                     demo_deal_adela: {
                         table: 'x_823178_commissio_deals'
@@ -6451,14 +6490,17 @@ declare global {
                     demo_deal_adela_1: {
                         table: 'x_823178_commissio_deals'
                         id: '84621896748e4bf3b5c996cba11f1134'
+                        deleted: true
                     }
                     demo_deal_adela_2: {
                         table: 'x_823178_commissio_deals'
                         id: 'e4578a7445c64e6bae4954073874c4f5'
+                        deleted: true
                     }
                     demo_deal_adela_active_1: {
                         table: 'x_823178_commissio_deals'
                         id: 'ffe465ef558249dead2bcb9e3c797715'
+                        deleted: true
                     }
                     demo_deal_closed: {
                         table: 'x_823178_commissio_deals'
@@ -6478,46 +6520,57 @@ declare global {
                     demo_invoice_abel_1: {
                         table: 'x_823178_commissio_invoices'
                         id: '1714d0dfb3434153bde5ed99e870c1f9'
+                        deleted: true
                     }
                     demo_invoice_abel_2: {
                         table: 'x_823178_commissio_invoices'
                         id: '6c04830800af4de48c1791c4e0592517'
+                        deleted: true
                     }
                     demo_invoice_adela_1: {
                         table: 'x_823178_commissio_invoices'
                         id: 'b6f947c56c154bbc9262854e391b2323'
+                        deleted: true
                     }
                     demo_invoice_adela_2: {
                         table: 'x_823178_commissio_invoices'
                         id: 'a836f95b99b64114adf6757904f5d495'
+                        deleted: true
                     }
                     demo_payment_abel: {
                         table: 'x_823178_commissio_payments'
                         id: '450a1af1988c44958ae01c49c68e5c38'
+                        deleted: true
                     }
                     demo_payment_abel_1: {
                         table: 'x_823178_commissio_payments'
                         id: '15d26bbdb5f14386996723102918cd15'
+                        deleted: true
                     }
                     demo_payment_abel_2: {
                         table: 'x_823178_commissio_payments'
                         id: 'bcf959802b594f338f1a475559973cca'
+                        deleted: true
                     }
                     demo_payment_adela: {
                         table: 'x_823178_commissio_payments'
                         id: '87766aba14c743af8c14ad12dba10a29'
+                        deleted: true
                     }
                     demo_payment_adela_1: {
                         table: 'x_823178_commissio_payments'
                         id: 'c2a85ca9d18c4f1f891fefa7040605af'
+                        deleted: true
                     }
                     demo_payment_adela_2: {
                         table: 'x_823178_commissio_payments'
                         id: '71b5e35e90c24051aece2ac05f5e9f39'
+                        deleted: true
                     }
                     demo_refund: {
                         table: 'x_823178_commissio_payments'
                         id: 'a50bfc115e43432fb0d09af3627dab23'
+                        deleted: true
                     }
                     df06b0a67cd1448aaed8081e4e634be0: {
                         table: 'sys_security_acl'
@@ -6980,10 +7033,12 @@ declare global {
                     exception_abel_override: {
                         table: 'x_823178_commissio_exception_approvals'
                         id: '70b410f4a2f2439db1d0326fb7532a5a'
+                        deleted: true
                     }
                     exception_adela_pending: {
                         table: 'x_823178_commissio_exception_approvals'
                         id: 'b3a60159c5d44fe9896727a1d9ddd00a'
+                        deleted: true
                     }
                     exception_sla_hours_prop: {
                         table: 'sys_properties'
@@ -7900,14 +7955,17 @@ declare global {
                     recon_daily_2026_02_27: {
                         table: 'x_823178_commissio_reconciliation_log'
                         id: '3b4ce8b0921b4afa8378fcb0023538fa'
+                        deleted: true
                     }
                     recon_daily_2026_02_28: {
                         table: 'x_823178_commissio_reconciliation_log'
                         id: '06012a24ea39407eb2156271568a42b7'
+                        deleted: true
                     }
                     recon_monthly_2026_01: {
                         table: 'x_823178_commissio_reconciliation_log'
                         id: '985f79f0992a46ae94843861bba9feac'
+                        deleted: true
                     }
                     reconciliation_module: {
                         table: 'sys_app_module'
@@ -7931,14 +7989,17 @@ declare global {
                     sample_deal_1: {
                         table: 'x_823178_commissio_deals'
                         id: 'c3e0840f02ce47179d07b5307539027e'
+                        deleted: true
                     }
                     sample_plan_1: {
                         table: 'x_823178_commissio_commission_plans'
                         id: 'f6ee1a335c1544e68fc56255059acbdb'
+                        deleted: true
                     }
                     sample_plan_2: {
                         table: 'x_823178_commissio_commission_plans'
                         id: 'c817c4403aa04d0cb96551aaf8f5e5ea'
+                        deleted: true
                     }
                     seed_bonus_scenarios_enabled_prop: {
                         table: 'sys_properties'
@@ -19246,6 +19307,29 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_list_element'
+                        id: '9e0bf45dfa3f403292b444e7491635fa'
+                        key: {
+                            list_id: {
+                                id: 'bcf6d94f4a444aa4a670082e7e424fd1'
+                                key: {
+                                    name: 'x_823178_commissio_plan_tiers'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'plan_target'
+                        }
+                    },
+                    {
                         table: 'ua_table_licensing_config'
                         id: '9e1cb5d4f08f46fa898a8954002ac21e'
                         key: {
@@ -21280,6 +21364,7 @@ declare global {
                     {
                         table: 'sys_ui_list_element'
                         id: 'b6cd1c62839f3210a0365dc6feaad37d'
+                        deleted: true
                         key: {
                             list_id: {
                                 id: 'b2cd1c62839f3210a0365dc6feaad37b'
@@ -21331,6 +21416,29 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'base_commission_component'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_list_element'
+                        id: 'b70f2c6ca2774bc6a7c2b11dcf0f9bb2'
+                        key: {
+                            list_id: {
+                                id: 'bcf6d94f4a444aa4a670082e7e424fd1'
+                                key: {
+                                    name: 'x_823178_commissio_plan_tiers'
+                                    view: {
+                                        id: 'Default view'
+                                        key: {
+                                            name: 'NULL'
+                                        }
+                                    }
+                                    sys_domain: 'global'
+                                    element: 'NULL'
+                                    relationship: 'NULL'
+                                    parent: 'NULL'
+                                }
+                            }
+                            element: 'attainment_ceiling_percent'
                         }
                     },
                     {

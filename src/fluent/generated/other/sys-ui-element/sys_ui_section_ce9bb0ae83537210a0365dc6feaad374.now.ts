@@ -33,7 +33,7 @@ Record({
     $id: Now.ID['869b7c6283937210a0365dc6feaad356'],
     table: 'sys_ui_element',
     data: {
-        element: 'is_active',
+        element: 'plan_target',
         position: 3,
         sys_ui_section: 'ce9bb0ae83537210a0365dc6feaad374',
     },
@@ -80,7 +80,7 @@ Record({
     $id: Now.ID['4e9b7c6283937210a0365dc6feaad359'],
     table: 'sys_ui_element',
     data: {
-        element: 'commission_rate_percent',
+        element: 'attainment_ceiling_percent',
         position: 8,
         sys_ui_section: 'ce9bb0ae83537210a0365dc6feaad374',
     },
@@ -99,7 +99,7 @@ Record({
     $id: Now.ID['c29b7c6283937210a0365dc6feaad35b'],
     table: 'sys_ui_element',
     data: {
-        element: 'sort_order',
+        element: 'commission_rate_percent',
         position: 10,
         sys_ui_section: 'ce9bb0ae83537210a0365dc6feaad374',
     },
@@ -108,18 +108,18 @@ Record({
     $id: Now.ID['8e9b7c6283937210a0365dc6feaad35b'],
     table: 'sys_ui_element',
     data: {
-        element: '.end_split',
+        element: 'is_active',
         position: 11,
         sys_ui_section: 'ce9bb0ae83537210a0365dc6feaad374',
-        type: '.end_split',
     },
 })
 Record({
     $id: Now.ID['4a9b7c6283937210a0365dc6feaad35c'],
     table: 'sys_ui_element',
     data: {
-        element: 'description',
+        element: '.end_split',
         position: 12,
         sys_ui_section: 'ce9bb0ae83537210a0365dc6feaad374',
+        type: '.end_split',
     },
 })

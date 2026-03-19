@@ -2,8 +2,11 @@ import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
 import { getApprovedOverrideJustification, createOverrideAuditLog } from '../script-includes/ops-governance-utils.js'
 
 export function snapshotDealOnClose(current, previous) {
+    var previousStage = previous ? (previous.getValue('stage') || '') : '';
+    var previousSnapshotTaken = previous ? previous.getValue('snapshot_taken') : '';
+
     // BUSINESS REQUIREMENT: Preserve ability to correct legitimate snapshot errors
-    if (current.getValue('snapshot_taken') === 'true' && previous.getValue('snapshot_taken') === 'true') {
+    if (current.getValue('snapshot_taken') === 'true' && previousSnapshotTaken === 'true') {
         // Check for approved override before blocking changes
         if (current.owner_at_close.changes() || current.is_won.changes() || current.close_date.changes()) {
             var approvedOverride = checkApprovedOverride(current.sys_id, 'snapshot_correction');
@@ -21,7 +24,7 @@ export function snapshotDealOnClose(current, previous) {
     
     // Only process when stage changes to closed_won
     if (current.getValue('stage') === 'closed_won' && 
-        previous.getValue('stage') !== 'closed_won' &&
+        previousStage !== 'closed_won' &&
         !current.getValue('snapshot_taken')) {
         
         gs.info('Commission Management: Taking immutable snapshot for deal ' + current.getValue('bigin_deal_id'));
