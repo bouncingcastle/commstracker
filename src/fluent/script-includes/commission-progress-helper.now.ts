@@ -157,14 +157,12 @@ Record({
                     
                     var compDetails = this.getCompensationPlanDetails(planId);
                     var baseRate = compDetails.base_rate;
-                    var totalQuota = compDetails.total_quota;
-                    var resolvedPlanTarget = totalQuota;
                     var oTE100 = parseFloat(compDetails.ote_at_100_percent || 0);
                     var oteWithBonuses = oTE100 + compDetails.total_bonus_potential;
                     
                     result.data.active_plan = {
                         plan_name: planGr.getValue('plan_name'),
-                        plan_target_amount: resolvedPlanTarget,
+                        plan_target_amount: compDetails.total_quota,
                         plan_year: selectedYear,
                         plan_effective_year: planYear,
                         sys_id: planId,
