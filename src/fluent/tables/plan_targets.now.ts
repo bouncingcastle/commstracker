@@ -66,7 +66,7 @@ export const x_823178_commissio_plan_targets = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
     index: [
         {
@@ -80,4 +80,7 @@ export const x_823178_commissio_plan_targets = Table({
             element: 'deal_type_ref',
         },
     ],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })

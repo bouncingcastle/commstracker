@@ -96,7 +96,7 @@ export const x_823178_commissio_bulk_plan_assignment_runs = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
     index: [
         {
@@ -110,4 +110,7 @@ export const x_823178_commissio_bulk_plan_assignment_runs = Table({
             element: 'source_plan',
         },
     ],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })

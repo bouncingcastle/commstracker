@@ -2211,6 +2211,9 @@ Record({
 
     type: 'CommissionProgressDataService'
 });
-        `
-    }
+        `,
+        api_name: 'x_823178_commissio.CommissionProgressDataService',
+        mobile_callable: false,
+        sandbox_callable: true,
+    },
 })

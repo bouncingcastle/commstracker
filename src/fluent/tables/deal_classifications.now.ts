@@ -51,7 +51,7 @@ export const x_823178_commissio_deal_classifications = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
     index: [
         {
@@ -65,4 +65,7 @@ export const x_823178_commissio_deal_classifications = Table({
             element: 'deal_type_ref',
         },
     ],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })

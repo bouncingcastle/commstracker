@@ -2,19 +2,17 @@ import '@servicenow/sdk/global'
 import { UiPage } from '@servicenow/sdk/core'
 
 UiPage({
-  $id: 'statement_explainability_page',
-  endpoint: 'x_823178_commissio_statement_explainability.do',
-  description: 'Commission Statement Explainability Drill-Down',
-  category: 'general',
-  html: `
-<!DOCTYPE html>
+    $id: 'statement_explainability_page',
+    endpoint: 'x_823178_commissio_statement_explainability.do',
+    description: 'Commission Statement Explainability Drill-Down',
+    category: 'general',
+    html: `
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Statement Explainability</title>
-  <style>
-    :root{--bg:#0b1020;--panel:#101a33;--border:rgba(255,255,255,.12);--text:#e9eefc;--muted:rgba(233,238,252,.72);--brand:#6ea8ff;--good:#28d17c;--warn:#ffcc66;--bad:#ff6b6b;--radius:10px}
+  <head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <title>Statement Explainability</title>
+    <style>:root{--bg:#0b1020;--panel:#101a33;--border:rgba(255,255,255,.12);--text:#e9eefc;--muted:rgba(233,238,252,.72);--brand:#6ea8ff;--good:#28d17c;--warn:#ffcc66;--bad:#ff6b6b;--radius:10px}
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
     .wrap{max-width:1280px;margin:0 auto;padding:24px}
@@ -36,48 +34,45 @@ UiPage({
     .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.04);color:var(--brand);text-decoration:none}
     .loading{color:var(--muted);text-align:center;padding:20px}
-    .warn{color:var(--warn)} .good{color:var(--good)} .bad{color:var(--bad)}
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <h1>Statement Explainability</h1>
-    <div class="sub">Breakdown of statement totals into base commission, accelerator delta, and bonus components.</div>
-
-    <div class="panel" id="headerPanel">
-      <div class="loading">Loading statement explainability...</div>
-    </div>
-
-    <div class="panel">
-      <div class="summary" id="summaryPanel">
-        <div class="loading">Loading summary...</div>
+    .warn{color:var(--warn)} .good{color:var(--good)} .bad{color:var(--bad)}</style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Statement Explainability</h1>
+      <div class="sub">Breakdown of statement totals into base commission, accelerator delta, and bonus components.</div>
+      <div class="panel" id="headerPanel">
+        <div class="loading">Loading statement explainability...</div>
+      </div>
+      <div class="panel">
+        <div class="summary" id="summaryPanel">
+          <div class="loading">Loading summary...</div>
+        </div>
+      </div>
+      <div class="panel">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Deal</th>
+              <th>Type</th>
+              <th>Payment Date</th>
+              <th>Base</th>
+              <th>Accelerator</th>
+              <th>Bonus</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="lineItemsBody">
+            <tr>
+              <td colspan="8" class="loading">Loading line items...</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-
-    <div class="panel">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Deal</th>
-            <th>Type</th>
-            <th>Payment Date</th>
-            <th>Base</th>
-            <th>Accelerator</th>
-            <th>Bonus</th>
-            <th>Total</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="lineItemsBody">
-          <tr><td colspan="8" class="loading">Loading line items...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</body>
-</html>
-  `,
-  clientScript: `
+  </body>
+</html>`,
+    clientScript: `
     (function(){
       function q(name){
         var m = new URLSearchParams(window.location.search).get(name);
@@ -180,5 +175,5 @@ UiPage({
         }
       });
     })();
-  `
+  `,
 })

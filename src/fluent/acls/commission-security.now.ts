@@ -1,11 +1,6 @@
 import '@servicenow/sdk/global'
 import { Acl } from '@servicenow/sdk/core'
-import {
-    commissionRepRole,
-    commissionAdminRole,
-    commissionFinanceRole,
-    commissionManagerRole,
-} from '../roles/commission-roles.now'
+import { commissionRepRole, commissionAdminRole, commissionFinanceRole } from '../roles/commission-roles.now'
 
 // Commission Plans - Admin only
 Acl({
@@ -168,7 +163,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can read governed deal type records',
 })
 
@@ -179,7 +174,7 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can create/update/deactivate deal type records',
 })
 
@@ -190,7 +185,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole, commissionFinanceRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins and finance can read deal classification mappings',
 })
 
@@ -201,7 +196,7 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can manage deal classification mappings',
 })
 
@@ -213,7 +208,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can read plan recognition policy records',
 })
 
@@ -224,7 +219,7 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can create/update recognition basis policies',
 })
 
@@ -236,7 +231,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can read plan target records',
 })
 
@@ -247,7 +242,7 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can create/update plan target records',
 })
 
@@ -258,7 +253,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can read plan tier records',
 })
 
@@ -269,7 +264,7 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can create/update plan tier records',
 })
 
@@ -280,7 +275,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can read plan bonus records',
 })
 
@@ -291,7 +286,7 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can create/update plan bonus records',
 })
 
@@ -303,7 +298,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can read bulk plan assignment run records',
 })
 
@@ -314,7 +309,7 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can execute bulk plan assignment runs',
 })
 
@@ -324,9 +319,21 @@ Acl({
     type: 'record',
     table: 'x_823178_commissio_manager_team_memberships',
     operation: 'read',
-    roles: [commissionAdminRole, commissionManagerRole],
+    roles: [
+        commissionAdminRole,
+        {
+            name: 'x_823178_commissio.manager',
+            assignable_by: '',
+            can_delegate: false,
+            description: 'Commission managers can view direct-report performance and team rollups',
+            elevated_privilege: false,
+            grantable: true,
+            scoped_admin: false,
+            suffix: 'manager',
+        },
+    ],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     script: `
         if (gs.hasRole('x_823178_commissio.manager') && !gs.hasRole('x_823178_commissio.admin')) {
             answer = current.manager_user == gs.getUserID();
@@ -344,7 +351,7 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can create/update manager-team governance rows',
 })
 
@@ -356,7 +363,7 @@ Acl({
     operation: 'read',
     roles: [commissionAdminRole, commissionRepRole, commissionFinanceRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     script: `
         if (gs.hasRole('x_823178_commissio.rep') && !gs.hasRole('x_823178_commissio.admin') && !gs.hasRole('x_823178_commissio.finance')) {
             answer = current.sales_rep == gs.getUserID();
@@ -374,6 +381,6 @@ Acl({
     operation: 'write',
     roles: [commissionAdminRole],
     active: true,
-    admin_overrides: true,
+    adminOverrides: true,
     description: 'Only commission admins can modify bonus earnings records',
 })

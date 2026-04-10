@@ -6,10 +6,10 @@ BusinessRule({
     $id: 'bulk_plan_assignment_run_processor',
     name: 'Bulk Plan Assignment Run Processor',
     table: 'x_823178_commissio_bulk_plan_assignment_runs',
-    action: ['insert', 'update'],
+    action: ['update', 'insert'],
     when: 'before',
     script: processBulkPlanAssignmentRun,
     active: true,
     order: 40,
-    description: 'Executes bulk plan assignment preview/apply/rollback with overlap checks and rollback support'
+    description: 'Executes bulk plan assignment preview/apply/rollback with overlap checks and rollback support',
 })

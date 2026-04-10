@@ -14,8 +14,8 @@ Record({
         sys_domain: 'global',
         sys_domain_path: '/',
         title: true,
-        view: 'Default view'
-    }
+        view: '',
+    },
 })
 
 Record({
@@ -27,8 +27,8 @@ Record({
         sys_domain: 'global',
         sys_domain_path: '/',
         title: true,
-        view: 'default'
-    }
+        view: 'default',
+    },
 })
 
 Record({
@@ -40,8 +40,8 @@ Record({
         sys_domain: 'global',
         sys_domain_path: '/',
         title: true,
-        view: ''
-    }
+        view: '',
+    },
 })
 
 Record({
@@ -50,8 +50,8 @@ Record({
     data: {
         element: 'commission_plan',
         position: 0,
-        sys_ui_section: SECTION_DEFAULT_VIEW
-    }
+        sys_ui_section: SECTION_DEFAULT_VIEW,
+    },
 })
 
 Record({
@@ -60,8 +60,8 @@ Record({
     data: {
         element: 'deal_type_ref',
         position: 1,
-        sys_ui_section: SECTION_DEFAULT_VIEW
-    }
+        sys_ui_section: SECTION_DEFAULT_VIEW,
+    },
 })
 
 Record({
@@ -70,8 +70,8 @@ Record({
     data: {
         element: 'commission_rate_percent',
         position: 2,
-        sys_ui_section: SECTION_DEFAULT_VIEW
-    }
+        sys_ui_section: SECTION_DEFAULT_VIEW,
+    },
 })
 
 Record({
@@ -80,8 +80,8 @@ Record({
     data: {
         element: 'annual_target_amount',
         position: 3,
-        sys_ui_section: SECTION_DEFAULT_VIEW
-    }
+        sys_ui_section: SECTION_DEFAULT_VIEW,
+    },
 })
 
 Record({
@@ -90,8 +90,8 @@ Record({
     data: {
         element: 'is_active',
         position: 4,
-        sys_ui_section: SECTION_DEFAULT_VIEW
-    }
+        sys_ui_section: SECTION_DEFAULT_VIEW,
+    },
 })
 
 Record({
@@ -100,8 +100,8 @@ Record({
     data: {
         element: 'description',
         position: 5,
-        sys_ui_section: SECTION_DEFAULT_VIEW
-    }
+        sys_ui_section: SECTION_DEFAULT_VIEW,
+    },
 })
 
 Record({
@@ -110,8 +110,8 @@ Record({
     data: {
         element: 'commission_plan',
         position: 0,
-        sys_ui_section: SECTION_DEFAULT_LOWER
-    }
+        sys_ui_section: SECTION_DEFAULT_LOWER,
+    },
 })
 
 Record({
@@ -120,8 +120,8 @@ Record({
     data: {
         element: 'deal_type_ref',
         position: 1,
-        sys_ui_section: SECTION_DEFAULT_LOWER
-    }
+        sys_ui_section: SECTION_DEFAULT_LOWER,
+    },
 })
 
 Record({
@@ -130,8 +130,8 @@ Record({
     data: {
         element: 'commission_rate_percent',
         position: 2,
-        sys_ui_section: SECTION_DEFAULT_LOWER
-    }
+        sys_ui_section: SECTION_DEFAULT_LOWER,
+    },
 })
 
 Record({
@@ -140,8 +140,8 @@ Record({
     data: {
         element: 'annual_target_amount',
         position: 3,
-        sys_ui_section: SECTION_DEFAULT_LOWER
-    }
+        sys_ui_section: SECTION_DEFAULT_LOWER,
+    },
 })
 
 Record({
@@ -150,8 +150,8 @@ Record({
     data: {
         element: 'is_active',
         position: 4,
-        sys_ui_section: SECTION_DEFAULT_LOWER
-    }
+        sys_ui_section: SECTION_DEFAULT_LOWER,
+    },
 })
 
 Record({
@@ -160,8 +160,8 @@ Record({
     data: {
         element: 'description',
         position: 5,
-        sys_ui_section: SECTION_DEFAULT_LOWER
-    }
+        sys_ui_section: SECTION_DEFAULT_LOWER,
+    },
 })
 
 Record({
@@ -170,8 +170,8 @@ Record({
     data: {
         element: 'commission_plan',
         position: 0,
-        sys_ui_section: SECTION_BASE
-    }
+        sys_ui_section: SECTION_BASE,
+    },
 })
 
 Record({
@@ -180,8 +180,8 @@ Record({
     data: {
         element: 'deal_type_ref',
         position: 1,
-        sys_ui_section: SECTION_BASE
-    }
+        sys_ui_section: SECTION_BASE,
+    },
 })
 
 Record({
@@ -190,8 +190,8 @@ Record({
     data: {
         element: 'commission_rate_percent',
         position: 2,
-        sys_ui_section: SECTION_BASE
-    }
+        sys_ui_section: SECTION_BASE,
+    },
 })
 
 Record({
@@ -200,8 +200,8 @@ Record({
     data: {
         element: 'annual_target_amount',
         position: 3,
-        sys_ui_section: SECTION_BASE
-    }
+        sys_ui_section: SECTION_BASE,
+    },
 })
 
 Record({
@@ -210,8 +210,8 @@ Record({
     data: {
         element: 'is_active',
         position: 4,
-        sys_ui_section: SECTION_BASE
-    }
+        sys_ui_section: SECTION_BASE,
+    },
 })
 
 Record({
@@ -220,6 +220,6 @@ Record({
     data: {
         element: 'description',
         position: 5,
-        sys_ui_section: SECTION_BASE
-    }
+        sys_ui_section: SECTION_BASE,
+    },
 })

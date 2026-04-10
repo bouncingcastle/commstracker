@@ -73,7 +73,7 @@ export const x_823178_commissio_forecast_scenarios = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
     index: [
         {
@@ -87,4 +87,7 @@ export const x_823178_commissio_forecast_scenarios = Table({
             element: 'sales_rep',
         },
     ],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })

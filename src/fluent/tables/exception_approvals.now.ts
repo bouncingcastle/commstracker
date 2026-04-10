@@ -101,7 +101,7 @@ export const x_823178_commissio_exception_approvals = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
     index: [
         {
@@ -120,4 +120,7 @@ export const x_823178_commissio_exception_approvals = Table({
             element: 'requested_by',
         },
     ],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })

@@ -45,8 +45,11 @@ export const x_823178_commissio_reconciliation_log = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })
 
 // System Alerts table with web service access
@@ -109,6 +112,9 @@ export const x_823178_commissio_system_alerts = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })

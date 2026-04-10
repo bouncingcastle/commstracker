@@ -60,7 +60,7 @@ export const x_823178_commissio_plan_tiers = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
     index: [
         {
@@ -74,4 +74,7 @@ export const x_823178_commissio_plan_tiers = Table({
             element: 'plan_target',
         },
     ],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })

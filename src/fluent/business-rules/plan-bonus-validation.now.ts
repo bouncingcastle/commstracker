@@ -6,10 +6,10 @@ BusinessRule({
     $id: 'plan_bonus_validation',
     name: 'Plan Bonus Validation',
     table: 'x_823178_commissio_plan_bonuses',
-    action: ['insert', 'update'],
+    action: ['update', 'insert'],
     when: 'before',
     script: validatePlanBonusConfiguration,
     active: true,
     order: 42,
-    description: 'Validates structured bonus qualification fields and composes a deterministic condition summary'
+    description: 'Validates structured bonus qualification fields and composes a deterministic condition summary',
 })

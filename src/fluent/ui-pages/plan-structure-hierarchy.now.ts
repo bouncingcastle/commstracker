@@ -2,19 +2,17 @@ import '@servicenow/sdk/global'
 import { UiPage } from '@servicenow/sdk/core'
 
 UiPage({
-  $id: 'plan_structure_hierarchy_page',
-  endpoint: 'x_823178_commissio_plan_hierarchy.do',
-  description: 'Commission Plan Structure Hierarchy',
-  category: 'general',
-  html: `
-<!DOCTYPE html>
+    $id: 'plan_structure_hierarchy_page',
+    endpoint: 'x_823178_commissio_plan_hierarchy.do',
+    description: 'Commission Plan Structure Hierarchy',
+    category: 'general',
+    html: `
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plan Structure Hierarchy</title>
-  <style>
-    :root{
+  <head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <title>Plan Structure Hierarchy</title>
+    <style>:root{
       --bg:#0b1020;--panel:#101a33;--border:rgba(255,255,255,.12);
       --text:#e9eefc;--muted:rgba(233,238,252,.72);--brand:#6ea8ff;
       --radius:10px;
@@ -32,28 +30,26 @@ UiPage({
     a{color:var(--brand);text-decoration:none}
     a:hover{text-decoration:underline}
     .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.04)}
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <h1>Plan Structure Hierarchy</h1>
-    <div class="sub">Canonical hierarchy: Commission Plan → Targets, Tiers, Bonuses, Recognition Policies.</div>
-
-    <div class="panel">
-      <div><strong>Selected Plan ID:</strong> <span id="planId">(not provided)</span></div>
-      <div class="actions" id="topActions"></div>
+    .btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.04)}</style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Plan Structure Hierarchy</h1>
+      <div class="sub">Canonical hierarchy: Commission Plan → Targets, Tiers, Bonuses, Recognition Policies.</div>
+      <div class="panel">
+        <div>
+          <strong>Selected Plan ID:</strong>
+          <span id="planId">(not provided)</span>
+        </div>
+        <div class="actions" id="topActions"></div>
+      </div>
+      <div class="panel">
+        <ul class="tree" id="tree"></ul>
+      </div>
     </div>
-
-    <div class="panel">
-      <ul class="tree" id="tree"></ul>
-    </div>
-  </div>
-
-</body>
-</html>
-  `,
-  clientScript: `
+  </body>
+</html>`,
+    clientScript: `
     (function(){
       function q(name){
         var m = new URLSearchParams(window.location.search).get(name);
@@ -94,5 +90,5 @@ UiPage({
         row('└─ Plan Bonuses', '/x_823178_commissio_plan_bonuses_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYbonus_name', 'Structured bonus rules') +
         row('└─ Recognition Policies', '/x_823178_commissio_plan_recognition_policies_list.do?sysparm_query=commission_plan=' + planId + '^ORDERBYDESCeffective_start_date', 'Versioned recognition basis policies');
     })();
-  `
+  `,
 })

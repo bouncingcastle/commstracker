@@ -155,7 +155,7 @@ export const x_823178_commissio_deals = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
     index: [
         {
@@ -164,19 +164,22 @@ export const x_823178_commissio_deals = Table({
             element: 'current_owner',
         },
         {
-            name: 'index2',
+            name: 'index3',
             unique: false,
             element: 'finance_approved_by',
         },
         {
-            name: 'index3',
+            name: 'index4',
             unique: false,
             element: 'owner_at_close',
         },
         {
-            name: 'index4',
+            name: 'index2',
             unique: false,
             element: 'deal_type_ref',
         },
     ],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })

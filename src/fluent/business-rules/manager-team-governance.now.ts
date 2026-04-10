@@ -6,10 +6,10 @@ BusinessRule({
     $id: 'manager_team_governance_validation',
     name: 'Manager Team Governance Validation',
     table: 'x_823178_commissio_manager_team_memberships',
-    action: ['insert', 'update'],
+    action: ['update', 'insert'],
     when: 'before',
     script: validateManagerTeamMembership,
     active: true,
     order: 35,
-    description: 'Validates manager-team memberships, date windows, and role governance constraints'
+    description: 'Validates manager-team memberships, date windows, and role governance constraints',
 })

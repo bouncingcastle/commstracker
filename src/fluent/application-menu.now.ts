@@ -198,6 +198,11 @@ Record({
         hint: 'Configure annual quota targets per deal type',
         order: 32.1,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -213,6 +218,11 @@ Record({
         hint: 'Configure commission rate acceleration by quota attainment',
         order: 32.2,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -228,6 +238,11 @@ Record({
         hint: 'Configure discretionary and performance bonuses',
         order: 32.3,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -243,6 +258,11 @@ Record({
         hint: 'Manage governed deal type taxonomy, lifecycle, and definitions',
         order: 32.35,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -258,6 +278,11 @@ Record({
         hint: 'Manage versioned recognition basis policies per commission plan',
         order: 32.4,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -293,6 +318,11 @@ Record({
         hint: 'Create and compare saved forecast scenarios',
         order: 33.5,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -308,6 +338,11 @@ Record({
         hint: 'Manage statement approval workflow transitions',
         order: 33.6,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -323,6 +358,11 @@ Record({
         hint: 'Shortcut to create a new plan and configure related lists from the plan form',
         order: 34,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -337,6 +377,11 @@ Record({
         hint: 'Open individual active plans by rep and review full plan structure via related lists',
         order: 34.1,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -352,6 +397,11 @@ Record({
         hint: 'Run preview/apply/rollback bulk plan assignments with overlap safeguards',
         order: 34.2,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -367,6 +417,11 @@ Record({
         hint: 'Define manager-to-rep governance scope and effective windows for team rollups',
         order: 34.3,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })
 
@@ -460,5 +515,10 @@ Record({
         hint: 'Manage Commission Management system properties and operational settings',
         order: 44,
         active: true,
+        override_menu_roles: false,
+        require_confirmation: false,
+        sys_domain: 'global',
+        sys_domain_path: '/',
+        uncancelable: false,
     },
 })

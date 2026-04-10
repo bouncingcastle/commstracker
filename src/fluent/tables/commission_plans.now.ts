@@ -147,12 +147,12 @@ export const x_823178_commissio_commission_plans = Table({
             element: 'plan_overlap_approved_by',
         },
         {
-            name: 'index2',
+            name: 'index3',
             unique: false,
             element: 'superseded_by_plan',
         },
         {
-            name: 'index3',
+            name: 'index2',
             unique: false,
             element: 'sales_rep',
         },
@@ -162,4 +162,9 @@ export const x_823178_commissio_commission_plans = Table({
             element: 'supersedes_plan',
         },
     ],
+    actions: ['read', 'update', 'create'],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
+    allowWebServiceAccess: true,
 })

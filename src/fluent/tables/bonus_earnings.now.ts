@@ -120,7 +120,7 @@ export const x_823178_commissio_bonus_earnings = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
     index: [
         {
@@ -159,4 +159,7 @@ export const x_823178_commissio_bonus_earnings = Table({
             element: 'sales_rep',
         },
     ],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })

@@ -93,4 +93,9 @@ export const x_823178_commissio_invoices = Table({
             element: 'deal',
         },
     ],
+    actions: ['read', 'update', 'create'],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
+    allowWebServiceAccess: true,
 })

@@ -85,7 +85,7 @@ export const x_823178_commissio_statement_approvals = Table({
     audit: true,
     accessibleFrom: 'public',
     callerAccess: 'tracking',
-    actions: ['read', 'update', 'delete', 'create'],
+    actions: ['read', 'update', 'create'],
     allowWebServiceAccess: true,
     index: [
         {
@@ -109,4 +109,7 @@ export const x_823178_commissio_statement_approvals = Table({
             element: 'submitted_by',
         },
     ],
+    allowClientScripts: true,
+    allowNewFields: true,
+    allowUiActions: true,
 })

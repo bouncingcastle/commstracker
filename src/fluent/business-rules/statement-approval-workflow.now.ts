@@ -6,10 +6,10 @@ BusinessRule({
     $id: Now.ID['statement_approval_workflow_enforcement'],
     name: 'Statement Approval Workflow Enforcement',
     table: 'x_823178_commissio_statement_approvals',
-    action: ['insert', 'update'],
+    action: ['update', 'insert'],
     when: 'before',
     script: enforceStatementApprovalWorkflow,
     active: true,
     order: 60,
-    description: 'Enforces statement approval transitions and syncs statement status'
+    description: 'Enforces statement approval transitions and syncs statement status',
 })
