@@ -973,15 +973,12 @@ UiPage({
             });
           }
 
-          if (merged.length === 0) {
-            ['new_business', 'renewal', 'expansion', 'upsell'].forEach(add);
-          }
-
           return merged;
         }
 
         function loadEstimatorDealTypes(onComplete) {
           invokeHelper('getEstimatorDealTypes', {}, function(response) {
+            estimatorDealTypeCatalog = [];
             if (response) {
               try {
                 var payload = typeof response === 'string' ? JSON.parse(response) : response;
@@ -1335,9 +1332,15 @@ UiPage({
             syncEstimatorDealTypeOptions(data.active_plan);
           }
 
-          if (data.active_plan && data.active_plan.tiers && data.active_plan.tiers.length > 0) {
-            document.getElementById('bonusSection').style.display = '';
-            updateTiers(data.active_plan.tiers);
+          var hasActivePlanTiers = !!(data.active_plan && data.active_plan.tiers && data.active_plan.tiers.length > 0);
+          var hasActivePlanBonuses = !!(data.active_plan && data.active_plan.bonuses && data.active_plan.bonuses.length > 0);
+          var bonusSection = document.getElementById('bonusSection');
+          if (bonusSection) {
+            bonusSection.style.display = hasActivePlanTiers || hasActivePlanBonuses ? '' : 'none';
+          }
+
+          if (data.active_plan) {
+            updateTiers(data.active_plan.tiers || []);
             updateBonuses(data.active_plan.bonuses || []);
           }
 
@@ -1620,6 +1623,16 @@ UiPage({
             }
             select.appendChild(option);
           }
+
+          if (select.options.length === 0) {
+            var emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.textContent = 'No configured deal types';
+            emptyOption.selected = true;
+            select.appendChild(emptyOption);
+          }
+
+          select.disabled = select.options.length === 0 || !select.options[0].value;
 
           if (!select.value && select.options.length > 0) {
             select.options[0].selected = true;
@@ -1982,13 +1995,15 @@ UiPage({
         }
 
         function formatDealTypeLabel(raw) {
-          if (!raw) return 'Other';
-          var key = String(raw).toLowerCase();
-          if (key === 'new_business') return 'New Business';
-          if (key === 'renewal') return 'Renewal';
-          if (key === 'expansion') return 'Expansion';
-          if (key === 'upsell') return 'Upsell';
-          return capitalizeFirst(key.replace(/_/g, ' '));
+          var label = String(raw || '')
+            .replace(/[_-]+/g, ' ')
+            .split(/\s+/)
+            .filter(function(part) {
+              return !!part;
+            })
+            .map(capitalizeFirst)
+            .join(' ');
+          return label || 'Unspecified';
         }
 
         function updateCalculationsTable(calcs) {
