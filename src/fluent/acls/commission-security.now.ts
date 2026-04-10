@@ -1,11 +1,10 @@
 import '@servicenow/sdk/global'
 import { Acl } from '@servicenow/sdk/core'
-import {
-    commissionRepRole,
-    commissionAdminRole,
-    commissionFinanceRole,
-    commissionManagerRole,
-} from '../roles/commission-roles.now'
+
+const commissionRepRole = { name: 'x_823178_commissio.rep' }
+const commissionAdminRole = { name: 'x_823178_commissio.admin' }
+const commissionFinanceRole = { name: 'x_823178_commissio.finance' }
+const commissionManagerRole = { name: 'x_823178_commissio.manager' }
 
 // Commission Plans - Admin only
 Acl({
