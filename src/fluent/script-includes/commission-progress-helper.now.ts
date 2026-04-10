@@ -947,6 +947,7 @@ Record({
         try {
             var details = {
                 targets: {},
+                target_rates: {},
                 tiers: [],
                 bonuses: [],
                 total_quota: 0,
@@ -963,36 +964,54 @@ Record({
 
             if (!planId) return details;
 
+            var targetDealTypeById = {};
+
             var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
             targetGr.addQuery('commission_plan', planId);
+            targetGr.addQuery('is_active', true);
             targetGr.orderBy('deal_type_ref');
             targetGr.query();
 
             while (targetGr.next()) {
+                var targetId = targetGr.getUniqueValue();
                 var dealType = this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', 'other');
                 var amount = parseFloat(targetGr.getValue('annual_target_amount')) || 0;
                 var targetRate = parseFloat(targetGr.getValue('commission_rate_percent')) || 0;
+                targetDealTypeById[targetId] = dealType;
                 details.total_quota += amount;
-                details.targets[dealType] = amount;
+                details.targets[dealType] = (parseFloat(details.targets[dealType]) || 0) + amount;
                 if (targetRate > 0) {
                     details.rate_card[dealType] = targetRate;
+                    details.target_rates[dealType] = targetRate;
                 }
             }
 
             var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
             tierGr.addQuery('commission_plan', planId);
+            tierGr.addQuery('is_active', true);
             tierGr.orderBy('attainment_floor_percent');
             tierGr.query();
 
             while (tierGr.next()) {
                 var floor = parseFloat(tierGr.getValue('attainment_floor_percent')) || 0;
                 var rate = parseFloat(tierGr.getValue('commission_rate_percent')) || 0;
+                var tierDealType = this.resolveDealTypeForTier(tierGr, 'other');
+                var tierTargetId = tierGr.getValue('plan_target') || '';
+                var tierTargetDealType = this.normalizeDealType(targetDealTypeById[tierTargetId] || tierDealType || 'other');
                 if (floor === 0) details.base_rate = rate;
+                if (floor === 0 && rate > 0 && tierTargetDealType && tierTargetDealType !== 'other' && tierTargetDealType !== 'all') {
+                    if (!(parseFloat(details.target_rates[tierTargetDealType]) > 0)) {
+                        details.target_rates[tierTargetDealType] = rate;
+                    }
+                    if (!(parseFloat(details.rate_card[tierTargetDealType]) > 0)) {
+                        details.rate_card[tierTargetDealType] = rate;
+                    }
+                }
                 details.tiers.push({
                     tier_name: tierGr.getValue('tier_name'),
                     floor_percent: floor,
                     rate_percent: rate,
-                    deal_type: this.resolveDealTypeForTier(tierGr, 'other'),
+                    deal_type: tierDealType,
                     plan_target: tierGr.getValue('plan_target') || ''
                 });
             }
@@ -1020,12 +1039,18 @@ Record({
             for (var i = 0; i < targetTypes.length; i++) {
                 var targetDealType = this.normalizeDealType(targetTypes[i]);
                 var targetAmount = parseFloat(details.targets[targetTypes[i]] || 0);
-                var targetRate = 0;
+                var targetRate = parseFloat(details.target_rates[targetDealType] || 0);
 
-                if (targetDealType === 'new_business') targetRate = parseFloat(details.rate_card.new_business || 0);
-                else if (targetDealType === 'renewal') targetRate = parseFloat(details.rate_card.renewal || 0);
-                else if (targetDealType === 'expansion') targetRate = parseFloat(details.rate_card.expansion || 0);
-                else if (targetDealType === 'upsell') targetRate = parseFloat(details.rate_card.upsell || 0);
+                if (targetRate <= 0) {
+                    if (targetDealType === 'new_business') targetRate = parseFloat(details.rate_card.new_business || 0);
+                    else if (targetDealType === 'renewal') targetRate = parseFloat(details.rate_card.renewal || 0);
+                    else if (targetDealType === 'expansion') targetRate = parseFloat(details.rate_card.expansion || 0);
+                    else if (targetDealType === 'upsell') targetRate = parseFloat(details.rate_card.upsell || 0);
+                }
+
+                if (targetRate <= 0) {
+                    targetRate = parseFloat(details.base_rate || 0);
+                }
 
                 oteAtTarget += targetAmount * (targetRate / 100);
             }
@@ -1037,6 +1062,7 @@ Record({
             gs.error('CommissionProgressDataService.getCompensationPlanDetails error: ' + this.getErrorMessage(e));
             return {
                 targets: {},
+                target_rates: {},
                 tiers: [],
                 bonuses: [],
                 total_quota: 0,
@@ -1962,6 +1988,8 @@ Record({
         var yearEnd = selectedYear + '-12-31';
         var aggregateTargets = {};
         var totalQuota = 0;
+        var totalOTEAtTarget = 0;
+        var totalBonusPotential = 0;
 
         for (var i = 0; i < userIds.length; i++) {
             var planGr = new GlideRecord('x_823178_commissio_commission_plans');
@@ -1976,6 +2004,8 @@ Record({
 
             var details = this.getCompensationPlanDetails(planGr.getUniqueValue());
             totalQuota += parseFloat(details.total_quota) || 0;
+            totalOTEAtTarget += parseFloat(details.ote_at_100_percent) || 0;
+            totalBonusPotential += parseFloat(details.total_bonus_potential) || 0;
 
             Object.keys(details.targets || {}).forEach(function(dealType) {
                 aggregateTargets[dealType] = (aggregateTargets[dealType] || 0) + (parseFloat(details.targets[dealType]) || 0);
@@ -1994,9 +2024,9 @@ Record({
             bonuses: [],
             total_quota: this.round2(totalQuota),
             base_rate: 0,
-            ote_at_100_percent: 0,
-            ote_with_bonuses: 0,
-            total_bonus_potential: 0
+            ote_at_100_percent: this.round2(totalOTEAtTarget),
+            ote_with_bonuses: this.round2(totalOTEAtTarget + totalBonusPotential),
+            total_bonus_potential: this.round2(totalBonusPotential)
         };
     },
 
