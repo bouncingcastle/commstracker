@@ -2,6 +2,7 @@
 
 ## Canonical Governance
 - This file is the single source of truth for architecture status, backlog state, roadmap sequencing, and release readiness.
+- The functional baseline reference is maintained in `FUNCTIONAL_BASELINE.md` and must stay aligned with this file.
 - If any other project doc conflicts with this file, this file wins until reconciled.
 - Every proposed change must include a Function Impact Record (see Change Control).
 - Every status change must update both the Functional Baseline and Current Tracks sections.
