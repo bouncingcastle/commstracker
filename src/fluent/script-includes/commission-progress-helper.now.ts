@@ -210,7 +210,7 @@ Record({
             var totalBaseComponent = 0;
             var totalAcceleratorDelta = 0;
             var totalBonusComponent = 0;
-            var breakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
+                var breakdown = {};
             var wonCommissionsByMonthMap = {};
             var recentCalcs = [];
 
@@ -249,11 +249,7 @@ Record({
                 totalAcceleratorDelta += explainability.accelerator_component;
                 totalBonusComponent += explainability.bonus_component;
 
-                if (breakdown.hasOwnProperty(dealType)) {
-                    breakdown[dealType] += commAmount;
-                } else {
-                    breakdown.other += commAmount;
-                }
+                    breakdown[dealType] = (parseFloat(breakdown[dealType]) || 0) + commAmount;
 
                 if (recentCalcs.length < 10) {
                     var calcDealName = calcGr.getDisplayValue('deal') || '';
@@ -326,7 +322,7 @@ Record({
 
             var activeDeals = [];
             var pipelineValue = 0;
-            var dealBreakdown = { 'new_business': 0, 'renewal': 0, 'expansion': 0, 'upsell': 0, 'other': 0 };
+                var dealBreakdown = {};
             var dealCount = 0;
             var activeDealTypeCache = {};
 
@@ -335,12 +331,7 @@ Record({
                 var dealType2 = this.resolvePrimaryDealTypeForDeal(dealGr, activeDealTypeCache);
 
                 pipelineValue += dealAmount;
-
-                if (dealBreakdown.hasOwnProperty(dealType2)) {
-                    dealBreakdown[dealType2] += dealAmount;
-                } else {
-                    dealBreakdown.other += dealAmount;
-                }
+                    dealBreakdown[dealType2] = (parseFloat(dealBreakdown[dealType2]) || 0) + dealAmount;
 
                 if (activeDeals.length < 20) {
                     activeDeals.push({
@@ -428,8 +419,6 @@ Record({
                     for (var j = 0; j < achievedKeys.length; j++) {
                         targets[achievedKeys[j]] = 0;
                     }
-                } else {
-                    targets.new_business = 0;
                 }
             }
 
@@ -952,12 +941,7 @@ Record({
                 bonuses: [],
                 total_quota: 0,
                 base_rate: 0,
-                rate_card: {
-                    new_business: 0,
-                    renewal: 0,
-                    expansion: 0,
-                    upsell: 0
-                },
+                rate_card: {},
                 ote_at_100_percent: 0,
                 total_bonus_potential: 0
             };
@@ -1042,10 +1026,7 @@ Record({
                 var targetRate = parseFloat(details.target_rates[targetDealType] || 0);
 
                 if (targetRate <= 0) {
-                    if (targetDealType === 'new_business') targetRate = parseFloat(details.rate_card.new_business || 0);
-                    else if (targetDealType === 'renewal') targetRate = parseFloat(details.rate_card.renewal || 0);
-                    else if (targetDealType === 'expansion') targetRate = parseFloat(details.rate_card.expansion || 0);
-                    else if (targetDealType === 'upsell') targetRate = parseFloat(details.rate_card.upsell || 0);
+                    targetRate = parseFloat(details.rate_card[targetDealType] || 0);
                 }
 
                 if (targetRate <= 0) {
@@ -1067,7 +1048,7 @@ Record({
                 bonuses: [],
                 total_quota: 0,
                 base_rate: 0,
-                rate_card: { new_business: 0, renewal: 0, expansion: 0, upsell: 0 },
+                rate_card: {},
                 ote_at_100_percent: 0,
                 total_bonus_potential: 0
             };
@@ -1082,7 +1063,7 @@ Record({
         try {
             var plan = this.getForecastPlan(userId, selectedYear);
             var quota = this.getForecastTotalQuota(plan ? plan.sys_id : '');
-            var rateCard = this.getForecastRateCard(planId);
+            var rateCard = this.getForecastRateCard(plan ? plan.getUniqueValue() : '');
             var scenario = this.getForecastScenario(scenarioId, userId, selectedYear);
 
             var overrideWin = parseFloat(this.getParameter('sysparm_win_rate_multiplier') || '');
@@ -1208,7 +1189,7 @@ Record({
 
     getEstimatorDealTypes: function() {
         try {
-            var canonicalOrder = ['new_business', 'renewal', 'expansion', 'upsell', 'other'];
+            var options = [];
             var typeMap = {};
             var typeGr = new GlideRecord('x_823178_commissio_deal_types');
             typeGr.addEncodedQuery('is_active=true^ORis_active=1');
@@ -1223,26 +1204,7 @@ Record({
                     continue;
                 }
                 typeMap[code] = true;
-            }
-
-            var options = [];
-            for (var i = 0; i < canonicalOrder.length; i++) {
-                var candidate = canonicalOrder[i];
-                if (typeMap[candidate]) {
-                    options.push(candidate);
-                    delete typeMap[candidate];
-                }
-            }
-
-            // Keep any additional custom deal types available to the estimator.
-            for (var key in typeMap) {
-                if (typeMap.hasOwnProperty(key)) {
-                    options.push(this.normalizeDealType(key));
-                }
-            }
-
-            if (options.length === 0) {
-                options = canonicalOrder.slice(0, 4);
+                options.push(code);
             }
 
             return JSON.stringify({
@@ -1258,7 +1220,7 @@ Record({
     estimateCommission: function() {
         var userId = this.getParameter('sysparm_user_id') || gs.getUserID();
         var selectedYear = this.getValidYear(this.getParameter('sysparm_year'));
-        var dealType = this.getParameter('sysparm_deal_type') || 'new_business';
+        var dealType = this.normalizeDealType(this.getParameter('sysparm_deal_type'));
         var closeDateRaw = this.getParameter('sysparm_close_date') || '';
         var amount = parseFloat(this.getParameter('sysparm_amount') || '0');
 
@@ -1272,6 +1234,10 @@ Record({
 
         if (!closeDateRaw) {
             return this.getErrorJSON('Select an expected close date for the estimator');
+        }
+
+        if (!dealType) {
+            return this.getErrorJSON('Select a deal type for the estimator');
         }
 
         var closeYear = parseInt(String(closeDateRaw).substring(0, 4), 10);
@@ -1498,37 +1464,41 @@ Record({
     },
 
     getForecastRateCard: function(planId) {
-        var rateCard = { base_rate: 0, new_business: 0, renewal: 0, expansion: 0, upsell: 0 };
+        var rateCard = {
+            base_rate: 0,
+            target_rates: {}
+        };
         if (!planId) {
             return rateCard;
         }
 
-        var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
-        targetGr.addQuery('commission_plan', planId);
-        targetGr.addQuery('is_active', true);
-        targetGr.query();
+        var details = this.getCompensationPlanDetails(planId);
+        rateCard.base_rate = parseFloat(details.base_rate) || 0;
 
-        while (targetGr.next()) {
-            var dealType = this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', '');
-            var targetRate = parseFloat(targetGr.getValue('commission_rate_percent')) || 0;
-            if (!dealType || targetRate <= 0) {
+        var targetTypes = Object.keys(details.target_rates || {});
+        for (var i = 0; i < targetTypes.length; i++) {
+            var targetDealType = this.normalizeDealType(targetTypes[i]);
+            var targetRate = parseFloat(details.target_rates[targetTypes[i]] || 0);
+            if (!targetDealType || targetRate <= 0) {
                 continue;
             }
-            if (rateCard.hasOwnProperty(dealType)) {
-                rateCard[dealType] = targetRate;
-            }
+            rateCard.target_rates[targetDealType] = targetRate;
         }
 
         return rateCard;
     },
 
     resolveForecastRate: function(rateCard, dealType) {
+        if (!rateCard) return 0;
         var normalized = this.normalizeDealType(dealType);
-        if (normalized === 'new_business') return rateCard.new_business || 0;
-        if (normalized === 'renewal') return rateCard.renewal || 0;
-        if (normalized === 'expansion') return rateCard.expansion || 0;
-        if (normalized === 'upsell') return rateCard.upsell || 0;
-        return 0;
+        var targetRates = rateCard.target_rates && typeof rateCard.target_rates === 'object'
+            ? rateCard.target_rates
+            : rateCard;
+        var resolvedRate = normalized ? (parseFloat(targetRates[normalized]) || 0) : 0;
+        if (resolvedRate > 0) {
+            return resolvedRate;
+        }
+        return parseFloat(rateCard.base_rate || 0) || 0;
     },
 
     getForecastRecognitionProjection: function(planId, closeDateValue, stage, selectedYear) {
