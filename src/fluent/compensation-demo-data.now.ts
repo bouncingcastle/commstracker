@@ -1,9 +1,9 @@
 import '@servicenow/sdk/global'
 import { Record } from '@servicenow/sdk/core'
 
-// ============================================================================
+// 
 // PLAN TARGETS DEMO DATA - Annual quota targets per deal type per rep
-// ============================================================================
+// 
 
 // Abel Tuter Plan Targets
 Record({
@@ -112,9 +112,11 @@ Record({
     }
 })
 
-// ============================================================================
+// 
+
 // PLAN TIERS DEMO DATA - Commission rate acceleration by quota attainment
-// ============================================================================
+// 
+
 
 // Abel Tuter Commission Tiers
 Record({
@@ -239,9 +241,9 @@ Record({
     }
 })
 
-// ============================================================================
+// 
 // PLAN BONUSES DEMO DATA - Performance incentives and bonuses
-// ============================================================================
+// 
 
 // Abel Tuter Bonuses
 Record({
@@ -386,9 +388,11 @@ Record({
     }
 })
 
-// ============================================================================
+// 
+
 // COMMISSION STATEMENTS DEMO DATA - Monthly commission summaries
-// ============================================================================
+// 
+
 
 // Abel's January 2026 Statement
 Record({
@@ -453,9 +457,11 @@ Record({
     }
 })
 
-// ============================================================================
+// 
+
 // EXCEPTION APPROVALS DEMO DATA - Commission exceptions requiring approval
-// ============================================================================
+// 
+
 
 Record({
     $id: Now.ID['exception_abel_override'],
@@ -499,9 +505,11 @@ Record({
     }
 })
 
-// ============================================================================
+// 
+
 // SYSTEM ALERTS DEMO DATA - Monitoring and alerting
-// ============================================================================
+// 
+
 
 Record({
     $id: Now.ID['alert_sync_success'],
@@ -549,9 +557,9 @@ Record({
     }
 })
 
-// ============================================================================
+// 
 // RECONCILIATION LOG DEMO DATA - Daily sync and reconciliation audit trail
-// ============================================================================
+// 
 
 Record({
     $id: Now.ID['recon_daily_2026_02_28'],
