@@ -8513,7 +8513,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '05ded8e7e07246939adf6ecfdb5f7ac5'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'renewal_rate'
@@ -9052,7 +9052,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '0bd4c659ab3145119b82abe30c72844d'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'expansion_rate'
@@ -15912,6 +15912,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '6e04af123ed34303815b7178641ac5c5'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'base_rate'
@@ -16273,7 +16274,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '71c297d0cd4c4be18e58ec0f35e39d04'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'renewal_rate'
@@ -16379,7 +16380,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '73d5ef39661947acac7a8954f78c28d3'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'new_business_rate'
@@ -16401,7 +16402,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '74227c4cc352472aa22ceb9e5fc4e34b'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'plan_target_amount'
@@ -17338,6 +17339,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '81e9ee69e44944fba526c3576ca34bcc'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'base_rate'
@@ -20386,7 +20388,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'acc2514e432a4c56a2ca551c93d275e0'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'new_business_rate'
@@ -21927,6 +21929,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'bcefc40fd1204f5688f218095deb7db3'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'upsell_rate'
@@ -22010,7 +22013,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'bdddfe2f51ca418585e304dbf5dc4ac4'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'expansion_rate'
@@ -26034,6 +26037,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'f43bcaf9da0f46fb8c5503284f2b2f99'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'upsell_rate'
@@ -26444,7 +26448,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'f8f58268eadd43ddb0f0bf84453c5dbd'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'plan_target_amount'
