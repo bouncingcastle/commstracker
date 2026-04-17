@@ -1,7 +1,7 @@
 {
     "name": "x-823178-commission-m",
     "version": "1.0.0",
-    "description": "[BUILD AGENT GENERATED]:  A comprehensive commission management system that integrates with Zoho Bigin for deals and Zoho Books for invoices/payments. Handles quota tracking, commission calculations, monthly statements, and role-based access controls with full audit trail.",
+    "description": "Commission Management app for deal-to-cash commission operations: plans, targets, tiers, bonuses, calculations, statements, approvals, forecasting, and reconciliation.",
     "license": "UNLICENSED",
     "scripts": {
         "build": "now-sdk build",

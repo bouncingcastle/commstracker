@@ -34,17 +34,14 @@ export function runArchitectureIntegrityCheck() {
     ];
 
     var requiredProperties = [
-        'x_823178_commissio.seed_idempotency_mode',
-        'x_823178_commissio.seed_navigation_enabled',
-        'x_823178_commissio.seed_demo_data_enabled',
         'x_823178_commissio.statement_approval_sla_hours',
         'x_823178_commissio.audit_target_year',
         'x_823178_commissio.audit_target_month'
     ];
 
     var requiredJobs = [
-        'Commission Seed Governance Reconciliation',
-        'Commission Production MVP Readiness Check',
+        'Generate Monthly Commission Statements',
+        'Daily Commission Reconciliation',
         'Commission Month-End Readiness Audit'
     ];
 
@@ -84,21 +81,6 @@ export function runArchitectureIntegrityCheck() {
     recordsChecked += validateModuleRecords(appId, requiredModules, missing);
     recordsChecked += validateRequiredFields(requiredFieldMap, missing);
 
-    var strictMode = (gs.getProperty('x_823178_commissio.seed_idempotency_mode', 'strict') || 'strict').toLowerCase();
-    var navSeedEnabled = toBool(gs.getProperty('x_823178_commissio.seed_navigation_enabled', 'false'));
-    var demoSeedEnabled = toBool(gs.getProperty('x_823178_commissio.seed_demo_data_enabled', 'false'));
-    recordsChecked += 3;
-
-    if (strictMode !== 'strict') {
-        warnings.push('seed_idempotency_mode is ' + strictMode + ' (expected strict).');
-    }
-    if (navSeedEnabled) {
-        warnings.push('seed_navigation_enabled is true (expected false outside controlled windows).');
-    }
-    if (demoSeedEnabled) {
-        warnings.push('seed_demo_data_enabled is true (expected false outside controlled windows).');
-    }
-
     var finishedAt = new GlideDateTime();
     var elapsedMs = finishedAt.getNumericValue() - startedAt.getNumericValue();
     var processingSeconds = elapsedMs > 0 ? Math.round(elapsedMs / 1000) : 0;
@@ -114,10 +96,7 @@ export function runArchitectureIntegrityCheck() {
         'Architecture integrity check',
         'recordsChecked=' + recordsChecked,
         'missing=' + missing.length,
-        'warnings=' + warnings.length,
-        'seedMode=' + strictMode,
-        'seedNavigationEnabled=' + navSeedEnabled,
-        'seedDemoEnabled=' + demoSeedEnabled
+        'warnings=' + warnings.length
     ].join(' | ');
 
     if (missing.length > 0) {
@@ -239,8 +218,4 @@ function getCommissionApplicationId() {
     }
 
     return '';
-}
-
-function toBool(value) {
-    return value === true || value === 'true' || value === '1' || value === 1;
 }

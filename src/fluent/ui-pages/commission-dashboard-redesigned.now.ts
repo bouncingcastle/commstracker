@@ -130,7 +130,7 @@ UiPage({
     <div class="container">
       <div class="header">
         <h1 class="title">Commission Operations</h1>
-        <p class="subtitle">Operational dashboard for plans, calculations, statements, and source-system synchronization.</p>
+        <p class="subtitle">Operational dashboard for plans, calculations, statements, approvals, and reconciliation.</p>
       </div>
       <!-- Key Metrics -->
       <div class="grid">
@@ -186,7 +186,7 @@ UiPage({
               <span>Payments</span>
               <span>→</span>
             </a>
-            <p style="font-size:12px;color:var(--muted);margin-top:8px;">Review source records synchronized from Zoho Bigin and Zoho Books.</p>
+            <p style="font-size:12px;color:var(--muted);margin-top:8px;">Review source records loaded by your data pipeline.</p>
           </div>
         </div>
       </div>
@@ -288,16 +288,12 @@ UiPage({
               <span>System Preferences</span>
               <span>→</span>
             </a>
-            <a class="nav-item" href="/sysauto_script_list.do?sysparm_query=name=Commission%20Bonus%20Scenario%20Seed">
-              <span>Run Bonus Scenario Seed</span>
-              <span>→</span>
-            </a>
             <p style="font-size:12px;color:var(--muted);margin-top:8px;">Oversee exceptions, reconciliation outcomes, and operational alerts.</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="footer">Commission Management · Synchronized with Zoho Bigin and Zoho Books</div>
+    <div class="footer">Commission Management · Production Data Ready</div>
   </body>
 </html>`,
     clientScript: `

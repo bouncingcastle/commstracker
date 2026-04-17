@@ -23,14 +23,8 @@ import './ui-pages/commission-progress.now'
 // Scheduled scripts
 import './scheduled-scripts/monthly-statements.now'
 import './scheduled-scripts/daily-reconciliation.now'
-import './scheduled-scripts/backfill-payout-eligibility.now'
-import './scheduled-scripts/backfill-tier-and-deal-classifications.now'
-import './scheduled-scripts/backfill-deal-type-references.now'
-import './scheduled-scripts/seed-governance-reconcile.now'
 import './scheduled-scripts/architecture-integrity-check.now'
-import './scheduled-scripts/production-mvp-readiness-check.now'
 import './scheduled-scripts/month-end-readiness-audit.now'
-import './scheduled-scripts/seed-bonus-scenarios.now'
 
 // Business rules
 import './business-rules/deal-management.now'
@@ -50,9 +44,6 @@ import './business-rules/plan-bonus-validation.now'
 
 // Client-callable Script Includes
 import './script-includes/commission-progress-helper.now'
-
-// Scripted REST APIs
-import './scripted-rest-apis/zoho-integration.now'
 
 // Core tables
 import './tables/deals.now'
@@ -88,9 +79,3 @@ import './plan-recognition-policy-form-layout.now'
 
 // Configuration seed data
 import './deal-types-data.now'
-
-// Demo Data
-// import './compensation-demo-data.now' // Temporarily disabled to prevent duplicate demo records
-// import './enhanced-demo-data.now' // Temporarily disabled to prevent duplicate demo records
-// import './sample-data.now' // Temporarily disabled to prevent duplicate demo records
-// import './test-payments.now' // Temporarily disabled to prevent duplicate demo records
