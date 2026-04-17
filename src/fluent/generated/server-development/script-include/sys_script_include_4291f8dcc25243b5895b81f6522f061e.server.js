@@ -86,7 +86,7 @@
                     var totalQuota = compDetails.total_quota;
                     var oTE100 = totalQuota > 0 ? (totalQuota * baseRate / 100) : 0;
                     var oteWithBonuses = oTE100 + compDetails.total_bonus_potential;
-                    var resolvedPlanTarget = totalQuota > 0 ? totalQuota : (parseFloat(planGr.getValue('plan_target_amount')) || 0);
+                    var resolvedPlanTarget = totalQuota > 0 ? totalQuota : (0);
                     
                     result.data.active_plan = {
                         plan_name: planGr.getValue('plan_name'),
@@ -1216,16 +1216,7 @@
     },
 
     getForecastRateCard: function(planGr) {
-        if (!planGr) {
-            return { base_rate: 0, new_business: 0, renewal: 0, expansion: 0, upsell: 0 };
-        }
-        return {
-            base_rate: parseFloat(planGr.getValue('base_rate')) || 0,
-            new_business: parseFloat(planGr.getValue('new_business_rate')) || 0,
-            renewal: parseFloat(planGr.getValue('renewal_rate')) || 0,
-            expansion: parseFloat(planGr.getValue('expansion_rate')) || 0,
-            upsell: parseFloat(planGr.getValue('upsell_rate')) || 0
-        };
+        return { base_rate: 0, new_business: 0, renewal: 0, expansion: 0, upsell: 0 };
     },
 
     resolveForecastRate: function(rateCard, dealType) {

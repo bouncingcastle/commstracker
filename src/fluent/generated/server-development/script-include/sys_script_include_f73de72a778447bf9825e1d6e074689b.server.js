@@ -85,7 +85,7 @@
                     var compDetails = this.getCompensationPlanDetails(planId);
                     var baseRate = compDetails.base_rate;
                     var totalQuota = compDetails.total_quota;
-                    var resolvedPlanTarget = totalQuota > 0 ? totalQuota : (parseFloat(planGr.getValue('plan_target_amount')) || 0);
+                    var resolvedPlanTarget = totalQuota > 0 ? totalQuota : (0);
                     var oTE100 = parseFloat(compDetails.ote_at_100_percent || 0);
                     if (oTE100 <= 0 && resolvedPlanTarget > 0 && baseRate > 0) {
                         oTE100 = resolvedPlanTarget * baseRate / 100;
@@ -863,15 +863,6 @@
 
             if (!planId) return details;
 
-            var planGr = new GlideRecord('x_823178_commissio_commission_plans');
-            if (planGr.get(planId)) {
-                details.base_rate = parseFloat(planGr.getValue('base_rate')) || 0;
-                details.rate_card.new_business = parseFloat(planGr.getValue('new_business_rate')) || 0;
-                details.rate_card.renewal = parseFloat(planGr.getValue('renewal_rate')) || 0;
-                details.rate_card.expansion = parseFloat(planGr.getValue('expansion_rate')) || 0;
-                details.rate_card.upsell = parseFloat(planGr.getValue('upsell_rate')) || 0;
-            }
-
             var targetGr = new GlideRecord('x_823178_commissio_plan_targets');
             targetGr.addQuery('commission_plan', planId);
             targetGr.orderBy('deal_type');
@@ -1332,16 +1323,7 @@
     },
 
     getForecastRateCard: function(planGr) {
-        if (!planGr) {
-            return { base_rate: 0, new_business: 0, renewal: 0, expansion: 0, upsell: 0 };
-        }
-        return {
-            base_rate: parseFloat(planGr.getValue('base_rate')) || 0,
-            new_business: parseFloat(planGr.getValue('new_business_rate')) || 0,
-            renewal: parseFloat(planGr.getValue('renewal_rate')) || 0,
-            expansion: parseFloat(planGr.getValue('expansion_rate')) || 0,
-            upsell: parseFloat(planGr.getValue('upsell_rate')) || 0
-        };
+        return { base_rate: 0, new_business: 0, renewal: 0, expansion: 0, upsell: 0 };
     },
 
     resolveForecastRate: function(rateCard, dealType) {

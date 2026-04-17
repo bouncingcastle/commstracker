@@ -504,11 +504,11 @@ CommissionP1Helper.prototype = Object.extendsObject(global.AbstractAjaxProcessor
         }
 
         return {
-            base_rate: parseFloat(planGr.getValue('base_rate')) || 0,
-            new_business: parseFloat(planGr.getValue('new_business_rate')) || 0,
-            renewal: parseFloat(planGr.getValue('renewal_rate')) || 0,
-            expansion: parseFloat(planGr.getValue('expansion_rate')) || 0,
-            upsell: parseFloat(planGr.getValue('upsell_rate')) || 0
+            base_rate: 0,
+            new_business: 0,
+            renewal: 0,
+            expansion: 0,
+            upsell: 0
         };
     },
 

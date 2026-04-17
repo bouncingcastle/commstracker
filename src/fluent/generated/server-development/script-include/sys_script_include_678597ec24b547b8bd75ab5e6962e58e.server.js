@@ -59,7 +59,7 @@
                 
                 result.data.active_plan = {
                     plan_name: planGr.getValue('plan_name'),
-                    plan_target_amount: planGr.getValue('plan_target_amount'),
+                    plan_target_amount: 0,
                     plan_year: planYear,
                     sys_id: planId,
                     effective_start_date: planGr.getValue('effective_start_date'),
@@ -880,16 +880,7 @@
     },
 
     getForecastRateCard: function(planGr) {
-        if (!planGr) {
-            return { base_rate: 0, new_business: 0, renewal: 0, expansion: 0, upsell: 0 };
-        }
-        return {
-            base_rate: parseFloat(planGr.getValue('base_rate')) || 0,
-            new_business: parseFloat(planGr.getValue('new_business_rate')) || 0,
-            renewal: parseFloat(planGr.getValue('renewal_rate')) || 0,
-            expansion: parseFloat(planGr.getValue('expansion_rate')) || 0,
-            upsell: parseFloat(planGr.getValue('upsell_rate')) || 0
-        };
+        return { base_rate: 0, new_business: 0, renewal: 0, expansion: 0, upsell: 0 };
     },
 
     resolveForecastRate: function(rateCard, dealType) {

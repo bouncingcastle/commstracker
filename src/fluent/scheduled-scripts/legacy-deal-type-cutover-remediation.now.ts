@@ -78,11 +78,6 @@ Record({
             legacyField: 'deal_type'
         }, dryRun, maxRowsPerTable, results);
 
-        clearLegacyOnlyField({
-            table: 'x_823178_commissio_commission_plans',
-            legacyField: 'deal_type'
-        }, dryRun, maxRowsPerTable, results);
-
         results.finished_at = new GlideDateTime().getDisplayValue();
         gs.info('Commission Management: Legacy deal-type cutover remediation completed: ' + JSON.stringify(results));
     } catch (e) {

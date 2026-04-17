@@ -55,7 +55,7 @@ CommissionProgressHelper.prototype = Object.extendsObject(AbstractAjaxProcessor,
                 
                 result.data.active_plan = {
                     plan_name: planGr.getValue('plan_name'),
-                    plan_target_amount: planGr.getValue('plan_target_amount'),
+                    plan_target_amount: 0,
                     plan_year: planYear,
                     sys_id: planId,
                     effective_start_date: planGr.getValue('effective_start_date'),
