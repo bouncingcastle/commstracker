@@ -10019,10 +10019,12 @@ declare global {
                     payout_backfill_limit_prop: {
                         table: 'sys_properties'
                         id: '0ad8581e56e34007ac3cf023bef9c7f7'
+                        deleted: true
                     }
                     payout_backfill_recompute_existing_prop: {
                         table: 'sys_properties'
                         id: '61b95d04f0bd45f681844a68309744c8'
+                        deleted: true
                     }
                     payout_eligibility_backfill_job: {
                         table: 'sysauto_script'
@@ -10415,6 +10417,7 @@ declare global {
                     seed_bonus_scenarios_enabled_prop: {
                         table: 'sys_properties'
                         id: '68975f879605497d95ffab96a37451ba'
+                        deleted: true
                     }
                     seed_bonus_scenarios_job: {
                         table: 'sysauto_script'
@@ -10423,6 +10426,7 @@ declare global {
                     seed_demo_data_enabled_prop: {
                         table: 'sys_properties'
                         id: '18d00cd8a6fe44b48136e91b580aadfa'
+                        deleted: true
                     }
                     seed_governance_reconcile_job: {
                         table: 'sysauto_script'
@@ -10431,10 +10435,12 @@ declare global {
                     seed_idempotency_mode_prop: {
                         table: 'sys_properties'
                         id: 'ac6b6e5d81624bff9516776824285265'
+                        deleted: true
                     }
                     seed_nav_enabled_prop: {
                         table: 'sys_properties'
                         id: 'f1442ab21b874ca3ac9d8b9f56066642'
+                        deleted: true
                     }
                     'src_server_business-rules_bulk-plan-assignment_js': {
                         table: 'sys_module'
