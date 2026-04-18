@@ -1237,7 +1237,7 @@ UiPage({
 
           var divider = document.createElement('div');
           divider.className = 'break-item';
-          divider.innerHTML = '<span class="break-label"><strong>Earnings Explainability</strong></span><span class="break-value">&nbsp;</span>';
+          divider.innerHTML = '<span class="break-label"><strong>Earnings Explainability</strong></span><span class="break-value"> </span>';
           breakdown.appendChild(divider);
 
           var explainRows = [
