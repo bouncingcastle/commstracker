@@ -217,7 +217,7 @@ Record({
             while (calcGr.next()) {
                 var commAmount = parseFloat(calcGr.getValue('commission_amount')) || 0;
                 var status = calcGr.getValue('status') || 'draft';
-                var dealType = this.resolveDealTypeForRecord(calcGr, 'deal_type_ref', 'other');
+                var dealType = this.resolveDealTypeForCalc(calcGr);
 
                 if (status === 'paid' || status === 'locked') {
                     paidAmount += commAmount;
@@ -883,7 +883,7 @@ Record({
             lineItems.push({
                 calculation_id: calcGr.getUniqueValue(),
                 deal_name: dealName,
-                deal_type: this.resolveDealTypeForRecord(calcGr, 'deal_type_ref', 'other'),
+                deal_type: this.resolveDealTypeForCalc(calcGr),
                 payment_date: calcGr.getValue('payment_date') || '',
                 status: calcGr.getValue('status') || 'draft',
                 base_component: explainability.base_component,
@@ -2085,6 +2085,20 @@ Record({
         if (!targetGr.get(targetId)) return this.normalizeDealType(fallback || 'other');
 
         return this.resolveDealTypeForRecord(targetGr, 'deal_type_ref', fallback || 'other');
+    },
+
+    resolveDealTypeForCalc: function(calcGr) {
+        var resolved = this.resolveDealTypeForRecord(calcGr, 'deal_type_ref', '');
+        if (resolved && resolved !== 'other') return resolved;
+
+        var dealId = calcGr ? calcGr.getValue('deal') : '';
+        if (dealId) {
+            var dealGr = new GlideRecord('x_823178_commissio_deals');
+            if (dealGr.get(dealId)) {
+                return this.resolvePrimaryDealTypeForDeal(dealGr) || 'other';
+            }
+        }
+        return resolved || 'other';
     },
 
     filterTiersForDealType: function(tiers, dealType) {
