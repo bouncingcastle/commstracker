@@ -23,9 +23,8 @@ export function generateMonthlyStatements() {
         var previousMonth = new GlideDateTime();
         previousMonth.addMonthsUTC(-1);
         
-        var year = previousMonth.getYear();
-        var month = previousMonth.getMonth();
-        var monthNumber = month + 1;
+        var year = parseInt(previousMonth.getYearLocalTime(), 10);
+        var monthNumber = parseInt(previousMonth.getMonthLocalTime(), 10);
         
         // BUSINESS REQUIREMENT: Only include approved calculations
         var repQuery = new GlideRecord('x_823178_commissio_commission_calculations');

@@ -41,6 +41,16 @@ export function enforceStatementApprovalWorkflow(current, previous) {
     }
 
     if (nextStatus === APPROVAL_STATUS.APPROVED || nextStatus === APPROVAL_STATUS.REJECTED) {
+        // SAFEGUARD: Prevent self-approval
+        var statementGr = new GlideRecord('x_823178_commissio_commission_statements')
+        if (statementGr.get(current.getValue('statement'))) {
+            var statementRep = statementGr.getValue('sales_rep')
+            if (statementRep && statementRep === gs.getUserID()) {
+                gs.addErrorMessage('You cannot approve or reject your own commission statement')
+                current.setAbortAction(true)
+                return
+            }
+        }
         current.setValue('reviewed_by', gs.getUserID())
         current.setValue('reviewed_on', now)
     }

@@ -197,8 +197,8 @@ Record({
             } else {
                 calcGr.addQuery('sales_rep', userId);
             }
-            calcGr.addQuery('calculation_date', '>=', yearStart);
-            calcGr.addQuery('calculation_date', '<=', yearEnd);
+            calcGr.addQuery('calculation_date', '>=', yearStart + ' 00:00:00');
+            calcGr.addQuery('calculation_date', '<=', yearEnd + ' 23:59:59');
             calcGr.orderBy('-calculation_date');
             calcGr.query();
 
@@ -681,7 +681,7 @@ Record({
                 var calcAgg = new GlideAggregate('x_823178_commissio_commission_calculations');
                 if (selectedYear) {
                     calcAgg.addQuery('calculation_date', '>=', yearStart);
-                    calcAgg.addQuery('calculation_date', '<=', yearEnd);
+                    calcAgg.addQuery('calculation_date', '<=', yearEnd + ' 23:59:59');
                 }
                 if (managerScopeIds && managerScopeIds.length > 0) {
                     calcAgg.addQuery('sales_rep', 'IN', managerScopeIds.join(','));

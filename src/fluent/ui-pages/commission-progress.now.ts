@@ -520,12 +520,11 @@ UiPage({
               <th>Type</th>
               <th>Stage</th>
               <th>Close Date</th>
-              <th>Status</th>
             </tr>
           </thead>
           <tbody id="dealsTableBody">
             <tr>
-              <td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td>
+              <td colspan="6" style="text-align:center;padding:24px;color:var(--muted);">Loading records...</td>
             </tr>
           </tbody>
         </table>
@@ -1114,7 +1113,7 @@ UiPage({
 
           var dealsBody = document.getElementById('dealsTableBody');
           if (dealsBody) {
-            dealsBody.innerHTML = '<tr><td colspan="7" class="empty">Deal records are unavailable</td></tr>';
+            dealsBody.innerHTML = '<tr><td colspan="6" class="empty">Deal records are unavailable</td></tr>';
           }
 
           var priorityBody = document.getElementById('priorityTableBody');
@@ -1995,7 +1994,7 @@ UiPage({
           var tbody = document.getElementById('dealsTableBody');
           tbody.innerHTML = '';
           if (deals.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="empty">No open deals are available for the selected year.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="empty">No open deals are available for the selected year.</td></tr>';
             return;
           }
           deals.forEach(function(deal) {
@@ -2006,8 +2005,7 @@ UiPage({
               '<td>$' + (parseFloat(deal.amount) || 0).toFixed(2) + '</td>' +
               '<td>' + formatDealTypeLabel(deal.deal_type || 'other') + '</td>' +
               '<td>' + (deal.stage || '–') + '</td>' +
-              '<td>' + (deal.close_date || '–') + '</td>' +
-              '<td><span class="status-badge status-draft">' + deal.stage + '</span></td>';
+              '<td>' + (deal.close_date || '–') + '</td>';
             tbody.appendChild(row);
           });
         }

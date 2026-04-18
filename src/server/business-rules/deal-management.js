@@ -2,6 +2,13 @@ import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide'
 import { getApprovedOverrideJustification, createOverrideAuditLog } from '../script-includes/ops-governance-utils.js'
 
 export function snapshotDealOnClose(current, previous) {
+    // SAFEGUARD: Prevent snapshot flag from being cleared once set
+    if (previous.getValue('snapshot_taken') === 'true' && current.getValue('snapshot_taken') !== 'true') {
+        gs.addErrorMessage('SNAPSHOT PROTECTION: Cannot clear snapshot flag once set');
+        current.setAbortAction(true);
+        return;
+    }
+
     // BUSINESS REQUIREMENT: Preserve ability to correct legitimate snapshot errors
     if (current.getValue('snapshot_taken') === 'true' && previous.getValue('snapshot_taken') === 'true') {
         // Check for approved override before blocking changes

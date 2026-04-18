@@ -18,15 +18,14 @@ export function calculateCommissionOnPayment(current, previous) {
     
     if (calcLockGr.next()) {
         gs.warn('Commission Management: Recent calculation exists for payment ' + current.getValue('books_payment_id'));
-        // Check if it's stuck - if so, allow override
-        var stuckThreshold = lockTimeout * 2; // Double the normal timeout
-        var stuckCheck = new GlideRecord('x_823178_commissio_commission_calculations');
-        stuckCheck.addQuery('payment', current.sys_id);
-        stuckCheck.addQuery('sys_created_on', '>', gs.minutesAgoStart(stuckThreshold));
-        stuckCheck.query();
+        // Check if the existing calc is stuck (older than 2x timeout) - if so, allow override
+        var stuckThreshold = lockTimeout * 2;
+        var recentCalcAge = new GlideDateTime(calcLockGr.getValue('sys_created_on'));
+        var stuckCutoff = new GlideDateTime();
+        stuckCutoff.subtract(stuckThreshold * 60 * 1000);
         
-        if (stuckCheck.next()) {
-            gs.info('Commission Management: Calculation lock expired, proceeding with processing');
+        if (recentCalcAge.before(stuckCutoff)) {
+            gs.info('Commission Management: Calculation lock expired (older than ' + stuckThreshold + ' min), proceeding with processing');
         } else {
             return; // Still within reasonable processing time
         }
@@ -348,7 +347,6 @@ export function calculateCommissionOnPayment(current, previous) {
 function shouldRecalculate(paymentRecord) {
     // Allow recalculation if specifically requested or if calculation is in error state
     if (paymentRecord.getValue('commission_calculated') === PAYMENT_CALC_STATE.ERROR) {
-            commissionGr.setValue('status', CALC_STATUS.DRAFT);
         return true;
     }
     
@@ -649,7 +647,7 @@ function getPlanTargetCommissionRate(planId, dealType) {
 
 function getTierBandsForDealType(planId, dealType) {
     var bands = [];
-    var normalizedDealType = normalizeDealTypeKey(dealType) || 'other';
+    var normalizedDealType = normalizeDealTypeKey(dealType);
     var planTargetId = getPlanTargetIdForDealType(planId, normalizedDealType);
 
     var tierGr = new GlideRecord('x_823178_commissio_plan_tiers');
@@ -665,7 +663,7 @@ function getTierBandsForDealType(planId, dealType) {
         }
 
         var tierDealType = resolveTierDealTypeCode(tierGr);
-        if (!tierDealType || tierDealType !== normalizedDealType) {
+        if (tierDealType && tierDealType !== normalizedDealType) {
             continue;
         }
 
@@ -822,8 +820,7 @@ function resolveTierForAttainment(planId, attainmentPercent, dealType) {
         }
 
         var tierDealType = resolveTierDealTypeCode(tierGr);
-        var dealTypeMatches = !!tierDealType && tierDealType === normalizedDealType;
-        if (!dealTypeMatches) {
+        if (tierDealType && tierDealType !== normalizedDealType) {
             continue;
         }
 

@@ -121,15 +121,15 @@ export function preventOverlapAndGaps(current, previous) {
             existingEnd.setValue(overlapGr.getValue('effective_end_date'));
         }
         
-        // Check for overlap
+        // Check for overlap (inclusive date boundaries - plans sharing a boundary day overlap)
         var hasOverlap = false;
         
         if (currentEnd && existingEnd) {
-            hasOverlap = currentStart.before(existingEnd) && currentEnd.after(existingStart);
+            hasOverlap = !currentStart.after(existingEnd) && !currentEnd.before(existingStart);
         } else if (currentEnd && !existingEnd) {
-            hasOverlap = currentStart.before(existingStart) ? false : true;
+            hasOverlap = !currentEnd.before(existingStart);
         } else if (!currentEnd && existingEnd) {
-            hasOverlap = currentStart.before(existingEnd);
+            hasOverlap = !currentStart.after(existingEnd);
         } else {
             hasOverlap = true;
         }
