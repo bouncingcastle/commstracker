@@ -1237,7 +1237,7 @@ UiPage({
 
           var divider = document.createElement('div');
           divider.className = 'break-item';
-          divider.innerHTML = '<span class="break-label"><strong>Earnings Explainability</strong></span><span class="break-value">&amp;nbsp;</span>';
+          divider.innerHTML = '<span class="break-label"><strong>Earnings Explainability</strong></span><span class="break-value">&nbsp;</span>';
           breakdown.appendChild(divider);
 
           var explainRows = [
@@ -1949,7 +1949,7 @@ UiPage({
         function formatDealTypeLabel(raw) {
           var label = String(raw || '')
             .replace(/[_-]+/g, ' ')
-            .split(/\s+/)
+            .split(/[\s]+/)
             .filter(function(part) {
               return !!part;
             })
