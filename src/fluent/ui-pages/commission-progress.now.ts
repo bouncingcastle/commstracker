@@ -1949,7 +1949,7 @@ UiPage({
         function formatDealTypeLabel(raw) {
           var label = String(raw || '')
             .replace(/[_-]+/g, ' ')
-            .split(/[\s]+/)
+            .split(/[\\s]+/)
             .filter(function(part) {
               return !!part;
             })
