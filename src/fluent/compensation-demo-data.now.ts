@@ -400,15 +400,12 @@ Record({
     table: 'x_823178_commissio_commission_statements',
     data: {
         sales_rep: '62826bf03710200044e0bfc8bcbe5df1', // Abel Tuter
-        commission_plan: Now.ID['abel_plan_2026'],
-        statement_period_start: '2026-01-01',
-        statement_period_end: '2026-01-31',
-        total_earned: 4400,
-        total_paid: 4400,
-        pending_amount: 0,
+        period_start_date: '2026-01-01',
+        period_end_date: '2026-01-31',
+        total_commission_amount: 4400,
         statement_number: '1',
         statement_year: 2026,
-        statement_month: 202601,
+        statement_month: 1,
         generated_date: '2026-02-03 08:00:00',
         status: 'paid',
         notes: 'January commission statement - CloudTech deal closed'
@@ -421,15 +418,12 @@ Record({
     table: 'x_823178_commissio_commission_statements',
     data: {
         sales_rep: '62826bf03710200044e0bfc8bcbe5df1', // Abel Tuter
-        commission_plan: Now.ID['abel_plan_2026'],
-        statement_period_start: '2026-02-01',
-        statement_period_end: '2026-02-28',
-        total_earned: 2100,
-        total_paid: 0,
-        pending_amount: 2100,
+        period_start_date: '2026-02-01',
+        period_end_date: '2026-02-28',
+        total_commission_amount: 2100,
         statement_number: '2',
         statement_year: 2026,
-        statement_month: 202602,
+        statement_month: 2,
         generated_date: '2026-03-01 08:00:00',
         status: 'draft',
         notes: 'February commission statement - DataVault expansion'
@@ -442,15 +436,12 @@ Record({
     table: 'x_823178_commissio_commission_statements',
     data: {
         sales_rep: '0a826bf03710200044e0bfc8bcbe5d7a', // Adela Cervantsz
-        commission_plan: Now.ID['adela_plan_2026'],
-        statement_period_start: '2026-01-01',
-        statement_period_end: '2026-01-31',
-        total_earned: 6500,
-        total_paid: 6500,
-        pending_amount: 0,
+        period_start_date: '2026-01-01',
+        period_end_date: '2026-01-31',
+        total_commission_amount: 6500,
         statement_number: '1',
         statement_year: 2026,
-        statement_month: 202601,
+        statement_month: 1,
         generated_date: '2026-02-03 08:00:00',
         status: 'paid',
         notes: 'January statement - Premium deal closed'
