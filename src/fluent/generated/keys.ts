@@ -11633,16 +11633,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '0638a20d5ef44d5781a02d1929bbd6b2'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_targets'
-                            element: 'deal_type_ref'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_ui_list_element'
                         id: '063acb1a83d33210a0365dc6feaad368'
                         deleted: false
@@ -12634,15 +12624,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '132804b779204d73b6f97e0cb2bc73c5'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_targets'
-                            element: 'commission_plan'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '1354c80464864a64b3d0a3fc22b6099a'
                         deleted: true
@@ -12950,15 +12931,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_invoices'
                             element: 'status'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '1813bb9a8c754a3f85c53eb4275d19c1'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'effective_tier_floor_percent'
                         }
                     },
                     {
@@ -14905,29 +14877,10 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
-                        id: '315bd1f68112419a92ee2de23fd47116'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'qualification_metric_snapshot'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
                         id: '317949e7040b48b88061cf33f091388f'
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
                             element: 'deal'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '3179779a29c1445c96130cbe5df9ba6b'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'effective_end_date'
-                            language: 'en'
                         }
                     },
                     {
@@ -15437,16 +15390,6 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: '37d0ce75161d41948dbb6dff97dcdfaf'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'submitted_on'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: '380ad47ed35542f693d4450878a3a1fb'
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
@@ -15475,16 +15418,6 @@ declare global {
                                     name: 'x_823178_commissio.rep'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '385a849aee2f4f1989883d8f5feef705'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'superseded_by_policy'
-                            language: 'en'
                         }
                     },
                     {
@@ -15590,15 +15523,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '394befbd5f804b7fa9d694f9537548e0'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'projected_revenue'
-                        }
-                    },
-                    {
                         table: 'sys_choice'
                         id: '3963180dcb334a20b30fffa758ac34ef'
                         key: {
@@ -15659,15 +15583,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '39fd72cb11134dd18096e994e661c440'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'effective_end_date'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: '3a6ac9d559b440508fa87bdcb33901ff'
                         key: {
@@ -15701,15 +15616,6 @@ declare global {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type'
                             value: 'expansion'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '3b2ea4ce2a614f93b0acf12f65bea31e'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'commission_plan'
                         }
                     },
                     {
@@ -15768,31 +15674,11 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: '3b795e917c3f48b784978d6aeb4b7a8e'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'policy_state'
-                            value: 'superseded'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: '3b8e6895423841479957b8e6027411d5'
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'commission_rate'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '3c1b45295d2545f2a3e3b285ff148f81'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'payout_schedule_snapshot'
-                            language: 'en'
                         }
                     },
                     {
@@ -15836,16 +15722,6 @@ declare global {
                         deleted: true
                         key: {
                             name: 'x_823178_commissio.manager'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '3c6affbdd3b74439b399f3287314ac55'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'notes'
-                            language: 'en'
                         }
                     },
                     {
@@ -16083,16 +15959,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: '3f9d387b6507495aa3bfb75ec0d0c663'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'status'
-                            value: 'in_review'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '3fc299eb076241ee86f5c852d1e6a1a8'
                         deleted: true
@@ -16104,16 +15970,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '3fcfa15636f14fa9b6be62c92997481b'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'commission_plan'
-                            language: 'en'
                         }
                     },
                     {
@@ -16195,15 +16051,6 @@ declare global {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'evaluation_period'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '414c77b3f9b64657a9bee3c2de080f75'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'assumptions_json'
                         }
                     },
                     {
@@ -16346,15 +16193,6 @@ declare global {
                                     name: 'x_823178_commissio.finance'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '428f9c3bf439406b877a5651ccce69c9'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'payout_eligible_date'
                         }
                     },
                     {
@@ -16510,15 +16348,6 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
-                        id: '44b5b8c11b374dd497046b4efa38d2da'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'executed_on'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
                         id: '44ecf17623df4b62b218789b4d02cb4c'
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
@@ -16540,15 +16369,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_exception_approvals'
                             element: 'reference_table'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '45793d3dbee14aefb823cc601c6b3fd8'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'version_number'
                         }
                     },
                     {
@@ -16617,14 +16437,6 @@ declare global {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'lifecycle_state'
                             value: 'retired'
-                        }
-                    },
-                    {
-                        table: 'sys_db_object'
-                        id: '45c8c79258814ddea7daac3ff2ae4116'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
                         }
                     },
                     {
@@ -16857,16 +16669,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '48a2e5d4f70e4edeb4025e291e621379'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_targets'
-                            element: 'commission_plan'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '48aac40a07414d53aa295e4aa9079444'
                         deleted: true
@@ -16900,15 +16702,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'mode'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '48c92d7063dc4aff82b5013e30526873'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'plan_bonus'
                         }
                     },
                     {
@@ -17033,16 +16826,6 @@ declare global {
                             name: 'x_823178_commissio_deals'
                             element: 'stage'
                             value: 'closed_lost'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '4a6f92df9fc34d58b82555d8aae573a6'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'recognition_policy_version_snapshot'
-                            language: 'en'
                         }
                     },
                     {
@@ -17300,32 +17083,12 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: '4e6b70d0a7894baf92373ad1e6e6bb96'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'payout_frequency'
-                            value: 'annual'
-                        }
-                    },
-                    {
                         table: 'sys_choice_set'
                         id: '4e78f958e83643b0819b194bf6f06374'
                         deleted: false
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'deal_type'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: '4e8f6385e60349ecad9cb5fd9e64b79f'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'governance_source'
-                            value: 'import'
                         }
                     },
                     {
@@ -17528,15 +17291,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'notes'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '518f915bebb1452589ca3deac4d56f70'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'attainment_percent_at_calc'
                         }
                     },
                     {
@@ -17811,16 +17565,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: '57ab273494b1401b9f55c66ec8b25276'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'status'
-                            value: 'earned'
-                        }
-                    },
-                    {
                         table: 'sys_index'
                         id: '57c5035e3adb437191fc6e315594ef10'
                         key: {
@@ -18022,15 +17766,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'annual_target_amount'
-                        }
-                    },
-                    {
-                        table: 'sys_choice_set'
-                        id: '5b6fbf464be04b9990c91bb1490d04b7'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'governance_source'
                         }
                     },
                     {
@@ -18318,16 +18053,6 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: '5ee1dbcd92df4996865afdd565412214'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'sales_rep'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: '5f27904153be4024b75a91f8078ddece'
                         key: {
                             name: 'x_823178_commissio_exception_approvals'
@@ -18371,14 +18096,6 @@ declare global {
                                 }
                             }
                             element: 'rejection_reason'
-                        }
-                    },
-                    {
-                        table: 'sys_db_object'
-                        id: '5f74098415dd4a7788fd8c4508837f0e'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_targets'
                         }
                     },
                     {
@@ -18653,16 +18370,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '6502908b9b7b450e9287728e4939f349'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'sort_order'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '656b0fbeeefe4139b07e1b5f7f4c31fd'
                         deleted: true
@@ -18759,16 +18466,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '66be6e19fb5747c4bb066d92df452960'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'quota_amount_snapshot'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '66d8fee4805e41868bb8a37001c370ce'
                         deleted: true
@@ -18816,15 +18513,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '67a33c7d02a54f85bbec4eb1901f41d8'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'rollback_summary'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '67b7a200be6a4b99ab70990ae568528b'
                         deleted: true
@@ -18847,16 +18535,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '67d98a9899a7409a8d9943d107899af7'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'projected_commission'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '67f428677e1c47f8845f0a35922cda1e'
                         deleted: true
@@ -18872,30 +18550,10 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: '681c5eff2d5f4abd92636a7f9956e7d4'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_operator'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: '6832babed3b345c8b0834656c84f6a9e'
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'recognition_date_snapshot'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '68428ea556184b0b87681a39a03a271a'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'effective_end_date'
                             language: 'en'
                         }
                     },
@@ -19110,16 +18768,6 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: '6a95219865ad4a08ad3128e8299d67d2'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'commission_plan'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: '6ab2378d0d9a4b40971085d2e75bae36'
                         key: {
                             name: 'x_823178_commissio_system_alerts'
@@ -19184,16 +18832,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_payments'
                             element: 'calculation_lock'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: '6b44a6f12f884529a18352cc4271dbad'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_metric'
-                            value: 'deal_amount'
                         }
                     },
                     {
@@ -19270,14 +18908,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_db_object'
-                        id: '6c52150bcbd043d1bf9a98889a200909'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_types'
                         }
                     },
                     {
@@ -19542,15 +19172,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '6f5da8a185b54157b60e121eab0f1dbe'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'payout_frequency'
-                        }
-                    },
-                    {
                         table: 'sys_index'
                         id: '6f9a59ea01714dada8a9ade8da0b1d5b'
                         key: {
@@ -19607,15 +19228,6 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
-                        id: '701e421be94842bf86861c0d6aae6a55'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'governance_source'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
                         id: '7056bb27056e49f0af8a817a81754911'
                         key: {
                             name: 'x_823178_commissio_commission_plans'
@@ -19652,15 +19264,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_choice_set'
-                        id: '708054fed6d046a094020e62a67b3879'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'mode'
                         }
                     },
                     {
@@ -19960,15 +19563,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '7430d3fcd1e1410fbe08a76c4f5c7cf2'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'escalation_level'
-                        }
-                    },
-                    {
                         table: 'sys_ui_list_element'
                         id: '7464133983188310a0365dc6feaad3e8'
                         key: {
@@ -20176,16 +19770,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '77144d51471740ed96b8cc24beb66435'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'bonus_earned_count'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_ui_list_element'
                         id: '77158b800c9443fd998a66eb3e811555'
                         deleted: false
@@ -20304,15 +19888,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '77da7816bd124508881c951d1f44b30f'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'deal'
                         }
                     },
                     {
@@ -20768,15 +20343,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '7d0fdf6ff72c45078a7165ca34d1d0e7'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'deal_type_ref'
-                        }
-                    },
-                    {
                         table: 'sys_db_object'
                         id: '7d28d28c2e734b27b03f31bd4027db72'
                         key: {
@@ -21006,16 +20572,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '7ff38efa36e94a689f0006b723954733'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'evaluation_period'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: '80026b6e137a403697d2f7b1a7027686'
                         key: {
@@ -21088,16 +20644,6 @@ declare global {
                                     name: 'x_823178_commissio.finance'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: '8120e515e96b469484e843b53f69c55a'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'evaluation_period'
-                            value: 'annual'
                         }
                     },
                     {
@@ -21184,16 +20730,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '820d8b69d0294a14be4bcde6e9ec28cb'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'one_time_per_period'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '8216e3d1d7e84ed48a70d19efcc63a2b'
                         deleted: true
@@ -21274,16 +20810,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '82b7a1e4cbf4444ba2900bb782288717'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'is_discretionary'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'ua_table_licensing_config'
                         id: '8324ac410b9742049d4f826d4d1a0867'
                         key: {
@@ -21325,16 +20851,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '839a6e4e0f774263b0b0e2650d24d3d1'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'earned_date'
-                            language: 'en'
                         }
                     },
                     {
@@ -21426,15 +20942,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '8538331c97a741eaa7d90978d34cf674'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'one_time_per_period'
-                        }
-                    },
-                    {
                         table: 'sys_choice'
                         id: '8551ee1cd62f4f0eb63e0dc922440634'
                         key: {
@@ -21477,15 +20984,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '861fbdcb067145db9e0c0a9215cadeb0'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'is_active'
                         }
                     },
                     {
@@ -21691,30 +21189,10 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: '899b9dd5da7d4b4ab1e6c69a16005cba'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'approved_by'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: '89db46be94cf4523a8370d968f55d78e'
                         key: {
                             name: 'x_823178_commissio_exception_approvals'
                             element: 'approval_date'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '89ddfc6eee8642f2adcae7f66b3e8dc6'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'notes'
                             language: 'en'
                         }
                     },
@@ -21901,23 +21379,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_db_object'
-                        id: '8be228a3f0634241ac5c68e275039706'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '8be75aaa09c34366ad2ff5e76c501a75'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'earned_date'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '8bf70a8dbd614d0f998dc1cef725dc84'
                         deleted: true
@@ -21962,32 +21423,12 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '8c665bb8e9d240278ea1611e5683e0e2'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'current_step'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_choice'
                         id: '8c6910d9f2de4b599f6745a7e559aefe'
                         key: {
                             name: 'x_823178_commissio_commission_statements'
                             element: 'status'
                             value: 'paid'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '8c908df1d1864912a695e47e45984614'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'status'
-                            language: 'en'
                         }
                     },
                     {
@@ -22006,16 +21447,6 @@ declare global {
                             element: 'NULL'
                             relationship: 'NULL'
                             parent: 'NULL'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '8cf481caae83411da37c085db2337c42'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'deal_type_ref'
-                            language: 'en'
                         }
                     },
                     {
@@ -22093,14 +21524,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_db_object'
-                        id: '8e0a2fbeb73b46cdae84a8c66798601e'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                        }
-                    },
-                    {
                         table: 'sys_index'
                         id: '8e1ab85af6ab4119a625c0a6c8461d5b'
                         key: {
@@ -22125,14 +21548,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_db_object'
-                        id: '8e652dca682a47a399d659d33a6b75c2'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '8e85eece9db14dbd8e193e95197b1314'
                         deleted: true
@@ -22152,15 +21567,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'submitted_on'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '8f1df6161f204228bb17186296e5b959'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_statements'
-                            element: 'total_bonus_amount'
                         }
                     },
                     {
@@ -22225,16 +21631,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_payments'
                             element: 'payment_amount_validation'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '907b1b72150b49489b97070efc5a9e8b'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_types'
-                            element: 'name'
-                            language: 'en'
                         }
                     },
                     {
@@ -22336,15 +21732,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '9190f387335f43199ae3ec8b871a611d'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'deal_type_ref'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '9192010935dd46e68588e6eddfc18f93'
                         deleted: true
@@ -22375,16 +21762,6 @@ declare global {
                                 }
                             }
                             element: 'projected_revenue'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '9267e50dc7da441dac89ed5208c997eb'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_plans'
-                            element: 'plan_version'
-                            language: 'en'
                         }
                     },
                     {
@@ -22509,15 +21886,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: '943ba9a19bb64d78bca5b0b50b44eafa'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'approved_on'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: '946134ec0f064998b2cf6740e0818308'
                         key: {
@@ -22539,16 +21907,6 @@ declare global {
                         id: '947899da19f64fe1a2ec2aa5d30f6043'
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: '947fed6989134b9cb818441341283009'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'is_primary'
-                            language: 'en'
                         }
                     },
                     {
@@ -22576,16 +21934,6 @@ declare global {
                             name: 'x_823178_commissio_payments'
                             element: 'payment_amount_validation'
                             value: 'valid'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: '94e2a2aa2b534015b42af014331aab34'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'current_step'
-                            value: 'submission'
                         }
                     },
                     {
@@ -22672,16 +22020,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: '954223d9553c4081854f0b2e964ac21d'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'period_key'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: '9605cfedc0a940ce9c1db01a766093f3'
                         deleted: true
@@ -22711,15 +22049,6 @@ declare global {
                             name: 'x_823178_commissio_deals'
                             element: 'owner_at_close'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '9635a36648194c48b3ea2fb15f6ba8a2'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'run_name'
                         }
                     },
                     {
@@ -22840,15 +22169,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'status'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: '979fee6faf294c35829c0a493a35770b'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'effective_end_date'
                         }
                     },
                     {
@@ -23024,16 +22344,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: '9bd6fe5a443d44c79105e3d1bbdcc970'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'status'
-                            value: 'reversed'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: '9be23471dbcd4e039da70deaff5f4b14'
                         key: {
@@ -23104,16 +22414,6 @@ declare global {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'NULL'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: '9dbbce90c10a479d92d6868cfe99d0b9'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'policy_state'
-                            value: 'retired'
                         }
                     },
                     {
@@ -23527,15 +22827,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'a0f730cf7b8e47359f6c796ba76862af'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_operator'
-                        }
-                    },
-                    {
                         table: 'sys_index'
                         id: 'a1043c53d2124ab4bb2e710f2770f389'
                         key: {
@@ -23558,15 +22849,6 @@ declare global {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'escalation_level'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'a1a935adafaa4291b1843562cc7eb0f3'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'sales_rep'
                         }
                     },
                     {
@@ -23672,16 +22954,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'a2479be204054fa0afa505ae6a05c170'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_types'
-                            element: 'is_active'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_ui_list_element'
                         id: 'a2caede48f44405285a9488c4a595b81'
                         deleted: false
@@ -23758,16 +23030,6 @@ declare global {
                             name: 'x_823178_commissio_deals'
                             element: 'finance_approved_by'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'a45fdfabeac04d3eba39c984631856d3'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'status'
-                            value: 'approved'
                         }
                     },
                     {
@@ -23880,15 +23142,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'a6f6128ee7ef40fcb1fa8149887cfc8c'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'description'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: 'a7039c3114d24ae78a9c49f638d34b6b'
                         key: {
@@ -23903,14 +23156,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'plan_name'
-                        }
-                    },
-                    {
-                        table: 'ua_table_licensing_config'
-                        id: 'a7a16e3502ac4c799dc8e73d3570725c'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_types'
                         }
                     },
                     {
@@ -23992,16 +23237,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'a869f298ad74490bacd888a4e7eec90f'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'recognition_date_snapshot'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'a870f700a7714271b6b695485c8915f8'
                         deleted: true
@@ -24013,15 +23248,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_choice_set'
-                        id: 'a87ddedb439c4f5895903e7b1cd04fe0'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'payout_frequency'
                         }
                     },
                     {
@@ -24090,16 +23316,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'a9ce7bb074db4467b2c58492abfabf47'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_targets'
-                            element: 'description'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: 'aab2f781eeb14461b4bc07e2de872dad'
                         key: {
@@ -24123,15 +23339,6 @@ declare global {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'status'
                             value: 'published'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'aae4f6c8facb48e2bfb6e93f42354528'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'description'
                         }
                     },
                     {
@@ -24213,15 +23420,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'ac043222f48943bca852d32d13fbff83'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'bonus_amount'
-                        }
-                    },
-                    {
                         table: 'sys_ui_list_element'
                         id: 'ac1bf6d683533210a0365dc6feaad341'
                         deleted: true
@@ -24238,15 +23436,6 @@ declare global {
                                 }
                             }
                             element: 'is_negative'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'ac2182bb53764354a4c076df9ac56a2a'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'is_active'
                         }
                     },
                     {
@@ -24272,15 +23461,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'owner_change_reason'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'ac7d6902f3914175a933fd68da849271'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'threshold_snapshot'
                         }
                     },
                     {
@@ -24315,16 +23495,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_commission_plans'
                             element: 'new_business_rate'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'acf3f0a3ec1c493fa1bc5867aed67551'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'auto_payout'
                             language: 'en'
                         }
                     },
@@ -24486,30 +23656,11 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'b002b4f279234fb8bf625ed36839c8f8'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'commission_plan'
-                        }
-                    },
-                    {
                         table: 'sys_choice_set'
                         id: 'b00a14fe01614e30a729b34a4209d67c'
                         key: {
                             name: 'x_823178_commissio_payments'
                             element: 'payment_method'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'b02666779218436189fd87f146efe6ca'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'attainment_percent_at_calc'
-                            language: 'en'
                         }
                     },
                     {
@@ -24815,23 +23966,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'ua_table_licensing_config'
-                        id: 'b2efcd6cb7b144298cfec9b0a8bd0134'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'b2ff8e77435949829851bbb36a6112eb'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'description'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: 'b304901a5d0849d5bf43a9b608d289c0'
                         key: {
@@ -25008,15 +24142,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'b45270754c874d9b88789b85d3a6f541'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'dry_run'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: 'b46d4767e5cc437985566fb0676c94fd'
                         key: {
@@ -25041,16 +24166,6 @@ declare global {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'dispute_opened_by'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'b515f72b96dc4fdcaa0b611991d0e076'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_metric'
-                            value: 'base_commission_amount'
                         }
                     },
                     {
@@ -25225,16 +24340,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: 'b69bc4965c3e4e9384ce8c2795f38940'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_metric'
-                            value: 'deal_count'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: 'b6b267dddb884dfb971b299433221739'
                         key: {
@@ -25339,15 +24444,6 @@ declare global {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'tier_name'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'b790197a1db8403eb0439140198f29cb'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'is_primary'
                         }
                     },
                     {
@@ -25498,15 +24594,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'ba5922851476477c9640811b2f79cb4b'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'scenario_year'
-                        }
-                    },
-                    {
                         table: 'sys_ui_list_element'
                         id: 'ba87b36283d33210a0365dc6feaad377'
                         deleted: true
@@ -25527,16 +24614,6 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: 'ba8a0451b46146759d8cdf4912f5cebd'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'description'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: 'ba8bc8b9a6874c4786d093a35850784d'
                         key: {
                             name: 'x_823178_commissio_commission_statements'
@@ -25546,30 +24623,10 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: 'baa19a2b30664693ab1862eadd770f11'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'effective_start_date'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: 'bab7c10c2c1c42f28e98ef58e3cdf6fd'
                         key: {
                             name: 'x_823178_commissio_invoices'
                             element: 'tax_amount'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'bacc999fb93441a38ab1ab1ca1900455'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'submitted_by'
                             language: 'en'
                         }
                     },
@@ -25616,16 +24673,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'bb301295b4a44cd380360e7516624028'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'deal_type_ref'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'bb38edd0b4474d4cbfc46cb18df61020'
                         deleted: true
@@ -25637,15 +24684,6 @@ declare global {
                                     name: 'x_823178_commissio.finance'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'bb6e0e63e6d54585a27e49b4c09cdf30'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'notes'
                         }
                     },
                     {
@@ -25797,15 +24835,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'bd1b4355f9c04565b919bd3aeb00c240'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'mode'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'bd232e8320924e5a90685277f5783b19'
                         deleted: true
@@ -25942,16 +24971,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_commission_statements'
                             element: 'period_end_date'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'bed72d39577840f99ea18d5ea90ab796'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'status'
-                            value: 'cancelled'
                         }
                     },
                     {
@@ -26092,15 +25111,6 @@ declare global {
                             name: 'x_823178_commissio_deals'
                             element: 'bigin_deal_id'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'c0e0b18d2ad74f478c33d03b6a08cb29'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'notes'
                         }
                     },
                     {
@@ -26292,16 +25302,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'c339bf9989134be996d7cf31a3dff645'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_threshold'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'c33de6e8474444a5a98ca627cc66299e'
                         deleted: true
@@ -26474,25 +25474,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: 'c58840c7f20b4e97b1db1889058c4eb4'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'mode'
-                            value: 'preview'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'c5b31d0ffc2f409f87ca8db3d2309e02'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'recognition_policy_record'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'c5d8d75e7a1f4db9b1074f60be421672'
                         deleted: true
@@ -26623,25 +25604,6 @@ declare global {
                             name: 'x_823178_commissio_bulk_plan_assignment_runs'
                             element: 'executed_by'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'c74a286415f24902a8e3d6f24684697e'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'executed_by'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_choice_set'
-                        id: 'c74d4f4a7edb41caabca83d8c7be05aa'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'status'
                         }
                     },
                     {
@@ -26822,15 +25784,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'ca7f43c3828841ae9ab85876ce36165d'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'effective_start_date'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'cacf6449f4e04d98a65754e38db49a22'
                         deleted: true
@@ -26842,14 +25795,6 @@ declare global {
                                     name: 'x_823178_commissio.rep'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'ua_table_licensing_config'
-                        id: 'cb199b6925a74f439f9b0fc9d31ed35c'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
                         }
                     },
                     {
@@ -26888,15 +25833,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'cc187978bac14b7ba0f7fdf764290780'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_statements'
-                            element: 'total_base_commission'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: 'cc2239c008ef42068c2b2d2c6d660461'
                         key: {
@@ -26907,29 +25843,10 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
-                        id: 'cc3a0f466ff14de89fbc8104b1b5f28b'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'bonus_earned_count'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
                         id: 'cc3ad0f4f69349549c0f3f46b4f091d3'
                         key: {
                             name: 'x_823178_commissio_plan_recognition_policies'
                             element: 'superseded_by_policy'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'cc6ddd449df6425e9828f29ed723fbcf'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'bonus_amount'
-                            language: 'en'
                         }
                     },
                     {
@@ -27021,16 +25938,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'ce14fec325334fe5bead89cf1c9f6ca0'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'qualification_metric'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'ce2ab1c707d948d2a955d07b88b79485'
                         deleted: true
@@ -27110,14 +26017,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'ua_table_licensing_config'
-                        id: 'ce9c4ebf8fe443d991df2aef3cc476ca'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'ceb78a4608344ee39a0c5832ea1de005'
                         deleted: true
@@ -27154,15 +26053,6 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
-                        id: 'cef56e1d1b7047e98f9279f3ddef4225'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'deal'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
                         id: 'cf85a10661784ecc90807cc40caf21b3'
                         key: {
                             name: 'x_823178_commissio_payments'
@@ -27176,16 +26066,6 @@ declare global {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type'
                             value: 'upsell'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'cfc2d666e99f4dc9b606ceb3ed311d00'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'workflow_history'
-                            language: 'en'
                         }
                     },
                     {
@@ -27228,16 +26108,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'd013007268cd42e4b9079f78f3d5e011'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'policy_state'
-                            value: 'active'
                         }
                     },
                     {
@@ -27383,15 +26253,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'd272d9aa7fc843d78a123e01f8bebca2'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'sla_due_on'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'd28cd2c43c2346558fef9b40fa2d7563'
                         deleted: true
@@ -27403,26 +26264,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'd2940e0117bc403f88bfe33773b6180c'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'attainment_floor_percent'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'd2c9e0dab3d04b58af44349ea257218f'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'rollback_summary'
-                            language: 'en'
                         }
                     },
                     {
@@ -27451,31 +26292,11 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: 'd3043170146a4eea9d017410ec758c79'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'deal'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: 'd31294cee9bb44fda2c30dfae12d1781'
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'is_active'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'd32583de7db04bd7a12b1ef031619673'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'status'
-                            value: 'previewed'
                         }
                     },
                     {
@@ -27502,29 +26323,11 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_db_object'
-                        id: 'd3a6a258324e42e2991272fc7dad01c7'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: 'd3beeb1813e947b0ab0e07166ca66f3b'
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'deal_type'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'd424f1c53ea545e0a35032dbcf49f972'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'status'
-                            value: 'archived'
                         }
                     },
                     {
@@ -27620,16 +26423,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'd551fb914bca4b48bd2f8f1b4cf9e4a4'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'is_active'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_user_role_contains'
                         id: 'd5b26c1c81944eb28e7e44ea8904801d'
                         deleted: true
@@ -27646,15 +26439,6 @@ declare global {
                                     name: 'x_823178_commissio.rep'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'd5bcb03da9f3489b9e925e8364c6f4af'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'earned_amount'
                         }
                     },
                     {
@@ -27681,16 +26465,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: 'd5fbf7d06d184c7d9defa733abfa31c0'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_plans'
-                            element: 'lifecycle_state'
-                            value: 'retired'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: 'd6017a1642734891ba77dcdbeb31df07'
                         key: {
@@ -27706,14 +26480,6 @@ declare global {
                             name: 'x_823178_commissio_payments'
                             element: 'invoice'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'ua_table_licensing_config'
-                        id: 'd617654c90aa4db9b0ad7623e609ea96'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
                         }
                     },
                     {
@@ -27857,25 +26623,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'd967284ddd5a4be0b08c91e8d8a7da29'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'is_active'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'd9d84c4c41f74565b3b227c306483d3e'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'invoice'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'da29bd0516084cd78833f18e391848d3'
                         deleted: true
@@ -27943,15 +26690,6 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
-                        id: 'da6ba14aeb2744118341e18e3c6859c6'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'scenario_name'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
                         id: 'da7d5d4b616942fd96c45ff9f09116e2'
                         key: {
                             name: 'x_823178_commissio_bonus_earnings'
@@ -27965,16 +26703,6 @@ declare global {
                             name: 'x_823178_commissio_payments'
                             element: 'payment_type'
                             value: 'refund'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'da8f13ce6a1047978c3c4da379f9510d'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'attainment_ceiling_percent'
-                            language: 'en'
                         }
                     },
                     {
@@ -28162,16 +26890,6 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: 'dc9e68af921a4bb29d89fd0ebe45a9a5'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_types'
-                            element: 'sort_order'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: 'dcb4c91da9044cba8b759e85154f0dfb'
                         key: {
                             name: 'x_823178_commissio_payments'
@@ -28283,16 +27001,6 @@ declare global {
                     },
                     {
                         table: 'sys_choice'
-                        id: 'df4e17e26c2e460b8f8b03efc4a1d818'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'recognition_basis'
-                            value: 'cash_received'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
                         id: 'df508557e1334f26983817a08852529a'
                         key: {
                             name: 'x_823178_commissio_deals'
@@ -28329,15 +27037,6 @@ declare global {
                                 }
                             }
                             element: 'last_sync'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'e058e25c69fe40c89ca82db6cf05df8c'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'created_plan_ids'
                         }
                     },
                     {
@@ -28384,16 +27083,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_forecast_scenarios'
                             element: 'NULL'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'e0e3dee70a3e45198098122e9c56a85d'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'target_user_ids'
                             language: 'en'
                         }
                     },
@@ -28505,16 +27194,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: 'e23b537c5c574eb89aa9768c9dca178c'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'policy_state'
-                            value: 'draft'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: 'e26af6e07e734ca6952390763e561387'
                         key: {
@@ -28523,50 +27202,11 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: 'e27e1e68f8f04081b5cb9ba67262f425'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'status'
-                            value: 'draft'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'e29469cd875a4e86ad89908ee281ef90'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'pipeline_multiplier'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: 'e29a2c6932994258a296523c7a9bcd57'
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'NULL'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'e2ebf767b50140939b21f89cd80b19b5'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_manager_team_memberships'
-                            element: 'effective_start_date'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'e308100fb09645fc8fcdf0d1a44f79ad'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'source_plan'
                         }
                     },
                     {
@@ -28597,16 +27237,6 @@ declare global {
                                     name: 'x_823178_commissio.finance'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'e34a6a1a59404a439c601ff77dfdedc4'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'priority'
-                            language: 'en'
                         }
                     },
                     {
@@ -28677,15 +27307,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'e480725becc34da986ebdd06d3328ce1'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_targets'
-                            element: 'deal_type_ref'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: 'e4bd6c492d5d487192ae359356dd2c71'
                         key: {
@@ -28700,25 +27321,6 @@ declare global {
                         key: {
                             logical_table_name: 'x_823178_commissio_bonus_earnings'
                             col_name_string: 'plan_bonus'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'e50cb10848c6478385a5b532c572f28e'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'evaluation_period'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'e531e54dfaf741a2b523a2236c48ddcd'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'commission_calculation'
-                            language: 'en'
                         }
                     },
                     {
@@ -28770,40 +27372,11 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
-                        id: 'e65d354992e041ae9df32795e062f7df'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_classifications'
-                            element: 'is_active'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'e65dd179c38740b995dfc36329f7f729'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'qualification_metric_snapshot'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
                         id: 'e67d2eb8f24f4e0ab2837d9d198d3da3'
                         key: {
                             name: 'x_823178_commissio_statement_approvals'
                             element: 'decision_notes'
                             language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'e6e6b57e13924c48a4ac6db6f2208c2d'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_deal_types'
-                            element: 'sort_order'
                         }
                     },
                     {
@@ -28843,15 +27416,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'tier_name'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'e9004a7b116b45e792d722a035cd958b'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'notes'
                         }
                     },
                     {
@@ -29089,15 +27653,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'ebaec615f5584181bf3acb68a7cd53d0'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'attainment_floor_percent'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'ebce77c1c722462989ee70861bb195ef'
                         deleted: true
@@ -29123,15 +27678,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'ebf8f5c08c9a417f81313b8b6d3b093c'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_plans'
-                            element: 'plan_version'
                         }
                     },
                     {
@@ -29143,30 +27689,11 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'ec0bedddc87842e684b813e8127629de'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'policy_state'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: 'ec11dd70cdd84ccdabcd3051b9deb7b3'
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'recalculated_count'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'ec39c9dd54004476a4491bf7663b2dae'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'recognition_basis'
                             language: 'en'
                         }
                     },
@@ -29202,16 +27729,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: 'ece2a8a3ff3c419485004052fab241df'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'status'
-                            value: 'published'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'ece96632ae7548088ea9d028c731e369'
                         deleted: true
@@ -29237,15 +27754,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'ecebb51707d742e2bbdef56bd758afd6'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'condition_summary'
                         }
                     },
                     {
@@ -29360,15 +27868,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'edd6aa79f9cf484fbaacaca79a3df60d'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'statement'
-                        }
-                    },
-                    {
                         table: 'sys_ui_list_element'
                         id: 'ee2a471a83d33210a0365dc6feaad3e8'
                         deleted: false
@@ -29407,25 +27906,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'ee57907b580b4f8a8daa5bbeaba54151'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'execution_summary'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'ee6706064241455cbcb3305809b263c1'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'superseded_by_policy'
                         }
                     },
                     {
@@ -29492,40 +27972,11 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: 'efbc8418bb164582afcd703a2dd43bc3'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'evaluation_period'
-                            value: 'quarterly'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'efef0f771b2f418d93c5c699b5e73730'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'is_active'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: 'effe36513bbe428f9cb542de19107ff8'
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'is_active'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'f041d26f253a40b589e54151a9f99acf'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_tiers'
-                            element: 'plan_target'
-                            language: 'en'
                         }
                     },
                     {
@@ -29744,30 +28195,11 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice_set'
-                        id: 'f245b443dd21481e8f95adcad6e782dd'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'status'
-                        }
-                    },
-                    {
                         table: 'sys_documentation'
                         id: 'f25dad114a4d4d46acf0c4e9746acec0'
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'attained_amount_snapshot'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'f26a12cc05a04b2cae22a78164346191'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'bonus_trigger'
                             language: 'en'
                         }
                     },
@@ -29866,16 +28298,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'f3d9f07ca85546beb73c7250e44edff7'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bonus_earnings'
-                            element: 'payment'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'f41e5bfcdf1c4f58846dfada417652a6'
                         deleted: true
@@ -29903,16 +28325,6 @@ declare global {
                         key: {
                             name: 'x_823178_commissio_system_alerts'
                             element: 'acknowledged_by'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'f46048b22cc24b0f9a3672d55c040522'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'effective_tier_floor_percent'
                             language: 'en'
                         }
                     },
@@ -30049,16 +28461,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'f58dde79bcbb46d7b0beafb4834b9e9a'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'dry_run'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_dictionary'
                         id: 'f5bbd3b064f5476ab43014ddc1d2994a'
                         key: {
@@ -30121,16 +28523,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_choice'
-                        id: 'f6547cb630614570aec00194528257f2'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_recognition_policies'
-                            element: 'recognition_basis'
-                            value: 'invoice_issued'
-                        }
-                    },
-                    {
                         table: 'sys_ui_list_element'
                         id: 'f65e694a20f143d5b90d4aa122d75315'
                         deleted: true
@@ -30152,16 +28544,6 @@ declare global {
                                 }
                             }
                             element: 'effective_end_date'
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'f66c414b1cdd477e8cdac35e375bbb46'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_plans'
-                            element: 'lifecycle_state'
-                            value: 'active'
                         }
                     },
                     {
@@ -30190,26 +28572,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'f6a5f7ece9e34541a6e034b2831c8997'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'commission_plan'
-                            language: 'en'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'f6bb7af3d43143bf922ad49998184c42'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_statements'
-                            element: 'total_accelerator_delta'
-                            language: 'en'
                         }
                     },
                     {
@@ -30245,16 +28607,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_documentation'
-                        id: 'f76528d028d24f369de7486cc6035da6'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_bulk_plan_assignment_runs'
-                            element: 'run_name'
-                            language: 'en'
-                        }
-                    },
-                    {
                         table: 'sys_security_acl_role'
                         id: 'f787099b6b2b409c812e582eb6e6ecf4'
                         deleted: true
@@ -30266,16 +28618,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_choice'
-                        id: 'f7f27c022bbc4ad2a4058f1f444ab001'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_exception_approvals'
-                            element: 'request_type'
-                            value: 'recognition_policy_change'
                         }
                     },
                     {
@@ -30361,16 +28703,6 @@ declare global {
                             name: 'x_823178_commissio_payments'
                             element: 'payment_method'
                             value: 'ach'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'f925e1dea0d04e60a6aafc38c1b92ad4'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'bonus_amount'
-                            language: 'en'
                         }
                     },
                     {
@@ -30572,15 +28904,6 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'fc401fc56c5f424c866c62c4abd8ef08'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_statement_approvals'
-                            element: 'escalated_on'
-                        }
-                    },
-                    {
                         table: 'sys_ui_list_element'
                         id: 'fc5f2af4435f41e3a420e54166961b62'
                         deleted: true
@@ -30669,30 +28992,12 @@ declare global {
                         }
                     },
                     {
-                        table: 'sys_dictionary'
-                        id: 'fca4d8974e0243fba8c8761a480694d9'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'sales_rep'
-                        }
-                    },
-                    {
                         table: 'sys_choice'
                         id: 'fce8c737d1a843bc8123fe71017f7a0f'
                         key: {
                             name: 'x_823178_commissio_exception_approvals'
                             element: 'status'
                             value: 'pending'
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'fce9076c46604be89e6b3038763666cf'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_forecast_scenarios'
-                            element: 'pipeline_multiplier'
                         }
                     },
                     {
@@ -30738,15 +29043,6 @@ declare global {
                                     name: 'x_823178_commissio.manager'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_choice_set'
-                        id: 'fdf8ee05275546f7a1a3b05da6d64c4a'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_bonuses'
-                            element: 'evaluation_period'
                         }
                     },
                     {
@@ -30819,25 +29115,6 @@ declare global {
                                     name: 'x_823178_commissio.admin'
                                 }
                             }
-                        }
-                    },
-                    {
-                        table: 'sys_dictionary'
-                        id: 'ff5d4abd2ccd462b9390a0607c8bc03f'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_plan_targets'
-                            element: 'is_active'
-                        }
-                    },
-                    {
-                        table: 'sys_documentation'
-                        id: 'ff6ccbb379fa472ca6b7d3deeac28a16'
-                        deleted: true
-                        key: {
-                            name: 'x_823178_commissio_commission_calculations'
-                            element: 'attained_amount_snapshot'
-                            language: 'en'
                         }
                     },
                     {
