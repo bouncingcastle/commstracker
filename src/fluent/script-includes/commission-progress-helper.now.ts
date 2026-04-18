@@ -2066,7 +2066,7 @@ Record({
             var typeGr = new GlideRecord('x_823178_commissio_deal_types');
             if (typeGr.get(refId)) {
                 var active = typeGr.getValue('is_active');
-                if (active === 'true' || active === true) {
+                if (active === '1' || active === 'true' || active === true) {
                     return this.normalizeDealType(typeGr.getValue('code') || fallback || 'other');
                 }
             }
