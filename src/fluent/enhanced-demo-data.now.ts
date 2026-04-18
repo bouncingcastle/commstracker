@@ -15,8 +15,6 @@ Record({
         is_active: true,
         lifecycle_state: 'active',
         plan_version: 1,
-        upsell_rate: 5.0,
-        base_rate: 5.0,
         description: 'Standard commission plan for Abel Tuter with target-based rate cards and accelerators'
     },
     $meta: {
@@ -36,8 +34,6 @@ Record({
         is_active: true,
         lifecycle_state: 'active',
         plan_version: 1,
-        upsell_rate: 7.0,
-        base_rate: 6.0,
         description: 'Senior commission plan for Adela Cervantsz with target-based rate cards and accelerators'
     },
     $meta: {
@@ -57,8 +53,6 @@ Record({
         is_active: true,
         lifecycle_state: 'active',
         plan_version: 1,
-        upsell_rate: 3.0,
-        base_rate: 3.0,
         description: 'Test commission plan for system administration and referential architecture validation'
     },
     $meta: {
