@@ -17075,7 +17075,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '4e393cfebb7e4f08a222b3208444fd2f'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -17186,7 +17186,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '5076c57a93fa497a807bbc17f6a4ba04'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -19366,7 +19366,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '71c135ff6d074a6fb5373381c35ef3c4'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -20179,7 +20179,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '7bd32d6e9c4741418eef3d68ad069a3c'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -23768,7 +23768,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'b17db6eda63a4c388366f1e7d92e7e40'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -23872,7 +23872,7 @@ declare global {
                     {
                         table: 'sys_choice_set'
                         id: 'b2823ffc11714bb2a776767a95e514b3'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
@@ -27625,7 +27625,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'eb8132472c954bfd9e2c59c380a3867e'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deals'
                             element: 'deal_type'
