@@ -75,8 +75,8 @@ export function calculateCommissionOnPayment(current, previous) {
         }
         
         // BUSINESS REQUIREMENT: Check if deal requires approval and is approved
-        if (dealGr.getValue('requires_finance_approval') === 'true' && 
-            dealGr.getValue('finance_approved') !== 'true') {
+        if (dealGr.getValue('requires_finance_approval') === '1' && 
+            dealGr.getValue('finance_approved') !== '1') {
             gs.warn('Commission Management: Deal requires finance approval before commission calculation');
             current.setValue('commission_calculated', PAYMENT_CALC_STATE.PENDING);
             return;
@@ -947,7 +947,7 @@ function evaluateStructuredBonuses(params) {
         var operator = (bonusGr.getValue('qualification_operator') || 'gte').toString();
         var threshold = parseFloat(bonusGr.getValue('qualification_threshold'));
         var period = (bonusGr.getValue('evaluation_period') || 'calculation').toString();
-        var oneTimePerPeriod = bonusGr.getValue('one_time_per_period') === 'true' || bonusGr.getValue('one_time_per_period') === true;
+        var oneTimePerPeriod = bonusGr.getValue('one_time_per_period') === '1' || bonusGr.getValue('one_time_per_period') === 'true';
         var bonusDealType = normalizeBonusDealType(resolveDealTypeCodeFromReference(bonusGr.getValue('deal_type_ref')));
 
         if (!metric || isNaN(threshold)) {

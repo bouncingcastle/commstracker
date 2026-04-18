@@ -33,7 +33,7 @@ export function validateDealClassification(current, previous) {
         return;
     }
 
-    var isPrimary = current.getValue('is_primary') === 'true' || current.getValue('is_primary') === true;
+    var isPrimary = current.getValue('is_primary') === '1' || current.getValue('is_primary') === 'true';
     if (isPrimary) {
         var primaryGr = new GlideRecord('x_823178_commissio_deal_classifications');
         primaryGr.addQuery('deal', dealId);

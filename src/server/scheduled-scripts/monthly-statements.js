@@ -99,7 +99,7 @@ function generateStatementForRep(salesRep, year, month) {
         
         while (calcGr.next()) {
             // Double-check approval status for high-value items
-            if (calcGr.getValue('requires_approval') === 'true' && calcGr.getValue('approved') !== 'true') {
+            if (calcGr.getValue('requires_approval') === '1' && calcGr.getValue('approved') !== '1') {
                 hasUnapprovedCalculations = true;
                 gs.warn('Commission Management: Skipping unapproved calculation: ' + calcGr.sys_id);
                 continue;

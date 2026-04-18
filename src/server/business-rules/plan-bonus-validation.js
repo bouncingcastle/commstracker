@@ -48,7 +48,7 @@ export function validatePlanBonusConfiguration(current, previous) {
         return;
     }
 
-    var oneTime = current.getValue('one_time_per_period') === 'true' || current.getValue('one_time_per_period') === true;
+    var oneTime = current.getValue('one_time_per_period') === '1' || current.getValue('one_time_per_period') === 'true';
     if (oneTime && period === 'calculation') {
         gs.addErrorMessage('One-time per period bonuses require monthly, quarterly, or annual evaluation period.');
         current.setAbortAction(true);

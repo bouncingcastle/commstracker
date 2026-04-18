@@ -101,7 +101,7 @@ function loadDealClassifications(dealId) {
         rows.push({
             sysId: classGr.getUniqueValue(),
             dealTypeRef: (classGr.getValue('deal_type_ref') || '').toString(),
-            isPrimary: classGr.getValue('is_primary') === 'true' || classGr.getValue('is_primary') === true
+            isPrimary: classGr.getValue('is_primary') === '1' || classGr.getValue('is_primary') === 'true'
         })
     }
 

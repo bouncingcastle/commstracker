@@ -3,14 +3,14 @@ import { getApprovedOverrideJustification, createOverrideAuditLog } from '../scr
 
 export function snapshotDealOnClose(current, previous) {
     // SAFEGUARD: Prevent snapshot flag from being cleared once set
-    if (previous.getValue('snapshot_taken') === 'true' && current.getValue('snapshot_taken') !== 'true') {
+    if (previous.getValue('snapshot_taken') === '1' && current.getValue('snapshot_taken') !== '1') {
         gs.addErrorMessage('SNAPSHOT PROTECTION: Cannot clear snapshot flag once set');
         current.setAbortAction(true);
         return;
     }
 
     // BUSINESS REQUIREMENT: Preserve ability to correct legitimate snapshot errors
-    if (current.getValue('snapshot_taken') === 'true' && previous.getValue('snapshot_taken') === 'true') {
+    if (current.getValue('snapshot_taken') === '1' && previous.getValue('snapshot_taken') === '1') {
         // Check for approved override before blocking changes
         if (current.owner_at_close.changes() || current.is_won.changes() || current.close_date.changes()) {
             var approvedOverride = checkApprovedOverride(current.sys_id, 'snapshot_correction');
