@@ -671,54 +671,7 @@ UiPage({
           tryIndex(0);
         }
 
-        function invokeP1Helper(methodName, params, callback) {
-          var helperNames = [
-            'x_823178_commissio.CommissionProgressDataService'
-          ];
 
-          function tryIndex(index) {
-            if (index >= helperNames.length) {
-              callback(null);
-              return;
-            }
-
-            var ajax = new GlideAjax(helperNames[index]);
-            ajax.addParam('sysparm_name', methodName);
-
-            if (params) {
-              Object.keys(params).forEach(function(k) {
-                ajax.addParam(k, params[k]);
-              });
-            }
-
-            ajax.getXMLAnswer(function(response) {
-              if (response) {
-                callback(response);
-                return;
-              }
-
-              ajax.getXML(function(res) {
-                var xmlAnswer = null;
-                try {
-                  if (res && res.responseXML && res.responseXML.documentElement) {
-                    xmlAnswer = res.responseXML.documentElement.getAttribute('answer');
-                  }
-                } catch (e) {
-                  xmlAnswer = null;
-                }
-
-                if (!xmlAnswer && index < helperNames.length - 1) {
-                  tryIndex(index + 1);
-                  return;
-                }
-
-                callback(xmlAnswer);
-              });
-            });
-          }
-
-          tryIndex(0);
-        }
 
         // Role chips
         var chips = document.getElementById('roleChips');
@@ -1073,7 +1026,6 @@ UiPage({
 
         resolveViewerAccess(function() {
           bindSelectorAutoApply();
-          loadUserOptions();
           loadEstimatorDealTypes();
           initializeYearContext(function() {
             loadUserOptions();
@@ -1183,7 +1135,7 @@ UiPage({
                 tier_name: tier.tier_name || 'Tier',
                 floor_percent: parseFloat(tier.floor_percent || 0),
                 rate_percent: parseFloat(tier.rate_percent || 0),
-                deal_type: String(tier.deal_type || 'other').toLowerCase()
+                deal_type: String(tier.deal_type || '').toLowerCase()
               };
             })
             .filter(function(tier) {
@@ -1199,7 +1151,8 @@ UiPage({
           var normalized = String(dealType || '').toLowerCase();
 
           var scoped = tiers.filter(function(tier) {
-            var tierScope = String(tier.deal_type || 'other').toLowerCase();
+            var tierScope = String(tier.deal_type || '').toLowerCase();
+            if (!tierScope || tierScope === 'all') return true;
             return tierScope === normalized;
           });
 
@@ -1654,7 +1607,7 @@ UiPage({
           var winMultiplier = parseFloat((document.getElementById('winRateMultiplier') || {}).value || '1') || 1;
           var pipelineMultiplier = parseFloat((document.getElementById('pipelineMultiplier') || {}).value || '1') || 1;
 
-          invokeP1Helper('getForecastAndPriorities', {
+          invokeHelper('getForecastAndPriorities', {
             sysparm_user_id: userId,
             sysparm_year: String(reportYear),
             sysparm_scenario_id: activeScenarioId,
@@ -1889,7 +1842,7 @@ UiPage({
           var winMultiplier = parseFloat((document.getElementById('winRateMultiplier') || {}).value || '1') || 1;
           var pipelineMultiplier = parseFloat((document.getElementById('pipelineMultiplier') || {}).value || '1') || 1;
 
-          invokeP1Helper('saveForecastScenario', {
+          invokeHelper('saveForecastScenario', {
             sysparm_user_id: viewingUserId || currentUserId,
             sysparm_year: String(viewingYear),
             sysparm_scenario_name: scenarioName,
@@ -1940,7 +1893,7 @@ UiPage({
             return;
           }
 
-          invokeP1Helper('estimateCommission', {
+          invokeHelper('estimateCommission', {
             sysparm_user_id: viewingUserId || currentUserId,
             sysparm_year: String(viewingYear),
             sysparm_amount: String(amount),

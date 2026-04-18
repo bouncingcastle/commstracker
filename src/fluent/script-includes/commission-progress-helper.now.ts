@@ -2109,8 +2109,8 @@ Record({
 
         for (var i = 0; i < tiers.length; i++) {
             var tier = tiers[i] || {};
-            var tierDealType = this.normalizeDealType(tier.deal_type || 'other');
-            if (tierDealType === normalizedDealType) {
+            var tierDealType = this.normalizeDealType(tier.deal_type || '');
+            if (!tierDealType || tierDealType === 'all' || tierDealType === normalizedDealType) {
                 scoped.push(tier);
             }
         }
