@@ -12068,6 +12068,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '0ad71b2bc86e46ebb9608a55c3f98e90'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'deal_type'
@@ -12175,6 +12176,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '0d1fd2dc08d64cb18618b8738707718b'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type'
@@ -12207,6 +12209,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '0d9c26bd892e4742b3e75804565a2e2e'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'deal_type'
@@ -12953,6 +12956,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '18d4e4abdc5945d89a2b6255743ea2ca'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'deal_type'
@@ -13247,6 +13251,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '1c5a9e154a344bb894ce1f113774e82a'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type'
@@ -13686,6 +13691,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '24c03ccc5f4c4018956d25c75ba95edd'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'deal_type'
@@ -14005,6 +14011,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '28b322ef747f430d9f1f5be83da56cad'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'deal_type'
@@ -14178,6 +14185,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '2aa25ad169e842fc9564b1c38998c17d'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'deal_type'
@@ -14606,6 +14614,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: '2e7a020e09144e0e8154be11b18230ad'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type'
@@ -15336,6 +15345,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '374b37cf59044d478fbe659f4db22b2f'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type'
@@ -15612,6 +15622,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '3b014eb70c094da2a6ca7647c91d17a1'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type'
@@ -16245,6 +16256,7 @@ declare global {
                     {
                         table: 'sys_choice_set'
                         id: '434123ddbcc645c39c152abfb15f2356'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type'
@@ -16947,7 +16959,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '4be0f526063743f69b0dcd4ebb131f02'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -17058,7 +17070,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '4e0c68c611604a39b2faaadb5e93d607'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -17439,7 +17451,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '55277ec9cc974be59c4593e2cdd403d6'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -17919,6 +17931,7 @@ declare global {
                     {
                         table: 'sys_choice_set'
                         id: '5d1d1e8774cd4ad6b5b31bc46539e52a'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'deal_type'
@@ -20422,6 +20435,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: '7e2d1ad0e81d4af2a62ee1f371043dfb'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'deal_type'
@@ -21365,7 +21379,7 @@ declare global {
                     {
                         table: 'sys_choice_set'
                         id: '8b7659ba6a2a4a3c821f4d8587d3dc70'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -21706,6 +21720,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: '9148d92f260044cfb69384aceb8cb50b'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_tiers'
                             element: 'deal_type'
@@ -23580,7 +23595,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'af2d4b3f3d5541f483b1c7adfb4918ca'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -23590,6 +23605,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'af5820156c1f4e8a9624f22b21948560'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'deal_type'
@@ -24032,6 +24048,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'b3486ce29a594f05b0946aa0b4b7045c'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_bonuses'
                             element: 'deal_type'
@@ -25256,7 +25273,7 @@ declare global {
                     {
                         table: 'sys_documentation'
                         id: 'c2c66e32383043f3be7d42bf567918ed'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'
@@ -26065,6 +26082,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'cf90b2c4d0014196b34c001dc33f2a2a'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_plan_targets'
                             element: 'deal_type'
@@ -26328,6 +26346,7 @@ declare global {
                     {
                         table: 'sys_dictionary'
                         id: 'd3beeb1813e947b0ab0e07166ca66f3b'
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_deal_classifications'
                             element: 'deal_type'
@@ -26684,7 +26703,7 @@ declare global {
                     {
                         table: 'sys_choice'
                         id: 'da68934d7e164daea5a4f07b6fe9d43b'
-                        deleted: false
+                        deleted: true
                         key: {
                             name: 'x_823178_commissio_commission_calculations'
                             element: 'deal_type'

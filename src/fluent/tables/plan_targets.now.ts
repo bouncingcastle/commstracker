@@ -39,29 +39,6 @@ export const x_823178_commissio_plan_targets = Table({
             label: 'Description',
             maxLength: 500,
         }),
-        deal_type: StringColumn({
-            choices: {
-                expansion: {
-                    label: 'Expansion',
-                    sequence: 2,
-                },
-                upsell: {
-                    label: 'Upsell',
-                    sequence: 3,
-                },
-                new_business: {
-                    label: 'New Business',
-                    sequence: 0,
-                },
-                renewal: {
-                    label: 'Renewal',
-                    sequence: 1,
-                },
-            },
-            dropdown: 'dropdown_with_none',
-            label: 'Deal Type',
-            mandatory: true,
-        }),
     },
     audit: true,
     accessibleFrom: 'public',
