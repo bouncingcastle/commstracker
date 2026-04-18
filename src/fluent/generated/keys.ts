@@ -15233,7 +15233,7 @@ declare global {
                     {
                         table: 'sys_user_role'
                         id: '3c60a0a42a7945ae9c939e6a0c8fb4dd'
-                        deleted: true
+                        deleted: false
                         key: {
                             name: 'x_823178_commissio.manager'
                         }
@@ -20878,7 +20878,7 @@ declare global {
                     {
                         table: 'sys_user_role_contains'
                         id: '877a31cdc57249e0a09060d2088c4329'
-                        deleted: true
+                        deleted: false
                         key: {
                             role: {
                                 id: '43f2da310d1b4405852f17aa99f0c30c'
