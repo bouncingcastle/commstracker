@@ -20,11 +20,16 @@ import './ui-pages/plan-structure-hierarchy.now'
 // Sales Rep Commission Progress UI Page
 import './ui-pages/commission-progress.now'
 
+// Statement Explainability UI Page
+import './ui-pages/statement-explainability.now'
+
 // Scheduled scripts
 import './scheduled-scripts/monthly-statements.now'
 import './scheduled-scripts/daily-reconciliation.now'
 import './scheduled-scripts/architecture-integrity-check.now'
 import './scheduled-scripts/month-end-readiness-audit.now'
+import './scheduled-scripts/production-mvp-readiness-check.now'
+import './scheduled-scripts/seed-governance-reconcile.now'
 
 // Business rules
 import './business-rules/deal-management.now'
